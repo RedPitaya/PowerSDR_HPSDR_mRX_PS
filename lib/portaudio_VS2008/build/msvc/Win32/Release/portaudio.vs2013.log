@@ -1,0 +1,40 @@
+﻿  pa_allocation.c
+  pa_converters.c
+  pa_cpuload.c
+  pa_debugprint.c
+  pa_dither.c
+  pa_front.c
+  pa_process.c
+  pa_ringbuffer.c
+  pa_skeleton.c
+  pa_stream.c
+  pa_trace.c
+  pa_win_ds.c
+  pa_win_ds_dynlink.c
+  pa_win_wmme.c
+  pa_win_wasapi.c
+..\..\src\hostapi\dsound\pa_win_ds.c(1264): warning C4996: 'GetVersionExA': wurde als veraltet deklariert
+  C:\Program Files\Windows Kits\8.1\Include\um\sysinfoapi.h(433): note: Siehe Deklaration von "GetVersionExA"
+  pa_win_wdmks.c
+  pa_win_hostapis.c
+..\..\src\hostapi\wmme\pa_win_wmme.c(911): warning C4996: 'GetVersionExA': wurde als veraltet deklariert
+  C:\Program Files\Windows Kits\8.1\Include\um\sysinfoapi.h(433): note: Siehe Deklaration von "GetVersionExA"
+  pa_win_util.c
+  pa_win_waveformat.c
+  pa_win_wdmks_utils.c
+  pa_x86_plain_converters.c
+  iasiothiscallresolver.cpp
+  asio.cpp
+  combase.cpp
+  debugmessage.cpp
+  register.cpp
+  ASIOConvertSamples.cpp
+  asiodrivers.cpp
+  asiolist.cpp
+  PA19.cpp
+  pa_asio.cpp
+C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1189,5): warning MSB8012: TargetPath(C:\PowerSDR_HPSDR_mRX_PS-C25_Master\lib\portaudio_VS2008\build\msvc\Win32\Release\portaudio.dll) does not match the Linker's OutputFile property value (C:\PowerSDR_HPSDR_mRX_PS-C25_Master\bin\Release\PA19.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1191,5): warning MSB8012: TargetName(portaudio) does not match the Linker's OutputFile property value (PA19). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     Bibliothek "Win32\Release\PA19.lib" und Objekt "Win32\Release\PA19.exp" werden erstellt.
+  portaudio.vs2013.vcxproj -> C:\PowerSDR_HPSDR_mRX_PS-C25_Master\lib\portaudio_VS2008\build\msvc\Win32\Release\portaudio.dll
+  portaudio.vs2013.vcxproj -> Win32\Release\PA19.pdb (Full PDB)

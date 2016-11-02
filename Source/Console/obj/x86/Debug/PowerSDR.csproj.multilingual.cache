@@ -1,0 +1,1834 @@
+<?xml version="1.0"?>
+<ArrayOfCacheFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CacheFile>
+    <FileName>alphawarnform.resx</FileName>
+    <Checksum>4114512916019919111112610622524132138319115</Checksum>
+    <ModifiedTime>2016-08-31T16:17:35</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.resx</FileName>
+    <Checksum>18718296235219393417410115953211152206212230</Checksum>
+    <ModifiedTime>2016-09-23T23:50:06.6014329</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.resx</FileName>
+    <Checksum>2402543685921186493035218196148187251255</Checksum>
+    <ModifiedTime>2016-08-31T16:17:13</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.resx</FileName>
+    <Checksum>12198601091272181669793160814617014381160</Checksum>
+    <ModifiedTime>2016-08-31T16:17:15</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.resx</FileName>
+    <Checksum>3772551591611311131821411762366422917819746</Checksum>
+    <ModifiedTime>2016-08-31T16:17:38</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.resx</FileName>
+    <Checksum>224741221719461194200101211881941492810573</Checksum>
+    <ModifiedTime>2016-09-15T00:04:40</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.resx</FileName>
+    <Checksum>97191431912531741361841432218714583223228169</Checksum>
+    <ModifiedTime>2016-08-31T16:17:18</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.resx</FileName>
+    <Checksum>205421581662391992814424632431686497214</Checksum>
+    <ModifiedTime>2016-08-31T16:17:15</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.resx</FileName>
+    <Checksum>2711921312201205740241771611121197024196</Checksum>
+    <ModifiedTime>2016-08-31T16:17:33</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.resx</FileName>
+    <Checksum>23820320820321718220937822081582429511366</Checksum>
+    <ModifiedTime>2016-08-31T16:17:33</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.resx</FileName>
+    <Checksum>2402543685921186493035218196148187251255</Checksum>
+    <ModifiedTime>2016-08-31T16:17:27</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.resx</FileName>
+    <Checksum>2494418710918511112836243215159131012111652</Checksum>
+    <ModifiedTime>2016-08-31T16:17:15</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.resx</FileName>
+    <Checksum>23879163219192222121391042002371078411016392</Checksum>
+    <ModifiedTime>2016-08-31T16:17:33</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.resx</FileName>
+    <Checksum>23820320820321718220937822081582429511366</Checksum>
+    <ModifiedTime>2016-08-31T16:17:18</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.resx</FileName>
+    <Checksum>10525232158126611171561891261572459130218107</Checksum>
+    <ModifiedTime>2016-08-31T16:17:33</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.resx</FileName>
+    <Checksum>226122234301322420531302076420710413996243</Checksum>
+    <ModifiedTime>2016-08-31T16:17:13</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.resx</FileName>
+    <Checksum>651512615116716015761711001091511119192157</Checksum>
+    <ModifiedTime>2016-08-31T16:17:29</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.resx</FileName>
+    <Checksum>896525021322161561241554639209116121136212</Checksum>
+    <ModifiedTime>2016-09-23T23:50:06.7439351</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.resx</FileName>
+    <Checksum>146657723911519624920522624120613165148110225</Checksum>
+    <ModifiedTime>2016-08-31T16:17:33</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.resx</FileName>
+    <Checksum>3613917016718419827150441042371024314010321</Checksum>
+    <ModifiedTime>2016-11-01T01:05:11.9212789</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.resx</FileName>
+    <Checksum>247429641944520217913822010913764213571</Checksum>
+    <ModifiedTime>2016-08-31T16:17:29</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.resx</FileName>
+    <Checksum>1241057712211812312892212291531017822562</Checksum>
+    <ModifiedTime>2016-08-31T16:17:34</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.resx</FileName>
+    <Checksum>15813615016825111222811324921410618826233123</Checksum>
+    <ModifiedTime>2016-08-31T16:17:29</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.resx</FileName>
+    <Checksum>10215849605514743180114180118293041958</Checksum>
+    <ModifiedTime>2016-08-31T18:07:56</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.resx</FileName>
+    <Checksum>1249177386719234139131141494695221584</Checksum>
+    <ModifiedTime>2016-08-31T16:17:38</ModifiedTime>
+    <CacheFileType>NeutralResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.de.xlf</FileName>
+    <Checksum>1382461512554874511352201969172478254154</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3592267+01:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>11 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.de.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3892268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.de.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4292268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.de.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4392268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.de.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3892268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.de.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3992268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.de.resx</FileName>
+    <Checksum>206183222406130150208129198451228426200</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4692269+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.de.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4192268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.de.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3992268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.de.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4592269+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.de.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3992268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.de.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4392268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.de.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4192268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.de.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4192268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.de.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4292268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.de.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4292268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.de.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3992268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.de.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4392268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.de.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4292268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.de.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3892268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.de.resx</FileName>
+    <Checksum>794942823214209819476204133108243183162</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3892268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.de.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4092268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.de.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3992268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.de.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.3992268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.de.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4192268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.de.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-11-02T20:52:05.4192268+01:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.es.xlf</FileName>
+    <Checksum>25752105225263168140108904239431672</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2312853+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>11 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.es.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2812861+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.es.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2812861+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.es.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2450355+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.es.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.272536+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.es.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2375354+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.es.resx</FileName>
+    <Checksum>1424128246147591431614091062221952134871</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3370387+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.es.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2997866+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.es.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2850361+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.es.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3157875+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.es.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2850361+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.es.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3247881+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.es.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2977865+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.es.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3187877+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.es.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.275036+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.es.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.276286+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.es.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.272536+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.es.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3197878+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.es.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2887862+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.es.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2675359+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.es.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3157875+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.es.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3097872+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.es.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3187877+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.es.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2937863+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.es.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.3187877+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.es.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:33.2900362+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.fr.xlf</FileName>
+    <Checksum>2096825379519922383301449615024118937226</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.3670545+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>8 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.fr.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.460806+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.fr.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.4895564+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.fr.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.465806+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.fr.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.4558059+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.fr.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.3708046+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.fr.resx</FileName>
+    <Checksum>1632211218863203156942551376521623519821591</Checksum>
+    <ModifiedTime>2016-10-11T23:26:35.2670683+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.fr.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.3833048+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.fr.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.460806+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.fr.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.4820563+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.fr.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:35.2495681+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.fr.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.5570574+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.fr.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.5608075+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.fr.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.460806+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.fr.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.5608075+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.fr.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.4583059+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.fr.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.3720546+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.fr.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.4895564+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.fr.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.465806+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.fr.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.3720546+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.fr.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.3720546+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.fr.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.4758062+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.fr.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.4745562+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.fr.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.6045582+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.fr.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.5620575+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.fr.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:34.5633075+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.it.xlf</FileName>
+    <Checksum>13172223454518629161882201275812822124100</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.6933403+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>11 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.it.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7440917+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.it.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7158406+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.it.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7528421+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.it.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7220907+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.it.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7340912+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.it.resx</FileName>
+    <Checksum>2531532461391141821071917716918319367066</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7978428+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.it.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7360913+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.it.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7553421+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.it.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7640923+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.it.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7340912+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.it.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7753424+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.it.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7515921+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.it.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7440917+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.it.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.731091+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.it.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7183406+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.it.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7220907+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.it.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7350912+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.it.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7145906+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.it.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7195907+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.it.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7208407+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.it.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7628422+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.it.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7628422+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.it.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.731091+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.it.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7715924+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.it.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:36.7528421+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.ja.xlf</FileName>
+    <Checksum>11721971209196236421560178752242161084452</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.851609+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>11 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.ja.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8578591+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.ja.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8778594+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.ja.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8893599+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.ja.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9013606+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.ja.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.854109+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.ja.resx</FileName>
+    <Checksum>15615619927110392616814515182173172238108231</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9313623+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.ja.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9143613+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.ja.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9063609+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.ja.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9523631+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.ja.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8678592+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.ja.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8653592+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.ja.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8983604+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.ja.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9053608+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.ja.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8778594+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.ja.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9063609+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.ja.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8678592+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.ja.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9003605+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.ja.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9243619+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.ja.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9023607+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.ja.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.855359+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.ja.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8993605+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.ja.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8893599+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.ja.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.9153614+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.ja.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8778594+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.ja.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:37.8653592+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.ko.xlf</FileName>
+    <Checksum>3784121142781445318614617764130248146131</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9623786+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>11 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.ko.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.984879+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.ko.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0311297+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.ko.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9761288+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.ko.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9961291+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.ko.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9661287+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.ko.resx</FileName>
+    <Checksum>9263189261661013814529531121842322247</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.1093818+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.ko.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0136294+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.ko.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.986129+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.ko.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0406301+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.ko.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0223795+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.ko.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9936291+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.ko.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0136294+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.ko.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0061293+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.ko.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0136294+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.ko.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9948791+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.ko.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9948791+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.ko.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9986292+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.ko.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9936291+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.ko.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9961291+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.ko.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9948791+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.ko.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:38.9948791+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.ko.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0298797+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.ko.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0136294+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.ko.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0211295+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.ko.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:39.0223795+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.ru.xlf</FileName>
+    <Checksum>2061027196932054913618468193136181010053</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1406476+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>8 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.ru.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1856483+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.ru.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1843983+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.ru.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1568979+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.ru.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.164398+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.ru.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1456477+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.ru.resx</FileName>
+    <Checksum>17716021964982261001101504819562251225598</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.2868999+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.ru.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.2081487+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.ru.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1806483+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.ru.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.2206489+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.ru.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1718981+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.ru.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1993985+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.ru.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1893984+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.ru.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1818983+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.ru.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1568979+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.ru.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1993985+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.ru.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.2093987+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.ru.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1481478+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.ru.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1806483+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.ru.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1681481+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.ru.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1818983+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.ru.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1818983+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.ru.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1893984+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.ru.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.2131488+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.ru.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.2043986+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.ru.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:40.1993985+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.zh-Hans.xlf</FileName>
+    <Checksum>892231092022508341121462222212471761108193</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.5519193+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>11 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.zh-Hans.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.5856698+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.zh-Hans.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.5831698+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.zh-Hans.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.5656695+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.zh-Hans.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6309211+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.zh-Hans.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6119202+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.zh-Hans.resx</FileName>
+    <Checksum>13112116713324410213219631152327924112987163</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6701725+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.zh-Hans.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.59567+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.zh-Hans.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.59817+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.zh-Hans.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6399216+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.zh-Hans.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6319212+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.zh-Hans.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6081702+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.zh-Hans.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.59692+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.zh-Hans.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.5856698+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.zh-Hans.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6229207+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.zh-Hans.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6106702+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.zh-Hans.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6006701+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.zh-Hans.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6229207+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.zh-Hans.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6319212+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.zh-Hans.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.5881699+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.zh-Hans.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6119202+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.zh-Hans.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6239207+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.zh-Hans.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6131703+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.zh-Hans.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6006701+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.zh-Hans.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6056701+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.zh-Hans.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:41.6229207+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>MultilingualResources\PowerSDR.zh-Hant.xlf</FileName>
+    <Checksum>206228248176831485173144501245524011462</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.6714378+02:00</ModifiedTime>
+    <CacheFileType>XliffResource</CacheFileType>
+    <WarningMessage>
+      <string>11 Ressourcenzeichenfolgen mit vorhandenen Übersetzungen wurden aktualisiert und für die XLIFF-Datei übernommen.  Die zugehörigen Übersetzungen sind unverändert, aber sollte überprüft werden, um sicherzustellen, dass sie für die aktualisierten Quellzeichenfolge noch gültig sind.</string>
+    </WarningMessage>
+  </CacheFile>
+  <CacheFile>
+    <FileName>alphawarnform.zh-Hant.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7261894+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>AmpView.zh-Hant.resx</FileName>
+    <Checksum>461753041210223180240192133206556012579204</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7026883+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\CATTester.zh-Hant.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7064384+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>CAT\RemoteProfiles.zh-Hant.resx</FileName>
+    <Checksum>205244125571237122528226117301475223044170</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7051884+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>ColorButton.zh-Hant.resx</FileName>
+    <Checksum>19525178173832441949178108532091416317160</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.6776879+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>console.zh-Hant.resx</FileName>
+    <Checksum>102962528640737914512712915312518985204230</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7671902+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwedit.zh-Hant.resx</FileName>
+    <Checksum>12910016411663625172188180248111581711957</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7161888+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>cwx.zh-Hant.resx</FileName>
+    <Checksum>6116763149566188544718222616941252186176</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.75469+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>DiversityForm.zh-Hant.resx</FileName>
+    <Checksum>1218013335188962477813525131582819113122</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.75219+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>eqform.zh-Hant.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7026883+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>FilterForm.zh-Hant.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7321897+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>InputBox.zh-Hant.resx</FileName>
+    <Checksum>1353523011421425411272138204195101218161242114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7396898+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>logon.zh-Hant.resx</FileName>
+    <Checksum>981508839125228213192144701018415461157110</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7396898+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Memory\MemoryForm.zh-Hant.resx</FileName>
+    <Checksum>91963561911809811020920213225030208210</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7039383+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>mobilewarnform.zh-Hant.resx</FileName>
+    <Checksum>14016243822151542441222181681232081691521186</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7161888+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>progress.zh-Hant.resx</FileName>
+    <Checksum>973611319818268195216212225323611014209155</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7321897+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>Properties\Resources.zh-Hant.resx</FileName>
+    <Checksum>94133211652315180421151827337421881799</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7076884+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>PSForm.zh-Hant.resx</FileName>
+    <Checksum>45221915343193121761731882456817517693209</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.6951882+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>RAForm.zh-Hant.resx</FileName>
+    <Checksum>77269916621221423818018847218250114853192</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7161888+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>setup.zh-Hant.resx</FileName>
+    <Checksum>961762262334737931053617514860218139246</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7409398+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>splash.zh-Hant.resx</FileName>
+    <Checksum>10185146793224246219251568626841921088</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7321897+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave.zh-Hant.resx</FileName>
+    <Checksum>1505714610014523910234205299555210189248208</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.719189+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wave_options.zh-Hant.resx</FileName>
+    <Checksum>140112103738820325146236140178822492448114</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7161888+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>wizard.zh-Hant.resx</FileName>
+    <Checksum>1153143175157946892375776512062441885</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7321897+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+  <CacheFile>
+    <FileName>xvtr.zh-Hant.resx</FileName>
+    <Checksum>139115411629314623111254651292356650187</Checksum>
+    <ModifiedTime>2016-10-11T23:26:42.7421899+02:00</ModifiedTime>
+    <CacheFileType>LanguageResource</CacheFileType>
+    <WarningMessage />
+  </CacheFile>
+</ArrayOfCacheFile>

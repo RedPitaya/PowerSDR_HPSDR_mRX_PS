@@ -1,0 +1,8 @@
+﻿  pthread.c
+d:\powersdr_hpsdr_mrx_ps\lib\pthread\ptw32_relmillisecs.c(97): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\sys/timeb.h(76): note: Siehe Deklaration von "_ftime64"
+d:\powersdr_hpsdr_mrx_ps\lib\pthread\pthread_delay_np.c(105): warning C4244: "=": Konvertierung von "time_t" in "DWORD", möglicher Datenverlust
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1189,5): warning MSB8012: TargetPath(D:\PowerSDR_HPSDR_mRX_PS\lib\pthread\Win32\Debug\pthread.dll) does not match the Linker's OutputFile property value (D:\PowerSDR_HPSDR_mRX_PS\bin\Debug\pthreadVC.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1191,5): warning MSB8012: TargetName(pthread) does not match the Linker's OutputFile property value (pthreadVC). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     Bibliothek "Win32\Debug\temp\pthreadVC.lib" und Objekt "Win32\Debug\temp\pthreadVC.exp" werden erstellt.
+  pthread.vs2013.vcxproj -> D:\PowerSDR_HPSDR_mRX_PS\lib\pthread\Win32\Debug\pthread.dll
