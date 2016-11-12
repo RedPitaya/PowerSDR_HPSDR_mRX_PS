@@ -29,6 +29,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace PowerSDR
 {
@@ -37,23 +38,19 @@ namespace PowerSDR
 
         // DG8MG
 #if DEBUG
-        public const string BUILD = " - Debug Version: ";
+        public const string BUILD = " - Debug Version - ";
 #else
-        public const string BUILD = " - Release Version: ";
+        public const string BUILD = " - Release Version - ";
 #endif
         public const string BUILD_NAME = "mRX PS";
-        public const string BUILD_DATE = "11/02/16";
         public const string BUILD_EDITION = " - Charly 25 / Hamlab Edition";
-
+        
         public static string GetString()
         {
-            string version = GetVerNum();
             string s = "PowerSDR™ OpenHPSDR";
-            if (BUILD_NAME != "") s += " " + BUILD_NAME;
-            s += " v" + version;
+            s += " " + BUILD_NAME;
             s += " " + BUILD_EDITION + BUILD;
-            if (BUILD_DATE != "") s += " " + BUILD_DATE;
-
+            s += "Commit: " + System.Windows.Forms.Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1 );
             return s;
         }
         // DG8MG
