@@ -66,7 +66,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyVersion("3.3.9.0")]
 
 // DG8MG
-[assembly: AssemblyInformationalVersion("1.{dmin:2016}_{chash:7}{!}")]
+[assembly: AssemblyInformationalVersion("1.{c:ymd-}_{chash:7}")]
 // DG8MG
 
 //

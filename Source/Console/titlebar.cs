@@ -38,19 +38,21 @@ namespace PowerSDR
 
         // DG8MG
 #if DEBUG
-        public const string BUILD = " - Debug Version - ";
+        public const string BUILD = " - Debug Version: ";
 #else
-        public const string BUILD = " - Release Version - ";
+        public const string BUILD = " - Release Version: ";
 #endif
         public const string BUILD_NAME = "mRX PS";
         public const string BUILD_EDITION = " - Charly 25 / Hamlab Edition";
-        
+
         public static string GetString()
         {
             string s = "PowerSDR™ OpenHPSDR";
             s += " " + BUILD_NAME;
             s += " " + BUILD_EDITION + BUILD;
-            s += "Commit: " + System.Windows.Forms.Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1 );
+            s += Application.ProductVersion.Substring(2, 10);
+            s += " - Commit: " + Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1);
+
             return s;
         }
         // DG8MG

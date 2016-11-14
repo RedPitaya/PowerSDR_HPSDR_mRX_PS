@@ -7,6 +7,8 @@
 #define MyAppURL "http://www.ov-erding.de"
 #define MyAppExeName "PowerSDR.exe"
 
+#define VCmsg "Installing Microsoft Visual C++ Redistributable...."
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
@@ -14,7 +16,6 @@
 AppId={{5A4846ED-55B8-4CA8-A6B2-5B941130120F}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -77,7 +78,72 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
-;Filename: "{app}\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"; Flags: postinstall runascurrentuser; Description: "{cm:LaunchProgram,{#StringChange('SlimDX Runtime .NET 4.0 x86 (January 2012) Installer', '&', '&&')}}"
-Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"""
-Filename: "{tmp}\vc_redist.x86.exe"; Flags: postinstall runascurrentuser; Description: "{cm:LaunchProgram,{#StringChange('MS Visual C++ 2015 Redistributable (x86) Installer', '&', '&&')}}"
+Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"""; Check: not IsWin64 and not SlimDXinstalled
+Filename: "{tmp}\vc_redist.x86.exe"; StatusMsg: "{#VCmsg}"; Check: not IsWin64 and not VCinstalled
 Filename: "{app}\{#MyAppExeName}"; Flags: nowait postinstall skipifsilent runascurrentuser runmaximized; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"
+
+[Code]
+function VCinstalled: Boolean;
+ // By Michael Weiner <mailto:spam@cogit.net>
+ // Function for Inno Setup Compiler
+ // 13 November 2015
+ // Returns True if Microsoft Visual C++ Redistributable is installed, otherwise False.
+ // The programmer may set the year of redistributable to find; see below.
+ var
+  names: TArrayOfString;
+  i: Integer;
+  dName, key, year: String;
+ begin
+  // Year of redistributable to find; leave null to find installation for any year.
+  year := '2015';
+  Result := False;
+  key := 'Software\Microsoft\Windows\CurrentVersion\Uninstall';
+  // Get an array of all of the uninstall subkey names.
+  if RegGetSubkeyNames(HKEY_LOCAL_MACHINE, key, names) then
+   // Uninstall subkey names were found.
+   begin
+    i := 0
+    while ((i < GetArrayLength(names)) and (Result = False)) do
+     // The loop will end as soon as one instance of a Visual C++ redistributable is found.
+     begin
+      // For each uninstall subkey, look for a DisplayName value.
+      // If not found, then the subkey name will be used instead.
+      if not RegQueryStringValue(HKEY_LOCAL_MACHINE, key + '\' + names[i], 'DisplayName', dName) then
+       dName := names[i];
+      // See if the value contains both of the strings below.
+      Result := (Pos(Trim('Visual C++ ' + year),dName) * Pos('Redistributable',dName) <> 0)
+      i := i + 1;
+     end;
+   end;
+ end;
+
+ function SlimDXinstalled: Boolean;
+ // By Markus Grundner / DG8MG
+ // Function for Inno Setup Compiler
+ // 12 November 2016
+ // Returns True if SlimDX Runtime .NET 4.0 x86 (January 2012) is installed, otherwise False.
+ var
+  names: TArrayOfString;
+  i: Integer;
+  dName, key: String;
+ begin
+  Result := False;
+  key := 'Software\Microsoft\Windows\CurrentVersion\Uninstall';
+  // Get an array of all of the uninstall subkey names.
+  if RegGetSubkeyNames(HKEY_LOCAL_MACHINE, key, names) then
+   // Uninstall subkey names were found.
+   begin
+    i := 0
+    while ((i < GetArrayLength(names)) and (Result = False)) do
+     // The loop will end as soon as SlimDX Runtime .NET 4.0 x86 (January 2012) is found.
+     begin
+      // For each uninstall subkey, look for a DisplayName value.
+      // If not found, then the subkey name will be used instead.
+      if not RegQueryStringValue(HKEY_LOCAL_MACHINE, key + '\' + names[i], 'DisplayName', dName) then
+       dName := names[i];
+      // See if the value contains both of the strings below.
+      Result := (Pos(Trim('SlimDX Runtime .NET 4.0 x86 (January 2012)'),dName) <> 0)
+      i := i + 1;
+     end;
+   end;
+ end;

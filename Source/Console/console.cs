@@ -25723,46 +25723,57 @@ namespace PowerSDR
                     // Extension for C25 Preamp and Attenuator
                     case PreampMode.C25LC_MINUS36:
                         comboPreamp.Text = "-36dB";
+                        lblPreamp.Text = "ATT";
                         break;
 
                     case PreampMode.C25LC_MINUS24:
                         comboPreamp.Text = "-24dB";
+                        lblPreamp.Text = "ATT";
                         break;
 
                     case PreampMode.C25LC_MINUS18:
                         comboPreamp.Text = "-18dB";
+                        lblPreamp.Text = "ATT";
                         break;
 
                     case PreampMode.C25LC_MINUS12:
                         comboPreamp.Text = "-12dB";
+                        lblPreamp.Text = "ATT";
                         break;
 
                     case PreampMode.C25LC_MINUS6:
                         comboPreamp.Text = "  -6dB";
+                        lblPreamp.Text = "ATT";
                         break;
                     
                     case PreampMode.C25LC_OFF:
                         comboPreamp.Text = "   0dB";
+                        lblPreamp.Text = "ATT";
                         break;
 
                     case PreampMode.C25LC_PLUS6:
                         comboPreamp.Text = "   6dB";
+                        lblPreamp.Text = "PRE";
                         break;
 
                     case PreampMode.C25LC_PLUS12:
                         comboPreamp.Text = " 12dB";
+                        lblPreamp.Text = "PRE";
                         break;
 
                     case PreampMode.C25LC_PLUS18:
                         comboPreamp.Text = " 18dB";
+                        lblPreamp.Text = "PRE";
                         break;
 
                     case PreampMode.C25LC_PLUS24:
                         comboPreamp.Text = " 24dB";
+                        lblPreamp.Text = "PRE";
                         break;
 
                     case PreampMode.C25LC_PLUS36:
                         comboPreamp.Text = " 36dB";
+                        lblPreamp.Text = "PRE";
                         break;
                     // DG8MG
 
