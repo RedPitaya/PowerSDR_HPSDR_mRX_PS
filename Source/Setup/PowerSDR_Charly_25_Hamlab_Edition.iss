@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PowerSDR Charly 25 and Hamlab Edition"
-#define MyAppVersion "0.1"
-#define MyAppPublisher "OV-Erding C25"
-#define MyAppURL "http://www.ov-erding.de"
+#define MyAppVersion "0.2"
+#define MyAppPublisher ""
+#define MyAppURL ""
 #define MyAppExeName "PowerSDR.exe"
 
 #define VCmsg "Installing Microsoft Visual C++ Redistributable...."
@@ -78,8 +78,8 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
-Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"""; Check: not IsWin64 and not SlimDXinstalled
-Filename: "{tmp}\vc_redist.x86.exe"; StatusMsg: "{#VCmsg}"; Check: not IsWin64 and not VCinstalled
+Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"""; Check: not SlimDXinstalled
+Filename: "{tmp}\vc_redist.x86.exe"; StatusMsg: "{#VCmsg}"; Check: not VCinstalled
 Filename: "{app}\{#MyAppExeName}"; Flags: nowait postinstall skipifsilent runascurrentuser runmaximized; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"
 
 [Code]
