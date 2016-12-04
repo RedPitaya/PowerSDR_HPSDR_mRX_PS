@@ -231,7 +231,7 @@
             this.chkGeneralUseSi570 = new System.Windows.Forms.CheckBoxTS();
             this.grpGeneralModel = new System.Windows.Forms.GroupBoxTS();
             this.radGenModelCharly25LC = new System.Windows.Forms.RadioButtonTS();
-            this.radGenModelHamlab = new System.Windows.Forms.RadioButtonTS();
+            this.radGenModelHAMlab = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN10E = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN100B = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelOrion = new System.Windows.Forms.RadioButtonTS();
@@ -6451,7 +6451,7 @@
             // grpGeneralModel
             // 
             this.grpGeneralModel.Controls.Add(this.radGenModelCharly25LC);
-            this.grpGeneralModel.Controls.Add(this.radGenModelHamlab);
+            this.grpGeneralModel.Controls.Add(this.radGenModelHAMlab);
             this.grpGeneralModel.Controls.Add(this.radGenModelANAN10E);
             this.grpGeneralModel.Controls.Add(this.radGenModelANAN100B);
             this.grpGeneralModel.Controls.Add(this.radGenModelOrion);
@@ -6482,16 +6482,16 @@
             this.radGenModelCharly25LC.UseVisualStyleBackColor = true;
             this.radGenModelCharly25LC.CheckedChanged += new System.EventHandler(this.radGenModelCharly25LC_CheckedChanged);
             // 
-            // radGenModelHamlab
+            // radGenModelHAMlab
             // 
-            this.radGenModelHamlab.Image = null;
-            this.radGenModelHamlab.Location = new System.Drawing.Point(10, 155);
-            this.radGenModelHamlab.Name = "radGenModelHamlab";
-            this.radGenModelHamlab.Size = new System.Drawing.Size(88, 24);
-            this.radGenModelHamlab.TabIndex = 13;
-            this.radGenModelHamlab.Text = "HAMLAB";
-            this.radGenModelHamlab.UseVisualStyleBackColor = true;
-            this.radGenModelHamlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
+            this.radGenModelHAMlab.Image = null;
+            this.radGenModelHAMlab.Location = new System.Drawing.Point(10, 155);
+            this.radGenModelHAMlab.Name = "radGenModelHAMlab";
+            this.radGenModelHAMlab.Size = new System.Drawing.Size(88, 24);
+            this.radGenModelHAMlab.TabIndex = 13;
+            this.radGenModelHAMlab.Text = "HAMlab";
+            this.radGenModelHAMlab.UseVisualStyleBackColor = true;
+            this.radGenModelHAMlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
             // 
             // radGenModelANAN10E
             // 
@@ -28008,7 +28008,7 @@
             this.grpCHARLY25LCPAGainByBand.Size = new System.Drawing.Size(387, 302);
             this.grpCHARLY25LCPAGainByBand.TabIndex = 115;
             this.grpCHARLY25LCPAGainByBand.TabStop = false;
-            this.grpCHARLY25LCPAGainByBand.Text = "Gain By Band (dB) Charly 25LC / Hamlab";
+            this.grpCHARLY25LCPAGainByBand.Text = "Gain By Band (dB) Charly 25LC / HAMlab";
             // 
             // lblCHARLY25LCPAGainByBandVHF13
             // 
@@ -45387,7 +45387,7 @@
         private System.Windows.Forms.LabelTS labelTS369;
         private System.Windows.Forms.TabPage tpDSPNB;
         private System.Windows.Forms.RadioButtonTS radGenModelCharly25LC;
-        private System.Windows.Forms.RadioButtonTS radGenModelHamlab;
+        private System.Windows.Forms.RadioButtonTS radGenModelHAMlab;
         private System.Windows.Forms.GroupBoxTS grpCHARLY25LCPAGainByBand;
         private System.Windows.Forms.LabelTS lblCHARLY25LCPAGainByBandVHF13;
         private System.Windows.Forms.CheckBoxTS chkCHARLY25LCPANewCal;

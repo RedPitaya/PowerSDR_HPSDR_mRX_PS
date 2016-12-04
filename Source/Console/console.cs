@@ -30,7 +30,7 @@
 //
 // SoftRock and HPSDR Modifications Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Bill Tracey (kd5tfd)
 //
-// Charly 25LC and Hamlab Modifications Copyright (C) 2016 Markus Grundner / DG8MG
+// Charly 25LC and HAMlab Modifications Copyright (C) 2016 Markus Grundner / DG8MG
 //
 //#define INTERLEAVED
 //#define SPLIT_INTERLEAVED
@@ -525,7 +525,7 @@ namespace PowerSDR
         Angelia = 4,
         Orion = 5,
         // DG8MG
-        // Extension for Charly 25LC and Hamlab hardware
+        // Extension for Charly 25LC and HAMlab hardware
         RedPitaya = 10,
         // DG8MG
     }
@@ -7764,6 +7764,8 @@ namespace PowerSDR
             }
 
             power_by_band = new int[(int)Band.LAST];
+            
+            // DG8MG: Initial value for the power by band should maybe changed to the maximum of 100 to avoid confusion for the user
             for (int i = 0; i < (int)Band.LAST; i++) power_by_band[i] = 50;
 
             fm_tx_offset_by_band_mhz = new double[(int)Band.LAST];
@@ -13407,7 +13409,7 @@ namespace PowerSDR
             }
 
             // DG8MG
-            // Extention for Charly 25LC and Hamlab hardware
+            // Extention for Charly 25LC and HAMlab hardware
             if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
             {
                 switch (b)
@@ -21376,7 +21378,7 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25 LC / Hamlab edition of PowerSDR, so the program starts with Charly 25LC as default hardware
+        // DG8MG: This is the Charly 25 LC / HAMlab edition of PowerSDR, so the program starts with Charly 25LC as default hardware
         private HPSDRModel current_hpsdr_model = HPSDRModel.CHARLY25LC;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG

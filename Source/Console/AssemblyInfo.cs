@@ -35,7 +35,7 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("PowerSDR/HPSDR Charly 25 / Hamlab Edition")]
+[assembly: AssemblyTitle("PowerSDR/HPSDR Charly 25 / HAMlab Edition")]
 [assembly: AssemblyDescription("Software Defined Radio Application")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("OpenHPSDR")]

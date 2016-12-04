@@ -4667,7 +4667,7 @@ namespace PowerSDR
                         break;
                     case Model.HAMLAB:
                         force_model = true;
-                        radGenModelHamlab.Checked = true;
+                        radGenModelHAMlab.Checked = true;
                         break;
                     // DG8MG
 
@@ -5844,7 +5844,7 @@ namespace PowerSDR
         }
 
         // DG8MG
-        // Extention for Charly 25LC and Hamlab hardware
+        // Extention for Charly 25LC and HAMlab hardware
         // PAGain CHARLY25LC
         public float CHARLY25LCPAGain160
         {
@@ -7727,31 +7727,31 @@ namespace PowerSDR
         {
             HPSDRModel old_model = console.CurrentHPSDRModel;
 
-            if (radGenModelHamlab.Checked)  // Hamlab is selected
+            if (radGenModelHAMlab.Checked)  // HAMlab is selected
             {
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
-                console.RX2Enabled = false;  // Hamlab has no second RX
+                console.RX2Enabled = false;  // HAMlab has no second RX
                 console.chkRX2.Enabled = false;  // Disable the second RX button
                 chkPennyPresent.Checked = true;
-                chkPennyPresent.Visible = false;  // Hamlab doesn't need this functionality
-                chkPennyLane.Checked = false;  // Hamlab doesn't need this functionality
-                chkPennyLane.Visible = false;  // Hamlab doesn't need this functionality
-                chkMercuryPresent.Checked = false;  // Hamlab doesn't need this functionality
-                chkMercuryPresent.Visible = false;  // Hamlab doesn't need this functionality
-                chkJanusPresent.Checked = false;  // Hamlab doesn't need this functionality
-                chkJanusPresent.Visible = false;  // Hamlab doesn't need this functionality
-                chkExcaliburPresent.Checked = false;  // Hamlab doesn't need this functionality
-                chkExcaliburPresent.Visible = false;  // Hamlab doesn't need this functionality
+                chkPennyPresent.Visible = false;  // HAMlab doesn't need this functionality
+                chkPennyLane.Checked = false;  // HAMlab doesn't need this functionality
+                chkPennyLane.Visible = false;  // HAMlab doesn't need this functionality
+                chkMercuryPresent.Checked = false;  // HAMlab doesn't need this functionality
+                chkMercuryPresent.Visible = false;  // HAMlab doesn't need this functionality
+                chkJanusPresent.Checked = false;  // HAMlab doesn't need this functionality
+                chkJanusPresent.Visible = false;  // HAMlab doesn't need this functionality
+                chkExcaliburPresent.Checked = false;  // HAMlab doesn't need this functionality
+                chkExcaliburPresent.Visible = false;  // HAMlab doesn't need this functionality
                 groupBox10MhzClock.Visible = true;
                 groupBox122MHz.Visible = true;
                 groupBoxMicSource.Visible = true;
-                chkHermesStepAttenuator.Checked = false;  // Hamlab doesn't need this functionality
-                chkAlexPresent.Checked = false;  // Hamlab doesn't need this functionality
-                chkAlexPresent.Visible = false;  // Hamlab doesn't need this functionality
-                chkApolloPresent.Checked = false;  // Hamlab doesn't need this functionality
-                chkApolloPresent.Visible = false;  // Hamlab doesn't need this functionality
+                chkHermesStepAttenuator.Checked = false;  // HAMlab doesn't need this functionality
+                chkAlexPresent.Checked = false;  // HAMlab doesn't need this functionality
+                chkAlexPresent.Visible = false;  // HAMlab doesn't need this functionality
+                chkApolloPresent.Checked = false;  // HAMlab doesn't need this functionality
+                chkApolloPresent.Visible = false;  // HAMlab doesn't need this functionality
                 groupBoxRXOptions.Text = "Mercury Options";
                 radMetis.Text = "RedPitaya (Ethernet)";
                 grpMetisAddr.Text = "RedPitaya Address";
@@ -7761,10 +7761,10 @@ namespace PowerSDR
                 chkAutoPACalibrate.Visible = true;
                 grpCHARLY25LCPAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                labelATTOnTX.Visible = false;  // Hamlab doesn't need this functionality
-                udATTOnTX.Visible = false;  // Hamlab doesn't need this functionality
-                chkATTOnTX.Checked = false;  // Hamlab doesn't need this functionality
-                console.RX2PreampPresent = false;  // Hamlab doesn't need this functionality
+                labelATTOnTX.Visible = false;  // HAMlab doesn't need this functionality
+                udATTOnTX.Visible = false;  // HAMlab doesn't need this functionality
+                chkATTOnTX.Checked = false;  // HAMlab doesn't need this functionality
+                console.RX2PreampPresent = false;  // HAMlab doesn't need this functionality
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
                 chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
@@ -7774,13 +7774,13 @@ namespace PowerSDR
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
             }
-            else  // Hamlab is deselected
+            else  // HAMlab is deselected
             {
                 console.chkRX2.Enabled = true;  // Enable the second RX button
             }
 
             // DG8MG: Test me!
-            // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Hamlab
+            // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for HAMlab
             {
                 // add or remove setup pages for HPSDR stuff 
                 // AddHPSDRPages();  // Fix me: Is it really needed? DG8MG
@@ -7840,7 +7840,7 @@ namespace PowerSDR
                 chkLimitRX.Enabled = true;
                 tpPennyCtrl.Text = "Penny Ctrl";
             }
-            // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Hamlab
+            // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for HAMlab
 
             if (radMetis.Checked)
             {
@@ -7848,7 +7848,7 @@ namespace PowerSDR
                 grpMetisAddr.Visible = true;
             }
 
-            if (radGenModelHamlab.Checked)   /// Test me! DG8MG
+            if (radGenModelHAMlab.Checked)   /// Test me! DG8MG
             {
                 int nr = 2;
                 bool pwr_cycled = false;
@@ -8262,7 +8262,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for C25 Preamp and Attenuator
-            if ((!radGenModelCharly25LC.Checked) && (!radGenModelHamlab.Checked))
+            if ((!radGenModelCharly25LC.Checked) && (!radGenModelHAMlab.Checked))
             {
                 if (!tcGeneral.TabPages.Contains(tpHPSDR))
                 {
@@ -12712,7 +12712,7 @@ namespace PowerSDR
                 udHermesPAGainVHF13.Value = 56.2M;
             }
 
-            if (radGenModelCharly25LC.Checked || radGenModelHamlab.Checked)
+            if (radGenModelCharly25LC.Checked || radGenModelHAMlab.Checked)
             {
                 udCHARLY25LCPAGain160.Value = 16.0M;
                 udCHARLY25LCPAGain80.Value = 80.0M;
@@ -15189,7 +15189,7 @@ namespace PowerSDR
         }
 
         // DG8MG: Implement me!
-        // Extension for Charly 25LC and Hamlab hardware
+        // Extension for Charly 25LC and HAMlab hardware
         private void chkCHARLY25LCPANewCal_CheckedChanged(object sender, EventArgs e)
         {
             bool b = chkCHARLY25LCPANewCal.Checked;

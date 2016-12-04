@@ -133,7 +133,7 @@ namespace PowerSDR
         private RadioButtonTS radGenModelOrion;
         private RadioButtonTS radGenModelANAN100B;
         private RadioButtonTS radGenModelANAN10E;
-        private RadioButtonTS radGenModelHamlab;
+        private RadioButtonTS radGenModelHAMlab;
         private RadioButtonTS radGenModelCharly25LC;
 
         // DG8MG
@@ -219,7 +219,7 @@ namespace PowerSDR
                     radGenModelCharly25LC.Checked = true;
                     break;
                 case Model.HAMLAB:
-                    radGenModelHamlab.Checked = true;
+                    radGenModelHAMlab.Checked = true;
                     break;
                 // DG8MG
 
@@ -260,7 +260,7 @@ namespace PowerSDR
             this.grpModel = new System.Windows.Forms.GroupBoxTS();
             
             // DG8MG
-            this.radGenModelHamlab = new System.Windows.Forms.RadioButtonTS();
+            this.radGenModelHAMlab = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelCharly25LC = new System.Windows.Forms.RadioButtonTS();
             // DG8MG
 
@@ -351,7 +351,7 @@ namespace PowerSDR
             // grpModel
             // 
             this.grpModel.Controls.Add(this.radGenModelCharly25LC);
-            this.grpModel.Controls.Add(this.radGenModelHamlab);
+            this.grpModel.Controls.Add(this.radGenModelHAMlab);
             this.grpModel.Controls.Add(this.radGenModelANAN10E);
             this.grpModel.Controls.Add(this.radGenModelANAN100B);
             this.grpModel.Controls.Add(this.radGenModelOrion);
@@ -386,17 +386,17 @@ namespace PowerSDR
             this.radGenModelCharly25LC.UseVisualStyleBackColor = true;
             this.radGenModelCharly25LC.CheckedChanged += new System.EventHandler(this.radGenModelCharly25LC_CheckedChanged);
             // 
-            // radGenModelHamlab
+            // radGenModelHAMlab
             // 
-            this.radGenModelHamlab.AutoSize = true;
-            this.radGenModelHamlab.Image = null;
-            this.radGenModelHamlab.Location = new System.Drawing.Point(19, 171);
-            this.radGenModelHamlab.Name = "radGenModelHamlab";
-            this.radGenModelHamlab.Size = new System.Drawing.Size(69, 17);
-            this.radGenModelHamlab.TabIndex = 16;
-            this.radGenModelHamlab.Text = "HAMLAB";
-            this.radGenModelHamlab.UseVisualStyleBackColor = true;
-            this.radGenModelHamlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
+            this.radGenModelHAMlab.AutoSize = true;
+            this.radGenModelHAMlab.Image = null;
+            this.radGenModelHAMlab.Location = new System.Drawing.Point(19, 171);
+            this.radGenModelHAMlab.Name = "radGenModelHAMlab";
+            this.radGenModelHAMlab.Size = new System.Drawing.Size(69, 17);
+            this.radGenModelHAMlab.TabIndex = 16;
+            this.radGenModelHAMlab.Text = "HAMlab";
+            this.radGenModelHAMlab.UseVisualStyleBackColor = true;
+            this.radGenModelHAMlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
             // DG8MG
             
             // 
@@ -2432,7 +2432,7 @@ namespace PowerSDR
 
         private void radGenModelHamlab_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (radGenModelHamlab.Checked)
+            if (radGenModelHAMlab.Checked)
             {
                 model = Model.HAMLAB;
                 pictureBox1.Image = null;
