@@ -33753,6 +33753,18 @@ namespace PowerSDR
                     return;
                 }
 
+                // DG8MG: Implement me!
+                // Extension for Charly 25LC and HAMlab hardware
+                /* if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                {
+                    var rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
+                    var url = string.Format(rp_app_string);
+                    var webClient = new WebClient();
+                    var response = webClient.DownloadString(url);
+                }
+                */
+                // DG8MG
+
                 if (draw_display_thread == null || !draw_display_thread.IsAlive)
                 {
                     draw_display_thread = new Thread(new ThreadStart(RunDisplay));
@@ -33979,8 +33991,20 @@ namespace PowerSDR
                         poll_cw_thread.Abort();
                 }
 
-            }
+                // DG8MG: Implement me!
+                // Extension for Charly 25LC and HAMlab hardware
+                /*
+                if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                {
+                    var rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
+                    var url = string.Format(rp_app_string);
+                    var webClient = new WebClient();
+                    var response = webClient.DownloadString(url);
+                }
+                */
+                // DG8MG
 
+            }
             panelVFOAHover.Invalidate();
             panelVFOBHover.Invalidate();
         }
@@ -40954,6 +40978,11 @@ namespace PowerSDR
 
         private void radBand160_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("160M"))
             {
@@ -40983,6 +41012,11 @@ namespace PowerSDR
 
         private void radBand80_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("80M"))
             {
@@ -41011,6 +41045,11 @@ namespace PowerSDR
 
         private void radBand60_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             if (RX1IsIn60m() && !RX1IsOn60mChannel() && current_region == FRSRegion.US)
             {
                 // jump to nearest 60m band
@@ -41067,6 +41106,11 @@ namespace PowerSDR
 
         private void radBand40_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("40M"))
             {
@@ -41095,6 +41139,11 @@ namespace PowerSDR
 
         private void radBand30_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("30M"))
             {
@@ -41123,6 +41172,11 @@ namespace PowerSDR
 
         private void radBand20_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("20M"))
             {
@@ -41151,6 +41205,11 @@ namespace PowerSDR
 
         private void radBand17_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("17M"))
             {
@@ -41179,6 +41238,11 @@ namespace PowerSDR
 
         private void radBand15_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("15M"))
             {
@@ -41207,6 +41271,11 @@ namespace PowerSDR
 
         private void radBand12_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("12M"))
             {
@@ -41235,6 +41304,11 @@ namespace PowerSDR
 
         private void radBand10_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("10M"))
             {
@@ -41263,6 +41337,11 @@ namespace PowerSDR
 
         private void radBand6_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("6M"))
             {
@@ -41291,6 +41370,11 @@ namespace PowerSDR
 
         private void radBand2_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("2M"))
             {
@@ -41318,6 +41402,11 @@ namespace PowerSDR
 
         private void radBandWWV_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band.Equals("WWV"))
             {
@@ -41346,6 +41435,11 @@ namespace PowerSDR
 
         private void radBandGEN_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             SaveBand();
             if (last_band == "GEN")
             {
@@ -41374,6 +41468,11 @@ namespace PowerSDR
 
         private void radBandVHF_Click(object sender, EventArgs e)
         {
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             if (rx1_click_tune_drag || rx2_click_tune_drag)
             {
                 chkFWCATU.Checked = false;
@@ -42103,6 +42202,12 @@ namespace PowerSDR
             if (sender.GetType() != typeof(RadioButtonTS)) return;
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
             if (!radioBtnTS.Checked) return;
+
+            // DG8MG
+            // Always turn off the tune button to avoid accidentally transmitting
+            chkTUN.Checked = false;
+            // DG8MG
+
             string radiobut = ((RadioButtonTS)sender).Text;
 
             switch (radiobut)
