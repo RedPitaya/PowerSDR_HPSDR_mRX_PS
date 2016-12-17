@@ -275,6 +275,21 @@ namespace PowerSDR
                 IPAddress hostIP;
                 if (IPAddress.TryParse(EthernetHostIPAddress, out hostIP) && IPAddress.TryParse(Metis_IP_address, out targetIP))
                 {
+
+                    // DG8MG: Test me!
+                    // Extension for Charly 25LC and HAMlab hardware
+                    HPSDRModel current_hpsdr_model = Console.getConsole().CurrentHPSDRModel;
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    {
+                        System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                        var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
+                        var url = string.Format(rp_app_string);
+                        var webClient = new WebClient();
+                        var response = webClient.DownloadString(url);
+                        System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                    }
+                    // DG8MG
+                    
                     System.Console.WriteLine(String.Format("Attempting fast re-connect to host adapter {0}, metis IP {1}", EthernetHostIPAddress, Metis_IP_address));
 
                     if (DiscoverMetisOnPort(ref mhd, hostIP, targetIP))
@@ -316,6 +331,21 @@ namespace PowerSDR
                 IPAddress hostIP;
                 if (IPAddress.TryParse(EthernetHostIPAddress, out hostIP) && IPAddress.TryParse(Metis_IP_address, out targetIP))
                 {
+
+                    // DG8MG: Test me!
+                    // Extension for Charly 25LC and HAMlab hardware
+                    HPSDRModel current_hpsdr_model = Console.getConsole().CurrentHPSDRModel;
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    {
+                        System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                        var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
+                        var url = string.Format(rp_app_string);
+                        var webClient = new WebClient();
+                        var response = webClient.DownloadString(url);
+                        System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                    }
+                    // DG8MG
+
                     System.Console.WriteLine(String.Format("Attempting fast re-connect to host adapter {0}, metis IP {1}", EthernetHostIPAddress, Metis_IP_address));
 
                     if (DiscoverMetisOnPort(ref mhd, hostIP, targetIP))

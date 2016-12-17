@@ -7765,8 +7765,10 @@ namespace PowerSDR
 
             power_by_band = new int[(int)Band.LAST];
             
-            // DG8MG: Initial value for the power by band should maybe changed to the maximum of 100 to avoid confusion for the user
-            for (int i = 0; i < (int)Band.LAST; i++) power_by_band[i] = 50;
+            // DG8MG
+            // Initial value for the power by band changed from 50 to the maximum of 100 to avoid confusion for the user
+            for (int i = 0; i < (int)Band.LAST; i++) power_by_band[i] = 100;
+            // DG8MG
 
             fm_tx_offset_by_band_mhz = new double[(int)Band.LAST];
             for (int i = 0; i < (int)Band.LAST; i++) // setup default FM offsets
@@ -33753,18 +33755,6 @@ namespace PowerSDR
                     return;
                 }
 
-                // DG8MG: Implement me!
-                // Extension for Charly 25LC and HAMlab hardware
-                /* if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
-                {
-                    var rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
-                    var url = string.Format(rp_app_string);
-                    var webClient = new WebClient();
-                    var response = webClient.DownloadString(url);
-                }
-                */
-                // DG8MG
-
                 if (draw_display_thread == null || !draw_display_thread.IsAlive)
                 {
                     draw_display_thread = new Thread(new ThreadStart(RunDisplay));
@@ -33991,17 +33981,17 @@ namespace PowerSDR
                         poll_cw_thread.Abort();
                 }
 
-                // DG8MG: Implement me!
+                // DG8MG: Test me!
                 // Extension for Charly 25LC and HAMlab hardware
-                /*
                 if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
+                    System.Console.WriteLine(String.Format("Attempting to stop SDR application on RedPitaya IP {0}", JanusAudio.Metis_IP_address));
                     var rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
                     var url = string.Format(rp_app_string);
                     var webClient = new WebClient();
                     var response = webClient.DownloadString(url);
+                    System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
                 }
-                */
                 // DG8MG
 
             }
