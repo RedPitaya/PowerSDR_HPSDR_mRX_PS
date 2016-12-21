@@ -28604,7 +28604,7 @@
             this.udCHARLY25LCPAGain6.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain6.TabIndex = 86;
             this.udCHARLY25LCPAGain6.Value = new decimal(new int[] {
-            388,
+            60,
             0,
             0,
             65536});
@@ -28666,7 +28666,7 @@
             this.udCHARLY25LCPAGain10.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain10.TabIndex = 18;
             this.udCHARLY25LCPAGain10.Value = new decimal(new int[] {
-            388,
+            250,
             0,
             0,
             65536});
@@ -28706,7 +28706,7 @@
             this.udCHARLY25LCPAGain12.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain12.TabIndex = 16;
             this.udCHARLY25LCPAGain12.Value = new decimal(new int[] {
-            388,
+            250,
             0,
             0,
             65536});
@@ -28746,7 +28746,7 @@
             this.udCHARLY25LCPAGain15.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain15.TabIndex = 14;
             this.udCHARLY25LCPAGain15.Value = new decimal(new int[] {
-            388,
+            250,
             0,
             0,
             65536});
@@ -28786,7 +28786,7 @@
             this.udCHARLY25LCPAGain17.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain17.TabIndex = 12;
             this.udCHARLY25LCPAGain17.Value = new decimal(new int[] {
-            399,
+            250,
             0,
             0,
             65536});
@@ -28826,7 +28826,7 @@
             this.udCHARLY25LCPAGain20.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain20.TabIndex = 10;
             this.udCHARLY25LCPAGain20.Value = new decimal(new int[] {
-            405,
+            250,
             0,
             0,
             65536});
@@ -28866,7 +28866,7 @@
             this.udCHARLY25LCPAGain30.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain30.TabIndex = 8;
             this.udCHARLY25LCPAGain30.Value = new decimal(new int[] {
-            410,
+            250,
             0,
             0,
             65536});
@@ -28906,7 +28906,7 @@
             this.udCHARLY25LCPAGain40.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain40.TabIndex = 6;
             this.udCHARLY25LCPAGain40.Value = new decimal(new int[] {
-            413,
+            250,
             0,
             0,
             65536});
@@ -28946,7 +28946,7 @@
             this.udCHARLY25LCPAGain60.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain60.TabIndex = 4;
             this.udCHARLY25LCPAGain60.Value = new decimal(new int[] {
-            413,
+            250,
             0,
             0,
             65536});
@@ -28986,7 +28986,7 @@
             this.udCHARLY25LCPAGain80.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain80.TabIndex = 2;
             this.udCHARLY25LCPAGain80.Value = new decimal(new int[] {
-            412,
+            250,
             0,
             0,
             65536});
@@ -29026,7 +29026,7 @@
             this.udCHARLY25LCPAGain160.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25LCPAGain160.TabIndex = 0;
             this.udCHARLY25LCPAGain160.Value = new decimal(new int[] {
-            410,
+            250,
             0,
             0,
             65536});

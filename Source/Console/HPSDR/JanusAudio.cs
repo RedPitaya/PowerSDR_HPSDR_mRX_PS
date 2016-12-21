@@ -469,7 +469,7 @@ namespace PowerSDR
                         {
                             // DG8MG: Test me!
                             // More then one Charly 25 / HAMlab device was detected on the network
-                            MessageBox.Show("Please power up only one Charly 25 / HAMlab in your network environment\nwhen you are using the autosensing mode!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Please power up only one Charly 25 / HAMlab in your network environment when you are using the autosensing mode!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                             // DG8MG: Implement me!
                             // Choose the RedPitaya device you want to start up
