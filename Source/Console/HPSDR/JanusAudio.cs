@@ -28,6 +28,10 @@ namespace PowerSDR
     using System.Net;
     using System.Net.Sockets;
     using System.Net.NetworkInformation;
+    // DG8MG
+    using System.Windows.Forms;
+    // DG8MG
+
     //
     // routines to access audio from kd5tfd/vk6aph fpga based audio 
     // 
@@ -186,7 +190,7 @@ namespace PowerSDR
         static byte[] data = new byte[1444];
         const int MetisPort = 1024;
         const int LocalPort = 0;
-       // private static IPEndPoint MetisEP = null;
+        // private static IPEndPoint MetisEP = null;
         public static bool enableStaticIP = false;
         public static uint static_host_network = 0;
         public static bool FastConnect = false;
@@ -204,7 +208,12 @@ namespace PowerSDR
             int adapterIndex = adapterSelected - 1;
             IPAddress[] addr = null;
             bool cleanup = false;
-            System.Console.WriteLine("MetisNetIPAddr: " + Console.getConsole().MetisNetworkIPAddr);
+
+            // DG8MG
+            Console c = Console.getConsole();
+            
+            System.Console.WriteLine("MetisNetIPAddr: " + c.MetisNetworkIPAddr);
+            // DG8MG
 
             try
             {
@@ -254,10 +263,17 @@ namespace PowerSDR
             bool foundMetis = false;
             List<HPSDRDevice> mhd = new List<HPSDRDevice>();
 
+            // DG8MG
+            // Extension for Charly 25LC and HAMlab hardware
+            HPSDRModel current_hpsdr_model = c.CurrentHPSDRModel;
+            // DG8MG
+
             if (enableStaticIP)
             {
-                Metis_IP_address = Console.getConsole().MetisNetworkIPAddr;
- 
+                // DG8MG
+                Metis_IP_address = c.MetisNetworkIPAddr;
+                // DG8MG
+
                 IPAddress remoteIp = IPAddress.Parse(Metis_IP_address);
                 IPEndPoint remoteEndPoint = new IPEndPoint(remoteIp, 0);
                 Socket socket = new Socket(
@@ -278,15 +294,23 @@ namespace PowerSDR
 
                     // DG8MG: Test me!
                     // Extension for Charly 25LC and HAMlab hardware
-                    HPSDRModel current_hpsdr_model = Console.getConsole().CurrentHPSDRModel;
                     if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
-                        System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
-                        var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
-                        var url = string.Format(rp_app_string);
-                        var webClient = new WebClient();
-                        var response = webClient.DownloadString(url);
-                        System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                        try
+                        {
+                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                            var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
+                            var url = string.Format(rp_app_string);
+                            var webClient = new WebClient();
+                            var response = webClient.DownloadString(url);
+                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                        }
+                        catch
+                        {
+                            if (cleanup)
+                                Win32.WSACleanup();
+                            return -1;
+                        }
                     }
                     // DG8MG
                     
@@ -334,15 +358,23 @@ namespace PowerSDR
 
                     // DG8MG: Test me!
                     // Extension for Charly 25LC and HAMlab hardware
-                    HPSDRModel current_hpsdr_model = Console.getConsole().CurrentHPSDRModel;
                     if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
-                        System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
-                        var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
-                        var url = string.Format(rp_app_string);
-                        var webClient = new WebClient();
-                        var response = webClient.DownloadString(url);
-                        System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                        try
+                        {
+                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                            var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
+                            var url = string.Format(rp_app_string);
+                            var webClient = new WebClient();
+                            var response = webClient.DownloadString(url);
+                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                        }
+                        catch
+                        {
+                            if (cleanup)
+                                Win32.WSACleanup();
+                            return -1;
+                        }
                     }
                     // DG8MG
 
@@ -382,15 +414,84 @@ namespace PowerSDR
 
             if (!foundMetis)
             {
-                foreach (IPAddress ipa in addrList)
+
+                // DG8MG: Test me!
+                // Extension for Charly 25LC and HAMlab hardware
+                if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
-                    if (DiscoverMetisOnPort(ref mhd, ipa, null))
+                    Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices = GetAllRedPitayaDevicesOnLAN();
+
+                    switch (allRedPitayaDevices.Count)
                     {
-                        foundMetis = true;
+                        case 0:
+                        {
+                            // DG8MG: Test me!
+                            // No Charly 25 / HAMlab device was detected on the network
+                            // MessageBox.Show("Please power up your Charly 25 / HAMlab before using the autosensing mode!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                        }
+
+                        case 1:
+                        {
+                            foreach (KeyValuePair<IPAddress, PhysicalAddress> pair in allRedPitayaDevices)
+                            {
+                                // Grep the first RedPitaya IP address from the IP address / MAC address dictionary and move on
+                                Metis_IP_address = pair.Key.ToString();
+                                break;
+                            }
+                                try
+                                {
+                                    System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                                    var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
+                                    var url = string.Format(rp_app_string);
+                                    var webClient = new WebClient();
+                                    var response = webClient.DownloadString(url);
+                                    System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                                }
+                                catch
+                                {
+                                    // Exception occurred during SDR application startup attempt
+                                    break;
+                                }
+
+                            // Try to discover the running SDR application on the RedPitaya via any available network interface
+                                foreach (IPAddress ipa in addrList)
+                            {
+                                if (DiscoverMetisOnPort(ref mhd, ipa, null))
+                                {
+                                    foundMetis = true;
+                                }
+                            }
+                            break;
+                        }
+
+                        default:
+                        {
+                            // DG8MG: Test me!
+                            // More then one Charly 25 / HAMlab device was detected on the network
+                            MessageBox.Show("Please power up only one Charly 25 / HAMlab in your network environment\nwhen you are using the autosensing mode!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                            // DG8MG: Implement me!
+                            // Choose the RedPitaya device you want to start up
+                            // ChooseRPDevice(allRedPitayaDevices, c);
+                            break;
+                        }
                     }
                 }
-            }
+                else
+                {
+                    foreach (IPAddress ipa in addrList)
+                    {
+                        if (DiscoverMetisOnPort(ref mhd, ipa, null))
+                        {
+                            foundMetis = true;
+                        }
+                    }
+                }
+                // DG8MG   
 
+            }
+     
             if (!foundMetis)
             {
                 if (cleanup)
@@ -1380,6 +1481,149 @@ namespace PowerSDR
             return (IPEndPoint)ep;
         }
 
+        // DG8MG: Implement me!
+        // Choose the RedPitaya device to start up
+        private static IPAddress ChooseRPDevice(Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices, Console c)
+        {
+            IPAddress rpIPAddress = new IPAddress(0);
+
+            foreach (KeyValuePair<IPAddress, PhysicalAddress> pair in allRedPitayaDevices)
+            {
+            }
+            return rpIPAddress;
+        }
+        
+        // Parts taken from: https://www.codeproject.com/tips/358946/retrieving-ip-and-mac-addresses-for-a-lan
+    
+        /// <summary>
+        /// MIB_IPNETROW structure returned by GetIpNetTable
+        /// DO NOT MODIFY THIS STRUCTURE.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        struct MIB_IPNETROW
+        {
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwIndex;
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwPhysAddrLen;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac0;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac1;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac2;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac3;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac4;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac5;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac6;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac7;
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwAddr;
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwType;
+        }
+
+        /// <summary>
+        /// GetIpNetTable external method
+        /// </summary>
+        /// <param name="pIpNetTable"></param>
+        /// <param name="pdwSize"></param>
+        /// <param name="bOrder"></param>
+        /// <returns></returns>
+        [DllImport("IpHlpApi.dll")]
+        [return: MarshalAs(UnmanagedType.U4)]
+        static extern int GetIpNetTable(IntPtr pIpNetTable, [MarshalAs(UnmanagedType.U4)] ref int pdwSize, bool bOrder);
+
+        /// <summary>
+        /// Error codes GetIpNetTable returns that we recognise
+        /// </summary>
+        const int ERROR_INSUFFICIENT_BUFFER = 122;
+
+        /// <summary>
+        /// Get the IP and MAC addresses of all known RedPitaya devices on the LAN
+        /// </summary>
+        /// <remarks>
+        /// 1) This table is not updated often - it can take some human-scale time 
+        ///    to notice that a device has dropped off the network, or a new device
+        ///    has connected.
+        /// 2) This discards all non RedPitaya devices if they are found
+        /// </remarks>
+        /// <returns></returns>
+        private static Dictionary<IPAddress, PhysicalAddress> GetAllRedPitayaDevicesOnLAN()
+        {
+            Dictionary<IPAddress, PhysicalAddress> allRedpitayaDevices = new Dictionary<IPAddress, PhysicalAddress>();
+            
+            int spaceForNetTable = 0;
+            
+            // Get the space needed
+            // We do that by requesting the table, but not giving any space at all.
+            // The return value will tell us how much we actually need.
+            GetIpNetTable(IntPtr.Zero, ref spaceForNetTable, false);
+            
+            // Allocate the space
+            // We use a try-finally block to ensure release.
+            IntPtr rawTable = IntPtr.Zero;
+
+            try
+            {
+                rawTable = Marshal.AllocCoTaskMem(spaceForNetTable);
+                
+                // Get the actual data
+                int errorCode = GetIpNetTable(rawTable, ref spaceForNetTable, false);
+
+                if (errorCode != 0)
+                {
+                    // Failed for some reason - can do no more here.
+                    throw new Exception(string.Format("Unable to retrieve network table. Error code {0}", errorCode));
+                }
+                
+                // Get the rows count
+                int rowsCount = Marshal.ReadInt32(rawTable);
+                IntPtr currentBuffer = new IntPtr(rawTable.ToInt64() + Marshal.SizeOf(typeof(Int32)));
+                
+                // Convert the raw table to individual entries
+                MIB_IPNETROW[] rows = new MIB_IPNETROW[rowsCount];
+
+                for (int index = 0; index < rowsCount; index++)
+                {
+                    rows[index] = (MIB_IPNETROW)Marshal.PtrToStructure(new IntPtr(currentBuffer.ToInt64() + (index * Marshal.SizeOf(typeof(MIB_IPNETROW)))), typeof(MIB_IPNETROW));
+                }
+                
+                // Define the MA - L: IEEE MAC Address Large (24 - bit block size) for the RedPitaya devices
+                String redpitaya_IEEE_MA_L = "002632";
+
+                foreach (MIB_IPNETROW row in rows)
+                {
+                    IPAddress ip = new IPAddress(BitConverter.GetBytes(row.dwAddr));
+                    byte[] rawMAC = new byte[] { row.mac0, row.mac1, row.mac2, row.mac3, row.mac4, row.mac5 };
+                    PhysicalAddress pa = new PhysicalAddress(rawMAC);
+
+                    if (pa.ToString().StartsWith(redpitaya_IEEE_MA_L))
+                    {
+                        System.Console.WriteLine("IP: {0}\t\tMAC: {1}", ip.ToString(), pa.ToString());
+
+                        if (!allRedpitayaDevices.ContainsKey(ip))
+                        {
+                            allRedpitayaDevices.Add(ip, pa);
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                // Release the memory.
+                Marshal.FreeCoTaskMem(rawTable);
+            }
+
+            return allRedpitayaDevices;
+        }
+        // DG8MG
+
     }
 
     // Taken from: http://blogs.msdn.com/b/knom/archive/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks.aspx
@@ -1417,6 +1661,4 @@ namespace PowerSDR
         public IPAddress ipv4Address;
         public IPAddress ipv4Mask;
     }
-
-
 }

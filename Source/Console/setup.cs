@@ -7571,8 +7571,8 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.CHARLY25LC;
                 console.CurrentHPSDRModel = HPSDRModel.CHARLY25LC;
-                console.RX2Enabled = false;  // Charly 25 LC has no second RX
-                console.chkRX2.Enabled = false;  // Disable the second RX button
+                // console.RX2Enabled = false;  // Charly 25 LC has no second RX
+                // console.chkRX2.Enabled = false;  // Disable the second RX button
                 chkPennyPresent.Checked = true;  
                 chkPennyPresent.Visible = false;  // Charly 25 LC doesn't need this functionality
                 chkPennyLane.Checked = false;  // Charly 25 LC doesn't need this functionality
@@ -7613,9 +7613,9 @@ namespace PowerSDR
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
             }
-            else  // Charly 25 LC is deselected
+            else  // Charly 25LC is deselected
             {
-                console.chkRX2.Enabled = true;  // Enable the second RX button
+                // console.chkRX2.Enabled = true;  // Enable the second RX button
             }
 
             // DG8MG: Test me!
@@ -7687,7 +7687,7 @@ namespace PowerSDR
                 grpMetisAddr.Visible = true;
             }
 
-            if (radGenModelCharly25LC.Checked)   /// Test me! DG8MG
+            if (radGenModelCharly25LC.Checked)   // Test me! DG8MG
             {
                 int nr = 2;
                 bool pwr_cycled = false;
@@ -7732,8 +7732,8 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
-                console.RX2Enabled = false;  // HAMlab has no second RX
-                console.chkRX2.Enabled = false;  // Disable the second RX button
+                // console.RX2Enabled = false;  // HAMlab has no second RX
+                // console.chkRX2.Enabled = false;  // Disable the second RX button
                 chkPennyPresent.Checked = true;
                 chkPennyPresent.Visible = false;  // HAMlab doesn't need this functionality
                 chkPennyLane.Checked = false;  // HAMlab doesn't need this functionality
@@ -7776,7 +7776,7 @@ namespace PowerSDR
             }
             else  // HAMlab is deselected
             {
-                console.chkRX2.Enabled = true;  // Enable the second RX button
+                // console.chkRX2.Enabled = true;  // Enable the second RX button
             }
 
             // DG8MG: Test me!
