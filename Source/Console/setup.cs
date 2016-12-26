@@ -2050,10 +2050,12 @@ namespace PowerSDR
             // DG8MG
             // string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
             //        "\\FlexRadio Systems\\PowerSDR\\Skins";
-            
-            // Corrected path variable for the skins, use the same application data base directory as the rest of PowerSDR mRX PS
+
+            // Corrected and extended the path variable by " Charly25 HAMlab" for the skins,
+            // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
+            // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\FlexRadio Systems\\PowerSDR mRX PS\\Skins\\";
+                    "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\Skins\\";
             // DG8MG
 
             if (!Directory.Exists(path))
@@ -15695,9 +15697,11 @@ namespace PowerSDR
             // string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
             //        "\\FlexRadio Systems\\PowerSDR\\Skins\\";
 
-            // Corrected path variable for the skins, use the same application data base directory as the rest of PowerSDR mRX PS
+            // Corrected and extended the path variable by " Charly25 HAMlab" for the skins,
+            // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
+            // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\FlexRadio Systems\\PowerSDR mRX PS\\Skins\\";
+                    "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\Skins\\";
             // DG8MG
 
             if (Directory.Exists(path + comboAppSkin.Text))
@@ -15711,10 +15715,12 @@ namespace PowerSDR
             // DG8MG
             // string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
             //        "\\FlexRadio Systems\\PowerSDR\\Skins\\";
-                        
-            // Corrected path variable for the skins, use the same application data base directory as the rest of PowerSDR mRX PS
+
+            // Corrected and extended the path variable by " Charly25 HAMlab" for the skins,
+            // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
+            // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\FlexRadio Systems\\PowerSDR mRX PS\\Skins\\";
+                    "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\Skins\\";
             // DG8MG
 
             if (Directory.Exists(path + comboAppSkin.Text))

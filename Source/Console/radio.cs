@@ -90,9 +90,16 @@ namespace PowerSDR
 		public static void CreateDSP()
 		{
             String app_data_path = "";
+
+            // DG8MG
+            // Extended path by " Charly25 HAMlab" to avoid incompatibility with other PowerSDR versions
+            // app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            // + "\\FlexRadio Systems\\PowerSDR mRX\\wisdom";
+            // + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
             app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                //+ "\\FlexRadio Systems\\PowerSDR mRX\\wisdom";
-                + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
+                + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+            // DG8MG
+
             wdsp.WDSPwisdom(app_data_path);
             wdsp.OpenChannel(wdsp.id(0, 0), 1024, 4096, 192000, 48000, 48000, 0, 0, 0.010, 0.025, 0.000, 0.010, 0);
             wdsp.OpenChannel(wdsp.id(0, 1), 1024, 4096, 192000, 48000, 48000, 0, 0, 0.010, 0.025, 0.000, 0.010, 0);

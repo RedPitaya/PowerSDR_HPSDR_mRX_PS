@@ -69,7 +69,7 @@ Source: "..\..\bin\Runtime Libraries\SlimDX Runtime .NET 4.0 x86 (January 2012).
 Source: "..\..\bin\Runtime Libraries\vc_redist.x86.exe"; DestDir: "{tmp}"
 Source: "..\..\bin\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: "..\..\Skins\*"; DestDir: "{userappdata}\FlexRadio Systems\PowerSDR mRX PS\Skins\"; Flags: ignoreversion createallsubdirs recursesubdirs
+Source: "..\..\Skins\*"; DestDir: "{userappdata}\FlexRadio Systems\PowerSDR mRX PS Charly25 HAMlab\Skins\"; Flags: ignoreversion createallsubdirs recursesubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

@@ -1594,8 +1594,15 @@ namespace PowerSDR
                 // Assembly assembly = Assembly.GetExecutingAssembly();
                 //  FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 // string version = fvi.FileVersion; //.Substring(0, fvi.FileVersion.LastIndexOf("."));
+
+                // DG8MG
+                // Extended path by " Charly25 HAMlab" to avoid incompatibility with other PowerSDR versions
+                // AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                //     + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
                 AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
+                    + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+                // DG8MG
+
             }
 
             foreach (string s in args)
@@ -7508,8 +7515,15 @@ namespace PowerSDR
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 string version = fvi.FileVersion.Substring(0, fvi.FileVersion.LastIndexOf("."));
+
+                // DG8MG
+                // Extended path by " Charly25 HAMlab" to avoid incompatibility with other PowerSDR versions
+                // app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                //     + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
                 app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
+                    + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+                // DG8MG
+
 #if(DEBUG)
                 app_data_path += "Debug\\";
 #endif

@@ -77,8 +77,17 @@ namespace PowerSDR
 
         public void Save()
         {
+            // DG8MG
+            // string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            //         + "\\FlexRadio Systems\\";
+
+            // Corrected and extended the path variable by " Charly25 HAMlab" for the memory list,
+            // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
+            // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\FlexRadio Systems\\";
+                    + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+            // DG8MG
+
             string file_name = path + "memory.xml";
 
             TextWriter writer = new StreamWriter(file_name);
@@ -99,8 +108,17 @@ namespace PowerSDR
 
         public static MemoryList Restore()
         {
+            // DG8MG
+            // string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            //         + "\\FlexRadio Systems\\";
+
+            // Corrected and extended the path variable by " Charly25 HAMlab" for the memory list,
+            // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
+            // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\FlexRadio Systems\\";
+                    + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+            // DG8MG
+
             string file_name = path + "memory.xml";
 
             MemoryList mem_list = new MemoryList();
