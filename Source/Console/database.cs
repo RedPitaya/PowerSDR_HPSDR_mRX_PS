@@ -424,8 +424,10 @@ namespace PowerSDR
             // t.Columns.Add("TX", typeof(bool));
 
             object[] data = {
-                               // 0.135700, 0.137799, "2200M CW/DATA",   true,                                
-                               // 0.472000, 0.478999, "630M CW/DATA",    true,
+                                // DG8MG: Corrected band limit for IARU Region 2
+                                0.135700, 0.137799, "2200M CW/DATA",   true,                                
+                                0.472000, 0.478999, "630M CW/DATA",    true,
+                                // DG8MG
 
 								1.800000, 1.809999, "160M CW/Digital Modes",	true,
 								1.810000, 1.810000, "160M CW QRP",				true,
@@ -748,67 +750,102 @@ namespace PowerSDR
 								0.135700, 0.137799, "2200M CW/DATA",   true,                                
                                 0.472000, 0.478999, "630M CW/DATA",    true,
 
-								1.800000, 1.825000, "160M CW",	                true,																
-								1.907500, 1.912500, "160M CW/DATA", 	true,
+                                // DG8MG: Corrected band limit for Japan
+								1.810000, 1.824999, "160M CW",	                true,																
+								1.907500, 1.912499, "160M CW/DATA",          	true,
+                                // DG8MG
 
 								3.500000, 3.519999, "80M CW",		    		true,
-								3.520000, 3.534999, "80M CW/DATA",		true,
-								3.535000, 3.575000, "80M CW/SSB/SSTV",			true,
-								3.599000, 3.612000, "75M CW/SSB/SSTV/DATA",		true,
-								3.568000, 3.687000, "75M CW/SSB/SSTV",			true,
-								3.702000, 3.716000, "75M CW/SSB/SSTV",			true,
-								3.745000, 3.770000, "75M CW/SSB/SSTV",			true,
-								3.791000, 3.805000, "75M CW/SSB/SSTV",	        true,
- 
-								7.000000, 7.029999, "40M CW",			    	true,
-								7.030000, 7.044999, "40M CW/DATA",				true,
-								7.040000, 7.099999, "40M CW/SSB/SSTV",			true,
-								7.100000, 7.200000, "40M All Modes",			true,
-								
+								3.520000, 3.534999, "80M CW/DATA",		        true,
+                                
+                                // DG8MG: Corrected band limit for Japan
+                                3.535000, 3.574999, "80M CW/SSB/SSTV/DATA",		true,
+								3.599000, 3.611999, "80M CW/SSB/SSTV/DATA",		true,                             
+								3.680000, 3.686999, "80M CW/SSB/SSTV",			true,
+								3.702000, 3.715999, "80M CW/SSB/SSTV",			true,
+								3.745000, 3.769999, "80M CW/SSB/SSTV",			true,
+								3.791000, 3.804999, "80M CW/SSB/SSTV",	        true,
+                                // DG8MG
+
+                                7.000000, 7.029999, "40M CW",			    	true,
+                                7.030000, 7.044999, "40M CW/DATA",				true,
+                                
+                                // DG8MG: Corrected band limit for Japan
+								7.045000, 7.099999, "40M CW/SSB/SSTV/DATA",		true,
+                                7.100000, 7.199999, "40M All Modes",			true,
+								// DG8MG
+
 								10.100000, 10.129999, "30M CW",					true,
-								10.130000, 10.150000, "30M CW/DATA",			true,
+                                
+                                // DG8MG: Corrected band limit for Japan
+								10.130000, 10.149999, "30M CW/DATA",			true,
+                                // DG8MG
 
 								14.000000, 14.069999, "20M CW",		        	true,
 								14.070000, 14.099999, "20M CW/DATA",			true,
 								14.100000, 14.100000, "20M IBP Beacon",			true,
 								14.100001, 14.111999, "20M CW/DATA",			true,
-								14.112000, 14.350000, "20M CW/SSB/SSTV",		true,
-																
-								18.068000, 18.099999, "17M CW",					true,
-								18.100000, 18.109999, "17M CW/DATA",			true,
-								18.110000, 18.110000, "17M IBP Beacon",			true,
-								18.110001, 18.168000, "17M CW/SSB/SSTV",		true,
-								
+
+                                // DG8MG: Corrected band limit for Japan
+								14.112000, 14.149999, "20M CW/SSB/SSTV/DATA",	true,
+                                14.150000, 14.349999, "20M CW/SSB/SSTV",        true,
+                                
+                                18.068000, 18.089999, "17M CW",					true,
+                                18.090000, 18.109999, "17M CW/DATA",            true,
+                                18.110000, 18.110000, "17M IBP Beacon",			true,                                                         
+                                18.110001, 18.119999, "17M CW/SSB/SSTV/DATA",	true,
+                                18.120000, 18.167999, "17M CW/SSB/SSTV",        true,
+                                // DG8MG
+
 								21.000000, 21.069999, "15M CW",		        	true,
-								21.070000, 21.124999, "15M CW/DATA",			true,
-								21.125000, 21.149999, "15M CW/SSB/SSTV",		true,
-								21.150000, 21.150000, "15M IBP Beacon",		    true,
-								21.150001, 21.450000, "15M CW/SSB/SSTV",		true,
+
+                                // DG8MG: Corrected band limit for Japan
+                                21.070000, 21.149999, "15M CW/DATA",			true,
+                                // DG8MG
+
+                                21.150000, 21.150000, "15M IBP Beacon",		    true,                           
+                                21.150001, 21.449999, "15M CW/SSB/SSTV",		true,
 								
 								24.890000, 24.909999, "12M CW",					true,
 								24.910000, 24.929999, "12M CW/DATA",			true,
 								24.930000, 24.930000, "12M IBP Beacon",		    true,
-								24.930001, 24.990000, "12M CW/SSB/SSTV",		true,
-								
+
+                                // DG8MG: Corrected band limit for Japan
+                                24.930001, 24.939999, "12M CW/SSB/SSTV/DATA",	true,
+                                24.940000, 24.989999, "12M CW/SSB/SSTV",        true,
+                                // DG8MG
+
 								28.000000, 28.069999, "10M CW",					true,
-								28.070000, 28.149999, "10M CW/DATA",			true,
-								28.150000, 28.199999, "10M CW",					true,
-								28.200000, 28.200000, "10M IBP Beacon",	    	true,
+
+                                // DG8MG: Corrected band limit for Japan
+                                28.070000, 28.199999, "10M CW/DATA",			true,
+                                // DG8MG
+
+                                28.200000, 28.200000, "10M IBP Beacon",	    	true,
 								28.200001, 28.999999, "10M CW/SSB/RTTY/SSTV",	true,
-								29.000000, 29.299999, "10M FM/RTTY/SSTV/DATA",	true,
-								29.300000, 29.509999, "10M Satellite Downlinks", true,
+
+                                // DG8MG: Corrected band limit for Japan
+                                29.000000, 29.299999, "10M All Modes",      	true,
+                                // DG8MG
+
+                                29.300000, 29.509999, "10M Satellite Downlinks", true,
 								29.510000, 29.589999, "10M Repeater Inputs",	true,
 								29.590000, 29.609999, "10M FM/RTTY/SSTV/DATA",	true,
 								29.610000, 29.699999, "10M Repeater Outputs",	true,
-								
-								50.000000, 50.099999, "6M CW",					true,
-								50.100000, 50.199999, "6M CW/SSB/RTTY/SSTV",	true,
-								50.200000, 50.999999, "6M CW/SSB/RTTY/SSTV/DATA", true,
-								51.000000, 51.999999, "6M FM/RTTY/SSTV",	    true,
-								52.000000, 52.299999, "6M VoIP",		        true,
+
+                                // DG8MG: Corrected band limit for Japan
+                                50.000000, 50.099999, "6M CW/DATA/EME",			true,
+								50.100000, 50.199999, "6M CW/SSB/RTTY/SSTV/EME",	true,
+								50.200000, 50.299999, "6M CW/SSB/RTTY/SSTV/DATA/EME", true,
+                                50.300000, 50.999999, "6M CW/SSB/RTTY/SSTV/DATA", true,                             
+                                51.000000, 51.499999, "6M All Modes",           true,
+                                51.500000, 51.999999, "6M FM/RTTY/SSTV",        true,
+                                // DG8MG
+
+                                52.000000, 52.299999, "6M VoIP",		        true,
 								52.300000, 52.499999, "6M CW/SSB/RTTY/SSTV",	true,
 								52.500000, 52.899999, "6M WB Data",	            true,
-								52.900000, 54.000000, "6M All Modes",			true,
+								52.900000, 53.999999, "6M All Modes",			true,
 								
 				};
 
@@ -844,10 +881,17 @@ namespace PowerSDR
                                 4.998000, 4.998000, "EBC",                     	false,
                                 15.006000, 15.006000, "EBC",                    false,
 
-								0.135700, 0.137799, "2200M Band",               true,
+                                // DG8MG: Corrected band limit for SW Broadcast band plan
+                                // 0.135700, 0.137799, "2200M Band",               true,
+                                // DG8MG
+
                                 0.153000, 0.279000, "AM - Long Wave",			false,
                                 0.415000, 0.471999, "Maritime Band",            false,
-                                0.472000, 0.478999, "630M Band",                true,
+
+                                // DG8MG: Corrected band limit for SW Broadcast band plan
+                                // 0.472000, 0.478999, "630M Band",                true,
+                                // DG8MG
+
                                 0.479000, 0.526400, "Maritime Band",            false,
 								0.530000, 1.710000, "Broadcast AM Med Wave",	false,				
 								2.300000, 2.495000, "120M Short Wave",			false,
@@ -884,6 +928,47 @@ namespace PowerSDR
         {
             ds.Tables["BandText"].Clear();
         }
+
+        // DG8MG: Added IARU Region 1 2200m band plan
+        private static void AddRegion1BandText2200m()
+        {
+            DataTable t = ds.Tables["BandText"];
+            object[] data = {
+                                0.135700, 0.137799, "2200M CW/DATA",    true,
+                            };
+
+            for (int i = 0; i < data.Length / 4; i++)
+            {
+                DataRow dr = t.NewRow();
+                dr["Low"] = (double)data[i * 4 + 0];
+                dr["High"] = (double)data[i * 4 + 1];
+                dr["Name"] = (string)data[i * 4 + 2];
+                dr["TX"] = (bool)data[i * 4 + 3];
+                t.Rows.Add(dr);
+            }
+        }
+        // DG8MG
+
+        // DG8MG: Added IARU Region 1 630m band plan
+        private static void AddRegion1BandText630m()
+        {
+            DataTable t = ds.Tables["BandText"];
+            object[] data = {
+                                0.472000, 0.474999, "630M CW",          true,
+                                0.475000, 0.478999, "630M CW/DATA",     true,
+                            };
+
+            for (int i = 0; i < data.Length / 4; i++)
+            {
+                DataRow dr = t.NewRow();
+                dr["Low"] = (double)data[i * 4 + 0];
+                dr["High"] = (double)data[i * 4 + 1];
+                dr["Name"] = (string)data[i * 4 + 2];
+                dr["TX"] = (bool)data[i * 4 + 3];
+                t.Rows.Add(dr);
+            }
+        }
+        // DG8MG
 
         private static void AddRegion1BandText160m()
         {
@@ -939,7 +1024,13 @@ namespace PowerSDR
             DataTable t = ds.Tables["BandText"];
 
             object[] data = {
-                                5.100000, 5.499999, "60M General RX",            false,
+                                // DG8MG: Added IARU Region 1 60m band plan
+                                5.100000, 5.351499, "60M General RX",           false,
+                                5.351500, 5.353999, "60M CW/DATA",              true,
+                                5.354000, 5.365999, "60M All Modes",            true,
+                                5.366000, 5.366499, "60M DATA",                 true,
+                                5.366500, 5.499999, "60M General RX",           false,
+                                // DG8MG
                             };
 
             for (int i = 0; i < data.Length / 4; i++)
@@ -5198,8 +5289,23 @@ namespace PowerSDR
                 }
             }
 
-            foreach (DataRow dr in bad_rows)
+
+            foreach (DataRow dr in bad_rows)      
+            {
+                
+                // DG8MG: Added debug output for band plan validation errors
+#if DEBUG
+                {
+                    System.Console.WriteLine(String.Format("Band plan data to remove: {0}", dr.ItemArray.GetValue(0).ToString()));
+                    System.Console.WriteLine(String.Format("Band plan data to remove: {0}", dr.ItemArray.GetValue(1).ToString()));
+                    System.Console.WriteLine(String.Format("Band plan data to remove: {0}", dr.ItemArray.GetValue(2).ToString()));
+                    System.Console.WriteLine(String.Format("Band plan data to remove: {0}", dr.ItemArray.GetValue(3).ToString()));
+                }
+#endif
+                // DG8MG
+
                 ds.Tables["BandText"].Rows.Remove(dr);
+            }
         }
 
         #endregion
@@ -5531,6 +5637,12 @@ namespace PowerSDR
                 case FRSRegion.Italy_Plus:
                     AddRegion1BandStack();
                     ClearBandText();
+                    
+                    // DG8MG: Added 2200m and 630m IARU Region 1 band plan
+                    AddRegion1BandText2200m();
+                    AddRegion1BandText630m();
+                    // DG8MG
+
                     AddRegion1BandText160m();
                     AddRegion1BandText80m();
                     AddRegion1BandText60m();
