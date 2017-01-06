@@ -30,7 +30,7 @@
 //
 // SoftRock and HPSDR Modifications Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Bill Tracey (kd5tfd)
 //
-// Charly 25LC and HAMlab Modifications Copyright (C) 2016 Markus Grundner / DG8MG
+// Charly 25LC and HAMlab Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
 //
 //#define INTERLEAVED
 //#define SPLIT_INTERLEAVED
@@ -17091,7 +17091,7 @@ namespace PowerSDR
             udRIT.Value = rit_val;								// restore RIT value
             //SetupForm.RXOnly = rx_only;						// restore RX Only			
             DisplayAVG = display_avg;                           // restore AVG value
-                                                                // chkRX1Preamp.Checked = rx1_preamp;					// restore preamp value
+            // chkRX1Preamp.Checked = rx1_preamp;					// restore preamp value
 
             // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator 
             chkRX2Preamp.Checked = rx2_preamp;
@@ -21398,7 +21398,7 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25 LC / HAMlab edition of PowerSDR, so the program starts with Charly 25LC as default hardware
+        // DG8MG: This is the Charly 25LC / HAMlab edition of PowerSDR, so the program starts with Charly 25LC as default hardware
         private HPSDRModel current_hpsdr_model = HPSDRModel.CHARLY25LC;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG
@@ -30898,6 +30898,13 @@ namespace PowerSDR
                         else
                             rx2PreampOffset = rx2_preamp_offset[(int)rx2_preamp_mode];
                     }
+
+                    // DG8MG
+                    else if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    {
+                        rx2PreampOffset = rx2_preamp_offset[(int)rx2_preamp_mode];
+                    }
+                    // DG8MG
                     else
                     {
                         if (rx1_step_att_present)
@@ -30908,9 +30915,8 @@ namespace PowerSDR
                         {
                             rx2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
                         }
-
                     }
-
+                    
                     switch (mode)
                     {
                         case MeterRXMode.SIGNAL_STRENGTH:

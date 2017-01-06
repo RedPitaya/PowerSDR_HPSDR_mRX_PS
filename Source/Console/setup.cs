@@ -7568,31 +7568,31 @@ namespace PowerSDR
         {
             HPSDRModel old_model = console.CurrentHPSDRModel;
 
-            if (radGenModelCharly25LC.Checked)  // Charly 25 LC is selected
+            if (radGenModelCharly25LC.Checked)  // Charly 25LC is selected
             {
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.CHARLY25LC;
                 console.CurrentHPSDRModel = HPSDRModel.CHARLY25LC;
-                // console.RX2Enabled = false;  // Charly 25 LC has no second RX
+                // console.RX2Enabled = false;  // Charly 25LC has no second RX
                 // console.chkRX2.Enabled = false;  // Disable the second RX button
                 chkPennyPresent.Checked = true;  
-                chkPennyPresent.Visible = false;  // Charly 25 LC doesn't need this functionality
-                chkPennyLane.Checked = false;  // Charly 25 LC doesn't need this functionality
-                chkPennyLane.Visible = false;  // Charly 25 LC doesn't need this functionality
-                chkMercuryPresent.Checked = false;  // Charly 25 LC doesn't need this functionality
-                chkMercuryPresent.Visible = false;  // Charly 25 LC doesn't need this functionality
-                chkJanusPresent.Checked = false;  // Charly 25 LC doesn't need this functionality
-                chkJanusPresent.Visible = false;  // Charly 25 LC doesn't need this functionality
-                chkExcaliburPresent.Checked = false;  // Charly 25 LC doesn't need this functionality
-                chkExcaliburPresent.Visible = false;  // Charly 25 LC doesn't need this functionality
+                chkPennyPresent.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkPennyLane.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkPennyLane.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkMercuryPresent.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkMercuryPresent.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkJanusPresent.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkJanusPresent.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkExcaliburPresent.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkExcaliburPresent.Visible = false;  // Charly 25LC doesn't need this functionality
                 groupBox10MhzClock.Visible = true;
                 groupBox122MHz.Visible = true;
                 groupBoxMicSource.Visible = true;
-                chkHermesStepAttenuator.Checked = false;  // Charly 25 LC doesn't need this functionality
-                chkAlexPresent.Checked = false;  // Charly 25 LC doesn't need this functionality
-                chkAlexPresent.Visible = false;  // Charly 25 LC doesn't need this functionality
-                chkApolloPresent.Checked = false;  // Charly 25 LC doesn't need this functionality
-                chkApolloPresent.Visible = false;  // Charly 25 LC doesn't need this functionality
+                chkHermesStepAttenuator.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkAlexPresent.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkAlexPresent.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkApolloPresent.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkApolloPresent.Visible = false;  // Charly 25LC doesn't need this functionality
                 groupBoxRXOptions.Text = "Mercury Options";
                 radMetis.Text = "RedPitaya (Ethernet)";
                 grpMetisAddr.Text = "RedPitaya Address";
@@ -7602,10 +7602,10 @@ namespace PowerSDR
                 chkAutoPACalibrate.Visible = true;
                 grpCHARLY25LCPAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                labelATTOnTX.Visible = false;  // Charly 25 LC doesn't need this functionality
-                udATTOnTX.Visible = false;  // Charly 25 LC doesn't need this functionality
-                chkATTOnTX.Checked = false;  // Charly 25 LC doesn't need this functionality
-                console.RX2PreampPresent = false;  // Charly 25 LC doesn't need this functionality
+                labelATTOnTX.Visible = false;  // Charly 25LC doesn't need this functionality
+                udATTOnTX.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkATTOnTX.Checked = false;  // Charly 25LC doesn't need this functionality
+                console.RX2PreampPresent = false;  // Charly 25LC doesn't have a RX2 preamp
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
                 chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
@@ -7766,7 +7766,7 @@ namespace PowerSDR
                 labelATTOnTX.Visible = false;  // HAMlab doesn't need this functionality
                 udATTOnTX.Visible = false;  // HAMlab doesn't need this functionality
                 chkATTOnTX.Checked = false;  // HAMlab doesn't need this functionality
-                console.RX2PreampPresent = false;  // HAMlab doesn't need this functionality
+                console.RX2PreampPresent = false;  // HAMlab doesn't have a RX2 preamp
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
                 chkEXT2OutOnTx.Text = "RX 1 IN on Tx";

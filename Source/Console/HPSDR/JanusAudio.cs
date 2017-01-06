@@ -671,7 +671,12 @@ namespace PowerSDR
                         Thread.Sleep(300);
                         mercury2_ver = getMercury2FWVersion();
                     }
-                    if (mercury2_ver < 32 || mercury2_ver == 127) //check if physical rx2 present
+
+                    // DG8MG
+                    // Extension for Charly 25LC and HAMlab hardware
+                    if (mercury2_ver < 32 || mercury2_ver == 127 || c.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || c.CurrentHPSDRModel == HPSDRModel.HAMLAB) // Check if physical RX2 preamp is present
+                    // DG8MG
+
                         c.RX2PreampPresent = false;
                     else
                         c.RX2PreampPresent = true;

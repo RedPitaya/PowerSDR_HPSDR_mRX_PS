@@ -382,7 +382,7 @@ namespace PowerSDR
             this.radGenModelCharly25LC.Name = "radGenModelCharly25LC";
             this.radGenModelCharly25LC.Size = new System.Drawing.Size(99, 17);
             this.radGenModelCharly25LC.TabIndex = 15;
-            this.radGenModelCharly25LC.Text = "CHARLY 25 LC";
+            this.radGenModelCharly25LC.Text = "CHARLY 25LC";
             this.radGenModelCharly25LC.UseVisualStyleBackColor = true;
             this.radGenModelCharly25LC.CheckedChanged += new System.EventHandler(this.radGenModelCharly25LC_CheckedChanged);
             // 
@@ -2483,10 +2483,5 @@ namespace PowerSDR
             excalibur_present = chkExcalibur.Checked;
         }
         #endregion
-
-        private void radioButtonTS1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
