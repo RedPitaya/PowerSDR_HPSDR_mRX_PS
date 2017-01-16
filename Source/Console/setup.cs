@@ -7614,9 +7614,11 @@ namespace PowerSDR
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
+                chkVACAllowBypass.Checked = false;  // Charly 25LC needs this to be unchecked
             }
             else  // Charly 25LC is deselected
             {
+                chkVACAllowBypass.Checked = true;  // reset this to default setting
                 // console.chkRX2.Enabled = true;  // Enable the second RX button
             }
 
@@ -7775,9 +7777,11 @@ namespace PowerSDR
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
+                chkVACAllowBypass.Checked = false;  // HAMlab needs this to be unchecked
             }
             else  // HAMlab is deselected
             {
+                chkVACAllowBypass.Checked = true;  // reset this to default setting
                 // console.chkRX2.Enabled = true;  // Enable the second RX button
             }
 
@@ -9616,6 +9620,14 @@ namespace PowerSDR
                 else Audio.Latency1 = 0;
             }
 
+            // DG8MG
+            // Added missing assignment if Manual option is checked
+            else
+            {
+                Audio.Latency1 = (int)udAudioLatency1.Value;
+            }
+            // DG8MG
+
             if (power) console.PowerOn = true;
         }
 
@@ -9632,6 +9644,14 @@ namespace PowerSDR
 
             if (!chkAudioLatencyManual2.Checked)
                 Audio.Latency2 = 120;
+
+            // DG8MG
+            // Added missing assignment if Manual option is checked
+            else
+            {
+                Audio.Latency2 = (int)udAudioLatency2.Value;
+            }
+            // DG8MG
 
             if (power && chkAudioEnableVAC.Checked)
                 console.PowerOn = true;
@@ -9650,6 +9670,14 @@ namespace PowerSDR
 
             if (!chkVAC2LatencyManual.Checked)
                 Audio.Latency3 = 120;
+
+            // DG8MG
+            // Added missing assignment if Manual option is checked
+            else
+            {
+                Audio.Latency3 = (int)udVAC2Latency.Value;
+            }
+            // DG8MG
 
             if (power && chkVAC2Enable.Checked)
                 console.PowerOn = true;
@@ -17222,7 +17250,12 @@ namespace PowerSDR
             if (console.CurrentRegion != region)
                 console.CurrentRegion = region;
 
-            if (!console.initializing) DB.UpdateRegion(console.CurrentRegion);
+            // DG8MG
+            // Modified for Charly 25 / HAMlab edition
+            // if (!console.initializing) DB.UpdateRegion(console.CurrentRegion);
+            DB.UpdateRegion(console.CurrentRegion);
+            // DG8MG
+
             if (console.CurrentRegion == FRSRegion.UK)
             {
                 console.band_60m_register = 11;
@@ -17978,7 +18011,19 @@ namespace PowerSDR
 
         private void tpGeneralCalibration_Paint(object sender, PaintEventArgs e)
         {
-            panelRX2LevelCal.Visible = false;
+            
+            // DG8MG: Test me!
+            // Extention for Charly 25 / HAMlab edition
+            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            {
+                panelRX2LevelCal.Visible = true;
+            }
+            else
+            {
+                panelRX2LevelCal.Visible = false;
+            }
+            // DG8MG
+
         }
 
         private void chkShowAGC_CheckedChanged(object sender, EventArgs e)
