@@ -22,6 +22,20 @@ namespace PowerSDR
             InitializeComponent();
             Common.RestoreForm(this, "PureSignal", false);
             console = c;
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            {
+                this.chkPSAutoAttenuate.Checked = false;
+                this.chkPSAutoAttenuate.Visible = false;
+            }
+            else
+            {
+                this.chkPSAutoAttenuate.Checked = true;
+                this.chkPSAutoAttenuate.Visible = true;
+            }
+            // DG8MG
         }
 
         #endregion
@@ -80,8 +94,26 @@ namespace PowerSDR
             set
             {
                 autoattenuate = value;
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                chkPSAutoAttenuate.Checked = value;
+                // DG8MG
             }
         }
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        private static bool autoattenuate_visible = true;
+        public bool AutoAttenuate_Visible
+        {
+            get { return autoattenuate_visible; }
+            set
+            {
+                console.psform.chkPSAutoAttenuate.Visible = value;
+            }
+        }
+        // DG8MG
 
         private static bool ttgenON = false;
         public bool TTgenON

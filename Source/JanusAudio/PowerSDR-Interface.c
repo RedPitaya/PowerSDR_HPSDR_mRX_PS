@@ -623,7 +623,7 @@ C3
 | | | | | | | |
 | | | | | | + +------------ Alex Attenuator (00 = 0dB, 01 = 10dB, 10 = 20dB, 11 = 30dB)
 | | | | | +---------------- Preamp On/Off (0 = Off, 1 = On)
-| | | | +------------------ LT2208 Dither (0 = Off, 1 = On)  // DG8MG: On Charly 25LC hardware this bit is used for the switching of the second preamp
+| | | | +------------------ LT2208 Dither (0 = Off, 1 = On)  // DG8MG: On Charly 25 and HAMlab hardware this bit is used for the switching of the second preamp
 | | | + ------------------- LT2208 Random (0= Off, 1 = On)
 | + + --------------------- Alex Rx Antenna (00 = none, 01 = Rx1, 10 = Rx2, 11 = XV)
 + ------------------------- Alex Rx out (0 = off, 1 = on). Set if Alex Rx Antenna > 0.
@@ -969,7 +969,7 @@ KD5TFDVK6APHAUDIO_API void SetRX1Preamp(int bits) {
 }
 
 // DG8MG
-// Extension for C25 Attenuator and Preamp
+// Extension for Charly 25 and HAMlab Attenuator and Preamp
 KD5TFDVK6APHAUDIO_API void SetRX1Preamp_Charly25LC(int bits) {
 	switch (bits)
 	{

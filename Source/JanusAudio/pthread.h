@@ -302,7 +302,8 @@ enum {
 #endif
 #endif
 
-// DG8MG: Eliminated the following lines due to build errors
+// DG8MG
+// Eliminated the following lines due to build errors
 //#ifndef HAVE_STRUCT_TIMESPEC
 //#define HAVE_STRUCT_TIMESPEC 1
 //struct timespec {

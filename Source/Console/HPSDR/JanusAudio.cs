@@ -264,7 +264,7 @@ namespace PowerSDR
             List<HPSDRDevice> mhd = new List<HPSDRDevice>();
 
             // DG8MG
-            // Extension for Charly 25LC and HAMlab hardware
+            // Extension for Charly 25 and HAMlab hardware
             HPSDRModel current_hpsdr_model = c.CurrentHPSDRModel;
             // DG8MG
 
@@ -292,8 +292,8 @@ namespace PowerSDR
                 if (IPAddress.TryParse(EthernetHostIPAddress, out hostIP) && IPAddress.TryParse(Metis_IP_address, out targetIP))
                 {
 
-                    // DG8MG: Test me!
-                    // Extension for Charly 25LC and HAMlab hardware
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
                     if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
                         try
@@ -356,8 +356,8 @@ namespace PowerSDR
                 if (IPAddress.TryParse(EthernetHostIPAddress, out hostIP) && IPAddress.TryParse(Metis_IP_address, out targetIP))
                 {
 
-                    // DG8MG: Test me!
-                    // Extension for Charly 25LC and HAMlab hardware
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
                     if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
                         try
@@ -416,7 +416,7 @@ namespace PowerSDR
             {
 
                 // DG8MG: Test me!
-                // Extension for Charly 25LC and HAMlab hardware
+                // Extension for Charly 25 and HAMlab hardware
                 if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
                     Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices = GetAllRedPitayaDevicesOnLAN();
@@ -673,7 +673,7 @@ namespace PowerSDR
                     }
 
                     // DG8MG
-                    // Extension for Charly 25LC and HAMlab hardware
+                    // Extension for Charly 25 and HAMlab hardware
                     if (mercury2_ver < 32 || mercury2_ver == 127 || c.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || c.CurrentHPSDRModel == HPSDRModel.HAMLAB) // Check if physical RX2 preamp is present
                     // DG8MG
 

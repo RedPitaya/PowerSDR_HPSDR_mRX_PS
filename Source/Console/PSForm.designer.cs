@@ -50,6 +50,12 @@
             this.labelTS2 = new System.Windows.Forms.LabelTS();
             this.udPSPhnum = new System.Windows.Forms.NumericUpDownTS();
             this.grpPSInfo = new System.Windows.Forms.GroupBoxTS();
+            this.lblPSInfo5 = new System.Windows.Forms.LabelTS();
+            this.labelTS14 = new System.Windows.Forms.LabelTS();
+            this.lblPSInfo13 = new System.Windows.Forms.LabelTS();
+            this.labelTS12 = new System.Windows.Forms.LabelTS();
+            this.lblPSInfo6 = new System.Windows.Forms.LabelTS();
+            this.labelTS10 = new System.Windows.Forms.LabelTS();
             this.PSdispRX = new System.Windows.Forms.TextBoxTS();
             this.labelTS6 = new System.Windows.Forms.LabelTS();
             this.GetPSpeak = new System.Windows.Forms.TextBoxTS();
@@ -75,12 +81,6 @@
             this.btnPSAmpView = new System.Windows.Forms.ButtonTS();
             this.chkPSAutoAttenuate = new System.Windows.Forms.CheckBoxTS();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.lblPSInfo6 = new System.Windows.Forms.LabelTS();
-            this.labelTS10 = new System.Windows.Forms.LabelTS();
-            this.lblPSInfo13 = new System.Windows.Forms.LabelTS();
-            this.labelTS12 = new System.Windows.Forms.LabelTS();
-            this.lblPSInfo5 = new System.Windows.Forms.LabelTS();
-            this.labelTS14 = new System.Windows.Forms.LabelTS();
             this.grpLincorSave.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udPSMoxDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udPSPhnum)).BeginInit();
@@ -378,6 +378,72 @@
             this.grpPSInfo.Text = "Calibration Information";
             this.grpPSInfo.Visible = false;
             // 
+            // lblPSInfo5
+            // 
+            this.lblPSInfo5.AutoSize = true;
+            this.lblPSInfo5.BackColor = System.Drawing.Color.Bisque;
+            this.lblPSInfo5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPSInfo5.ForeColor = System.Drawing.Color.Black;
+            this.lblPSInfo5.Image = null;
+            this.lblPSInfo5.Location = new System.Drawing.Point(72, 168);
+            this.lblPSInfo5.Name = "lblPSInfo5";
+            this.lblPSInfo5.Size = new System.Drawing.Size(2, 15);
+            this.lblPSInfo5.TabIndex = 23;
+            // 
+            // labelTS14
+            // 
+            this.labelTS14.AutoSize = true;
+            this.labelTS14.Image = null;
+            this.labelTS14.Location = new System.Drawing.Point(6, 168);
+            this.labelTS14.Name = "labelTS14";
+            this.labelTS14.Size = new System.Drawing.Size(40, 13);
+            this.labelTS14.TabIndex = 22;
+            this.labelTS14.Text = "cor.cnt";
+            // 
+            // lblPSInfo13
+            // 
+            this.lblPSInfo13.AutoSize = true;
+            this.lblPSInfo13.BackColor = System.Drawing.Color.Bisque;
+            this.lblPSInfo13.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPSInfo13.ForeColor = System.Drawing.Color.Black;
+            this.lblPSInfo13.Image = null;
+            this.lblPSInfo13.Location = new System.Drawing.Point(72, 144);
+            this.lblPSInfo13.Name = "lblPSInfo13";
+            this.lblPSInfo13.Size = new System.Drawing.Size(2, 15);
+            this.lblPSInfo13.TabIndex = 21;
+            // 
+            // labelTS12
+            // 
+            this.labelTS12.AutoSize = true;
+            this.labelTS12.Image = null;
+            this.labelTS12.Location = new System.Drawing.Point(6, 144);
+            this.labelTS12.Name = "labelTS12";
+            this.labelTS12.Size = new System.Drawing.Size(37, 13);
+            this.labelTS12.TabIndex = 20;
+            this.labelTS12.Text = "dg.cnt";
+            // 
+            // lblPSInfo6
+            // 
+            this.lblPSInfo6.AutoSize = true;
+            this.lblPSInfo6.BackColor = System.Drawing.Color.Bisque;
+            this.lblPSInfo6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblPSInfo6.ForeColor = System.Drawing.Color.Black;
+            this.lblPSInfo6.Image = null;
+            this.lblPSInfo6.Location = new System.Drawing.Point(72, 120);
+            this.lblPSInfo6.Name = "lblPSInfo6";
+            this.lblPSInfo6.Size = new System.Drawing.Size(2, 15);
+            this.lblPSInfo6.TabIndex = 19;
+            // 
+            // labelTS10
+            // 
+            this.labelTS10.AutoSize = true;
+            this.labelTS10.Image = null;
+            this.labelTS10.Location = new System.Drawing.Point(6, 120);
+            this.labelTS10.Name = "labelTS10";
+            this.labelTS10.Size = new System.Drawing.Size(41, 13);
+            this.labelTS10.TabIndex = 18;
+            this.labelTS10.Text = "sln.chk";
+            // 
             // PSdispRX
             // 
             this.PSdispRX.BackColor = System.Drawing.Color.Bisque;
@@ -663,72 +729,6 @@
             // 
             this.timer2.Enabled = true;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
-            // lblPSInfo6
-            // 
-            this.lblPSInfo6.AutoSize = true;
-            this.lblPSInfo6.BackColor = System.Drawing.Color.Bisque;
-            this.lblPSInfo6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPSInfo6.ForeColor = System.Drawing.Color.Black;
-            this.lblPSInfo6.Image = null;
-            this.lblPSInfo6.Location = new System.Drawing.Point(72, 120);
-            this.lblPSInfo6.Name = "lblPSInfo6";
-            this.lblPSInfo6.Size = new System.Drawing.Size(2, 15);
-            this.lblPSInfo6.TabIndex = 19;
-            // 
-            // labelTS10
-            // 
-            this.labelTS10.AutoSize = true;
-            this.labelTS10.Image = null;
-            this.labelTS10.Location = new System.Drawing.Point(6, 120);
-            this.labelTS10.Name = "labelTS10";
-            this.labelTS10.Size = new System.Drawing.Size(41, 13);
-            this.labelTS10.TabIndex = 18;
-            this.labelTS10.Text = "sln.chk";
-            // 
-            // lblPSInfo13
-            // 
-            this.lblPSInfo13.AutoSize = true;
-            this.lblPSInfo13.BackColor = System.Drawing.Color.Bisque;
-            this.lblPSInfo13.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPSInfo13.ForeColor = System.Drawing.Color.Black;
-            this.lblPSInfo13.Image = null;
-            this.lblPSInfo13.Location = new System.Drawing.Point(72, 144);
-            this.lblPSInfo13.Name = "lblPSInfo13";
-            this.lblPSInfo13.Size = new System.Drawing.Size(2, 15);
-            this.lblPSInfo13.TabIndex = 21;
-            // 
-            // labelTS12
-            // 
-            this.labelTS12.AutoSize = true;
-            this.labelTS12.Image = null;
-            this.labelTS12.Location = new System.Drawing.Point(6, 144);
-            this.labelTS12.Name = "labelTS12";
-            this.labelTS12.Size = new System.Drawing.Size(37, 13);
-            this.labelTS12.TabIndex = 20;
-            this.labelTS12.Text = "dg.cnt";
-            // 
-            // lblPSInfo5
-            // 
-            this.lblPSInfo5.AutoSize = true;
-            this.lblPSInfo5.BackColor = System.Drawing.Color.Bisque;
-            this.lblPSInfo5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblPSInfo5.ForeColor = System.Drawing.Color.Black;
-            this.lblPSInfo5.Image = null;
-            this.lblPSInfo5.Location = new System.Drawing.Point(72, 168);
-            this.lblPSInfo5.Name = "lblPSInfo5";
-            this.lblPSInfo5.Size = new System.Drawing.Size(2, 15);
-            this.lblPSInfo5.TabIndex = 23;
-            // 
-            // labelTS14
-            // 
-            this.labelTS14.AutoSize = true;
-            this.labelTS14.Image = null;
-            this.labelTS14.Location = new System.Drawing.Point(6, 168);
-            this.labelTS14.Name = "labelTS14";
-            this.labelTS14.Size = new System.Drawing.Size(40, 13);
-            this.labelTS14.TabIndex = 22;
-            this.labelTS14.Text = "cor.cnt";
             // 
             // PSForm
             // 

@@ -5846,7 +5846,7 @@ namespace PowerSDR
         }
 
         // DG8MG
-        // Extention for Charly 25LC and HAMlab hardware
+        // Extension for Charly 25 and HAMlab hardware
         // PAGain CHARLY25LC
         public float CHARLY25LCPAGain160
         {
@@ -7564,6 +7564,7 @@ namespace PowerSDR
         }
 
         // DG8MG
+        // Extension for Charly 25LC hardware
         private void radGenModelCharly25LC_CheckedChanged(object sender, System.EventArgs e)
         {
             HPSDRModel old_model = console.CurrentHPSDRModel;
@@ -7573,8 +7574,6 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.CHARLY25LC;
                 console.CurrentHPSDRModel = HPSDRModel.CHARLY25LC;
-                // console.RX2Enabled = false;  // Charly 25LC has no second RX
-                // console.chkRX2.Enabled = false;  // Disable the second RX button
                 chkPennyPresent.Checked = true;  
                 chkPennyPresent.Visible = false;  // Charly 25LC doesn't need this functionality
                 chkPennyLane.Checked = false;  // Charly 25LC doesn't need this functionality
@@ -7589,6 +7588,7 @@ namespace PowerSDR
                 groupBox122MHz.Visible = true;
                 groupBoxMicSource.Visible = true;
                 chkHermesStepAttenuator.Checked = false;  // Charly 25LC doesn't need this functionality
+                grpHermesStepAttenuator.Visible = false;  // Charly 25LC doesn't need this functionality
                 chkAlexPresent.Checked = false;  // Charly 25LC doesn't need this functionality
                 chkAlexPresent.Visible = false;  // Charly 25LC doesn't need this functionality
                 chkApolloPresent.Checked = false;  // Charly 25LC doesn't need this functionality
@@ -7602,9 +7602,7 @@ namespace PowerSDR
                 chkAutoPACalibrate.Visible = true;
                 grpCHARLY25LCPAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                labelATTOnTX.Visible = false;  // Charly 25LC doesn't need this functionality
-                udATTOnTX.Visible = false;  // Charly 25LC doesn't need this functionality
-                chkATTOnTX.Checked = false;  // Charly 25LC doesn't need this functionality
+                chkATTOnTX.Checked = false;  // Charly 25LC doesn't have a TX step attenuator
                 console.RX2PreampPresent = false;  // Charly 25LC doesn't have a RX2 preamp
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
@@ -7615,15 +7613,20 @@ namespace PowerSDR
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
                 chkVACAllowBypass.Checked = false;  // Charly 25LC needs this to be unchecked
+                console.psform.AutoAttenuate = false;  // Charly 25LC doesn't have this functionality
+                console.psform.AutoAttenuate_Visible = false;  // Charly 25LC doesn't have this functionality
             }
             else  // Charly 25LC is deselected
             {
-                chkVACAllowBypass.Checked = true;  // reset this to default setting
+                chkVACAllowBypass.Checked = true;  // reset to default setting
+                grpHermesStepAttenuator.Visible = true;  // reset to default setting
+                console.psform.AutoAttenuate = true;  // reset to default setting
+                console.psform.AutoAttenuate_Visible = true;  // reset to default setting
                 // console.chkRX2.Enabled = true;  // Enable the second RX button
             }
 
             // DG8MG: Test me!
-            // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly25LC
+            // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly 25LC
             {
                 // add or remove setup pages for HPSDR stuff 
                 // AddHPSDRPages();  // Fix me: Is it really needed? DG8MG
@@ -7683,7 +7686,7 @@ namespace PowerSDR
                 chkLimitRX.Enabled = true;
                 tpPennyCtrl.Text = "Penny Ctrl";
             }
-            // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly25LC
+            // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly 25LC
 
             if (radMetis.Checked)
             {
@@ -7727,6 +7730,7 @@ namespace PowerSDR
         }
 
         // DG8MG
+        // Extension for HAMlab hardware
         private void radGenModelHamlab_CheckedChanged(object sender, System.EventArgs e)
         {
             HPSDRModel old_model = console.CurrentHPSDRModel;
@@ -7736,8 +7740,6 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
-                // console.RX2Enabled = false;  // HAMlab has no second RX
-                // console.chkRX2.Enabled = false;  // Disable the second RX button
                 chkPennyPresent.Checked = true;
                 chkPennyPresent.Visible = false;  // HAMlab doesn't need this functionality
                 chkPennyLane.Checked = false;  // HAMlab doesn't need this functionality
@@ -7752,6 +7754,7 @@ namespace PowerSDR
                 groupBox122MHz.Visible = true;
                 groupBoxMicSource.Visible = true;
                 chkHermesStepAttenuator.Checked = false;  // HAMlab doesn't need this functionality
+                grpHermesStepAttenuator.Visible = false;  // HAMlab doesn't need this functionality
                 chkAlexPresent.Checked = false;  // HAMlab doesn't need this functionality
                 chkAlexPresent.Visible = false;  // HAMlab doesn't need this functionality
                 chkApolloPresent.Checked = false;  // HAMlab doesn't need this functionality
@@ -7765,9 +7768,7 @@ namespace PowerSDR
                 chkAutoPACalibrate.Visible = true;
                 grpCHARLY25LCPAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                labelATTOnTX.Visible = false;  // HAMlab doesn't need this functionality
-                udATTOnTX.Visible = false;  // HAMlab doesn't need this functionality
-                chkATTOnTX.Checked = false;  // HAMlab doesn't need this functionality
+                chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator
                 console.RX2PreampPresent = false;  // HAMlab doesn't have a RX2 preamp
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
@@ -7778,10 +7779,15 @@ namespace PowerSDR
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
                 chkVACAllowBypass.Checked = false;  // HAMlab needs this to be unchecked
+                console.psform.AutoAttenuate = false;  // HAMlab doesn't have this functionality
+                console.psform.AutoAttenuate_Visible = false;  // HAMlab doesn't have this functionality
             }
             else  // HAMlab is deselected
             {
-                chkVACAllowBypass.Checked = true;  // reset this to default setting
+                chkVACAllowBypass.Checked = true;  // reset to default setting
+                grpHermesStepAttenuator.Visible = true;  // reset to default setting
+                console.psform.AutoAttenuate = true;  // reset to default setting
+                console.psform.AutoAttenuate_Visible = true;  // reset to default setting
                 // console.chkRX2.Enabled = true;  // Enable the second RX button
             }
 
@@ -8267,7 +8273,7 @@ namespace PowerSDR
             //}
 
             // DG8MG
-            // Extension for C25 Preamp and Attenuator
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if ((!radGenModelCharly25LC.Checked) && (!radGenModelHAMlab.Checked))
             {
                 if (!tcGeneral.TabPages.Contains(tpHPSDR))
@@ -8667,15 +8673,30 @@ namespace PowerSDR
 
         private void CalibrateRX2Level()
         {
-            bool done = console.CalibrateRX2Level(
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            bool done = false;
+            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            {
+                done = console.CalibrateRX2Level_Charly25(
                 (float)udGeneralCalRX2Level.Value,
                 (float)udGeneralCalRX2Freq2.Value,
                 progress,
                 false);
+            }
+            else
+            {
+                done = console.CalibrateRX2Level(
+                (float)udGeneralCalRX2Level.Value,
+                (float)udGeneralCalRX2Freq2.Value,
+                progress,
+                false);
+            }
+            // DG8MG
+
             if (done) MessageBox.Show("Level Calibration complete.");
             btnCalLevel.Enabled = true;
             //  UpdateDisplayMeter();
-
         }
 
         private void chkGeneralDisablePTT_CheckedChanged(object sender, System.EventArgs e)
@@ -14192,6 +14213,11 @@ namespace PowerSDR
             }
             else
             {
+                // DG8MG
+                // Save the currently selected IP address even if the "Select IP" button was not pressed before.
+                btnSetIPAddr_Click(this, EventArgs.Empty);
+                // DG8MG
+
                 Thread t = new Thread(new ThreadStart(SaveOptions));
                 t.Name = "Save Options Thread";
                 t.IsBackground = true;
@@ -14216,6 +14242,11 @@ namespace PowerSDR
 
         private void btnApply_Click(object sender, System.EventArgs e)
         {
+            // DG8MG
+            // Save the currently selected IP address even if the "Select IP" button was not pressed before.
+            btnSetIPAddr_Click(this, null);
+            // DG8MG
+
             Thread t = new Thread(new ThreadStart(ApplyOptions));
             t.Name = "Save Options Thread";
             t.IsBackground = true;
@@ -15218,8 +15249,8 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: Implement me!
-        // Extension for Charly 25LC and HAMlab hardware
+        // DG8MG: Test me!
+        // Extension for Charly 25 and HAMlab hardware
         private void chkCHARLY25LCPANewCal_CheckedChanged(object sender, EventArgs e)
         {
             bool b = chkCHARLY25LCPANewCal.Checked;
@@ -18013,7 +18044,7 @@ namespace PowerSDR
         {
             
             // DG8MG: Test me!
-            // Extention for Charly 25 / HAMlab edition
+            // Extension for Charly 25 / HAMlab edition
             if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {
                 panelRX2LevelCal.Visible = true;

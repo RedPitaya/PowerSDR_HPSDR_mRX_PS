@@ -133,9 +133,10 @@ namespace PowerSDR
         private RadioButtonTS radGenModelOrion;
         private RadioButtonTS radGenModelANAN100B;
         private RadioButtonTS radGenModelANAN10E;
+        
+        // DG8MG
         private RadioButtonTS radGenModelHAMlab;
         private RadioButtonTS radGenModelCharly25LC;
-
         // DG8MG
 
         private System.ComponentModel.Container components = null;
@@ -2057,7 +2058,6 @@ namespace PowerSDR
 
             //console.SetupForm.comboFRSRegion.Text = "United States";
             //console.CurrentRegion = FRSRegion.US;
-            
             // DG8MG
 
             ArrayList a = new ArrayList();

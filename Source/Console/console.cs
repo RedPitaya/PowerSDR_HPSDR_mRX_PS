@@ -30,7 +30,7 @@
 //
 // SoftRock and HPSDR Modifications Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Bill Tracey (kd5tfd)
 //
-// Charly 25LC and HAMlab Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25 and HAMlab Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
 //
 //#define INTERLEAVED
 //#define SPLIT_INTERLEAVED
@@ -371,7 +371,7 @@ namespace PowerSDR
         // STEP_ATTEN,
        
         // DG8MG
-        // Extension for C25 Attenuator and Preamp
+        // Extension for Charly 25 and HAMlab Attenuator and Preamp
         C25LC_MINUS36,
         C25LC_MINUS24,
         C25LC_MINUS18,
@@ -525,7 +525,7 @@ namespace PowerSDR
         Angelia = 4,
         Orion = 5,
         // DG8MG
-        // Extension for Charly 25LC and HAMlab hardware
+        // Extension for Charly 25 and HAMlab hardware
         RedPitaya = 10,
         // DG8MG
     }
@@ -1057,8 +1057,8 @@ namespace PowerSDR
 
         //public Midi2Cat.Midi2CatSetupForm Midi2Cat;
 
-        // DG8MG: Test me!
-        // Extension for Charly 25LC and HAMlab hardware
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         static private bool sdr_app_running = false;
         // DG8MG
 
@@ -1222,10 +1222,7 @@ namespace PowerSDR
         private System.Windows.Forms.CheckBoxTS ckQuickRec;
         private System.Windows.Forms.GroupBoxTS grpDisplaySplit;
         private System.Windows.Forms.CheckBoxTS chkDisplayPeak;
-        // DG8MG
-        // Changed to public for disabling the second RX in conjunction with Charly 25LC hardware
-        public System.Windows.Forms.CheckBoxTS chkRX2;
-        // DG8MG
+        private System.Windows.Forms.CheckBoxTS chkRX2;
         private System.Windows.Forms.CheckBoxTS chkRX2SR;
         private System.Windows.Forms.Panel panelVFOASubHover;
         private System.Windows.Forms.RadioButtonTS radRX2ModeAM;
@@ -1870,11 +1867,25 @@ namespace PowerSDR
                 w.ShowDialog();
             }
 
-            if (rx1_meter_cal_offset == 0.0f)
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+            {
+                if (rx1_meter_cal_offset == 0.0f)
+                {
+                    rx1_meter_cal_offset = -2.44f;
+                }
+                if (rx2_meter_cal_offset == 0.0f)
+                {
+                    rx2_meter_cal_offset = -2.44f;
+                }
+            }
+            else if(rx1_meter_cal_offset == 0.0f)
             {
                 rx1_meter_cal_offset = -2.44f;
                 rx2_meter_cal_offset = -2.44f;
             }
+            // DG8MG
 
             if (rx1_display_cal_offset == 0.0f)
             {
@@ -7748,7 +7759,7 @@ namespace PowerSDR
                     case Band.B30M:
 
                         // DG8MG
-                        // Extension for C25 Preamp and Attenuator 
+                        // Extension for Charly 25 and HAMlab Attenuator and Preamp
                         if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
                         {
                             rx1_preamp_by_band[i] = PreampMode.C25LC_OFF;
@@ -7988,7 +7999,7 @@ namespace PowerSDR
             new_meter_data = -200.0f;
 
             // DG8MG
-            // Extended the array from 7 to 18 for C25 Preamp and Attenuator 
+            // Extended the array from 7 to 18 for Charly 25 and HAMlab Attenuator and Preamp
             rx1_preamp_offset = new float[18];
             // DG8MG
 
@@ -8007,7 +8018,7 @@ namespace PowerSDR
             // rx1_preamp_offset[(int)PreampMode.STEP_ATTEN] = (float)RX1AttenuatorData;
 
             // DG8MG
-            // Extension for C25 Preamp and Attenuator 
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
             rx1_preamp_offset[(int)PreampMode.C25LC_MINUS36] = 36.0f;
             rx1_preamp_offset[(int)PreampMode.C25LC_MINUS24] = 24.0f;
             rx1_preamp_offset[(int)PreampMode.C25LC_MINUS18] = 18.0f;
@@ -8022,7 +8033,7 @@ namespace PowerSDR
             // DG8MG
 
             // DG8MG
-            // Extended the array from 8 to 18 for C25 RX2 Preamp and Attenuator 
+            // Extended the array from 8 to 18 for Charly 25 and HAMlab RX2 Attenuator and Preamp
             rx2_preamp_offset = new float[18];
             // DG8MG
 
@@ -8033,7 +8044,7 @@ namespace PowerSDR
             rx2_preamp_offset[(int)PreampMode.HPSDR_MINUS30] = 30.0f;
 
             // DG8MG
-            // Extension for C25 RX2 Preamp and Attenuator 
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
             rx2_preamp_offset[(int)PreampMode.C25LC_MINUS36] = 36.0f;
             rx2_preamp_offset[(int)PreampMode.C25LC_MINUS24] = 24.0f;
             rx2_preamp_offset[(int)PreampMode.C25LC_MINUS18] = 18.0f;
@@ -8347,7 +8358,7 @@ namespace PowerSDR
             SetupForm.RestoreNotchesFromDatabase();
 
 			// DG8MG
-			// Extention for Charly 25LC and HAMlab hardware
+			// Extension for Charly 25 and HAMlab hardware
             sdr_app_running = false;
 			// DG8MG
     }
@@ -13436,7 +13447,7 @@ namespace PowerSDR
             }
 
             // DG8MG
-            // Extention for Charly 25LC and HAMlab hardware
+            // Extension for Charly 25 and HAMlab hardware
             if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
             {
                 switch (b)
@@ -16242,7 +16253,7 @@ namespace PowerSDR
             PreampMode preamp = RX1PreampMode;              // save current preamp mode
 
             // DG8MG
-            // Extension for C25 Preamp and Attenuator
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
             {
                 RX1PreampMode = PreampMode.C25LC_OFF;			// set preamp to 0dB
@@ -16265,7 +16276,7 @@ namespace PowerSDR
             int progress_divisor;
 
             // DG8MG
-            // Extension for C25 Preamp and Attenuator
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
             {
                 progress_divisor = 550;
@@ -16389,7 +16400,7 @@ namespace PowerSDR
             avg = num / 50.0f;
 
             // DG8MG
-            // Extension for C25 Preamp and Attenuator
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
             {
                 float current_offset = 0;
@@ -16762,7 +16773,15 @@ namespace PowerSDR
             // calculate the difference between the current value and the correct multimeter value
             float diff = level - (avg + rx1_meter_cal_offset + rx1_preamp_offset[(int)rx1_preamp_mode]);
             rx1_meter_cal_offset += diff;
-            rx2_meter_cal_offset = rx1_meter_cal_offset;
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
+            // Taking over the RX1 value for RX2 is only needed if no Charly 25 or HAMlab hardware is active, because Charly 25 and HAMlab hardware have their own RX2 calibration routine!
+            if (current_hpsdr_model != HPSDRModel.CHARLY25LC && current_hpsdr_model != HPSDRModel.HAMLAB)
+            {
+                rx2_meter_cal_offset = rx1_meter_cal_offset;
+            }
+            // DG8MG
 
             // calculate the difference between the current value and the correct spectrum value
             diff = level - (avg2 + rx1_display_cal_offset + rx1_preamp_offset[(int)rx1_preamp_mode]);
@@ -16841,19 +16860,17 @@ namespace PowerSDR
             return ret_val;
         }
 
-        public bool CalibrateRX2Level(float level, float freq, Progress progress, bool suppress_errors)
+        public bool CalibrateRX2Level_Charly25(float level, float freq, Progress progress, bool suppress_errors)
         {
-            // DG8MG
-            // Begin of new CalibrateRX2Level function code
-
+            // DG8MG: Test me!
             // Calibration routine called by Setup Form.
             bool ret_val = false;
             calibration_running = true;
-            if (!chkPower.Checked)
+            if (!chkPower.Checked || !chkRX2.Checked)
             {
                 if (!suppress_errors)
                 {
-                    MessageBox.Show("Power must be on in order to calibrate RX Level.", "Power Is Off",
+                    MessageBox.Show("Power and RX2 must be on in order to calibrate RX2 Level.", "Power/RX2 Is Off",
                         MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
                 calibration_running = false;
@@ -16862,7 +16879,7 @@ namespace PowerSDR
 
             int ss = 0;                                     // select receiver for spectrum data
 
-            int fft_size = specRX.GetSpecRX(0).FFTSize;     // get fft_size
+            int fft_size = specRX.GetSpecRX(1).FFTSize;     // get fft_size
             double[,] buf = new double[fft_size, 2];        // buffer for complex spectrum data
             double[] sum = new double[fft_size];            // buffer for "averaged" spectrum data
 
@@ -16870,66 +16887,52 @@ namespace PowerSDR
 
             //~~~~~
 
-            double vfoa = VFOAFreq;								// save current VFOA
+            double vfob = VFOBFreq;								// save current VFOB
 
             bool rit_on = chkRIT.Checked;						// save current RIT On
             chkRIT.Checked = false;								// turn RIT off
             int rit_val = (int)udRIT.Value;						// save current RIT value
 
-            string display = comboDisplayMode.Text;
-            comboDisplayMode.Text = "Panadapter";
+            string display = comboRX2DisplayMode.Text;
+            comboRX2DisplayMode.Text = "Panadapter";
 
             int dsp_buf_size = SetupForm.DSPPhoneRXBuffer;		// save current DSP buffer size
             SetupForm.DSPPhoneRXBuffer = 16384;					// set DSP Buffer Size to 16384
 
-            DSPMode dsp_mode = rx1_dsp_mode;				// save current DSP demod mode
-            RX1DSPMode = DSPMode.AM;						// set mode to CWU
+            DSPMode dsp_mode = rx2_dsp_mode;				// save current DSP demod mode
+            RX2DSPMode = DSPMode.AM;						// set mode to AM
 
-            VFOAFreq = freq;									// set VFOA frequency
+            VFOBFreq = freq;									// set VFOB frequency
 
-            bool step_attn = SetupForm.HermesEnableAttenuator;
-            SetupForm.HermesEnableAttenuator = false;
-            PreampMode preamp = RX1PreampMode;              // save current preamp mode
+            PreampMode preamp = RX2PreampMode;              // save current preamp mode
 
-            // DG8MG
-            // Extension for C25 Preamp and Attenuator
-            if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
-            {
-                RX1PreampMode = PreampMode.C25LC_OFF;			// set preamp to 0dB
-            }
-            else
-            {
-                RX1PreampMode = PreampMode.HPSDR_ON;			// set to high
-            }
-            // DG8MG
+            RX2PreampMode = PreampMode.C25LC_OFF;			// set preamp to 0dB
 
-            MeterRXMode rx_meter = CurrentMeterRXMode;			// save current RX Meter mode
-            CurrentMeterRXMode = MeterRXMode.OFF;				// turn RX Meter off
+            MeterRXMode rx_meter = RX2MeterMode;			    // save current RX Meter mode
+            RX2MeterMode = MeterRXMode.OFF;				        // turn RX2 Meter off
 
-            float old_multimeter_cal = rx1_meter_cal_offset;
-            float old_display_cal = rx1_display_cal_offset;
+            float old_multimeter_cal = rx2_meter_cal_offset;
+            float old_display_cal = rx2_display_cal_offset;
 
             int progress_divisor;
 
-            // DG8MG
-            // Extension for C25 Preamp and Attenuator
-            if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
+            // DG8MG: Implement me!
+            // Check if Preamps and Attenuators for RX2 are present
+            /*
+            if (...)
             {
                 progress_divisor = 550;
             }
-            else if (alexpresent)
-            {
-                progress_divisor = 390;
-            }
             else
+            */
             {
-                progress_divisor = 120;
+                progress_divisor = 100;
             }
             // DG8MG
 
-            comboPreamp.Enabled = false;
-            comboDisplayMode.Enabled = false;
-            comboMeterRXMode.Enabled = false;
+            comboRX2Preamp.Enabled = false;
+            comboRX2DisplayMode.Enabled = false;
+            comboRX2MeterMode.Enabled = false;
 
             progress.SetPercent(0.0f);
             int counter = 0;
@@ -16945,7 +16948,7 @@ namespace PowerSDR
             for (int i = 0; i < iterations; i++)
             {
                 fixed (double* ptr = &buf[0, 0])
-                    SpecHPSDRDLL.SnapSpectrum(0, ss, 0, ptr);                   // get a spectrum
+                    SpecHPSDRDLL.SnapSpectrum(1, ss, 0, ptr);                   // get a spectrum
 
                 for (int j = fft_size / 2 - offset; j <= fft_size / 2 + offset; j++)
                     sum[j] += 10.0 * Math.Log10(buf[j, 0] * buf[j, 0] + buf[j, 1] * buf[j, 1]);     // compute dB level for each bin and add to previous for averaging
@@ -16976,15 +16979,15 @@ namespace PowerSDR
             maxsumsq = 0.0;
             Array.Clear(sum, 0, fft_size);
 
-            rx1_meter_cal_offset = 0.0f;
-            rx1_display_cal_offset = 0.0f;
+            rx2_meter_cal_offset = 0.0f;
+            rx2_display_cal_offset = 0.0f;
             float num = 0.0f, num2 = 0.0f, avg2 = 0.0f;
             float avg = 0.0f;
             // get the value of the signal strength meter
             Thread.Sleep(1000);
             for (int i = 0; i < 50; i++)
             {
-                num += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                num += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                 Thread.Sleep(50);
                 if (!progress.Visible)
                     goto end;
@@ -16992,21 +16995,22 @@ namespace PowerSDR
             }
             avg = num / 50.0f;
 
-            // DG8MG
-            // Extension for C25 Preamp and Attenuator
-            if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
+            // DG8MG: Implement me!
+            // Check if Preamps and Attenuators for RX2 are present               
+            /*
+            if (...)           
             {
                 float current_offset = 0;
 
                 // Set attenuator to -36dB
-                RX1PreampMode = PreampMode.C25LC_MINUS36;
+                RX2PreampMode = PreampMode.C25LC_MINUS36;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17014,17 +17018,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS36] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS36] = -current_offset;
 
                 // Set attenuator to -24dB
-                RX1PreampMode = PreampMode.C25LC_MINUS24;
+                RX2PreampMode = PreampMode.C25LC_MINUS24;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17032,17 +17036,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS24] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS24] = -current_offset;
 
                 // Set attenuator to -18dB
-                RX1PreampMode = PreampMode.C25LC_MINUS18;
+                RX2PreampMode = PreampMode.C25LC_MINUS18;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17050,17 +17054,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS18] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS18] = -current_offset;
 
                 // Set attenuator to -12dB
-                RX1PreampMode = PreampMode.C25LC_MINUS12;
+                RX2PreampMode = PreampMode.C25LC_MINUS12;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17068,17 +17072,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS12] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS12] = -current_offset;
 
                 // Set attenuator to -6dB
-                RX1PreampMode = PreampMode.C25LC_MINUS6;
+                RX2PreampMode = PreampMode.C25LC_MINUS6;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17086,17 +17090,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS6] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS6] = -current_offset;
 
                 // Set preamp to 6dB
-                RX1PreampMode = PreampMode.C25LC_PLUS6;
+                RX2PreampMode = PreampMode.C25LC_PLUS6;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17104,17 +17108,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS6] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS6] = -current_offset;
 
                 // Set preamp to 12dB
-                RX1PreampMode = PreampMode.C25LC_PLUS12;
+                RX2PreampMode = PreampMode.C25LC_PLUS12;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17122,17 +17126,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS12] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS12] = -current_offset;
 
                 // Set preamp to 18dB
-                RX1PreampMode = PreampMode.C25LC_PLUS18;
+                RX2PreampMode = PreampMode.C25LC_PLUS18;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17140,17 +17144,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS18] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS18] = -current_offset;
 
                 // Set preamp to 24dB
-                RX1PreampMode = PreampMode.C25LC_PLUS24;
+                RX2PreampMode = PreampMode.C25LC_PLUS24;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17158,17 +17162,17 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS24] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS24] = -current_offset;
 
                 // Set preamp to 36dB
-                RX1PreampMode = PreampMode.C25LC_PLUS36;
+                RX2PreampMode = PreampMode.C25LC_PLUS36;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
@@ -17176,145 +17180,31 @@ namespace PowerSDR
                 }
                 avg2 = num2 / 50.0f;
                 current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS36] = -current_offset;
+                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS36] = -current_offset;
 
-                RX1PreampMode = PreampMode.C25LC_OFF;  // set preamp to 0dB
+                RX2PreampMode = PreampMode.C25LC_OFF;  // set preamp to 0dB
             }
-            else
+            else  // No RX2 preamps and attenuators present
+            */
             {
-                RX1PreampMode = PreampMode.HPSDR_OFF;
+                // Set preamp to 0dB
+                RX2PreampMode = PreampMode.C25LC_OFF;
                 Thread.Sleep(100);
-
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
                 for (int i = 0; i < 50; i++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                     Thread.Sleep(50);
                     if (!progress.Visible)
                         goto end;
                     else progress.SetPercent((float)((float)++counter / progress_divisor));
                 }
                 avg2 = num2 / 50.0f;
-
                 float off_offset = avg2 - avg;
 
-                rx1_preamp_offset[(int)PreampMode.HPSDR_OFF] = -off_offset;
-                rx1_preamp_offset[(int)PreampMode.HPSDR_ON] = 0.0f;
-                rx2_preamp_offset[(int)PreampMode.HPSDR_OFF] = -off_offset;
-                rx2_preamp_offset[(int)PreampMode.HPSDR_ON] = 0.0f;
-
-                if (alexpresent && !ANAN10Present && !ANAN10EPresent /* && !ANAN100BPresent*/)
-                {
-                    RX1PreampMode = PreampMode.HPSDR_MINUS10; //-10dB
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus10_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS10] = -minus10_offset;
-
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS20; //-20dB
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus20_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS20] = -minus20_offset;
-
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS30; //-30dB
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f; avg2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus30_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS30] = -minus30_offset;
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS40; //-40dB
-
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus40_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS40] = -minus40_offset;
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS50;
-
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus50_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS50] = -minus50_offset;
-
-                    System.Console.WriteLine("minus10_offset: " + minus10_offset);
-                    System.Console.WriteLine("minus20_offset: " + minus20_offset);
-                    System.Console.WriteLine("minus30_offset: " + minus30_offset);
-                    System.Console.WriteLine("minus40_offset: " + minus40_offset);
-                    System.Console.WriteLine("minus50_offset: " + minus50_offset);
-                }
-                System.Console.WriteLine("off_offset: " + off_offset);
-                System.Console.WriteLine("Counter @ end: " + counter);
-                RX1PreampMode = PreampMode.HPSDR_ON;
+                rx2_preamp_offset[(int)PreampMode.C25LC_OFF] = -off_offset;
             }
             // DG8MG
 
@@ -17326,7 +17216,7 @@ namespace PowerSDR
             for (int i = 0; i < iterations; i++)            // average 10 spectra to reduce noise
             {
                 fixed (double* ptr = &buf[0, 0])
-                    SpecHPSDRDLL.SnapSpectrum(0, ss, 0, ptr);                   // get a spectrum
+                    SpecHPSDRDLL.SnapSpectrum(1, ss, 0, ptr);                   // get a spectrum
                 for (int j = fft_size / 2 - offset; j <= fft_size / 2 + offset; j++)
                     sum[j] += buf[j, 0] * buf[j, 0] + buf[j, 1] * buf[j, 1];    // compute magnitude^2 and add to sum
                 Thread.Sleep(20);                                               // wait a little for noise to change
@@ -17340,14 +17230,13 @@ namespace PowerSDR
             avg2 = 10.0f * (float)Math.Log10(maxsumsq / iterations / Math.Pow(fft_size, 2));
 
             // calculate the difference between the current value and the correct multimeter value
-            float diff = level - (avg + rx1_meter_cal_offset + rx1_preamp_offset[(int)rx1_preamp_mode]);
-            rx1_meter_cal_offset += diff;
-            rx2_meter_cal_offset = rx1_meter_cal_offset;
+            float diff = level - (avg + rx2_meter_cal_offset + rx2_preamp_offset[(int)rx2_preamp_mode]);
+            rx2_meter_cal_offset += diff;
 
             // calculate the difference between the current value and the correct spectrum value
-            diff = level - (avg2 + rx1_display_cal_offset + rx1_preamp_offset[(int)rx1_preamp_mode]);
+            diff = level - (avg2 + rx2_display_cal_offset + rx2_preamp_offset[(int)rx2_preamp_mode]);
 
-            RX1DisplayCalOffset += diff;
+            RX2DisplayCalOffset += diff;
 
             ret_val = true;
 
@@ -17355,37 +17244,31 @@ namespace PowerSDR
             if (!progress.Visible) progress.Text = "";
             progress.Hide();
 
-            comboPreamp.Enabled = true;
-            comboDisplayMode.Enabled = true;
-            comboMeterRXMode.Enabled = true;
+            comboRX2Preamp.Enabled = true;
+            comboRX2DisplayMode.Enabled = true;
+            comboRX2MeterMode.Enabled = true;
 
             if (ret_val == false)
             {
-                rx1_meter_cal_offset = old_multimeter_cal;
-                rx1_display_cal_offset = old_display_cal;
+                rx2_meter_cal_offset = old_multimeter_cal;
+                rx2_display_cal_offset = old_display_cal;
             }
 
-            comboDisplayMode.Text = display;
+            comboRX2DisplayMode.Text = display;                 // restore RX2 display text
             chkRIT.Checked = rit_on;							// restore RIT on
             udRIT.Value = rit_val;                              // restore RIT value
 
-            RX1PreampMode = preamp;					        	// restore preamp value
-            SetupForm.HermesEnableAttenuator = step_attn;
-            RX1DSPMode = dsp_mode;						    	// restore DSP mode
+            RX2PreampMode = preamp;					        	// restore RX2 preamp value
+            RX2DSPMode = dsp_mode;						    	// restore RX2 DSP mode
             SetupForm.DSPPhoneRXBuffer = dsp_buf_size;		    // restore DSP Buffer Size
-            VFOAFreq = vfoa;									// restore vfo frequency
-            CurrentMeterRXMode = rx_meter;						// restore RX Meter mode
+            VFOBFreq = vfob;									// restore VFOB frequency
+            RX2MeterMode = rx_meter;						    // restore RX2 Meter mode
 
             calibration_running = false;
             return ret_val;
-        }
-        
-        // End of new CalibrateRX2Level function code segment
+        }    
         // DG8MG
 
-        // DG8MG
-        // Begin of old CalibrateRX2Level function code segment
-        /*
         public bool CalibrateRX2Level(float level, float freq, Progress progress, bool suppress_errors)
         {
             // Calibration routine called by Setup Form.
@@ -17669,10 +17552,6 @@ namespace PowerSDR
                 calibration_running = false;
                 return ret_val;
         }
-        */
-
-        // End of old CalibrateRX2Level function code segment
-        // DG8MG
 
         public bool CalibratePAGain(Progress progress, bool[] run, int target_watts) // calibrate PA Gain values
         {
@@ -19632,10 +19511,35 @@ namespace PowerSDR
             {
                 case DisplayMode.WATERFALL:
                 case DisplayMode.PANADAPTER:
-                    Display.RX2DisplayCalOffset = rx1_display_cal_offset + rx2_xvtr_gain_offset;
+
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
+                    if (current_hpsdr_model  == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    {
+                        Display.RX2DisplayCalOffset = rx2_display_cal_offset + rx2_xvtr_gain_offset;
+                    }
+                    else
+                    {
+                        Display.RX2DisplayCalOffset = rx1_display_cal_offset + rx2_xvtr_gain_offset;
+                    }
+                    // DG8MG
+                                        
                     break;
+
                 default:
-                    Display.RX2DisplayCalOffset = rx1_display_cal_offset + rx2_path_offset + rx2_xvtr_gain_offset;
+
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    {
+                        Display.RX2DisplayCalOffset = rx2_display_cal_offset + rx2_path_offset + rx2_xvtr_gain_offset;
+                    }
+                    else
+                    {
+                        Display.RX2DisplayCalOffset = rx1_display_cal_offset + rx2_path_offset + rx2_xvtr_gain_offset;
+                    }
+                    // DG8MG
+
                     break;
             }
         }
@@ -20633,7 +20537,17 @@ namespace PowerSDR
             set
             {
                 rx1_display_cal_offset = value;
-                RX2DisplayCalOffset = value;
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                // Taking over the RX1 value for RX2 is only needed if no Charly 25 or HAMlab hardware is active, because Charly 25 and HAMlab hardware have their own RX2 calibration routine!
+                if (current_hpsdr_model != HPSDRModel.CHARLY25LC && current_hpsdr_model != HPSDRModel.HAMLAB)
+                {
+                    RX2DisplayCalOffset = value; 
+                }
+                // DG8MG
+
+                
                 //  UpdateDisplayOffsets();
             }
         }
@@ -21948,7 +21862,7 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25LC / HAMlab edition of PowerSDR, so the program starts with Charly 25LC as default hardware
+        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with Charly 25LC as default hardware
         private HPSDRModel current_hpsdr_model = HPSDRModel.CHARLY25LC;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG
@@ -26158,7 +26072,7 @@ namespace PowerSDR
                         break;
 
                     // DG8MG
-                    // Extension for C25 Preamp and Attenuator 
+                    // Extension for Charly 25 and HAMlab Attenuator and Preamp 
                     case PreampMode.C25LC_MINUS36:
                         rx1_att_value = 0;
                         merc_preamp = 0;  // No preamp active 
@@ -26228,7 +26142,7 @@ namespace PowerSDR
                 }
 
                 // DG8MG
-                // Check if the special Charly 25LC hardware is present
+                // Check if Charly 25 or HAMlab hardware is present
                 if (current_hpsdr_model != HPSDRModel.HPSDR && current_hpsdr_model != HPSDRModel.CHARLY25LC && current_hpsdr_model != HPSDRModel.HAMLAB)
                 {
                     if (!rx1_step_att_present)
@@ -26237,7 +26151,7 @@ namespace PowerSDR
                         JanusAudio.EnableADC1StepAtten(1);
                     }
                 }
-                // Check if Charly 25LC hardware is present
+                // Check if Charly 25 or HAMlab hardware is present
                 else if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
                     JanusAudio.SetRX1Preamp_Charly25LC(merc_preamp);
@@ -26292,7 +26206,7 @@ namespace PowerSDR
                         break;
 
                     // DG8MG
-                    // Extension for C25 Preamp and Attenuator
+                    // Extension for Charly 25 and HAMlab Attenuator and Preamp
                     case PreampMode.C25LC_MINUS36:
                         comboPreamp.Text = "-36dB";
                         lblPreamp.Text = "ATT";
@@ -31449,7 +31363,7 @@ namespace PowerSDR
                             rx2PreampOffset = rx2_preamp_offset[(int)rx2_preamp_mode];
                     }
 
-                    // DG8MG
+                    // DG8MG: Test me!
                     else if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
                         rx2PreampOffset = rx2_preamp_offset[(int)rx2_preamp_mode];
@@ -31472,24 +31386,63 @@ namespace PowerSDR
                         case MeterRXMode.SIGNAL_STRENGTH:
                             num = wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.SIGNAL_STRENGTH);
 
-                            if (rx2_preamp_present)
+                            // DG8MG
+                            // Extension for Charly 25 and HAMlab hardware
+                            if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                             {
-                                if (alexpresent)
+                                num = num +
+                                  rx2_meter_cal_offset +
+                                  rx2PreampOffset +
+                                  rx2_xvtr_gain_offset;
+                            }
+                            else
+                            {
+                                // DG8MG
+                                if (rx2_preamp_present)
                                 {
-                                    num = num +
-                                       rx1_meter_cal_offset +
-                                       rx2PreampOffset +
-                                        //rx2_filter_size_cal_offset +
-                                       rx2_xvtr_gain_offset;
+                                    if (alexpresent)
+                                    {
+                                        num = num +
+                                          rx1_meter_cal_offset +
+                                          rx2PreampOffset +
+                                          //rx2_filter_size_cal_offset +
+                                          rx2_xvtr_gain_offset;
+                                    }
+                                    else
+                                    {
+                                        num = num +
+                                          rx1_meter_cal_offset +
+                                          rx2PreampOffset +
+                                          //rx2_filter_size_cal_offset +
+                                          rx2_xvtr_gain_offset;
+                                    }
                                 }
                                 else
                                 {
                                     num = num +
-                                       rx1_meter_cal_offset +
-                                       rx2PreampOffset +
-                                        //rx2_filter_size_cal_offset +
-                                       rx2_xvtr_gain_offset;
+                                      rx1_meter_cal_offset +
+                                      rx2PreampOffset +
+                                      //rx2_filter_size_cal_offset +
+                                      rx2_xvtr_gain_offset;
                                 }
+                            }
+                            rx2_meter_new_data = num;
+                            break;
+                        case MeterRXMode.SIGNAL_AVERAGE:
+                            //num = wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.SIGNAL_STRENGTH);
+                            num = wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                            //if (rx2_meter_avg == Display.CLEAR_FLAG) rx2_meter_avg = num;
+                            //num = multimeter_avg_mult_old * rx2_meter_avg + multimeter_avg_mult_new * num;
+                            //rx2_meter_avg = num;
+
+                            // DG8MG
+                            // Extension for Charly 25 and HAMlab hardware
+                            if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                            {
+                                num = num +
+                                  rx2_meter_cal_offset +
+                                  rx2PreampOffset +
+                                  rx2_xvtr_gain_offset;
                             }
                             else
                             {
@@ -31499,20 +31452,8 @@ namespace PowerSDR
                                     //rx2_filter_size_cal_offset +
                                   rx2_xvtr_gain_offset;
                             }
+                            // DG8MG
 
-                            rx2_meter_new_data = num;
-                            break;
-                        case MeterRXMode.SIGNAL_AVERAGE:
-                            //num = wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.SIGNAL_STRENGTH);
-                            num = wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                            //if (rx2_meter_avg == Display.CLEAR_FLAG) rx2_meter_avg = num;
-                            //num = multimeter_avg_mult_old * rx2_meter_avg + multimeter_avg_mult_new * num;
-                            //rx2_meter_avg = num;
-                            num = num +
-                             rx1_meter_cal_offset +
-                             rx2PreampOffset +
-                                //rx2_filter_size_cal_offset +
-                             rx2_xvtr_gain_offset;
                             rx2_meter_new_data = num;
                             break;
                         case MeterRXMode.ADC_L:
@@ -31904,13 +31845,25 @@ namespace PowerSDR
                 // else rx2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
                 //Debug.WriteLine("SQL Read: "+num.ToString("f1"));
 
-                num = num +
-                    rx1_meter_cal_offset +
-                    // rx1_preamp_offset[(int)rx1_preamp_mode] +
-                    Display.RX2PreampOffset;
-                //+ rx2PreampOffset +
-                //rx2_filter_size_cal_offset;// +
-                //rx2_path_offset;
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                {
+                    num = num +
+                        rx2_meter_cal_offset +
+                        Display.RX2PreampOffset;
+                }
+                else
+                {
+                    num = num +
+                        rx1_meter_cal_offset +
+                        // rx1_preamp_offset[(int)rx1_preamp_mode] +
+                        Display.RX2PreampOffset;
+                    //+ rx2PreampOffset +
+                    //rx2_filter_size_cal_offset;// +
+                    //rx2_path_offset;
+                }
+                // DG8MG
 
                 rx2_sql_data = num;
                 picRX2Squelch.Invalidate();
@@ -32108,6 +32061,15 @@ namespace PowerSDR
                 if ((dotdashptt & 0x02) != (last_bmp & 0x02))
                 {
                     FWDash = state;
+
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    {
+                        SetConsoleMox(state);
+                    }
+                    // DG8MG
+
                     // SetConsoleMox(state);
                 }
 
@@ -32115,6 +32077,15 @@ namespace PowerSDR
                 if ((dotdashptt & 0x04) != (last_bmp & 0x04))
                 {
                     FWDot = state;
+                    
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    {
+                        SetConsoleMox(state);
+                    }
+                    // DG8MG
+
                     //SetConsoleMox(state);
 
                 }
@@ -34331,7 +34302,7 @@ namespace PowerSDR
                 }
 
                 // DG8MG: Test me!
-                // Extension for Charly 25LC and HAMlab hardware
+                // Extension for Charly 25 and HAMlab hardware
                 else
                 {
                     sdr_app_running = true;
@@ -34564,8 +34535,8 @@ namespace PowerSDR
                         poll_cw_thread.Abort();
                 }
 
-                // DG8MG: Test me!
-                // Extension for Charly 25LC and HAMlab hardware
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
                 if ((sdr_app_running == true) && (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB))
                 {
                     try
@@ -35051,7 +35022,7 @@ namespace PowerSDR
                     break;
 
                 // DG8MG
-                // Extension for C25 Preamp and Attenuator
+                // Extension for Charly 25 and HAMlab Attenuator and Preamp
                 case "-36dB":
                     mode = PreampMode.C25LC_MINUS36;
                     break;
@@ -35694,19 +35665,54 @@ namespace PowerSDR
                 }
 
                 // Hdw.TransmitRelay = true;
-                if (cw_fw_keyer &&
-                    (RX1DSPMode == DSPMode.CWL || RX1DSPMode == DSPMode.CWU) &&
-                     !chkTUN.Checked &&
-                     current_ptt_mode != PTTMode.SPACE &&
-                    current_ptt_mode != PTTMode.CAT)
-                    JanusAudio.SetXmitBit(0);
-                else JanusAudio.SetXmitBit(1);
+
+                // DG8MG: Test me!
+                // Extension for the Charly 25 and HAMlab hardware
+                if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                {
+                    Audio.two_tone = false;
+                    Audio.SineFreq1 = 1500.0;
+                    Audio.RX1OutputSignal = Audio.SignalSource.SINE;
+
+                    JanusAudio.SetXmitBit(1);
+                }
+                else
+                {
+                    if (cw_fw_keyer &&
+                        (RX1DSPMode == DSPMode.CWL || RX1DSPMode == DSPMode.CWU) &&
+                         !chkTUN.Checked &&
+                         current_ptt_mode != PTTMode.SPACE &&
+                         current_ptt_mode != PTTMode.CAT)
+                        JanusAudio.SetXmitBit(0);
+                    else JanusAudio.SetXmitBit(1);
+                }
+                // DG8MG
 
                 if (serialPTT != null) serialPTT.setDTR(true);
 
             }
             else // rx
             {
+                // DG8MG: Test me!
+                // Extension for the Charly 25 and HAMlab hardware
+                if ((current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB) && (RX1DSPMode == DSPMode.CWL || RX1DSPMode == DSPMode.CWU))
+                {
+                    Thread.Sleep((int)udCWBreakInDelay.Value + key_up_delay);
+
+                    Audio.RX1OutputSignal = Audio.SignalSource.RADIO;
+
+                    /*
+                    radio.GetDSPRX(0, 0).RXPreGenMode = 0;
+                    radio.GetDSPRX(0, 0).RXPreGenToneMag = Math.Pow(10, (double) -10 / 20.0);
+                    radio.GetDSPRX(0, 0).RXPreGenToneFreq = (double)udCWPitch.Value;
+
+                    radio.GetDSPRX(1, 0).RXPreGenMode = 0;
+                    radio.GetDSPRX(1, 0).RXPreGenToneMag = Math.Pow(10, (double) -10 / 20.0);
+                    radio.GetDSPRX(1, 0).RXPreGenToneFreq = (double)udCWPitch.Value;
+                    */
+                }
+                // DG8MG
+                
                 JanusAudio.SetXmitBit(0);
 
                 // Hdw.TransmitRelay = false;
@@ -36106,7 +36112,7 @@ namespace PowerSDR
                 }
 
                 // DG8MG
-                // Extension for C25 Preamp and Attenuator 
+                // Extension for Charly 25 and HAMlab Attenuator and Preamp
                 if (attontx)
                 {
                     switch (current_hpsdr_model)
@@ -36232,7 +36238,7 @@ namespace PowerSDR
                 Audio.RX1BlankDisplayTX = blank_rx1_on_vfob_tx;
 
                 // DG8MG
-                // Extension for C25 Preamp and Attenuator 
+                // Extension for Charly 25 and HAMlab Attenuator and Preamp
                 if (attontx)
                 {
                     switch (current_hpsdr_model)
@@ -49126,7 +49132,7 @@ namespace PowerSDR
         private String[] alex_preamp_settings = { "-10db", "-20db", "-30db", "-40db", "-50db" };
 
         // DG8MG
-        // Extension for C25 Attenuator and Preamp
+        // Extension for Charly 25 and HAMlab Attenuator and Preamp
         private String[] C25LC_attenuator_settings = { "-36dB", "-24dB", "-18dB", "-12dB", "  -6dB" };
         private String[] C25LC_preamp_settings = { "   0dB", "   6dB", " 12dB", " 18dB", " 24dB", " 36dB" };
         // DG8MG
@@ -49142,7 +49148,7 @@ namespace PowerSDR
             comboPreamp.Items.Clear();
 
             // DG8MG
-            // Extension for C25 Preamp and Attenuator 
+            // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if (CurrentHPSDRModel == HPSDRModel.CHARLY25LC || CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {
                 comboPreamp.Items.AddRange(C25LC_attenuator_settings);
@@ -51064,7 +51070,7 @@ namespace PowerSDR
         }
 
         // DG8MG
-        // Extension for C25 Preamp and Attenuator
+        // Extension for Charly 25 and HAMlab Attenuator and Preamp
         private void lblPreamp_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (current_model != Model.HPSDR && current_model != Model.CHARLY25LC && current_model != Model.HAMLAB)
