@@ -111,7 +111,7 @@ function VCinstalled: Boolean;
       if not RegQueryStringValue(HKEY_LOCAL_MACHINE, key + '\' + names[i], 'DisplayName', dName) then
        dName := names[i];
       // See if the value contains both of the strings below.
-      Result := (Pos(Trim('Visual C++ ' + year),dName) * Pos('Redistributable',dName) <> 0)
+      Result := (Pos(Trim('Visual C++ ' + year),dName) * Pos('Redistributable (x86)',dName) <> 0)
       i := i + 1;
      end;
    end;
