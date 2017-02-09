@@ -28,6 +28,7 @@ namespace PowerSDR
     using System.Net;
     using System.Net.Sockets;
     using System.Net.NetworkInformation;
+    
     // DG8MG
     using System.Windows.Forms;
     // DG8MG
@@ -307,6 +308,7 @@ namespace PowerSDR
                         }
                         catch
                         {
+                            // Exception occurred during SDR application startup attempt
                             if (cleanup)
                                 Win32.WSACleanup();
                             return -1;
@@ -371,6 +373,7 @@ namespace PowerSDR
                         }
                         catch
                         {
+                            // Exception occurred during SDR application startup attempt
                             if (cleanup)
                                 Win32.WSACleanup();
                             return -1;
@@ -419,6 +422,8 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
+                    Metis_IP_address = "";
+
                     Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices = GetAllRedPitayaDevicesOnLAN();
 
                     switch (allRedPitayaDevices.Count)
@@ -427,10 +432,10 @@ namespace PowerSDR
                         {
                             // DG8MG: Test me!
                             // No Charly 25 / HAMlab device was detected on the network
-                            // MessageBox.Show("Please power up your Charly 25 / HAMlab before using the autosensing mode!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Please power up your Charly 25 / HAMlab before using the autosensing mode!", "No Charly 25 / HAMlab device detected on the network", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             break;
                         }
-
+                        
                         case 1:
                         {
                             foreach (KeyValuePair<IPAddress, PhysicalAddress> pair in allRedPitayaDevices)
@@ -439,29 +444,6 @@ namespace PowerSDR
                                 Metis_IP_address = pair.Key.ToString();
                                 break;
                             }
-                                try
-                                {
-                                    System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
-                                    var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
-                                    var url = string.Format(rp_app_string);
-                                    var webClient = new WebClient();
-                                    var response = webClient.DownloadString(url);
-                                    System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
-                                }
-                                catch
-                                {
-                                    // Exception occurred during SDR application startup attempt
-                                    break;
-                                }
-
-                            // Try to discover the running SDR application on the RedPitaya via any available network interface
-                                foreach (IPAddress ipa in addrList)
-                            {
-                                if (DiscoverMetisOnPort(ref mhd, ipa, null))
-                                {
-                                    foundMetis = true;
-                                }
-                            }
                             break;
                         }
 
@@ -469,13 +451,45 @@ namespace PowerSDR
                         {
                             // DG8MG: Test me!
                             // More then one Charly 25 / HAMlab device was detected on the network
-                            MessageBox.Show("Please power up only one Charly 25 / HAMlab in your network environment when you are using the autosensing mode!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                            // DG8MG: Implement me!
                             // Choose the RedPitaya device you want to start up
-                            // ChooseRPDevice(allRedPitayaDevices, c);
+                            Metis_IP_address = ChooseRPDevice(allRedPitayaDevices, c).ToString();
                             break;
                         }
+                    }
+
+                    if (Metis_IP_address != "" && Metis_IP_address != "0.0.0.0")
+                    {
+                        try
+                        {
+                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                            var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
+                            var url = string.Format(rp_app_string);
+                            var webClient = new WebClient();
+                            var response = webClient.DownloadString(url);
+                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                        }
+                        catch
+                        {
+                            // Exception occurred during SDR application startup attempt
+                            if (cleanup)
+                                Win32.WSACleanup();
+                            return -1;
+                        }
+
+                        // Try to discover the running SDR application on the RedPitaya via any available network interface
+                        foreach (IPAddress ipa in addrList)
+                        {
+                            if (DiscoverMetisOnPort(ref mhd, ipa, null))
+                            {
+                                foundMetis = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (cleanup)
+                            Win32.WSACleanup();
+                        return -2;
                     }
                 }
                 else
@@ -835,11 +849,23 @@ namespace PowerSDR
         // returns -101 for firmware version error 
         unsafe public static int StartAudio(int sample_rate, int samples_per_block, PA19.PaStreamCallback cb, int sample_bits, int no_send)
         {
-            if (initOzy() != 0)
+            // DG8MG: Test me!
+            int result = initOzy();
+
+            if (result != 0)
             {
-                return 1;
+                if (result == -2)
+                {
+                    return -2;
+                }
+                else
+                {
+                    return 1;
+                }
             }
-            int result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send);
+            
+            result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send);
+            // DG8MG
 
             if (result == 0 && !fwVersionsChecked)
             {
@@ -1492,9 +1518,25 @@ namespace PowerSDR
         {
             IPAddress rpIPAddress = new IPAddress(0);
 
+            if (c.rpdeviceForm == null || c.rpdeviceForm.IsDisposed)
+                c.rpdeviceForm = new RPDeviceForm();
+
+            c.rpdeviceForm.lbChooseDevice.Items.Clear();
+
             foreach (KeyValuePair<IPAddress, PhysicalAddress> pair in allRedPitayaDevices)
             {
+                c.rpdeviceForm.lbChooseDevice.Items.Add("IP Address: " + pair.Key + " - MAC Address: " + pair.Value + " - URL: http://rp-" + pair.Value.ToString().Remove(0, 6));
             }
+            
+            if (c.rpdeviceForm.ShowDialog() == DialogResult.Cancel)
+            {
+                return rpIPAddress;
+            }
+            
+            String ChosenDevice = c.rpdeviceForm.lbChooseDevice.SelectedItem.ToString().Remove(0, 12);
+            ChosenDevice = ChosenDevice.Remove(ChosenDevice.IndexOf(' '));
+
+            rpIPAddress = IPAddress.Parse(ChosenDevice);                      
             return rpIPAddress;
         }
         

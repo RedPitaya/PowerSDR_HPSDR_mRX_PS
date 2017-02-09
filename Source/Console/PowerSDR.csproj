@@ -365,6 +365,12 @@
     <Compile Include="ringbuffer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rpdeviceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="rpdeviceForm.Designer.cs">
+      <DependentUpon>rpdeviceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="setup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -487,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RAForm.resx">
       <DependentUpon>RAForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpdeviceForm.resx">
+      <DependentUpon>rpdeviceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="setup.resx">
       <DependentUpon>setup.cs</DependentUpon>

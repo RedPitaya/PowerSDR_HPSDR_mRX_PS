@@ -617,9 +617,12 @@ namespace PowerSDR
         public FilterForm filterRX2Form;
         public DiversityForm diversityForm;
         public RAForm raForm;
-
         public RadioInfo radio_info;
         public ContactInfo contact_info;
+
+        // DG8MG
+        public RPDeviceForm rpdeviceForm;
+        // DG8MG
 
         // public bool buffiszero = false;
 
@@ -34489,15 +34492,21 @@ namespace PowerSDR
                 Audio.callback_return = 2;
                 JanusAudio.StopAudio();
 
-                if (vac_enabled)
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (sdr_app_running)
                 {
-                    Audio.StopAudioVAC();
-                }
+                    if (vac_enabled)
+                    {
+                        Audio.StopAudioVAC();
+                    }
 
-                if (vac2_enabled)
-                {
-                    Audio.StopAudioVAC2();
+                    if (vac2_enabled)
+                    {
+                        Audio.StopAudioVAC2();
+                    }
                 }
+                // DG8MG
 
                 if (draw_display_thread != null)
                 {
@@ -35666,7 +35675,7 @@ namespace PowerSDR
 
                 // Hdw.TransmitRelay = true;
 
-                // DG8MG: Test me!
+                // DG8MG: Test me! -> Sidetone generator needed!
                 // Extension for the Charly 25 and HAMlab hardware
                 if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
