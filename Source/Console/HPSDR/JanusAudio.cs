@@ -315,7 +315,7 @@ namespace PowerSDR
                         }
                     }
                     // DG8MG
-                    
+
                     System.Console.WriteLine(String.Format("Attempting fast re-connect to host adapter {0}, metis IP {1}", EthernetHostIPAddress, Metis_IP_address));
 
                     if (DiscoverMetisOnPort(ref mhd, hostIP, targetIP))
@@ -1446,6 +1446,10 @@ namespace PowerSDR
                     }
                 } while (data_available);
             }
+
+            // DG8MG
+            System.Console.WriteLine("Metis found after {0} attempts", time_out);
+            // DG8MG
 
             return have_Metis;
         }

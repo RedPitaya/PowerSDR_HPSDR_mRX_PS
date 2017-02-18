@@ -318,9 +318,14 @@ namespace PowerSDR
             set
             {
                 radio_volume = value;
-                if (console.CurrentModel == Model.HERMES || 
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (console.CurrentModel == Model.CHARLY25LC || console.CurrentModel == Model.HAMLAB || console.CurrentModel == Model.HERMES || 
                                             console.PennyLanePresent ||
                                            (console.PennyPresent && console.CWFWKeyer))
+                // DG8MG
+
                 {
                     JanusAudio.SetOutputPower((float)(value * dsp_adjust));
                 }
