@@ -43,10 +43,10 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../temp/Debug/JanusAudio\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\temp/Debug\JanusAudio\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../temp/Release/JanusAudio\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../temp/Release/JanusAudio\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\temp\Release\JanusAudio\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -68,7 +68,7 @@
     <Link>
       <AdditionalDependencies>wdsp.lib;libusb.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>../../bin/Debug/JanusAudio.dll</OutputFile>
-      <AdditionalLibraryDirectories>libusb;../Release;..\..\bin\Debug;../Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>libusb;..\..\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)KD5TFD-VK6APH-Audio.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -100,7 +100,7 @@
     <Link>
       <AdditionalDependencies>wdsp.lib;libusb.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>../../bin/Release/JanusAudio.dll</OutputFile>
-      <AdditionalLibraryDirectories>../wdsp;libusb;../specHPSDR;../Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\bin\Release;libusb;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
