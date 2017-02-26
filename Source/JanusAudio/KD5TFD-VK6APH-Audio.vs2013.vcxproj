@@ -42,11 +42,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\temp/Debug\JanusAudio\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\temp\Release\JanusAudio\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -67,10 +67,10 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>wdsp.lib;libusb.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../../bin/Debug/JanusAudio.dll</OutputFile>
-      <AdditionalLibraryDirectories>libusb;..\..\bin\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>$(SolutionDir)..\bin\$(Configuration)\JanusAudio.dll</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)wdsp\$(Platform)\$(Configuration);libusb</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)KD5TFD-VK6APH-Audio.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -99,9 +99,9 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>wdsp.lib;libusb.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../../bin/Release/JanusAudio.dll</OutputFile>
-      <AdditionalLibraryDirectories>..\..\bin\Release;libusb;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(SolutionDir)..\bin\$(Configuration)\JanusAudio.dll</OutputFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)wdsp\$(Platform)\$(Configuration);libusb</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
