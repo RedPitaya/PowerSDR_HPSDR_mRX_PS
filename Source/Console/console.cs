@@ -32067,7 +32067,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    if ((current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB) && !manual_mox)
                     {
                         SetConsoleMox(state);
                     }
@@ -32083,7 +32083,7 @@ namespace PowerSDR
                     
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    if ((current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB) && !manual_mox)
                     {
                         SetConsoleMox(state);
                     }
