@@ -660,7 +660,7 @@ namespace PowerSDR
         // public PAQualify PAQualForm;
         //public ProductionTest ProdTestForm;
 
-        private bool run_setup_wizard;						// Used to run the wizard the first time the software comes up
+        private bool run_setup_wizard;                      // Used to run the wizard the first time the software comes up
         private bool show_alpha_warning = false;
         //   private bool show_mobile_warning = false;
 
@@ -35679,10 +35679,6 @@ namespace PowerSDR
                 // Extension for the Charly 25 and HAMlab hardware
                 if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
-                    Audio.two_tone = false;
-                    Audio.SineFreq1 = 1500.0;
-                    Audio.RX1OutputSignal = Audio.SignalSource.SINE;
-
                     JanusAudio.SetXmitBit(1);
                 }
                 else
@@ -35707,18 +35703,6 @@ namespace PowerSDR
                 if ((current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB) && (RX1DSPMode == DSPMode.CWL || RX1DSPMode == DSPMode.CWU))
                 {
                     Thread.Sleep((int)udCWBreakInDelay.Value + key_up_delay);
-
-                    Audio.RX1OutputSignal = Audio.SignalSource.RADIO;
-
-                    /*
-                    radio.GetDSPRX(0, 0).RXPreGenMode = 0;
-                    radio.GetDSPRX(0, 0).RXPreGenToneMag = Math.Pow(10, (double) -10 / 20.0);
-                    radio.GetDSPRX(0, 0).RXPreGenToneFreq = (double)udCWPitch.Value;
-
-                    radio.GetDSPRX(1, 0).RXPreGenMode = 0;
-                    radio.GetDSPRX(1, 0).RXPreGenToneMag = Math.Pow(10, (double) -10 / 20.0);
-                    radio.GetDSPRX(1, 0).RXPreGenToneFreq = (double)udCWPitch.Value;
-                    */
                 }
                 // DG8MG
                 

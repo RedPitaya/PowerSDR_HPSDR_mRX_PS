@@ -17284,7 +17284,33 @@ namespace PowerSDR
             // DG8MG
             // Modified for Charly 25 / HAMlab edition
             // if (!console.initializing) DB.UpdateRegion(console.CurrentRegion);
-            DB.UpdateRegion(console.CurrentRegion);
+
+            bool update_region_allowed = true;
+            ArrayList a = DB.GetVars("State");
+
+            foreach (string s in a)
+            {
+                string[] vals = s.Split('/');
+                if (vals.Length > 2)
+                {
+                    for (int i = 2; i < vals.Length; i++)
+                        vals[1] += "/" + vals[i];
+                }
+
+                string name = vals[0];
+                string val = vals[1];
+
+                if ((name == "SetupWizard") && (val == "1"))
+                {
+                    update_region_allowed = false;
+                    break;
+                }
+            }
+
+            if (update_region_allowed == true)
+            {
+                DB.UpdateRegion(console.CurrentRegion);
+            }
             // DG8MG
 
             if (console.CurrentRegion == FRSRegion.UK)
