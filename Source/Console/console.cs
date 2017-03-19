@@ -16408,185 +16408,26 @@ namespace PowerSDR
             {
                 float current_offset = 0;
 
-                // Set attenuator to -36dB
-                RX1PreampMode = PreampMode.C25LC_MINUS36;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
+                for (int rx1_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx1_preamp_mode < (int)PreampMode.C25LC_PLUS36; rx1_preamp_mode++)
                 {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
+                    // Set preamp to current rx1_preamp_mode
+                    RX1PreampMode = (PreampMode)rx1_preamp_mode;
+                    Thread.Sleep(100);
+                    // get the value of the signal strength meter
+                    num2 = 0.0f;
+                    Thread.Sleep(1000);
+                    for (int i = 0; i < 50; i++)
+                    {
+                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                        Thread.Sleep(50);
+                        if (!progress.Visible)
+                            goto end;
+                        else progress.SetPercent((float)((float)++counter / progress_divisor));
+                    }
+                    avg2 = num2 / 50.0f;
+                    current_offset = avg2 - avg;
+                    rx1_preamp_offset[rx1_preamp_mode] = -current_offset;
                 }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS36] = -current_offset;
-
-                // Set attenuator to -24dB
-                RX1PreampMode = PreampMode.C25LC_MINUS24;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS24] = -current_offset;
-
-                // Set attenuator to -18dB
-                RX1PreampMode = PreampMode.C25LC_MINUS18;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS18] = -current_offset;
-
-                // Set attenuator to -12dB
-                RX1PreampMode = PreampMode.C25LC_MINUS12;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS12] = -current_offset;
-
-                // Set attenuator to -6dB
-                RX1PreampMode = PreampMode.C25LC_MINUS6;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_MINUS6] = -current_offset;
-
-                // Set preamp to 6dB
-                RX1PreampMode = PreampMode.C25LC_PLUS6;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS6] = -current_offset;
-
-                // Set preamp to 12dB
-                RX1PreampMode = PreampMode.C25LC_PLUS12;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS12] = -current_offset;
-
-                // Set preamp to 18dB
-                RX1PreampMode = PreampMode.C25LC_PLUS18;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS18] = -current_offset;
-
-                // Set preamp to 24dB
-                RX1PreampMode = PreampMode.C25LC_PLUS24;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS24] = -current_offset;
-
-                // Set preamp to 36dB
-                RX1PreampMode = PreampMode.C25LC_PLUS36;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx1_preamp_offset[(int)PreampMode.C25LC_PLUS36] = -current_offset;
 
                 RX1PreampMode = PreampMode.C25LC_OFF;  // set preamp to 0dB
             }
@@ -17005,185 +16846,26 @@ namespace PowerSDR
             {
                 float current_offset = 0;
 
-                // Set attenuator to -36dB
-                RX2PreampMode = PreampMode.C25LC_MINUS36;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
+                for (int rx2_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx2_preamp_mode < (int)PreampMode.C25LC_PLUS36; rx2_preamp_mode++)
                 {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
+                    // Set preamp to current rx2_preamp_mode
+                    RX2PreampMode = (PreampMode)rx2_preamp_mode;
+                    Thread.Sleep(100);
+                    // get the value of the signal strength meter
+                    num2 = 0.0f;
+                    Thread.Sleep(1000);
+                    for (int i = 0; i < 50; i++)
+                    {
+                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                        Thread.Sleep(50);
+                        if (!progress.Visible)
+                            goto end;
+                        else progress.SetPercent((float)((float)++counter / progress_divisor));
+                    }
+                    avg2 = num2 / 50.0f;
+                    current_offset = avg2 - avg;
+                    rx2_preamp_offset[rx2_preamp_mode] = -current_offset;
                 }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS36] = -current_offset;
-
-                // Set attenuator to -24dB
-                RX2PreampMode = PreampMode.C25LC_MINUS24;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS24] = -current_offset;
-
-                // Set attenuator to -18dB
-                RX2PreampMode = PreampMode.C25LC_MINUS18;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS18] = -current_offset;
-
-                // Set attenuator to -12dB
-                RX2PreampMode = PreampMode.C25LC_MINUS12;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS12] = -current_offset;
-
-                // Set attenuator to -6dB
-                RX2PreampMode = PreampMode.C25LC_MINUS6;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_MINUS6] = -current_offset;
-
-                // Set preamp to 6dB
-                RX2PreampMode = PreampMode.C25LC_PLUS6;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS6] = -current_offset;
-
-                // Set preamp to 12dB
-                RX2PreampMode = PreampMode.C25LC_PLUS12;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS12] = -current_offset;
-
-                // Set preamp to 18dB
-                RX2PreampMode = PreampMode.C25LC_PLUS18;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS18] = -current_offset;
-
-                // Set preamp to 24dB
-                RX2PreampMode = PreampMode.C25LC_PLUS24;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS24] = -current_offset;
-
-                // Set preamp to 36dB
-                RX2PreampMode = PreampMode.C25LC_PLUS36;
-                Thread.Sleep(100);
-                // get the value of the signal strength meter
-                num2 = 0.0f;
-                Thread.Sleep(1000);
-                for (int i = 0; i < 50; i++)
-                {
-                    num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                    Thread.Sleep(50);
-                    if (!progress.Visible)
-                        goto end;
-                    else progress.SetPercent((float)((float)++counter / progress_divisor));
-                }
-                avg2 = num2 / 50.0f;
-                current_offset = avg2 - avg;
-                rx2_preamp_offset[(int)PreampMode.C25LC_PLUS36] = -current_offset;
 
                 RX2PreampMode = PreampMode.C25LC_OFF;  // set preamp to 0dB
             }
