@@ -16282,7 +16282,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if ((current_hpsdr_model == HPSDRModel.CHARLY25LC) || (current_hpsdr_model == HPSDRModel.HAMLAB))
             {
-                progress_divisor = 550;
+                progress_divisor = 600;
             }
             else if (alexpresent)
                 {
@@ -16408,7 +16408,7 @@ namespace PowerSDR
             {
                 float current_offset = 0;
 
-                for (int rx1_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx1_preamp_mode < (int)PreampMode.C25LC_PLUS36; rx1_preamp_mode++)
+                for (int rx1_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx1_preamp_mode <= (int)PreampMode.C25LC_PLUS36; rx1_preamp_mode++)
                 {
                     // Set preamp to current rx1_preamp_mode
                     RX1PreampMode = (PreampMode)rx1_preamp_mode;
@@ -16765,7 +16765,7 @@ namespace PowerSDR
             /*
             if (...)
             {
-                progress_divisor = 550;
+                progress_divisor = 600;
             }
             else
             */
@@ -16846,7 +16846,7 @@ namespace PowerSDR
             {
                 float current_offset = 0;
 
-                for (int rx2_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx2_preamp_mode < (int)PreampMode.C25LC_PLUS36; rx2_preamp_mode++)
+                for (int rx2_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx2_preamp_mode <= (int)PreampMode.C25LC_PLUS36; rx2_preamp_mode++)
                 {
                     // Set preamp to current rx2_preamp_mode
                     RX2PreampMode = (PreampMode)rx2_preamp_mode;
