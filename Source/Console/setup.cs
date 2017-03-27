@@ -4663,6 +4663,7 @@ namespace PowerSDR
                         break;
 
                     // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
                     case Model.CHARLY25LC:
                         force_model = true;
                         radGenModelCharly25LC.Checked = true;
@@ -7860,7 +7861,7 @@ namespace PowerSDR
                 grpMetisAddr.Visible = true;
             }
 
-            if (radGenModelHAMlab.Checked)   /// Test me! DG8MG
+            if (radGenModelHAMlab.Checked)   // Test me! DG8MG
             {
                 int nr = 2;
                 bool pwr_cycled = false;
@@ -8643,7 +8644,11 @@ namespace PowerSDR
             t.Priority = ThreadPriority.Normal;
             t.Start();
 
-            if (console.PowerOn)
+            // DG8MG
+            // Added check if RX2 is enabled
+            if (console.PowerOn && console.RX2Enabled)
+            // DG8MG
+
                 progress.Show();
         }
 
@@ -18069,7 +18074,7 @@ namespace PowerSDR
         private void tpGeneralCalibration_Paint(object sender, PaintEventArgs e)
         {
             
-            // DG8MG: Test me!
+            // DG8MG
             // Extension for Charly 25 / HAMlab edition
             if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {

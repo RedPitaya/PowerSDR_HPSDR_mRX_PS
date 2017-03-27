@@ -5810,7 +5810,8 @@ namespace PowerSDR
             rc = JanusAudio.StartAudio((int)sample_rate, (int)block_size, callback, sample_bits, no_send);
             if (rc != 0)
             {
-                // DG8MG: Test me!
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
                 System.Console.WriteLine("JanusAudio.StartAudio failed w/ rc: " + rc);
 
                 // Check if the Cancel button on the ChooseDevice form had been pressed

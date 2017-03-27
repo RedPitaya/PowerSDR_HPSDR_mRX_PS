@@ -418,7 +418,7 @@ namespace PowerSDR
             if (!foundMetis)
             {
 
-                // DG8MG: Test me!
+                // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
                 if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
@@ -430,7 +430,7 @@ namespace PowerSDR
                     {
                         case 0:
                         {
-                            // DG8MG: Test me!
+                            // DG8MG
                             // No Charly 25 / HAMlab device was detected on the network
                             MessageBox.Show("Please power up your Charly 25 / HAMlab before using the autosensing mode!", "No Charly 25 / HAMlab device detected on the network", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             break;
@@ -449,7 +449,7 @@ namespace PowerSDR
 
                         default:
                         {
-                            // DG8MG: Test me!
+                            // DG8MG
                             // More then one Charly 25 / HAMlab device was detected on the network
                             // Choose the RedPitaya device you want to start up
                             Metis_IP_address = ChooseRPDevice(allRedPitayaDevices, c).ToString();
@@ -686,7 +686,7 @@ namespace PowerSDR
                         mercury2_ver = getMercury2FWVersion();
                     }
 
-                    // DG8MG
+                    // DG8MG: Implement me!
                     // Extension for Charly 25 and HAMlab hardware
                     if (mercury2_ver < 32 || mercury2_ver == 127 || c.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || c.CurrentHPSDRModel == HPSDRModel.HAMLAB) // Check if physical RX2 preamp is present
                     // DG8MG
@@ -849,7 +849,8 @@ namespace PowerSDR
         // returns -101 for firmware version error 
         unsafe public static int StartAudio(int sample_rate, int samples_per_block, PA19.PaStreamCallback cb, int sample_bits, int no_send)
         {
-            // DG8MG: Test me!
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
             int result = initOzy();
 
             if (result != 0)
@@ -1448,6 +1449,7 @@ namespace PowerSDR
             }
 
             // DG8MG
+            // Added debug output
             System.Console.WriteLine("Metis found after {0} attempts", time_out);
             // DG8MG
 
@@ -1516,7 +1518,8 @@ namespace PowerSDR
             return (IPEndPoint)ep;
         }
 
-        // DG8MG: Implement me!
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         // Choose the RedPitaya device to start up
         private static IPAddress ChooseRPDevice(Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices, Console c)
         {

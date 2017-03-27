@@ -37,6 +37,7 @@ namespace PowerSDR
     {
 
         // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
 #if DEBUG
         public const string BUILD = " - Debug Version: ";
 #else

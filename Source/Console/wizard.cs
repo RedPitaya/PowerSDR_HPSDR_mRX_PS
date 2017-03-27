@@ -133,8 +133,9 @@ namespace PowerSDR
         private RadioButtonTS radGenModelOrion;
         private RadioButtonTS radGenModelANAN100B;
         private RadioButtonTS radGenModelANAN10E;
-        
+
         // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         private RadioButtonTS radGenModelHAMlab;
         private RadioButtonTS radGenModelCharly25LC;
         // DG8MG
@@ -216,6 +217,7 @@ namespace PowerSDR
                     break;
 
                 // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
                 case Model.CHARLY25LC:
                     radGenModelCharly25LC.Checked = true;
                     break;
@@ -259,8 +261,9 @@ namespace PowerSDR
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.grpModel = new System.Windows.Forms.GroupBoxTS();
-            
+
             // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
             this.radGenModelHAMlab = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelCharly25LC = new System.Windows.Forms.RadioButtonTS();
             // DG8MG
@@ -372,8 +375,9 @@ namespace PowerSDR
             this.grpModel.TabStop = false;
             this.grpModel.Text = "Model";
             this.grpModel.Visible = false;
-            
+
             // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
             // 
             // radGenModelCharly25LC
             // 
@@ -388,6 +392,7 @@ namespace PowerSDR
             this.radGenModelCharly25LC.CheckedChanged += new System.EventHandler(this.radGenModelCharly25LC_CheckedChanged);
             // 
             // radGenModelHAMlab
+            // Extension for Charly 25 and HAMlab hardware
             // 
             this.radGenModelHAMlab.AutoSize = true;
             this.radGenModelHAMlab.Image = null;
@@ -1605,6 +1610,7 @@ namespace PowerSDR
                         case Model.ANAN200D:
 
                         // DG8MG
+                        // Extension for Charly 25 and HAMlab hardware
                         case Model.CHARLY25LC:
                         case Model.HAMLAB:
                         // DG8MG
@@ -1874,8 +1880,9 @@ namespace PowerSDR
                     console.SetupForm.AlexPresent = alex_present;
                     console.SetupForm.forceAudioSampleRate1("192000");
                     break;
-                
+
                 // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
                 case Model.CHARLY25LC:
                     console.SetupForm.PenelopePresent = penelope_present;
                     console.SetupForm.PennyLanePresent = pennylane_present;
@@ -1969,6 +1976,7 @@ namespace PowerSDR
             console.SetupForm.CurrentModel = model;
 
             // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
             if (region_index >= 0)
             {
                 FRSRegion CurrentRegion = FRSRegion.Europe;
@@ -2406,6 +2414,7 @@ namespace PowerSDR
         }
 
         // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         private void radGenModelCharly25LC_CheckedChanged(object sender, System.EventArgs e)
         {
             if (radGenModelCharly25LC.Checked)

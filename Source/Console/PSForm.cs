@@ -630,6 +630,7 @@ namespace PowerSDR
             switch (model)
             {
                 // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
                 case HPSDRModel.CHARLY25LC:  // Behave like a HERMES
                 case HPSDRModel.HAMLAB:  // Behave like a HERMES
                 // DG8MG
@@ -676,6 +677,7 @@ namespace PowerSDR
             switch (model)
             {
                 // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
                 case HPSDRModel.CHARLY25LC:  // Behave like a HERMES
                 case HPSDRModel.HAMLAB:  // Behave like a HERMES
                 // DG8MG
@@ -730,6 +732,7 @@ namespace PowerSDR
                 switch (console.CurrentHPSDRModel)
                 {
                     // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
                     case HPSDRModel.CHARLY25LC:  // Behave like a HERMES
                     case HPSDRModel.HAMLAB:  // Behave like a HERMES
                     // DG8MG
