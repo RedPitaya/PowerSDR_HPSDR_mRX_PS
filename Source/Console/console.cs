@@ -5627,6 +5627,7 @@ namespace PowerSDR
             resources.ApplyResources(this.picRX2Squelch, "picRX2Squelch");
             this.picRX2Squelch.Name = "picRX2Squelch";
             this.picRX2Squelch.TabStop = false;
+            this.picRX2Squelch.Paint += new System.Windows.Forms.PaintEventHandler(this.picRX2Squelch_Paint);
             // 
             // panelRX2RF
             // 
@@ -41426,7 +41427,12 @@ namespace PowerSDR
             }
             int abs_low;
             int low = -width / 2; // target -- if width is centered at 0, low will be half the width below 0
-            if (ModelIsHPSDRorHermes())
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (ModelIsHPSDRorHermes() || CurrentHPSDRModel == HPSDRModel.CHARLY25LC || CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            // DG8MG
+
                 abs_low = (int)(-(double)sample_rate1 * 0.5 + spur_tune_width);
             else
                 abs_low = (int)(-(double)sample_rate1 * 0.5 - if_freq * 1000000.0 + spur_tune_width);
