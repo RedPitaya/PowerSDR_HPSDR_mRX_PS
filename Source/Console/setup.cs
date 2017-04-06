@@ -7575,6 +7575,9 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.CHARLY25LC;
                 console.CurrentHPSDRModel = HPSDRModel.CHARLY25LC;
+                console.chkSR.Visible = false;  // Charly 25LC doesn't need this functionality
+                console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25LC
+                console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25LC visible
                 chkPennyPresent.Checked = true;  
                 chkPennyPresent.Visible = false;  // Charly 25LC doesn't need this functionality
                 chkPennyLane.Checked = false;  // Charly 25LC doesn't need this functionality
@@ -7619,6 +7622,8 @@ namespace PowerSDR
             }
             else  // Charly 25LC is deselected
             {
+                console.chkSR.Visible = true;  // reset to default setting
+                console.chkC25ANT.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
@@ -7741,6 +7746,9 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
+                console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
+                console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
+                console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
                 chkPennyPresent.Checked = true;
                 chkPennyPresent.Visible = false;  // HAMlab doesn't need this functionality
                 chkPennyLane.Checked = false;  // HAMlab doesn't need this functionality
@@ -7785,6 +7793,9 @@ namespace PowerSDR
             }
             else  // HAMlab is deselected
             {
+                console.chkSR.Visible = true;  // reset to default setting
+                console.chkC25ANT.Visible = false;  // reset to default setting
+                chkVACAllowBypass.Checked = true;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting

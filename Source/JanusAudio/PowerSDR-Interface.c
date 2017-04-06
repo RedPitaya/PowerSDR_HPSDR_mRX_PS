@@ -678,6 +678,16 @@ KD5TFDVK6APHAUDIO_API void SetAlexAntBits(int rx_only_ant, int trx_ant, int rx_o
 	return;
 }
 
+// DG8MG
+// Extension for Charly 25 and HAMlab hardware
+KD5TFDVK6APHAUDIO_API void SetAntBits_Charly25(int ant) 
+{
+	AlexRxAnt = (ant & 0x03) << 5;
+
+	return;
+}
+// DG8MG
+
 /*
 C4 
 0 0 0 0 0 0 0 0
@@ -992,6 +1002,7 @@ KD5TFDVK6APHAUDIO_API void SetRX1Preamp_Charly25LC(int bits) {
 	}
 	return;
 }
+// DG8MG
 
 KD5TFDVK6APHAUDIO_API void SetRX2Preamp(int bits) { 
 	if ( bits != 0 ) { 

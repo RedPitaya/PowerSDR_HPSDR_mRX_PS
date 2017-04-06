@@ -187,8 +187,11 @@ namespace PowerSDR
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetRX1Preamp(int bits);
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab Attenuator and Preamp
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetRX1Preamp_Charly25LC(int bits);
+        // DG8MG
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetRX2Preamp(int bits);
@@ -306,6 +309,12 @@ namespace PowerSDR
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetAlexAntBits(int rx_ant, int tx_ant, int rx_out);
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetAntBits_Charly25(int ant);
+        // DG8MG
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int GetEP4Data(char* bufp);

@@ -1560,6 +1560,7 @@ namespace PowerSDR
         private LabelTS lblCWAPFGain;
         private LabelTS lblRX1APF;
         private LabelTS lblRX2APF;
+        public CheckBoxTS chkC25ANT;
         public PictureBox picWaterfall;
 
         #endregion
@@ -2166,6 +2167,7 @@ namespace PowerSDR
             this.ptbCWAPFGain = new PowerSDR.PrettyTrackBar();
             this.ptbCWAPFBandwidth = new PowerSDR.PrettyTrackBar();
             this.ptbCWAPFFreq = new PowerSDR.PrettyTrackBar();
+            this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
             this.picSquelch = new System.Windows.Forms.PictureBox();
             this.timer_clock = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStripFilterRX1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -4760,6 +4762,17 @@ namespace PowerSDR
             this.ptbCWAPFFreq.Value = 0;
             this.ptbCWAPFFreq.Scroll += new PowerSDR.PrettyTrackBar.ScrollHandler(this.ptbCWAPFFreq_Scroll);
             // 
+            // chkC25ANT
+            // 
+            resources.ApplyResources(this.chkC25ANT, "chkC25ANT");
+            this.chkC25ANT.BackColor = System.Drawing.Color.Transparent;
+            this.chkC25ANT.FlatAppearance.BorderSize = 0;
+            this.chkC25ANT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkC25ANT.Name = "chkC25ANT";
+            this.toolTip1.SetToolTip(this.chkC25ANT, resources.GetString("chkC25ANT.ToolTip"));
+            this.chkC25ANT.UseVisualStyleBackColor = false;
+            this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
+            // 
             // picSquelch
             // 
             this.picSquelch.BackColor = System.Drawing.SystemColors.ControlText;
@@ -5676,6 +5689,7 @@ namespace PowerSDR
             this.panelOptions.Controls.Add(this.chkRX2SR);
             this.panelOptions.Controls.Add(this.chkMOX);
             this.panelOptions.Controls.Add(this.chkTUN);
+            this.panelOptions.Controls.Add(this.chkC25ANT);
             this.panelOptions.Controls.Add(this.chkSR);
             this.panelOptions.Controls.Add(this.comboTuneMode);
             this.panelOptions.ForeColor = System.Drawing.SystemColors.ControlLightLight;
@@ -12327,7 +12341,12 @@ namespace PowerSDR
                         return Band.B160M;
                     else if (freq >= 3.5 && freq <= 3.8)
                         return Band.B80M;
-                    else if (freq >= 5.0 && freq < 7.0)
+
+                    // DG8MG
+                    // Corrected band borders
+                    else if (freq >= 5.3515 && freq < 5.3665)
+                    // DG8MG
+
                         return Band.B60M;
                     else if (freq >= 7.0 && freq <= 7.2)
                         return Band.B40M;
@@ -35975,7 +35994,12 @@ namespace PowerSDR
                                 case DSPMode.CWL:
                                 case DSPMode.CWU:
                                     MessageBox.Show("The frequency " + freq.ToString("f6") + "MHz is not within the\n" +
-                                        "Band specifications for your region (" + ((int)current_region).ToString() + ").",
+                                        
+                                        // DG8MG
+                                        // Corrected string output of the current region
+                                        "Band specifications for your region (" + current_region.ToString() + ").",
+                                        // DG8MG
+                                        
                                         "Transmit Error: Out Of Band",
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Error);
@@ -35983,7 +36007,12 @@ namespace PowerSDR
                                 default:
                                     MessageBox.Show("The frequency " + freq.ToString("f6") + "MHz in combination with your TX filter\n" +
                                         "settings [" + Display.TXFilterLow.ToString() + ", " + Display.TXFilterHigh.ToString() + "] are not within the " +
-                                        "Band specifications for your region (" + ((int)current_region).ToString() + ").",
+                                        
+                                        // DG8MG
+                                        // Corrected string output of the current region
+                                        "Band specifications for your region (" + current_region.ToString() + ").",
+                                        // DG8MG
+
                                         "Transmit Error: Out Of Band",
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Error);
@@ -38092,7 +38121,12 @@ namespace PowerSDR
                         case DSPMode.CWL:
                         case DSPMode.CWU:
                             MessageBox.Show("The frequency " + tx_freq.ToString("f6") + "MHz is not within the\n" +
+
+                                // DG8MG
+                                // Corrected string output of the current region
                                 "Band specifications for your region (" + current_region.ToString() + ").",
+                                // DG8MG
+
                                 "Transmit Error: Out Of Band",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
@@ -38100,13 +38134,24 @@ namespace PowerSDR
                         default:
                             MessageBox.Show("The frequency " + tx_freq.ToString("f6") + "MHz in combination with your TX filter\n" +
                                 "settings [" + Display.TXFilterLow.ToString() + ", " + Display.TXFilterHigh.ToString() + "] are not within the " +
+
+                                // DG8MG
+                                // Corrected string output of the current region
                                 "Band specifications for your region (" + current_region.ToString() + ").",
+                                // DG8MG
+
                                 "Transmit Error: Out Of Band",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                             break;
                     }
                     chkMOX.Checked = false;
+
+                    // DG8MG
+                    // Turn off TUN button when out of band
+                    chkTUN.Checked = false;
+                    // DG8MG
+
                     return;
                 }
             }
@@ -38790,7 +38835,12 @@ namespace PowerSDR
                         case DSPMode.CWL:
                         case DSPMode.CWU:
                             MessageBox.Show("The frequency " + tx_freq.ToString("f6") + "MHz is not within the\n" +
-                                "Band specifications for your region (" + ((int)current_region).ToString() + ").",
+                                
+                                // DG8MG
+                                // Corrected string output of the current region
+                                "Band specifications for your region (" + current_region.ToString() + ").",
+                                // DG8MG
+
                                 "Transmit Error: Out Of Band",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
@@ -38798,13 +38848,24 @@ namespace PowerSDR
                         default:
                             MessageBox.Show("The frequency " + tx_freq.ToString("f6") + "MHz in combination with your TX filter\n" +
                                 "settings [" + Display.TXFilterLow.ToString() + ", " + Display.TXFilterHigh.ToString() + "] are not within the " +
-                                "Band specifications for your region (" + ((int)current_region).ToString() + ").",
+                                
+                                // DG8MG
+                                // Corrected string output of the current region
+                                "Band specifications for your region (" + current_region.ToString() + ").",
+                                // DG8MG
+
                                 "Transmit Error: Out Of Band",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                             break;
                     }
                     chkMOX.Checked = false;
+
+                    // DG8MG
+                    // Turn off TUN button when out of band
+                    chkTUN.Checked = false;
+                    // DG8MG
+
                     return;
                 }
             }
@@ -51376,6 +51437,25 @@ namespace PowerSDR
 
             // radBandVHF_Click(sender, EventArgs.Empty);
         }
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        private void C25_ANT_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkC25ANT.Checked)
+            {
+                chkC25ANT.Text = "ANT2";             
+                chkC25ANT.BackColor = button_selected_color;
+                JanusAudio.SetAntBits_Charly25(1);
+            }
+            else
+            {
+                chkC25ANT.Text = "ANT1";
+                chkC25ANT.BackColor = SystemColors.Control;
+                JanusAudio.SetAntBits_Charly25(0);
+            }
+        }
+        // DG8MG
 
     }
 
