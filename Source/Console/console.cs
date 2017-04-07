@@ -34269,7 +34269,7 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 else
                 {
-                    sdr_app_running = true;
+                    sdr_app_running = true;                  
                 }
                 // DG8MG
 
@@ -34402,10 +34402,18 @@ namespace PowerSDR
                 wdsp.SetChannelState(wdsp.id(0, 0), 1, 1);
                 if (radio.GetDSPRX(0, 1).Active) wdsp.SetChannelState(wdsp.id(0, 1), 1, 1);
                 if (radio.GetDSPRX(1, 0).Active) wdsp.SetChannelState(wdsp.id(2, 0), 1, 1);
-                Alex.init_update = true;
-                AlexAntCtrlEnabled = alex_ant_ctrl_enabled;
-                if (attontx) JanusAudio.SetTxAttenData(tx_step_attenuator_by_band[(int)rx1_band]);
-                else JanusAudio.SetTxAttenData(rx1_attenuator_data);
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (CurrentHPSDRModel != HPSDRModel.CHARLY25LC && CurrentHPSDRModel != HPSDRModel.HAMLAB)
+                {
+                    Alex.init_update = true;
+                    AlexAntCtrlEnabled = alex_ant_ctrl_enabled;
+                    if (attontx) JanusAudio.SetTxAttenData(tx_step_attenuator_by_band[(int)rx1_band]);
+                    else JanusAudio.SetTxAttenData(rx1_attenuator_data);
+                }
+                // DG8MG
+
                 SetupForm.UpdateGeneraHardware();
                 SetMicGain();
             }
@@ -51442,6 +51450,9 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         private void C25_ANT_CheckedChanged(object sender, EventArgs e)
         {
+            chkMOX.Checked = false;
+            chkTUN.Checked = false;
+
             if (chkC25ANT.Checked)
             {
                 chkC25ANT.Text = "ANT2";             
