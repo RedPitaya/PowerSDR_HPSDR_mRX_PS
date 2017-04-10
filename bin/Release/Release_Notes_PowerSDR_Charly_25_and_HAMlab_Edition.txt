@@ -1,4 +1,0 @@
-These are the release notes of PowerSDR Charly 25 / HAMlab Edition:
-
-Notes to be filled in later... ;-)
-
