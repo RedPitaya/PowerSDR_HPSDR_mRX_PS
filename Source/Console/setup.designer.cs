@@ -2555,6 +2555,21 @@
             this.btnImpulse = new System.Windows.Forms.ButtonTS();
             this.grpTestAudioBalance = new System.Windows.Forms.GroupBoxTS();
             this.btnTestAudioBalStart = new System.Windows.Forms.ButtonTS();
+            this.tpC25Tests = new System.Windows.Forms.TabPage();
+            this.grpC25RXAttPreTest = new System.Windows.Forms.GroupBoxTS();
+            this.btnC25RXPreTest = new System.Windows.Forms.ButtonTS();
+            this.lblC25RXAttPreTestResult2 = new System.Windows.Forms.LabelTS();
+            this.lblC25RXAttPreTestResult1 = new System.Windows.Forms.LabelTS();
+            this.lbC25RXAttPreTestResults = new System.Windows.Forms.ListBox();
+            this.udC25RXAttPreTestFrequency = new System.Windows.Forms.NumericUpDownTS();
+            this.lblC25RXAttPreTestFrequency = new System.Windows.Forms.LabelTS();
+            this.btnC25RXAttTest = new System.Windows.Forms.ButtonTS();
+            this.grpC25TXLPFTest = new System.Windows.Forms.GroupBoxTS();
+            this.lblC25TXLPFTestInterval = new System.Windows.Forms.LabelTS();
+            this.udC25TXLPFTestInterval = new System.Windows.Forms.NumericUpDownTS();
+            this.btnC25TXLPFTestCancel = new System.Windows.Forms.ButtonTS();
+            this.btnC25TXLPFTestPause = new System.Windows.Forms.ButtonTS();
+            this.btnC25TXLPFTestStart = new System.Windows.Forms.ButtonTS();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnExportDB = new System.Windows.Forms.ButtonTS();
@@ -3395,6 +3410,11 @@
             this.grpImpulseTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udImpulseNum)).BeginInit();
             this.grpTestAudioBalance.SuspendLayout();
+            this.tpC25Tests.SuspendLayout();
+            this.grpC25RXAttPreTest.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25RXAttPreTestFrequency)).BeginInit();
+            this.grpC25TXLPFTest.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25TXLPFTestInterval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTS3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTS4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTS6)).BeginInit();
@@ -5538,6 +5558,7 @@
             this.tcSetup.Controls.Add(this.tpKeyboard);
             this.tcSetup.Controls.Add(this.tpCATControl);
             this.tcSetup.Controls.Add(this.tpTests);
+            this.tcSetup.Controls.Add(this.tpC25Tests);
             this.tcSetup.Location = new System.Drawing.Point(8, 8);
             this.tcSetup.Name = "tcSetup";
             this.tcSetup.SelectedIndex = 0;
@@ -42036,6 +42057,208 @@
             this.btnTestAudioBalStart.Text = "Start";
             this.btnTestAudioBalStart.Click += new System.EventHandler(this.btnTestAudioBalStart_Click);
             // 
+            // tpC25Tests
+            // 
+            this.tpC25Tests.BackColor = System.Drawing.SystemColors.Control;
+            this.tpC25Tests.Controls.Add(this.grpC25RXAttPreTest);
+            this.tpC25Tests.Controls.Add(this.grpC25TXLPFTest);
+            this.tpC25Tests.Location = new System.Drawing.Point(4, 22);
+            this.tpC25Tests.Name = "tpC25Tests";
+            this.tpC25Tests.Padding = new System.Windows.Forms.Padding(3);
+            this.tpC25Tests.Size = new System.Drawing.Size(584, 364);
+            this.tpC25Tests.TabIndex = 11;
+            this.tpC25Tests.Text = "C25 Tests";
+            // 
+            // grpC25RXAttPreTest
+            // 
+            this.grpC25RXAttPreTest.Controls.Add(this.btnC25RXPreTest);
+            this.grpC25RXAttPreTest.Controls.Add(this.lblC25RXAttPreTestResult2);
+            this.grpC25RXAttPreTest.Controls.Add(this.lblC25RXAttPreTestResult1);
+            this.grpC25RXAttPreTest.Controls.Add(this.lbC25RXAttPreTestResults);
+            this.grpC25RXAttPreTest.Controls.Add(this.udC25RXAttPreTestFrequency);
+            this.grpC25RXAttPreTest.Controls.Add(this.lblC25RXAttPreTestFrequency);
+            this.grpC25RXAttPreTest.Controls.Add(this.btnC25RXAttTest);
+            this.grpC25RXAttPreTest.Location = new System.Drawing.Point(98, 6);
+            this.grpC25RXAttPreTest.Name = "grpC25RXAttPreTest";
+            this.grpC25RXAttPreTest.Size = new System.Drawing.Size(480, 189);
+            this.grpC25RXAttPreTest.TabIndex = 1;
+            this.grpC25RXAttPreTest.TabStop = false;
+            this.grpC25RXAttPreTest.Text = "RX Attenuator and Preamp Test";
+            this.toolTip1.SetToolTip(this.grpC25RXAttPreTest, "Frequency for RX Attenuator and Preamp Test");
+            // 
+            // btnC25RXPreTest
+            // 
+            this.btnC25RXPreTest.Image = null;
+            this.btnC25RXPreTest.Location = new System.Drawing.Point(6, 50);
+            this.btnC25RXPreTest.Name = "btnC25RXPreTest";
+            this.btnC25RXPreTest.Size = new System.Drawing.Size(75, 23);
+            this.btnC25RXPreTest.TabIndex = 6;
+            this.btnC25RXPreTest.Text = "PRE Test";
+            this.btnC25RXPreTest.UseVisualStyleBackColor = true;
+            this.btnC25RXPreTest.Click += new System.EventHandler(this.btnC25RXAttPreTest_Click);
+            // 
+            // lblC25RXAttPreTestResult2
+            // 
+            this.lblC25RXAttPreTestResult2.AutoSize = true;
+            this.lblC25RXAttPreTestResult2.Image = null;
+            this.lblC25RXAttPreTestResult2.Location = new System.Drawing.Point(6, 158);
+            this.lblC25RXAttPreTestResult2.Name = "lblC25RXAttPreTestResult2";
+            this.lblC25RXAttPreTestResult2.Size = new System.Drawing.Size(0, 13);
+            this.lblC25RXAttPreTestResult2.TabIndex = 5;
+            // 
+            // lblC25RXAttPreTestResult1
+            // 
+            this.lblC25RXAttPreTestResult1.AutoSize = true;
+            this.lblC25RXAttPreTestResult1.Image = null;
+            this.lblC25RXAttPreTestResult1.Location = new System.Drawing.Point(6, 140);
+            this.lblC25RXAttPreTestResult1.Name = "lblC25RXAttPreTestResult1";
+            this.lblC25RXAttPreTestResult1.Size = new System.Drawing.Size(59, 13);
+            this.lblC25RXAttPreTestResult1.TabIndex = 4;
+            this.lblC25RXAttPreTestResult1.Text = "Test result:";
+            // 
+            // lbC25RXAttPreTestResults
+            // 
+            this.lbC25RXAttPreTestResults.FormattingEnabled = true;
+            this.lbC25RXAttPreTestResults.Location = new System.Drawing.Point(94, 19);
+            this.lbC25RXAttPreTestResults.Name = "lbC25RXAttPreTestResults";
+            this.lbC25RXAttPreTestResults.Size = new System.Drawing.Size(380, 160);
+            this.lbC25RXAttPreTestResults.TabIndex = 3;
+            // 
+            // udC25RXAttPreTestFrequency
+            // 
+            this.udC25RXAttPreTestFrequency.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25RXAttPreTestFrequency.Location = new System.Drawing.Point(6, 101);
+            this.udC25RXAttPreTestFrequency.Maximum = new decimal(new int[] {
+            62000000,
+            0,
+            0,
+            0});
+            this.udC25RXAttPreTestFrequency.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25RXAttPreTestFrequency.Name = "udC25RXAttPreTestFrequency";
+            this.udC25RXAttPreTestFrequency.Size = new System.Drawing.Size(75, 20);
+            this.udC25RXAttPreTestFrequency.TabIndex = 2;
+            this.udC25RXAttPreTestFrequency.ThousandsSeparator = true;
+            this.toolTip1.SetToolTip(this.udC25RXAttPreTestFrequency, "Frequency for RX Attenuator and Preamp Test");
+            this.udC25RXAttPreTestFrequency.Value = new decimal(new int[] {
+            50000000,
+            0,
+            0,
+            0});
+            // 
+            // lblC25RXAttPreTestFrequency
+            // 
+            this.lblC25RXAttPreTestFrequency.AutoSize = true;
+            this.lblC25RXAttPreTestFrequency.Image = null;
+            this.lblC25RXAttPreTestFrequency.Location = new System.Drawing.Point(3, 85);
+            this.lblC25RXAttPreTestFrequency.Name = "lblC25RXAttPreTestFrequency";
+            this.lblC25RXAttPreTestFrequency.Size = new System.Drawing.Size(82, 13);
+            this.lblC25RXAttPreTestFrequency.TabIndex = 1;
+            this.lblC25RXAttPreTestFrequency.Text = "Frequency (Hz):";
+            // 
+            // btnC25RXAttTest
+            // 
+            this.btnC25RXAttTest.Image = null;
+            this.btnC25RXAttTest.Location = new System.Drawing.Point(6, 20);
+            this.btnC25RXAttTest.Name = "btnC25RXAttTest";
+            this.btnC25RXAttTest.Size = new System.Drawing.Size(75, 23);
+            this.btnC25RXAttTest.TabIndex = 0;
+            this.btnC25RXAttTest.Text = "ATT Test";
+            this.btnC25RXAttTest.UseVisualStyleBackColor = true;
+            this.btnC25RXAttTest.Click += new System.EventHandler(this.btnC25RXAttPreTest_Click);
+            // 
+            // grpC25TXLPFTest
+            // 
+            this.grpC25TXLPFTest.Controls.Add(this.lblC25TXLPFTestInterval);
+            this.grpC25TXLPFTest.Controls.Add(this.udC25TXLPFTestInterval);
+            this.grpC25TXLPFTest.Controls.Add(this.btnC25TXLPFTestCancel);
+            this.grpC25TXLPFTest.Controls.Add(this.btnC25TXLPFTestPause);
+            this.grpC25TXLPFTest.Controls.Add(this.btnC25TXLPFTestStart);
+            this.grpC25TXLPFTest.Location = new System.Drawing.Point(6, 6);
+            this.grpC25TXLPFTest.Name = "grpC25TXLPFTest";
+            this.grpC25TXLPFTest.Size = new System.Drawing.Size(86, 189);
+            this.grpC25TXLPFTest.TabIndex = 0;
+            this.grpC25TXLPFTest.TabStop = false;
+            this.grpC25TXLPFTest.Text = "TX LPF Test";
+            // 
+            // lblC25TXLPFTestInterval
+            // 
+            this.lblC25TXLPFTestInterval.AutoSize = true;
+            this.lblC25TXLPFTestInterval.Image = null;
+            this.lblC25TXLPFTestInterval.Location = new System.Drawing.Point(7, 120);
+            this.lblC25TXLPFTestInterval.Name = "lblC25TXLPFTestInterval";
+            this.lblC25TXLPFTestInterval.Size = new System.Drawing.Size(71, 13);
+            this.lblC25TXLPFTestInterval.TabIndex = 4;
+            this.lblC25TXLPFTestInterval.Text = "Interval (sec):";
+            // 
+            // udC25TXLPFTestInterval
+            // 
+            this.udC25TXLPFTestInterval.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25TXLPFTestInterval.Location = new System.Drawing.Point(7, 138);
+            this.udC25TXLPFTestInterval.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.udC25TXLPFTestInterval.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25TXLPFTestInterval.Name = "udC25TXLPFTestInterval";
+            this.udC25TXLPFTestInterval.Size = new System.Drawing.Size(75, 20);
+            this.udC25TXLPFTestInterval.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.udC25TXLPFTestInterval, "Interval in seconds for TX LPF Test");
+            this.udC25TXLPFTestInterval.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // btnC25TXLPFTestCancel
+            // 
+            this.btnC25TXLPFTestCancel.Image = null;
+            this.btnC25TXLPFTestCancel.Location = new System.Drawing.Point(7, 80);
+            this.btnC25TXLPFTestCancel.Name = "btnC25TXLPFTestCancel";
+            this.btnC25TXLPFTestCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnC25TXLPFTestCancel.TabIndex = 2;
+            this.btnC25TXLPFTestCancel.Text = "Cancel";
+            this.btnC25TXLPFTestCancel.UseVisualStyleBackColor = true;
+            this.btnC25TXLPFTestCancel.Click += new System.EventHandler(this.btnTXLPFTestCancel_Click);
+            // 
+            // btnC25TXLPFTestPause
+            // 
+            this.btnC25TXLPFTestPause.Image = null;
+            this.btnC25TXLPFTestPause.Location = new System.Drawing.Point(7, 50);
+            this.btnC25TXLPFTestPause.Name = "btnC25TXLPFTestPause";
+            this.btnC25TXLPFTestPause.Size = new System.Drawing.Size(75, 23);
+            this.btnC25TXLPFTestPause.TabIndex = 1;
+            this.btnC25TXLPFTestPause.Text = "Pause";
+            this.btnC25TXLPFTestPause.UseVisualStyleBackColor = true;
+            this.btnC25TXLPFTestPause.Click += new System.EventHandler(this.btnTXLPFTestPause_Click);
+            // 
+            // btnC25TXLPFTestStart
+            // 
+            this.btnC25TXLPFTestStart.Image = null;
+            this.btnC25TXLPFTestStart.Location = new System.Drawing.Point(7, 20);
+            this.btnC25TXLPFTestStart.Name = "btnC25TXLPFTestStart";
+            this.btnC25TXLPFTestStart.Size = new System.Drawing.Size(75, 23);
+            this.btnC25TXLPFTestStart.TabIndex = 0;
+            this.btnC25TXLPFTestStart.Text = "Start";
+            this.btnC25TXLPFTestStart.UseVisualStyleBackColor = true;
+            this.btnC25TXLPFTestStart.Click += new System.EventHandler(this.btnTXLPFTestStart_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
@@ -44191,6 +44414,13 @@
             this.grpImpulseTest.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.udImpulseNum)).EndInit();
             this.grpTestAudioBalance.ResumeLayout(false);
+            this.tpC25Tests.ResumeLayout(false);
+            this.grpC25RXAttPreTest.ResumeLayout(false);
+            this.grpC25RXAttPreTest.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25RXAttPreTestFrequency)).EndInit();
+            this.grpC25TXLPFTest.ResumeLayout(false);
+            this.grpC25TXLPFTest.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25TXLPFTestInterval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTS3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTS4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTS6)).EndInit();
@@ -45442,5 +45672,20 @@
         private System.Windows.Forms.LabelTS lblCHARLY25LCPAGainByBand160;
         private System.Windows.Forms.NumericUpDownTS udCHARLY25LCPAGain160;
         private System.Windows.Forms.NumericUpDownTS numericUpDownTS40;
+        private System.Windows.Forms.TabPage tpC25Tests;
+        private System.Windows.Forms.GroupBoxTS grpC25RXAttPreTest;
+        private System.Windows.Forms.NumericUpDownTS udC25RXAttPreTestFrequency;
+        private System.Windows.Forms.LabelTS lblC25RXAttPreTestFrequency;
+        private System.Windows.Forms.ButtonTS btnC25RXAttTest;
+        private System.Windows.Forms.GroupBoxTS grpC25TXLPFTest;
+        private System.Windows.Forms.LabelTS lblC25TXLPFTestInterval;
+        private System.Windows.Forms.NumericUpDownTS udC25TXLPFTestInterval;
+        private System.Windows.Forms.ButtonTS btnC25TXLPFTestCancel;
+        private System.Windows.Forms.ButtonTS btnC25TXLPFTestPause;
+        private System.Windows.Forms.ButtonTS btnC25TXLPFTestStart;
+        private System.Windows.Forms.ListBox lbC25RXAttPreTestResults;
+        private System.Windows.Forms.LabelTS lblC25RXAttPreTestResult1;
+        private System.Windows.Forms.LabelTS lblC25RXAttPreTestResult2;
+        private System.Windows.Forms.ButtonTS btnC25RXPreTest;
     }
 }

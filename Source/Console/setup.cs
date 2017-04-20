@@ -30,6 +30,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// DG8MG
+using System.Timers;
+// DG8MG
+
 namespace PowerSDR
 {
     using System;
@@ -7619,6 +7623,12 @@ namespace PowerSDR
                 chkVACAllowBypass.Checked = false;  // Charly 25LC needs this to be unchecked
                 console.psform.AutoAttenuate = false;  // Charly 25LC doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // Charly 25LC doesn't have this functionality
+
+                if (!tcSetup.TabPages.Contains(tpC25Tests))
+                {
+                    tcSetup.TabPages.Add(tpC25Tests);
+                    tcSetup.SelectedIndex = 0;
+                }
             }
             else  // Charly 25LC is deselected
             {
@@ -7628,7 +7638,12 @@ namespace PowerSDR
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
-                // console.chkRX2.Enabled = true;  // Enable the second RX button
+
+                if (tcSetup.TabPages.Contains(tpC25Tests))
+                {
+                    tcSetup.TabPages.Remove(tpC25Tests);
+                    tcSetup.SelectedIndex = 0;
+                }
             }
 
             // DG8MG: Test me!
@@ -7790,6 +7805,12 @@ namespace PowerSDR
                 chkVACAllowBypass.Checked = false;  // HAMlab needs this to be unchecked
                 console.psform.AutoAttenuate = false;  // HAMlab doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // HAMlab doesn't have this functionality
+
+                if (!tcSetup.TabPages.Contains(tpC25Tests))
+                {
+                    tcSetup.TabPages.Add(tpC25Tests);
+                    tcSetup.SelectedIndex = 0;
+                }                
             }
             else  // HAMlab is deselected
             {
@@ -7800,7 +7821,12 @@ namespace PowerSDR
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
-                // console.chkRX2.Enabled = true;  // Enable the second RX button
+
+                if (tcSetup.TabPages.Contains(tpC25Tests))
+                {
+                    tcSetup.TabPages.Remove(tpC25Tests);
+                    tcSetup.SelectedIndex = 0;
+                }                
             }
 
             // DG8MG: Test me!
@@ -20222,6 +20248,231 @@ namespace PowerSDR
         {
             console.specRX.GetSpecRX(0).NormOneHzPan = chkDispNormalize.Checked;
         }
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        bool C25TXLPFTest_is_paused = false;
+        bool C25TXLPFTest_is_canceled = false;
+        bool C25TXLPFTest_timer_is_elapsed = false;
+
+        void C25TXLPFTest_timer_elapsed(object sender, EventArgs e)
+        {
+            C25TXLPFTest_timer_is_elapsed = true;
+        }
+
+        private void btnTXLPFTestStart_Click(object sender, EventArgs e)
+        {
+            int txlpftest_band = 0;
+            int old_pwr = 0;
+            double old_vfoa_frequency = console.VFOAFreq;
+
+            double[] txlpftest_frequencies = {1.900000,   // 160m
+                                              3.600000,   // 80m
+                                              5.355000,   // 60m
+                                              7.100000,   // 40m
+                                              10.125000,  // 30m
+                                              14.200000,  // 20m
+                                              18.100000,  // 17m
+                                              21.200000,  // 15m
+                                              24.900000,  // 12m
+                                              29.000000,  // 10m
+                                              50.500000   // 6m
+                                             };
+
+            btnC25TXLPFTestPause.Enabled = false;
+            btnC25TXLPFTestCancel.Enabled = false;
+
+            if (!console.PowerOn)
+            {
+                MessageBox.Show("Power must be on to run this test.",
+                    "Power is off",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            System.Timers.Timer txlpftest_timer = new System.Timers.Timer();
+            txlpftest_timer.Interval = (double)udC25TXLPFTestInterval.Value * 1000;           
+            txlpftest_timer.Elapsed += new ElapsedEventHandler(C25TXLPFTest_timer_elapsed);
+           
+            C25TXLPFTest_is_paused = false;
+            C25TXLPFTest_is_canceled = false;
+            btnC25TXLPFTestStart.Enabled = false;
+            btnC25TXLPFTestPause.Enabled = true;
+            btnC25TXLPFTestCancel.Enabled = true;
+            udC25TXLPFTestInterval.Enabled = false;
+
+            txlpftest_timer.Start();
+
+            for (txlpftest_band = (int)Band.B160M; txlpftest_band <= (int)Band.B6M; txlpftest_band++)
+            {                
+                console.VFOAFreq = txlpftest_frequencies[txlpftest_band - 1];
+
+                // Save the current settings
+                old_pwr = console.PWR;
+                // old_vfoa_frequency = console.VFOAFreq;
+                
+                console.PWR = 100;
+                console.TUN = true;
+                C25TXLPFTest_timer_is_elapsed = false;
+                
+                while ((C25TXLPFTest_timer_is_elapsed == false && C25TXLPFTest_is_canceled == false) || (C25TXLPFTest_is_paused == true && C25TXLPFTest_is_canceled == false))
+                {
+                    Application.DoEvents();
+                }
+
+                // Restore the old setting
+                console.PWR = old_pwr;
+                
+                if (C25TXLPFTest_is_canceled == true)
+                {
+                    break;
+                }
+            }
+
+            txlpftest_timer.Stop();
+            console.TUN = false;
+            btnC25TXLPFTestStart.Enabled = true;
+            btnC25TXLPFTestPause.Enabled = false;
+            btnC25TXLPFTestCancel.Enabled = false;
+            udC25TXLPFTestInterval.Enabled = true;
+            console.VFOAFreq = old_vfoa_frequency;
+        }
+
+        private void btnTXLPFTestPause_Click(object sender, EventArgs e)
+        {
+            if (C25TXLPFTest_is_paused == false)
+            {
+                C25TXLPFTest_is_paused = true;
+                btnC25TXLPFTestPause.Text = "Continue";
+            }
+            else
+            {
+                C25TXLPFTest_is_paused = false;
+                btnC25TXLPFTestPause.Text = "Pause";
+            }            
+        }
+
+        private void btnTXLPFTestCancel_Click(object sender, EventArgs e)
+        {
+            C25TXLPFTest_is_canceled = true;
+        }
+
+        private void btnC25RXAttPreTest_Click(object sender, EventArgs e)
+        {
+            int rxattpretest_first_mode = 0;
+            int rxattpretest_last_mode = 0;
+            float rxattpretest_reference_level = 0.0f;
+            float rxattpretest_switched_level = 0.0f;
+            bool rxattpretest_failed = false;
+            String rxattpretest_result = "";
+
+            if (!console.PowerOn)
+            {
+                MessageBox.Show("Power must be on to run this test.",
+                    "Power is off",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            btnC25RXAttTest.Enabled = false;
+            btnC25RXPreTest.Enabled = false;
+            udC25RXAttPreTestFrequency.Enabled = false;
+            lblC25RXAttPreTestResult2.Text = "";
+
+            // Save the current settings
+            double old_vfoa_frequency = console.VFOAFreq;
+            DSPMode old_dsp_mode = console.RX1DSPMode;
+            Filter old_filter = console.RX1Filter;
+            PreampMode old_preamp = console.RX1PreampMode;
+
+            console.VFOAFreq = (double)udC25RXAttPreTestFrequency.Value / 1e6;
+            console.RX1DSPMode = DSPMode.AM;
+            console.RX1Filter = Filter.F10;
+
+            console.RX1PreampMode = PreampMode.C25LC_OFF;
+            lbC25RXAttPreTestResults.Items.Clear();
+
+            // Measure the reference level
+            Thread.Sleep(100);
+            rxattpretest_reference_level = 0.0f;
+            Thread.Sleep(1000);
+
+            for (int i = 0; i < 50; i++)
+            {
+                rxattpretest_reference_level += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                Thread.Sleep(50);
+            }
+
+            rxattpretest_reference_level /= 50.0f;
+            lbC25RXAttPreTestResults.ForeColor = Color.Black;
+            lbC25RXAttPreTestResults.Items.Add("Reference signal level at 0dB setting: " + rxattpretest_reference_level + " dB");
+
+            if (sender == btnC25RXAttTest)
+            {
+                rxattpretest_first_mode = (int)PreampMode.C25LC_MINUS36;
+                rxattpretest_last_mode = (int)PreampMode.C25LC_MINUS6;
+            }
+            else
+            {
+                rxattpretest_first_mode = (int)PreampMode.C25LC_PLUS6;
+                rxattpretest_last_mode = (int)PreampMode.C25LC_PLUS36;
+            }
+
+            // Measure the levels at the different attenuator and preamp settings
+            for (int rxattpretest_mode = rxattpretest_first_mode; rxattpretest_mode <= rxattpretest_last_mode; rxattpretest_mode++)
+            {
+                Application.DoEvents();
+                // Set preamp to current rx1_preamp_mode
+                console.RX1PreampMode = (PreampMode)rxattpretest_mode;
+                Thread.Sleep(100);
+                rxattpretest_switched_level = 0.0f;
+                Thread.Sleep(1000);
+
+                for (int i = 0; i < 50; i++)
+                {
+                    rxattpretest_switched_level += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                    Thread.Sleep(50);
+                }
+
+                rxattpretest_switched_level /= 50.0f;
+
+                if (Math.Abs((rxattpretest_switched_level - rxattpretest_reference_level + console.rx1_preamp_offset[rxattpretest_mode])) < 5)
+                {
+                    rxattpretest_result = "PASSED";
+                }
+                else
+                {
+                    rxattpretest_result = "FAILED";
+                    rxattpretest_failed = true;
+                }
+
+                lbC25RXAttPreTestResults.Items.Add("Setting: " + console.rx1_preamp_offset[rxattpretest_mode] * (-1) + " dB - Target: " + (rxattpretest_reference_level - console.rx1_preamp_offset[rxattpretest_mode]) + " dB - Measured: " + rxattpretest_switched_level + "dB - " + rxattpretest_result);
+            }           
+
+            lblC25RXAttPreTestResult2.Text = "TEST ";
+            if (rxattpretest_failed)
+            {
+                lblC25RXAttPreTestResult2.ForeColor = Color.DarkRed;
+                lblC25RXAttPreTestResult2.Text = "TEST FAILED!";
+            }
+            else
+            {
+                lblC25RXAttPreTestResult2.ForeColor = Color.DarkGreen;
+                lblC25RXAttPreTestResult2.Text = "TEST PASSED!";
+            }
+
+            // Restore the old settings
+            console.VFOAFreq = old_vfoa_frequency;
+            console.RX1DSPMode = old_dsp_mode;
+            console.RX1Filter = old_filter;
+            console.RX1PreampMode = old_preamp;
+            btnC25RXAttTest.Enabled = true;
+            btnC25RXPreTest.Enabled = true;
+            udC25RXAttPreTestFrequency.Enabled = true;
+        }
+        // DG8MG
     }
 
     #region PADeviceInfo Helper Class
