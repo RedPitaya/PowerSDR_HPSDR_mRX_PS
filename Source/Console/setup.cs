@@ -2094,7 +2094,11 @@ namespace PowerSDR
                 if (comboAppSkin.Items.Contains("Default"))
                     comboAppSkin.Text = "Default";
                 else
-                    comboAppSkin.Text = "OpenHPSDR-Gray";
+                    // DG8MG
+                    // Changed default skin to Red Pitaya
+                    // comboAppSkin.Text = "OpenHPSDR-Gray";
+                    comboAppSkin.Text = "Red Pitaya";
+                    // DG8MG
             }
             else if (comboAppSkin.Items.Contains(skin))
                 comboAppSkin.Text = skin;

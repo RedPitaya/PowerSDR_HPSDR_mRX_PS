@@ -14186,8 +14186,25 @@ namespace PowerSDR
                     else ret_val = false;
                     break;
                 case FRSRegion.Europe:
-                    if (f >= 1.81 && f <= 2.0) ret_val = true;
+
+                    // DG8MG
+                    // Extended the allowed transmit frequencies for the 2200m band in Europe                   
+                    if (f >= 0.1357 && f <= 0.1378) ret_val = true;
+                    // DG8MG
+
+                    // DG8MG
+                    // Extended the allowed transmit frequencies for the 630m band in Europe                   
+                    if (f >= 0.472 && f <= 0.479) ret_val = true;
+                    // DG8MG
+
+                    else if (f >= 1.81 && f <= 2.0) ret_val = true;
                     else if (f >= 3.5 && f <= 3.8) ret_val = true;
+
+                    // DG8MG
+                    // Extended the allowed transmit frequencies for the 60m band in Europe
+                    else if (f >= 5.3515 && f <= 5.3665) ret_val = true;
+                    // DG8MG
+
                     else if (f >= 7.0 && f <= 7.2) ret_val = true;
                     else if (f >= 10.1 && f <= 10.15) ret_val = true;
                     else if (f >= 14.0 && f <= 14.35) ret_val = true;

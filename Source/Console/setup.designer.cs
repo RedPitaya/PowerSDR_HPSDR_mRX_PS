@@ -41876,12 +41876,12 @@
             0});
             this.udTestIMDFreq2.Location = new System.Drawing.Point(70, 73);
             this.udTestIMDFreq2.Maximum = new decimal(new int[] {
-            20000,
+            200000,
             0,
             0,
             0});
             this.udTestIMDFreq2.Minimum = new decimal(new int[] {
-            20000,
+            200000,
             0,
             0,
             -2147483648});
@@ -41964,12 +41964,12 @@
             0});
             this.udTestIMDFreq1.Location = new System.Drawing.Point(70, 49);
             this.udTestIMDFreq1.Maximum = new decimal(new int[] {
-            20000,
+            200000,
             0,
             0,
             0});
             this.udTestIMDFreq1.Minimum = new decimal(new int[] {
-            20000,
+            200000,
             0,
             0,
             -2147483648});
