@@ -295,7 +295,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
                         try
                         {
@@ -360,7 +360,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
                         try
                         {
@@ -420,7 +420,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (current_hpsdr_model == HPSDRModel.CHARLY25LC || current_hpsdr_model == HPSDRModel.HAMLAB)
+                if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
                     Metis_IP_address = "";
 
@@ -432,7 +432,7 @@ namespace PowerSDR
                         {
                             // DG8MG
                             // No Charly 25 / HAMlab device was detected on the network
-                            MessageBox.Show("Please power up your Charly 25 / HAMlab before using the autosensing mode!", "No Charly 25 / HAMlab device detected on the network", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Please power up your Charly 25 / HAMlab / STEMlab SDR before using the autosensing mode!", "No Charly 25 / HAMlab / STEMlab SDR device detected on the network", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             break;
                         }
                         
@@ -688,7 +688,7 @@ namespace PowerSDR
 
                     // DG8MG: Implement me!
                     // Extension for Charly 25 and HAMlab hardware
-                    if (mercury2_ver < 32 || mercury2_ver == 127 || c.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || c.CurrentHPSDRModel == HPSDRModel.HAMLAB) // Check if physical RX2 preamp is present
+                    if (mercury2_ver < 32 || mercury2_ver == 127 || c.CurrentHPSDRModel == HPSDRModel.CHARLY25 || c.CurrentHPSDRModel == HPSDRModel.HAMLAB) // Check if physical RX2 preamp is present
                     // DG8MG
 
                         c.RX2PreampPresent = false;

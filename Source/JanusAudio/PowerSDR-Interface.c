@@ -980,7 +980,7 @@ KD5TFDVK6APHAUDIO_API void SetRX1Preamp(int bits) {
 
 // DG8MG
 // Extension for Charly 25 and HAMlab Attenuator and Preamp
-KD5TFDVK6APHAUDIO_API void SetRX1Preamp_Charly25LC(int bits) {
+KD5TFDVK6APHAUDIO_API void SetRX1Preamp_Charly25(int bits) {
 	switch (bits)
 	{
 	case 1:  // First preamp switched on

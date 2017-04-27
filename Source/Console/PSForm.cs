@@ -25,7 +25,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25 || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {
                 this.chkPSAutoAttenuate.Checked = false;
                 this.chkPSAutoAttenuate.Visible = false;
@@ -631,7 +631,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                case HPSDRModel.CHARLY25LC:  // Behave like a HERMES
+                case HPSDRModel.CHARLY25:  // Behave like a HERMES
                 case HPSDRModel.HAMLAB:  // Behave like a HERMES
                 // DG8MG
 
@@ -678,7 +678,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                case HPSDRModel.CHARLY25LC:  // Behave like a HERMES
+                case HPSDRModel.CHARLY25:  // Behave like a HERMES
                 case HPSDRModel.HAMLAB:  // Behave like a HERMES
                 // DG8MG
 
@@ -733,7 +733,7 @@ namespace PowerSDR
                 {
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    case HPSDRModel.CHARLY25LC:  // Behave like a HERMES
+                    case HPSDRModel.CHARLY25:  // Behave like a HERMES
                     case HPSDRModel.HAMLAB:  // Behave like a HERMES
                     // DG8MG
 

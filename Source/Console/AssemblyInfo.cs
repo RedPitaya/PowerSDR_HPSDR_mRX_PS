@@ -35,12 +35,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("PowerSDR/HPSDR Charly 25 / HAMlab Edition")]
+[assembly: AssemblyTitle("PowerSDR/HPSDR Charly 25 / HAMlab / STEMlab SDR Edition")]
 [assembly: AssemblyDescription("Software Defined Radio Application")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("OpenHPSDR")]
+[assembly: AssemblyCompany("Red Pitaya")]
 [assembly: AssemblyProduct("PowerSDR")]
-[assembly: AssemblyCopyright("2016")]
+[assembly: AssemblyCopyright("2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 //In order to begin building localizable applications, set 

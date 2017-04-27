@@ -4672,9 +4672,9 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    case Model.CHARLY25LC:
+                    case Model.CHARLY25:
                         force_model = true;
-                        radGenModelCharly25LC.Checked = true;
+                        radGenModelCharly25.Checked = true;
                         break;
                     case Model.HAMLAB:
                         force_model = true;
@@ -5856,154 +5856,154 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        // PAGain CHARLY25LC
-        public float CHARLY25LCPAGain160
+        // PAGain CHARLY25
+        public float CHARLY25PAGain160
         {
-            get { return (float)udCHARLY25LCPAGain160.Value; }
-            set { udCHARLY25LCPAGain160.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain160.Value; }
+            set { udCHARLY25PAGain160.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain80
+        public float CHARLY25PAGain80
         {
-            get { return (float)udCHARLY25LCPAGain80.Value; }
-            set { udCHARLY25LCPAGain80.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain80.Value; }
+            set { udCHARLY25PAGain80.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain60
+        public float CHARLY25PAGain60
         {
-            get { return (float)udCHARLY25LCPAGain60.Value; }
-            set { udCHARLY25LCPAGain60.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain60.Value; }
+            set { udCHARLY25PAGain60.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain40
+        public float CHARLY25PAGain40
         {
-            get { return (float)udCHARLY25LCPAGain40.Value; }
-            set { udCHARLY25LCPAGain40.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain40.Value; }
+            set { udCHARLY25PAGain40.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain30
+        public float CHARLY25PAGain30
         {
-            get { return (float)udCHARLY25LCPAGain30.Value; }
-            set { udCHARLY25LCPAGain30.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain30.Value; }
+            set { udCHARLY25PAGain30.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain20
+        public float CHARLY25PAGain20
         {
-            get { return (float)udCHARLY25LCPAGain20.Value; }
-            set { udCHARLY25LCPAGain20.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain20.Value; }
+            set { udCHARLY25PAGain20.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain17
+        public float CHARLY25PAGain17
         {
-            get { return (float)udCHARLY25LCPAGain17.Value; }
-            set { udCHARLY25LCPAGain17.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain17.Value; }
+            set { udCHARLY25PAGain17.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain15
+        public float CHARLY25PAGain15
         {
-            get { return (float)udCHARLY25LCPAGain15.Value; }
-            set { udCHARLY25LCPAGain15.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain15.Value; }
+            set { udCHARLY25PAGain15.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain12
+        public float CHARLY25PAGain12
         {
-            get { return (float)udCHARLY25LCPAGain12.Value; }
-            set { udCHARLY25LCPAGain12.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain12.Value; }
+            set { udCHARLY25PAGain12.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain10
+        public float CHARLY25PAGain10
         {
-            get { return (float)udCHARLY25LCPAGain10.Value; }
-            set { udCHARLY25LCPAGain10.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain10.Value; }
+            set { udCHARLY25PAGain10.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGain6
+        public float CHARLY25PAGain6
         {
-            get { return (float)udCHARLY25LCPAGain6.Value; }
-            set { udCHARLY25LCPAGain6.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGain6.Value; }
+            set { udCHARLY25PAGain6.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF0
+        public float CHARLY25PAGainVHF0
         {
-            get { return (float)udCHARLY25LCPAGainVHF0.Value; }
-            set { udCHARLY25LCPAGainVHF0.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF0.Value; }
+            set { udCHARLY25PAGainVHF0.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF1
+        public float CHARLY25PAGainVHF1
         {
-            get { return (float)udCHARLY25LCPAGainVHF1.Value; }
-            set { udCHARLY25LCPAGainVHF1.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF1.Value; }
+            set { udCHARLY25PAGainVHF1.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF2
+        public float CHARLY25PAGainVHF2
         {
-            get { return (float)udCHARLY25LCPAGainVHF2.Value; }
-            set { udCHARLY25LCPAGainVHF2.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF2.Value; }
+            set { udCHARLY25PAGainVHF2.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF3
+        public float CHARLY25PAGainVHF3
         {
-            get { return (float)udCHARLY25LCPAGainVHF3.Value; }
-            set { udCHARLY25LCPAGainVHF3.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF3.Value; }
+            set { udCHARLY25PAGainVHF3.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF4
+        public float CHARLY25PAGainVHF4
         {
-            get { return (float)udCHARLY25LCPAGainVHF4.Value; }
-            set { udCHARLY25LCPAGainVHF4.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF4.Value; }
+            set { udCHARLY25PAGainVHF4.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF5
+        public float CHARLY25PAGainVHF5
         {
-            get { return (float)udCHARLY25LCPAGainVHF5.Value; }
-            set { udCHARLY25LCPAGainVHF5.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF5.Value; }
+            set { udCHARLY25PAGainVHF5.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF6
+        public float CHARLY25PAGainVHF6
         {
-            get { return (float)udCHARLY25LCPAGainVHF6.Value; }
-            set { udCHARLY25LCPAGainVHF6.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF6.Value; }
+            set { udCHARLY25PAGainVHF6.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF7
+        public float CHARLY25PAGainVHF7
         {
-            get { return (float)udCHARLY25LCPAGainVHF7.Value; }
-            set { udCHARLY25LCPAGainVHF7.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF7.Value; }
+            set { udCHARLY25PAGainVHF7.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF8
+        public float CHARLY25PAGainVHF8
         {
-            get { return (float)udCHARLY25LCPAGainVHF8.Value; }
-            set { udCHARLY25LCPAGainVHF8.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF8.Value; }
+            set { udCHARLY25PAGainVHF8.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF9
+        public float CHARLY25PAGainVHF9
         {
-            get { return (float)udCHARLY25LCPAGainVHF9.Value; }
-            set { udCHARLY25LCPAGainVHF9.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF9.Value; }
+            set { udCHARLY25PAGainVHF9.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF10
+        public float CHARLY25PAGainVHF10
         {
-            get { return (float)udCHARLY25LCPAGainVHF10.Value; }
-            set { udCHARLY25LCPAGainVHF10.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF10.Value; }
+            set { udCHARLY25PAGainVHF10.Value = (decimal)value; }
         }
-        public float CHARLY25LCPAGainVHF11
+        public float CHARLY25PAGainVHF11
         {
-            get { return (float)udCHARLY25LCPAGainVHF11.Value; }
-            set { udCHARLY25LCPAGainVHF11.Value = (decimal)value; }
-        }
-
-        public float CHARLY25LCPAGainVHF12
-        {
-            get { return (float)udCHARLY25LCPAGainVHF12.Value; }
-            set { udCHARLY25LCPAGainVHF12.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF11.Value; }
+            set { udCHARLY25PAGainVHF11.Value = (decimal)value; }
         }
 
-        public float CHARLY25LCPAGainVHF13
+        public float CHARLY25PAGainVHF12
         {
-            get { return (float)udCHARLY25LCPAGainVHF13.Value; }
-            set { udCHARLY25LCPAGainVHF13.Value = (decimal)value; }
+            get { return (float)udCHARLY25PAGainVHF12.Value; }
+            set { udCHARLY25PAGainVHF12.Value = (decimal)value; }
+        }
+
+        public float CHARLY25PAGainVHF13
+        {
+            get { return (float)udCHARLY25PAGainVHF13.Value; }
+            set { udCHARLY25PAGainVHF13.Value = (decimal)value; }
         }
         // DG8MG
 
@@ -7574,15 +7574,15 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25LC hardware
-        private void radGenModelCharly25LC_CheckedChanged(object sender, System.EventArgs e)
+        private void radGenModelCharly25_CheckedChanged(object sender, System.EventArgs e)
         {
             HPSDRModel old_model = console.CurrentHPSDRModel;
 
-            if (radGenModelCharly25LC.Checked)  // Charly 25LC is selected
+            if (radGenModelCharly25.Checked)  // Charly 25LC is selected
             {
                 JanusAudio.fwVersionsChecked = false;
-                console.CurrentModel = Model.CHARLY25LC;
-                console.CurrentHPSDRModel = HPSDRModel.CHARLY25LC;
+                console.CurrentModel = Model.CHARLY25;
+                console.CurrentHPSDRModel = HPSDRModel.CHARLY25;
                 console.chkSR.Visible = false;  // Charly 25LC doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25LC
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25LC visible
@@ -7612,7 +7612,7 @@ namespace PowerSDR
                 chkAlexAntCtrl_CheckedChanged(this, EventArgs.Empty);
                 chkBypassANANPASettings.Visible = false;
                 chkAutoPACalibrate.Visible = true;
-                grpCHARLY25LCPAGainByBand.BringToFront();
+                grpCHARLY25PAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
                 chkATTOnTX.Checked = false;  // Charly 25LC doesn't have a TX step attenuator
                 console.RX2PreampPresent = false;  // Charly 25LC doesn't have a RX2 preamp
@@ -7719,7 +7719,7 @@ namespace PowerSDR
                 grpMetisAddr.Visible = true;
             }
 
-            if (radGenModelCharly25LC.Checked)   // Test me! DG8MG
+            if (radGenModelCharly25.Checked)   // Test me! DG8MG
             {
                 int nr = 2;
                 bool pwr_cycled = false;
@@ -7794,7 +7794,7 @@ namespace PowerSDR
                 chkAlexAntCtrl_CheckedChanged(this, EventArgs.Empty);
                 chkBypassANANPASettings.Visible = false;
                 chkAutoPACalibrate.Visible = true;
-                grpCHARLY25LCPAGainByBand.BringToFront();
+                grpCHARLY25PAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
                 chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator
                 console.RX2PreampPresent = false;  // HAMlab doesn't have a RX2 preamp
@@ -8316,7 +8316,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
-            if ((!radGenModelCharly25LC.Checked) && (!radGenModelHAMlab.Checked))
+            if ((!radGenModelCharly25.Checked) && (!radGenModelHAMlab.Checked))
             {
                 if (!tcGeneral.TabPages.Contains(tpHPSDR))
                 {
@@ -8722,7 +8722,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             bool done = false;
-            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25 || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {
                 done = console.CalibrateRX2Level_Charly25(
                 (float)udGeneralCalRX2Level.Value,
@@ -12809,34 +12809,34 @@ namespace PowerSDR
                 udHermesPAGainVHF13.Value = 56.2M;
             }
 
-            if (radGenModelCharly25LC.Checked || radGenModelHAMlab.Checked)
+            if (radGenModelCharly25.Checked || radGenModelHAMlab.Checked)
             {
-                udCHARLY25LCPAGain160.Value = 25.0M;
-                udCHARLY25LCPAGain80.Value = 25.0M;
-                udCHARLY25LCPAGain60.Value = 25.0M;
-                udCHARLY25LCPAGain40.Value = 25.0M;
-                udCHARLY25LCPAGain30.Value = 25.0M;
-                udCHARLY25LCPAGain20.Value = 25.0M;
-                udCHARLY25LCPAGain17.Value = 25.0M;
-                udCHARLY25LCPAGain15.Value = 25.0M;
-                udCHARLY25LCPAGain12.Value = 25.0M;
-                udCHARLY25LCPAGain10.Value = 25.0M;
-                udCHARLY25LCPAGain6.Value = 6.0M;
+                udCHARLY25PAGain160.Value = 25.0M;
+                udCHARLY25PAGain80.Value = 25.0M;
+                udCHARLY25PAGain60.Value = 25.0M;
+                udCHARLY25PAGain40.Value = 25.0M;
+                udCHARLY25PAGain30.Value = 25.0M;
+                udCHARLY25PAGain20.Value = 25.0M;
+                udCHARLY25PAGain17.Value = 25.0M;
+                udCHARLY25PAGain15.Value = 25.0M;
+                udCHARLY25PAGain12.Value = 25.0M;
+                udCHARLY25PAGain10.Value = 25.0M;
+                udCHARLY25PAGain6.Value = 6.0M;
 
-                udCHARLY25LCPAGainVHF0.Value = 0.0M;
-                udCHARLY25LCPAGainVHF1.Value = 1.0M;
-                udCHARLY25LCPAGainVHF2.Value = 2.0M;
-                udCHARLY25LCPAGainVHF3.Value = 3.0M;
-                udCHARLY25LCPAGainVHF4.Value = 4.0M;
-                udCHARLY25LCPAGainVHF5.Value = 5.0M;
-                udCHARLY25LCPAGainVHF6.Value = 6.0M;
-                udCHARLY25LCPAGainVHF7.Value = 7.0M;
-                udCHARLY25LCPAGainVHF8.Value = 8.0M;
-                udCHARLY25LCPAGainVHF9.Value = 9.0M;
-                udCHARLY25LCPAGainVHF10.Value = 10.0M;
-                udCHARLY25LCPAGainVHF11.Value = 11.0M;
-                udCHARLY25LCPAGainVHF12.Value = 12.0M;
-                udCHARLY25LCPAGainVHF13.Value = 13.0M;
+                udCHARLY25PAGainVHF0.Value = 0.0M;
+                udCHARLY25PAGainVHF1.Value = 1.0M;
+                udCHARLY25PAGainVHF2.Value = 2.0M;
+                udCHARLY25PAGainVHF3.Value = 3.0M;
+                udCHARLY25PAGainVHF4.Value = 4.0M;
+                udCHARLY25PAGainVHF5.Value = 5.0M;
+                udCHARLY25PAGainVHF6.Value = 6.0M;
+                udCHARLY25PAGainVHF7.Value = 7.0M;
+                udCHARLY25PAGainVHF8.Value = 8.0M;
+                udCHARLY25PAGainVHF9.Value = 9.0M;
+                udCHARLY25PAGainVHF10.Value = 10.0M;
+                udCHARLY25PAGainVHF11.Value = 11.0M;
+                udCHARLY25PAGainVHF12.Value = 12.0M;
+                udCHARLY25PAGainVHF13.Value = 13.0M;
             }
 
         }
@@ -15297,34 +15297,34 @@ namespace PowerSDR
 
         // DG8MG: Test me!
         // Extension for Charly 25 and HAMlab hardware
-        private void chkCHARLY25LCPANewCal_CheckedChanged(object sender, EventArgs e)
+        private void chkCHARLY25PANewCal_CheckedChanged(object sender, EventArgs e)
         {
-            bool b = chkCHARLY25LCPANewCal.Checked;
+            bool b = chkCHARLY25PANewCal.Checked;
 
             console.NewPowerCal = b;
 
-            lblCHARLY25LCPAGainByBand160.Visible = !b;
-            lblCHARLY25LCPAGainByBand80.Visible = !b;
-            lblCHARLY25LCPAGainByBand60.Visible = !b;
-            lblCHARLY25LCPAGainByBand40.Visible = !b;
-            lblCHARLY25LCPAGainByBand30.Visible = !b;
-            lblCHARLY25LCPAGainByBand20.Visible = !b;
-            lblCHARLY25LCPAGainByBand17.Visible = !b;
-            lblCHARLY25LCPAGainByBand15.Visible = !b;
-            lblCHARLY25LCPAGainByBand12.Visible = !b;
-            lblCHARLY25LCPAGainByBand10.Visible = !b;
+            lblCHARLY25PAGainByBand160.Visible = !b;
+            lblCHARLY25PAGainByBand80.Visible = !b;
+            lblCHARLY25PAGainByBand60.Visible = !b;
+            lblCHARLY25PAGainByBand40.Visible = !b;
+            lblCHARLY25PAGainByBand30.Visible = !b;
+            lblCHARLY25PAGainByBand20.Visible = !b;
+            lblCHARLY25PAGainByBand17.Visible = !b;
+            lblCHARLY25PAGainByBand15.Visible = !b;
+            lblCHARLY25PAGainByBand12.Visible = !b;
+            lblCHARLY25PAGainByBand10.Visible = !b;
 
-            udCHARLY25LCPAGain160.Visible = !b;
-            udCHARLY25LCPAGain80.Visible = !b;
-            udCHARLY25LCPAGain60.Visible = !b;
-            udCHARLY25LCPAGain40.Visible = !b;
-            udCHARLY25LCPAGain30.Visible = !b;
-            udCHARLY25LCPAGain20.Visible = !b;
-            udCHARLY25LCPAGain17.Visible = !b;
-            udCHARLY25LCPAGain15.Visible = !b;
-            udCHARLY25LCPAGain12.Visible = !b;
-            udCHARLY25LCPAGain10.Visible = !b;
-            udCHARLY25LCPAGain6.Visible = !b;
+            udCHARLY25PAGain160.Visible = !b;
+            udCHARLY25PAGain80.Visible = !b;
+            udCHARLY25PAGain60.Visible = !b;
+            udCHARLY25PAGain40.Visible = !b;
+            udCHARLY25PAGain30.Visible = !b;
+            udCHARLY25PAGain20.Visible = !b;
+            udCHARLY25PAGain17.Visible = !b;
+            udCHARLY25PAGain15.Visible = !b;
+            udCHARLY25PAGain12.Visible = !b;
+            udCHARLY25PAGain10.Visible = !b;
+            udCHARLY25PAGain6.Visible = !b;
 
             lblPACalTarget.Visible = !b;
             udPACalPower.Visible = !b;
@@ -18117,7 +18117,7 @@ namespace PowerSDR
             
             // DG8MG
             // Extension for Charly 25 / HAMlab edition
-            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25LC || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25 || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {
                 panelRX2LevelCal.Visible = true;
             }

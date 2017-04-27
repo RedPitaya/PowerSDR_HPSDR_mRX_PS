@@ -1,5 +1,17 @@
 ## Release notes of PowerSDR Charly 25 / HAMlab Edition:
 
+#### commit 1391b271bfeb09c699a0d44d6d7da7e1c62596af
+Date:   Tue Apr 25 00:47:40 2017 +0200
+
+- Added the following skins for the PowerSDR appearance: K2GX_Brushed_Black, K2GX_World_Time, Red Pitaya and changed the default skin to Red Pitaya.
+- Added the allowed transmit frequencies of the 2200m, 630m and 60m band for the region setting Europe.
+- Changed the minimum and maximum frequencies for the two tone test from +/- 20.000Hz to +/- 200.000Hz.
+
+
+#### commit e61c05b78ff0571be0fb3c2d117a072c5160cef8
+Date:   Thu Apr 20 03:13:05 2017 +0200
+
+- Added test routines for the TX LPF and the RX attenuators and preamps of the Charly 25 and HAMlab hardware
 
 
 #### commit 54476aebda13df2be7f86f7aa6f1ac2ac6374cbb

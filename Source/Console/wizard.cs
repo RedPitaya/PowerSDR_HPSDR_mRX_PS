@@ -137,7 +137,7 @@ namespace PowerSDR
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         private RadioButtonTS radGenModelHAMlab;
-        private RadioButtonTS radGenModelCharly25LC;
+        private RadioButtonTS radGenModelCharly25;
         // DG8MG
 
         private System.ComponentModel.Container components = null;
@@ -218,8 +218,8 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                case Model.CHARLY25LC:
-                    radGenModelCharly25LC.Checked = true;
+                case Model.CHARLY25:
+                    radGenModelCharly25.Checked = true;
                     break;
                 case Model.HAMLAB:
                     radGenModelHAMlab.Checked = true;
@@ -261,13 +261,8 @@ namespace PowerSDR
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.grpModel = new System.Windows.Forms.GroupBoxTS();
-
-            // DG8MG
-            // Extension for Charly 25 and HAMlab hardware
+            this.radGenModelCharly25 = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelHAMlab = new System.Windows.Forms.RadioButtonTS();
-            this.radGenModelCharly25LC = new System.Windows.Forms.RadioButtonTS();
-            // DG8MG
-
             this.radGenModelANAN10E = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN100B = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelOrion = new System.Windows.Forms.RadioButtonTS();
@@ -322,7 +317,6 @@ namespace PowerSDR
             this.comboBox10 = new System.Windows.Forms.ComboBoxTS();
             this.lblMessage1 = new System.Windows.Forms.LabelTS();
             this.lblCombo = new System.Windows.Forms.LabelTS();
-            
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grpModel.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -354,7 +348,7 @@ namespace PowerSDR
             // 
             // grpModel
             // 
-            this.grpModel.Controls.Add(this.radGenModelCharly25LC);
+            this.grpModel.Controls.Add(this.radGenModelCharly25);
             this.grpModel.Controls.Add(this.radGenModelHAMlab);
             this.grpModel.Controls.Add(this.radGenModelANAN10E);
             this.grpModel.Controls.Add(this.radGenModelANAN100B);
@@ -370,41 +364,35 @@ namespace PowerSDR
             this.grpModel.Controls.Add(this.radGenModelSDR1000);
             this.grpModel.Location = new System.Drawing.Point(256, 24);
             this.grpModel.Name = "grpModel";
-            this.grpModel.Size = new System.Drawing.Size(120, 216);
+            this.grpModel.Size = new System.Drawing.Size(144, 216);
             this.grpModel.TabIndex = 20;
             this.grpModel.TabStop = false;
             this.grpModel.Text = "Model";
             this.grpModel.Visible = false;
-
-            // DG8MG
-            // Extension for Charly 25 and HAMlab hardware
             // 
-            // radGenModelCharly25LC
+            // radGenModelCharly25
             // 
-            this.radGenModelCharly25LC.AutoSize = true;
-            this.radGenModelCharly25LC.Image = null;
-            this.radGenModelCharly25LC.Location = new System.Drawing.Point(19, 155);
-            this.radGenModelCharly25LC.Name = "radGenModelCharly25LC";
-            this.radGenModelCharly25LC.Size = new System.Drawing.Size(99, 17);
-            this.radGenModelCharly25LC.TabIndex = 15;
-            this.radGenModelCharly25LC.Text = "CHARLY 25LC";
-            this.radGenModelCharly25LC.UseVisualStyleBackColor = true;
-            this.radGenModelCharly25LC.CheckedChanged += new System.EventHandler(this.radGenModelCharly25LC_CheckedChanged);
+            this.radGenModelCharly25.AutoSize = true;
+            this.radGenModelCharly25.Image = null;
+            this.radGenModelCharly25.Location = new System.Drawing.Point(19, 155);
+            this.radGenModelCharly25.Name = "radGenModelCharly25";
+            this.radGenModelCharly25.Size = new System.Drawing.Size(83, 17);
+            this.radGenModelCharly25.TabIndex = 15;
+            this.radGenModelCharly25.Text = "CHARLY 25";
+            this.radGenModelCharly25.UseVisualStyleBackColor = true;
+            this.radGenModelCharly25.CheckedChanged += new System.EventHandler(this.radGenModelCharly25_CheckedChanged);
             // 
             // radGenModelHAMlab
-            // Extension for Charly 25 and HAMlab hardware
             // 
             this.radGenModelHAMlab.AutoSize = true;
             this.radGenModelHAMlab.Image = null;
             this.radGenModelHAMlab.Location = new System.Drawing.Point(19, 171);
             this.radGenModelHAMlab.Name = "radGenModelHAMlab";
-            this.radGenModelHAMlab.Size = new System.Drawing.Size(69, 17);
+            this.radGenModelHAMlab.Size = new System.Drawing.Size(118, 17);
             this.radGenModelHAMlab.TabIndex = 16;
-            this.radGenModelHAMlab.Text = "HAMlab";
+            this.radGenModelHAMlab.Text = "HAMlab / STEMlab";
             this.radGenModelHAMlab.UseVisualStyleBackColor = true;
             this.radGenModelHAMlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
-            // DG8MG
-            
             // 
             // radGenModelANAN10E
             // 
@@ -1608,16 +1596,19 @@ namespace PowerSDR
                         case Model.ANAN100:
                         case Model.ANAN100D:
                         case Model.ANAN200D:
-
-                        // DG8MG
-                        // Extension for Charly 25 and HAMlab hardware
-                        case Model.CHARLY25LC:
-                        case Model.HAMLAB:
-                        // DG8MG
-
                             CurPage = Page.HPSDR_HARDWARE_SELECT;
                             btnNext.Focus();
                             break;
+
+                        // DG8MG
+                        // Extension for Charly 25 and HAMlab hardware
+                        case Model.CHARLY25:
+                        case Model.HAMLAB:
+                            CurPage = Page.REGION;
+                            btnNext.Focus();
+                            break;
+                        // DG8MG
+
                         default:
 							CurPage = Page.SOUND_CARD;
 							btnNext.Focus();
@@ -1673,8 +1664,8 @@ namespace PowerSDR
 					btnFinished.Focus();
 					break;
                 case Page.HPSDR_HARDWARE_SELECT:
-                    //CurPage = Page.FINISHED;
-                    CurPage = Page.REGION;
+                    CurPage = Page.FINISHED;
+                    // CurPage = Page.REGION;
                     btnFinished.Focus();
                     break;
                 case Page.REGION:
@@ -1756,12 +1747,33 @@ namespace PowerSDR
                     btnPrevious.Focus();
                     break;
 
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                case Page.REGION:
+                    if (model == Model.CHARLY25 || model == Model.HAMLAB)
+                    {
+                        CurPage = Page.MODEL;
+                    }
+                    break;
+                // DG8MG
+
                 case Page.FINISHED:
-	                //if (model == Model.HPSDR || model == Model.HERMES ||
-                      //  model == Model.ANAN10 || model == Model.ANAN100 || model == Model.ANAN100D)
+                    //if (model == Model.HPSDR || model == Model.HERMES ||
+                    //  model == Model.ANAN10 || model == Model.ANAN100 || model == Model.ANAN100D)
+
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
+                    if (model == Model.CHARLY25 || model == Model.HAMLAB)
+                    {
+                        CurPage = Page.REGION;
+                    }
+                    else
+                    {
                         CurPage = Page.HPSDR_HARDWARE_SELECT;
-                 
-					btnPrevious.Focus();
+                    }
+                    // DG8MG
+
+                    btnPrevious.Focus();
 					break;
 			}
 		}
@@ -1883,7 +1895,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                case Model.CHARLY25LC:
+                case Model.CHARLY25:
                     console.SetupForm.PenelopePresent = penelope_present;
                     console.SetupForm.PennyLanePresent = pennylane_present;
                     console.SetupForm.MercuryPresent = mercury_present;
@@ -2415,11 +2427,11 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        private void radGenModelCharly25LC_CheckedChanged(object sender, System.EventArgs e)
+        private void radGenModelCharly25_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (radGenModelCharly25LC.Checked)
+            if (radGenModelCharly25.Checked)
             {
-                model = Model.CHARLY25LC;
+                model = Model.CHARLY25;
                 pictureBox1.Image = null;
                 pictureBox1.Visible = false;
                 //pictureBox1.Image = new Bitmap(GetResource("PowerSDR.images.hpsdr.jpg"));
@@ -2434,8 +2446,18 @@ namespace PowerSDR
                 chkPenny.Visible = false;
                 chkPenny.Checked = true;
                 radOzy.Visible = false;
-                radMetis.Enabled = true;
-                radMetis.Text = "RedPitaya";
+                radMetis.Visible = false;
+                //radMetis.Text = "RedPitaya";
+            }
+            else
+            {
+                chkAlex.Visible = true;
+                chkExcalibur.Visible = true;
+                chkMercury.Visible = true;
+                chkPennyLane.Visible = true;
+                chkPenny.Visible = true;
+                radOzy.Visible = true;
+                radMetis.Visible = true;
             }
         }
 
@@ -2458,8 +2480,18 @@ namespace PowerSDR
                 chkPenny.Visible = false;
                 chkPenny.Checked = true;
                 radOzy.Visible = false;
-                radMetis.Enabled = true;
-                radMetis.Text = "RedPitaya";
+                radMetis.Visible = false;
+                //radMetis.Text = "RedPitaya";
+            }
+            else
+            {
+                chkAlex.Visible = true;
+                chkExcalibur.Visible = true;
+                chkMercury.Visible = true;
+                chkPennyLane.Visible = true;
+                chkPenny.Visible = true;
+                radOzy.Visible = true;
+                radMetis.Visible = true;
             }
         }
         // DG8MG

@@ -44,7 +44,7 @@ namespace PowerSDR
         public const string BUILD = " - Release Version: ";
 #endif
         public const string BUILD_NAME = "mRX PS";
-        public const string BUILD_EDITION = " - Charly 25 / HAMlab Edition";
+        public const string BUILD_EDITION = " - Charly 25 / HAMlab / STEMlab SDR Edition";
 
         public static string GetString()
         {
