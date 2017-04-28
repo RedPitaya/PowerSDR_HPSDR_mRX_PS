@@ -9,6 +9,7 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TabPage tpAlexAntCtrl;
             System.Windows.Forms.GroupBoxTS grpKBCW;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Setup));
             this.chkDisableRXOut = new System.Windows.Forms.CheckBoxTS();
             this.chkEXT2OutOnTx = new System.Windows.Forms.CheckBoxTS();
             this.chkEXT1OutOnTx = new System.Windows.Forms.CheckBoxTS();
@@ -43545,6 +43546,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tcSetup);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Menu = this.mainMenu1;
             this.Name = "Setup";

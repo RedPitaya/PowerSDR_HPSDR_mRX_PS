@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RPDeviceForm));
             this.lbChooseDevice = new System.Windows.Forms.ListBox();
             this.lblChooseDevice = new System.Windows.Forms.Label();
             this.btnChooseDeviceOK = new System.Windows.Forms.Button();
@@ -54,8 +55,8 @@
             this.lblChooseDevice.Name = "lblChooseDevice";
             this.lblChooseDevice.Size = new System.Drawing.Size(567, 54);
             this.lblChooseDevice.TabIndex = 1;
-            this.lblChooseDevice.Text = "There seems to be more than one Charly 25 / HAMlab / STEMlab SDR device active in your network " +
-    "environment!\r\nPlease choose the device you want to start up.\r\n";
+            this.lblChooseDevice.Text = "There seems to be more than one Charly 25 / HAMlab / STEMlab SDR device active in" +
+    " your network environment!\r\nPlease choose the device you want to start up.\r\n";
             this.lblChooseDevice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnChooseDeviceOK
@@ -91,10 +92,10 @@
             this.Controls.Add(this.lbChooseDevice);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RPDeviceForm";
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Choose device to start up";
