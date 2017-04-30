@@ -209,6 +209,11 @@ extern void *MicResamplerP; // Mic resampler filter
 extern int SampleBits;  // how many bits in a sample
 extern int ForceNoSend;  // force no sending of data to Janus
 extern float IQConversionDivisor;  // divisor to use converting sample ints to floats
+extern int reset_control_idx;
+extern int delay_Xmit;
+extern int reset_delay_xmit;
+extern int delay_Xmit_loop;
+extern int is_orion_mkii;
 
 extern unsigned char ControlBytesIn[5];
 extern unsigned char ControlBytesOut[5];
@@ -355,6 +360,7 @@ extern int AlexRxOut;
 extern int FwdPower;
 extern int RefPower;
 extern int AlexFwdPower;
+extern int AIN3;
 extern int AIN4;
 
 int ApolloFilt;
@@ -399,6 +405,9 @@ int DotDashMask = 0x7;
 extern int amp_protect_warning;
 extern int amp_protect_on;
 extern int ain4_voltage;
+
+extern int gndrx2ontx;
+extern int xvtr_enable;
 
 /* Metis stuff */
 extern int isMetis;
