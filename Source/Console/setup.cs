@@ -2718,6 +2718,8 @@ namespace PowerSDR
             // Calibration Tab
             udTXDisplayCalOffset_ValueChanged(this, e);
             udHPSDRFreqCorrectFactor_ValueChanged(this, e);
+            ud6mLNAGainOffset_ValueChanged(this, e);
+            ud6mRx2LNAGainOffset_ValueChanged(this, e);
 
             // Test Tab
             udTXGenFreq_ValueChanged(this, e);
@@ -2751,6 +2753,7 @@ namespace PowerSDR
             clrbtnRX2WaterfallLow_Changed(this, e);
             chkRX1WaterfallAGC_CheckedChanged(this, e);
             chkRX2WaterfallAGC_CheckedChanged(this, e);
+            chkANAN8000DLEDisplayVoltsAmps_CheckedChanged(this, e);
 
             // DSP Tab
             udLMSANF_ValueChanged(this, e);
@@ -2844,6 +2847,7 @@ namespace PowerSDR
             udLineInBoost_ValueChanged(this, e);
             udTXAMCarrierLevel_ValueChanged(this, e);
             chkLimitExtAmpOnOverload_CheckedChanged(this, e);
+            chkBPF2Gnd_CheckedChanged(this, e);
             // Keyboard Tab
             comboKBTuneUp1_SelectedIndexChanged(this, e);
             comboKBTuneUp2_SelectedIndexChanged(this, e);
@@ -2924,7 +2928,6 @@ namespace PowerSDR
             chkDisablePureSignal_CheckedChanged(this, e);
 
             // APF
-
             chkDSPRX1APFEnable_CheckedChanged(this, e);
             chkDSPRX1subAPFEnable_CheckedChanged(this, e);
             chkDSPRX2APFEnable_CheckedChanged(this, e);
@@ -2961,6 +2964,8 @@ namespace PowerSDR
             udDSPSNBThresh2_ValueChanged(this, e);
             // MNF
             chkMNFAutoIncrease_CheckedChanged(this, e);
+            chkEnableXVTRHF_CheckedChanged(this, e);
+            chkWheelReverse_CheckedChanged(this, e);
         }
 
         public string[] GetTXProfileStrings()
@@ -4667,7 +4672,11 @@ namespace PowerSDR
                         break;
                     case Model.ANAN200D:
                         force_model = true;
-                        radGenModelOrion.Checked = true;
+                        radGenModelANAN200D.Checked = true;
+                        break;
+                    case Model.ANAN8000D:
+                        force_model = true;
+                        radGenModelANAN8000D.Checked = true;
                         break;
 
                     // DG8MG
@@ -4796,6 +4805,107 @@ namespace PowerSDR
         {
             get { return chkPennyLane.Checked; }
             set { chkPennyLane.Checked = value; }
+        }
+
+        public double BPF1_1_5Start
+        {
+            get { return (double)ud1_5BPF1Start.Value; }
+        }
+
+        public double BPF1_1_5End
+        {
+            get { return (double)ud1_5BPF1End.Value; }
+        }
+
+        public double BPF1_6_5Start
+        {
+            get { return (double)ud6_5BPF1Start.Value; }
+        }
+
+        public double BPF1_6_5End
+        {
+            get { return (double)ud6_5BPF1End.Value; }
+        }
+
+        public double BPF1_9_5Start
+        {
+            get { return (double)ud9_5BPF1Start.Value; }
+        }
+
+        public double BPF1_9_5End
+        {
+            get { return (double)ud9_5BPF1End.Value; }
+        }
+
+        public double BPF1_13Start
+        {
+            get { return (double)ud13BPF1Start.Value; }
+        }
+
+        public double BPF1_13End
+        {
+            get { return (double)ud13BPF1End.Value; }
+        }
+
+        public double BPF1_20Start
+        {
+            get { return (double)ud20BPF1Start.Value; }
+        }
+
+        public double BPF1_20End
+        {
+            get { return (double)ud20BPF1End.Value; }
+        }
+
+        public double BPF1_6Start
+        {
+            get { return (double)ud6BPF1Start.Value; }
+        }
+
+        public double BPF1_6End
+        {
+            get { return (double)ud6BPF1End.Value; }
+        }
+
+
+        public bool BPF1_1_5led
+        {
+            set { rad1_5BPF1led.Checked = value; }
+        }
+
+        public bool BPF1_6_5led
+        {
+            set { rad6_5BPF1led.Checked = value; }
+        }
+
+        public bool BPF1_9_5led
+        {
+            set { rad9_5BPF1led.Checked = value; }
+        }
+
+        public bool BPF1_13led
+        {
+            set { rad13BPF1led.Checked = value; }
+        }
+
+        public bool BPF1_20led
+        {
+            set { rad20BPF1led.Checked = value; }
+        }
+
+        public bool BPF1_6led
+        {
+            set { rad6BPF1led.Checked = value; }
+        }
+
+        public bool BPBPF1led
+        {
+            set { radBPBPF1led.Checked = value; }
+        }
+
+        public bool BPF1BPTXled
+        {
+            set { radBPF1BPTXled.Checked = value; }
         }
 
         //public bool PTTODelayControl
@@ -5702,6 +5812,308 @@ namespace PowerSDR
         {
             get { return (float)udANANPAGainVHF13.Value; }
             set { udANANPAGainVHF13.Value = (decimal)value; }
+        }
+
+        //PAGain ORION MKII
+        public float ORIONMKIIPAGain160
+        {
+            get { return (float)udORIONMKIIPAGain160.Value; }
+            set { udORIONMKIIPAGain160.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain80
+        {
+            get { return (float)udORIONMKIIPAGain80.Value; }
+            set { udORIONMKIIPAGain80.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain60
+        {
+            get { return (float)udORIONMKIIPAGain60.Value; }
+            set { udORIONMKIIPAGain60.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain40
+        {
+            get { return (float)udORIONMKIIPAGain40.Value; }
+            set { udORIONMKIIPAGain40.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain30
+        {
+            get { return (float)udORIONMKIIPAGain30.Value; }
+            set { udORIONMKIIPAGain30.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain20
+        {
+            get { return (float)udORIONMKIIPAGain20.Value; }
+            set { udORIONMKIIPAGain20.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain17
+        {
+            get { return (float)udORIONMKIIPAGain17.Value; }
+            set { udORIONMKIIPAGain17.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain15
+        {
+            get { return (float)udORIONMKIIPAGain15.Value; }
+            set { udORIONMKIIPAGain15.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain12
+        {
+            get { return (float)udORIONMKIIPAGain12.Value; }
+            set { udORIONMKIIPAGain12.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain10
+        {
+            get { return (float)udORIONMKIIPAGain10.Value; }
+            set { udORIONMKIIPAGain10.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGain6
+        {
+            get { return (float)udORIONMKIIPAGain6.Value; }
+            set { udORIONMKIIPAGain6.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF0
+        {
+            get { return (float)udORIONMKIIPAGainVHF0.Value; }
+            set { udORIONMKIIPAGainVHF0.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF1
+        {
+            get { return (float)udORIONMKIIPAGainVHF1.Value; }
+            set { udORIONMKIIPAGainVHF1.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF2
+        {
+            get { return (float)udORIONMKIIPAGainVHF2.Value; }
+            set { udORIONMKIIPAGainVHF2.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF3
+        {
+            get { return (float)udORIONMKIIPAGainVHF3.Value; }
+            set { udORIONMKIIPAGainVHF3.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF4
+        {
+            get { return (float)udORIONMKIIPAGainVHF4.Value; }
+            set { udORIONMKIIPAGainVHF4.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF5
+        {
+            get { return (float)udORIONMKIIPAGainVHF5.Value; }
+            set { udORIONMKIIPAGainVHF5.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF6
+        {
+            get { return (float)udORIONMKIIPAGainVHF6.Value; }
+            set { udORIONMKIIPAGainVHF6.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF7
+        {
+            get { return (float)udORIONMKIIPAGainVHF7.Value; }
+            set { udORIONMKIIPAGainVHF7.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF8
+        {
+            get { return (float)udORIONMKIIPAGainVHF8.Value; }
+            set { udORIONMKIIPAGainVHF8.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF9
+        {
+            get { return (float)udORIONMKIIPAGainVHF9.Value; }
+            set { udORIONMKIIPAGainVHF9.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF10
+        {
+            get { return (float)udORIONMKIIPAGainVHF10.Value; }
+            set { udORIONMKIIPAGainVHF10.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF11
+        {
+            get { return (float)udORIONMKIIPAGainVHF11.Value; }
+            set { udORIONMKIIPAGainVHF11.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF12
+        {
+            get { return (float)udORIONMKIIPAGainVHF12.Value; }
+            set { udORIONMKIIPAGainVHF12.Value = (decimal)value; }
+        }
+
+        public float ORIONMKIIPAGainVHF13
+        {
+            get { return (float)udORIONMKIIPAGainVHF13.Value; }
+            set { udORIONMKIIPAGainVHF13.Value = (decimal)value; }
+        }
+        
+        //PAGain ANAN-8000DLE
+        public float ANAN8000DPAGain160
+        {
+            get { return (float)udANAN8000DPAGain160.Value; }
+            set { udANAN8000DPAGain160.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain80
+        {
+            get { return (float)udANAN8000DPAGain80.Value; }
+            set { udANAN8000DPAGain80.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain60
+        {
+            get { return (float)udANAN8000DPAGain60.Value; }
+            set { udANAN8000DPAGain60.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain40
+        {
+            get { return (float)udANAN8000DPAGain40.Value; }
+            set { udANAN8000DPAGain40.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain30
+        {
+            get { return (float)udANAN8000DPAGain30.Value; }
+            set { udANAN8000DPAGain30.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain20
+        {
+            get { return (float)udANAN8000DPAGain20.Value; }
+            set { udANAN8000DPAGain20.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain17
+        {
+            get { return (float)udANAN8000DPAGain17.Value; }
+            set { udANAN8000DPAGain17.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain15
+        {
+            get { return (float)udANAN8000DPAGain15.Value; }
+            set { udANAN8000DPAGain15.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain12
+        {
+            get { return (float)udANAN8000DPAGain12.Value; }
+            set { udANAN8000DPAGain12.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain10
+        {
+            get { return (float)udANAN8000DPAGain10.Value; }
+            set { udANAN8000DPAGain10.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGain6
+        {
+            get { return (float)udANAN8000DPAGain6.Value; }
+            set { udANAN8000DPAGain6.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF0
+        {
+            get { return (float)udANAN8000DPAGainVHF0.Value; }
+            set { udANAN8000DPAGainVHF0.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF1
+        {
+            get { return (float)udANAN8000DPAGainVHF1.Value; }
+            set { udANAN8000DPAGainVHF1.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF2
+        {
+            get { return (float)udANAN8000DPAGainVHF2.Value; }
+            set { udANAN8000DPAGainVHF2.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF3
+        {
+            get { return (float)udANAN8000DPAGainVHF3.Value; }
+            set { udANAN8000DPAGainVHF3.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF4
+        {
+            get { return (float)udANAN8000DPAGainVHF4.Value; }
+            set { udANAN8000DPAGainVHF4.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF5
+        {
+            get { return (float)udANAN8000DPAGainVHF5.Value; }
+            set { udANAN8000DPAGainVHF5.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF6
+        {
+            get { return (float)udANAN8000DPAGainVHF6.Value; }
+            set { udANAN8000DPAGainVHF6.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF7
+        {
+            get { return (float)udANAN8000DPAGainVHF7.Value; }
+            set { udANAN8000DPAGainVHF7.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF8
+        {
+            get { return (float)udANAN8000DPAGainVHF8.Value; }
+            set { udANAN8000DPAGainVHF8.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF9
+        {
+            get { return (float)udANAN8000DPAGainVHF9.Value; }
+            set { udANAN8000DPAGainVHF9.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF10
+        {
+            get { return (float)udANAN8000DPAGainVHF10.Value; }
+            set { udANAN8000DPAGainVHF10.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF11
+        {
+            get { return (float)udANAN8000DPAGainVHF11.Value; }
+            set { udANAN8000DPAGainVHF11.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF12
+        {
+            get { return (float)udANAN8000DPAGainVHF12.Value; }
+            set { udANAN8000DPAGainVHF12.Value = (decimal)value; }
+        }
+
+        public float ANAN8000DPAGainVHF13
+        {
+            get { return (float)udANAN8000DPAGainVHF13.Value; }
+            set { udANAN8000DPAGainVHF13.Value = (decimal)value; }
         }
 
         //PAGain Orion
@@ -7232,12 +7644,12 @@ namespace PowerSDR
             }
         }
 
-        private void radGenModelOrion_CheckedChanged(object sender, System.EventArgs e)
+        private void radGenModelANAN200D_CheckedChanged(object sender, System.EventArgs e)
         {
             HPSDRModel old_model = console.CurrentHPSDRModel;
-            console.OrionPresent = radGenModelOrion.Checked;
+            console.ANAN200DPresent = radGenModelANAN200D.Checked;
 
-            if (radGenModelOrion.Checked)
+            if (radGenModelANAN200D.Checked)
             {
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HERMES;
@@ -7323,7 +7735,7 @@ namespace PowerSDR
             }
             radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, true);
 
-            if (radGenModelOrion.Checked)
+            if (radGenModelANAN200D.Checked)
             {
                 int nr;
                 bool pwr_cycled = false;
@@ -7361,6 +7773,126 @@ namespace PowerSDR
                         Thread.Sleep(100);
                         console.PowerOn = true;
                     }
+                }
+            }
+        }
+
+        private void radGenModelANAN8000D_CheckedChanged(object sender, System.EventArgs e)
+        {
+            HPSDRModel old_model = console.CurrentHPSDRModel;
+            console.ANAN8000DPresent = radGenModelANAN8000D.Checked;
+
+            if (radGenModelANAN8000D.Checked)
+            {
+                JanusAudio.fwVersionsChecked = false;
+                console.CurrentModel = Model.HERMES;
+                console.CurrentHPSDRModel = HPSDRModel.ANAN8000D;
+                chkPennyPresent.Checked = false;
+                chkPennyPresent.Enabled = false;
+                chkMercuryPresent.Checked = true;
+                chkMercuryPresent.Enabled = false;
+                chkExcaliburPresent.Checked = false;
+                chkExcaliburPresent.Enabled = false;
+                chkExcaliburPresent.Visible = false;
+                chkPennyLane.Checked = true;
+                chkPennyLane.Enabled = false;
+                radPenny10MHz.Checked = true;
+                rad12288MHzPenny.Checked = true;
+                chkAlexPresent.Enabled = true;
+                chkApolloPresent.Enabled = true;
+                groupBox10MhzClock.Visible = false;
+                groupBox122MHz.Visible = false;
+                groupBoxMicSource.Visible = false;
+               // chkGeneralRXOnly.Visible = true;
+                chkHermesStepAttenuator.Enabled = true;
+                groupBoxRXOptions.Text = "ANAN Options";
+                grpMetisAddr.Text = "ANAN Address";
+                grpHermesStepAttenuator.Text = "ANAN Step Attenuator";
+                chkAlexPresent_CheckedChanged(this, EventArgs.Empty);
+                chkAlexAntCtrl_CheckedChanged(this, EventArgs.Empty);
+                chkAutoPACalibrate.Checked = false;
+                chkAutoPACalibrate.Visible = false;
+                chkBypassANANPASettings.Visible = true;
+                grpANAN8000DPAGainByBand.BringToFront();
+
+                labelRXAntControl.Text = "  BYPS  EXT1  XVTR";
+                labelATTOnTX.Visible = true;
+                udATTOnTX.Visible = true;
+                console.RX2PreampPresent = true;
+                chkRX2StepAtt_CheckedChanged(this, EventArgs.Empty);
+               // chkRxOutOnTx.Text = "BYPASS on Tx";
+               // chkEXT1OutOnTx.Text = "Ext 1 on Tx";
+                // chkEXT2OutOnTx.Text = "Ext 2 on Tx";
+                chkEXT2OutOnTx.Visible = false;
+
+                chkAlexPresent.Parent = grpGeneralHardwareORION;
+                chkAlexPresent.Location = new Point(43, 120);
+                chkApolloPresent.Parent = grpGeneralHardwareORION;
+                chkApolloPresent.Location = new Point(43, 140);
+
+                panelAlex1HPFControl.Visible = false;
+                panelBPFControl.Visible = true;
+
+                chkDisable6mLNAonRX.Parent = panelBPFControl;
+                chkDisable6mLNAonRX.Location = new Point(16, 208);
+                chkDisable6mLNAonTX.Parent = panelBPFControl;
+                chkDisable6mLNAonTX.Location = new Point(63, 208);
+
+                chkAlexHPFBypass.Parent = panelBPFControl;
+                chkAlexHPFBypass.Location = new Point(140, 185);
+                chkDisableHPFonTX.Parent = panelBPFControl;
+                chkDisableHPFonTX.Location = new Point(140, 213);
+
+                //JanusAudio.SetAIN4Voltage(50);
+                radRX1ADC3.Enabled = false;
+                radRX2ADC3.Enabled = false;
+                radRX3ADC3.Enabled = false;
+                radRX4ADC3.Enabled = false;
+                radRX5ADC3.Enabled = false;
+                radRX6ADC3.Enabled = false;
+                radRX7ADC3.Enabled = false;
+
+                //chkDisableRXOut.Visible = false;
+                //chkBPF2Gnd.Visible = true;
+            }
+            else
+            {
+                chkAlexPresent.Parent = groupBoxHPSDRHW;
+                chkAlexPresent.Location = new Point(25, 80);
+                chkApolloPresent.Parent = groupBoxHPSDRHW;
+                chkApolloPresent.Location = new Point(25, 100);
+
+                panelBPFControl.Visible = false;
+                panelAlex1HPFControl.Visible = true;
+
+                chkDisable6mLNAonRX.Parent = panelAlex1HPFControl;
+                chkDisable6mLNAonRX.Location = new Point(16, 208);
+                chkDisable6mLNAonTX.Parent = panelAlex1HPFControl;
+                chkDisable6mLNAonTX.Location = new Point(63, 208);
+
+                chkAlexHPFBypass.Parent = panelAlex1HPFControl;
+                chkAlexHPFBypass.Location = new Point(140, 185);
+                chkDisableHPFonTX.Parent = panelAlex1HPFControl;
+                chkDisableHPFonTX.Location = new Point(140, 213);
+                panelAlex1HPFControl.Visible = false;
+
+            }
+            console.ANAN8000DPresent = radGenModelANAN8000D.Checked;
+            radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, true);
+
+            if (radGenModelANAN8000D.Checked)
+            {
+                bool power = console.PowerOn;
+
+                if (power && (old_model != console.CurrentHPSDRModel))
+                {
+                    console.PowerOn = false;
+                    Thread.Sleep(100);
+                }
+
+                if (power && (old_model != console.CurrentHPSDRModel))
+                {
+                    console.PowerOn = true;
                 }
             }
         }
@@ -8001,67 +8533,29 @@ namespace PowerSDR
             // add or remove setup pages for HPSDR stuff 
             //
             bool b = is_hermes;
-            // bool b = is_hermes ? radGenModelHermes.Checked || radGenModelANAN10.Checked || radGenModelANAN100.Checked ||
-            // radGenModelANAN100D.Checked || radGenModelOrion.Checked : radGenModelHPSDR.Checked;
-
-            // if (is_hermes)
-            // {
             AddHPSDRPages();
-
-            // disable iq correction -- not needed with mercury and penelope 
-            //DttSP.SetCorrectIQEnable(0); // turn off I/Q correction       // NOT USED
-            //DttSP.SetCorrectRXIQw(0, 0, 0.0f, 0.0f, 0);       // NOT USED
-            //DttSP.SetCorrectRXIQw(0, 0, 0.0f, 0.0f, 1);       // NOT USED
-            // udDSPImagePhaseTX.Value = 0.0M;
-            // udDSPImageGainTX.Value = 0.0M;
-            // grpDSPImageRejectTX.Enabled = false;
-            // force setting of audio card 
             comboAudioSoundCard.Text = "HPSDR";
             comboAudioSoundCard.Enabled = false;
-            // comboAudioSampleRate1.Text = "192000"; 
-            // comboAudioSampleRate1.Enabled = false;
             udAudioVoltage1.Value = 0.80M;
             udAudioVoltage1.Enabled = false;
             btnAudioVoltTest1.Visible = false;
             // and enable the gain by band page 
             grpFRSRegion.Visible = true;
             grpPAGainByBand.Visible = true;
-            // grpGeneralHardwareSDR1000.Visible = false;
-            // grpGeneralDDS.Visible = false;
-            // btnWizard.Visible = true;
-            //chkGeneralRXOnly.Checked = false;
-            //chkGeneralRXOnly.Enabled = true;
-            // grpHWSoftRock.Visible = false;
-            //  chkGeneralCustomFilter.Visible = false;
-            //  grpGenAutoMute.Visible = false;
             grpGenCalRXImage.Visible = false;
             grpTestX2.Visible = false;
-            //chkGenTX1Delay.Visible = false;
-            //lblGenTX1Delay.Visible = false;
-            //udGenTX1Delay.Visible = false;
-            //chkGeneralEnableX2.Visible = false;
-            //lblGeneralX2Delay.Visible = false;
-            //udGeneralX2Delay.Visible = false;
-            //  rtxtPACalReq.Visible = false;
-            // lblPTTOutDelay.Visible = true;
-            // udGenPTTOutDelay.Visible = true;
             lblMoxDelay.Visible = true;
             udMoxDelay.Visible = true;
             udMoxDelay.Enabled = true;
-            //chkPTTOutDelay.Visible = true;
-            //chkPTTOutDelay.Enabled = true;
             udRFDelay.Visible = true;
             udRFDelay.Enabled = true;
             lblRFDelay.Visible = true;
             grpImpulseTest.Visible = false;
-            // chkGeneralPAPresent.Checked = true;
 
             if (is_hermes)
             {
-                //   int old_rate = console.NReceivers;
-                //  int new_rate = 4;
-                //  bool power = console.PowerOn;
-                if (radGenModelOrion.Checked)
+                if (radGenModelANAN200D.Checked || radGenModelANAN8000D.Checked)
+
                 {
                     groupBoxHPSDRHW.Visible = false;
                     grpGeneralHardwareORION.Visible = true;
@@ -8069,34 +8563,15 @@ namespace PowerSDR
                 else
                 {
                     grpGeneralHardwareORION.Visible = false;
-                    // groupBoxHPSDRHW.Visible = true;
                 }
                 grpOzyType.Visible = true;
                 grpOzyType.Enabled = true;
-                // make sure one of these is checked 
-                //  if (radOzyUSB.Checked == false && radMetis.Checked == false)
-                //  {
                 radMetis.Checked = true;
                 grpMetisAddr.Visible = true;
-                // }
                 radOzyUSB.Enabled = false;
-
-                /*    if (power && new_rate != old_rate)
-                    {
-                        console.PowerOn = false;
-                        Thread.Sleep(100);
-                    }
-
-                    console.NReceivers = 4;
- 
-                    if (power && new_rate != old_rate)
-                        console.PowerOn = true; */
             }
             else
             {
-                //  int old_rate = console.NReceivers;
-                //  int new_rate = 2;
-                //  bool power = console.PowerOn;
 
                 grpGeneralHardwareORION.Visible = false;
                 groupBoxHPSDRHW.BringToFront();
@@ -8109,43 +8584,30 @@ namespace PowerSDR
                     radOzyUSB.Checked = true;
                 }
 
-                /*   if (power && new_rate != old_rate)
-                   {
-                       console.PowerOn = false;
-                       Thread.Sleep(100);
-                   }
-                    
-                   console.NReceivers = 2;
- 
-                   if (power && new_rate != old_rate)
-                       console.PowerOn = true; */
-            }
+             }
 
-            //chkGeneralSpurRed.Visible = false;
-            //chkGeneralSpurRed.Checked = false;
-            //chkGeneralSpurRed.Enabled = false;
             chkAudioExpert.Checked = false;
             chkAudioExpert.Visible = false;
-            // console.DisableSR();
-            //chkGeneralEnableX2.Checked = false;
-            //chkGeneralEnableX2.Enabled = true;
-
-            // grpGeneralCalibration.Enabled = false; 
             grpGenCalRXImage.Enabled = false;
             chkCalExpert.Enabled = false;
             grpHPSDRFreqCalDbg.Visible = true;
 
-            //string key = comboKeyerConnPrimary.Text;
-            //if (comboKeyerConnPrimary.Items.Contains("5000"))
-            //    comboKeyerConnPrimary.Items.Remove("5000");
-            //if (comboKeyerConnPrimary.Items.Contains("SDR"))
-            //    comboKeyerConnPrimary.Items.Remove("SDR");
-            //if (!comboKeyerConnPrimary.Items.Contains("Ozy/Hermes"))
-            //    comboKeyerConnPrimary.Items.Insert(0, "Ozy/Hermes");
-            //comboKeyerConnPrimary.Text = !key.StartsWith("COM") ? "Ozy/Hermes" : key;
-            //comboKeyerConnPrimary_SelectedIndexChanged(this, EventArgs.Empty);
+            if (radGenModelANAN8000D.Checked)
+            {
+                console.MKIIBPFPresent = true;
+                chkDisableRXOut.Visible = false;
+                chkBPF2Gnd.Visible = true;
+                chkEnableXVTRHF.Visible = true;
+            }
+            else
+            {
+                console.MKIIBPFPresent = false;
+                chkDisableRXOut.Visible = true;
+                chkBPF2Gnd.Visible = false;
+                chkEnableXVTRHF.Visible = false;
+            }
 
-            if (radGenModelANAN10.Checked || radGenModelANAN10E.Checked /*|| radGenModelANAN100B.Checked */)
+            if (radGenModelANAN10.Checked || radGenModelANAN10E.Checked)
             {
                 chkRxOutOnTx.Checked = false;
                 chkRxOutOnTx.Enabled = false;
@@ -8158,15 +8620,39 @@ namespace PowerSDR
                 panelAlexRXXVRTControl.Visible = false;
                 labelAlexFilterActive.Location = new Point(298, 0);
             }
+            else if (radGenModelANAN8000D.Checked)
+            {
+                chkRxOutOnTx.Visible = false;
+                chkEXT1OutOnTx.Visible = false;
+                chkEXT2OutOnTx.Visible = false;
+                // panelAlex1HPFControl.Visible = true;
+                tpAlexFilterControl.Text = "BPF1/LPF";
+                tpAlex2FilterControl.Text = "BPF2";
+                chkAlexHPFBypass.Text = "ByPass/55 MHz BPF";
+                chkDisableHPFonTX.Text = "BPF ByPass on TX";
+                panelAlexRXXVRTControl.Visible = false;
+                labelAlexFilterActive.Location = new Point(275, 0);
+                ud6mRx2LNAGainOffset.Visible = true;
+                lblRx26mLNA.Visible = true;
+ 
+            }
             else
             {
+                chkRxOutOnTx.Visible = true;
+                chkEXT1OutOnTx.Visible = true;
+                chkEXT2OutOnTx.Visible = true;
                 chkRxOutOnTx.Enabled = true;
                 chkEXT1OutOnTx.Enabled = true;
                 chkEXT2OutOnTx.Enabled = true;
                 panelAlex1HPFControl.Visible = true;
                 tpAlexFilterControl.Text = "HPF/LPF";
+                chkAlexHPFBypass.Text = "ByPass/55 MHz HPF";
+                chkDisableHPFonTX.Text = "HPF ByPass on TX";
                 panelAlexRXXVRTControl.Visible = true;
                 labelAlexFilterActive.Location = new Point(275, 0);
+                ud6mRx2LNAGainOffset.Visible = false;
+                lblRx26mLNA.Visible = false;
+
             }
 
             if (radGenModelHermes.Checked || radGenModelHPSDR.Checked)
@@ -8219,53 +8705,14 @@ namespace PowerSDR
 
             if (radGenModelHPSDR.Checked) tpPennyCtrl.Text = "Penny Ctrl";
             else if (radGenModelHermes.Checked) tpPennyCtrl.Text = "Hermes Ctrl";
-            //else if (radGenModelOrion.Checked) tpPennyCtrl.Text = "Orion Ctrl";
             else tpPennyCtrl.Text = "ANAN Ctrl";
-            // }
-            //else
-            //{
-            //    RemoveHPSDRPages();
-            //    //  grpDSPImageRejectTX.Enabled = true;
 
-            //    grpOzyType.Visible = false;
-            //    grpOzyType.Enabled = false;
-            //    grpMetisAddr.Visible = false;
-
-            //    comboAudioSoundCard.Enabled = true;
-            //    comboAudioSampleRate1.Enabled = true;
-            //    udAudioVoltage1.Enabled = true;
-            //    btnAudioVoltTest1.Visible = true;
-
-            //    grpPAGainByBand.Visible = true;
-            //    // grpGeneralHardwareSDR1000.Visible = true;
-            //    // grpGeneralDDS.Visible = true;
-            //    grpGenCalRXImage.Visible = true;
-
-            //    groupBoxHPSDRHW.Visible = false;
-
-            //    chkAudioExpert.Visible = true;
-
-            //    //chkGeneralSpurRed.Checked = true;
-            //    //chkGeneralSpurRed.Enabled = true;
-
-            //    //chkGeneralSpurRed.Checked = true;
-            //    //chkGeneralSpurRed.Enabled = true;
-
-            //    // console.EnableSR();
-
-            //    //chkGeneralEnableX2.Checked = false;
-            //    //chkGeneralEnableX2.Enabled = true;
-
-            //    //chkGeneralCustomFilter.Visible = true;
-            //    //grpGenAutoMute.Visible = true;
-
-            //    grpGeneralCalibration.Enabled = true;
-            //    grpGenCalRXImage.Enabled = true;
-            //    chkCalExpert.Enabled = true;
-
-            //    grpHPSDRFreqCalDbg.Visible = false;
-            //}
-        }
+            if (radGenModelANAN8000D.Checked)
+                JanusAudio.isOrionMKII(1);
+            else
+                JanusAudio.isOrionMKII(0);
+            
+         }
 
         public void UpdateDisplayMeter()
         {
@@ -8330,32 +8777,6 @@ namespace PowerSDR
                         Common.TabControlInsert(tcGeneral, tpHPSDR, 1);
                     }
                 }
-
-                if (!tcGeneral.TabPages.Contains(tpPennyCtrl))
-                {
-                    Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
-                }
-                else
-                {
-                    if (tcGeneral.TabPages.IndexOf(tpPennyCtrl) != 5)
-                    {
-                        tcGeneral.TabPages.Remove(tpPennyCtrl);
-                        Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
-                    }
-                }
-
-                if (!tcGeneral.TabPages.Contains(tpAlexControl))
-                {
-                    Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
-                }
-                else
-                {
-                    if (tcGeneral.TabPages.IndexOf(tpAlexControl) != 6)
-                    {
-                        tcGeneral.TabPages.Remove(tpAlexControl);
-                        Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
-                    }
-                }
             }
             else
             {
@@ -8367,7 +8788,7 @@ namespace PowerSDR
             }
             // DG8MG
 
-            if (radGenModelOrion.Checked || radGenModelANAN100D.Checked)
+            if (radGenModelANAN200D.Checked || radGenModelANAN100D.Checked || radGenModelANAN8000D.Checked)
             {
                 if (!tcGeneral.TabPages.Contains(tpADC))
                 {
@@ -8392,7 +8813,33 @@ namespace PowerSDR
                 }
             }
 
-            if (radGenModelOrion.Checked || radGenModelHermes.Checked || radGenModelANAN100D.Checked)
+            if (!tcGeneral.TabPages.Contains(tpPennyCtrl))
+            {
+                Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
+            }
+            else
+            {
+                if (tcGeneral.TabPages.IndexOf(tpPennyCtrl) != 5)
+                {
+                    tcGeneral.TabPages.Remove(tpPennyCtrl);
+                    Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
+                }
+            }
+
+            if (!tcGeneral.TabPages.Contains(tpAlexControl))
+            {
+                Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
+            }
+            else
+            {
+                if (tcGeneral.TabPages.IndexOf(tpAlexControl) != 6)
+                {
+                    tcGeneral.TabPages.Remove(tpAlexControl);
+                    Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
+                }
+            }
+
+            if (radGenModelANAN200D.Checked || radGenModelHermes.Checked || radGenModelANAN100D.Checked)
             {
                 if (!tcGeneral.TabPages.Contains(tpApolloControl))
                 {
@@ -8417,29 +8864,30 @@ namespace PowerSDR
                 }
             }
 
-            /*   if (console.RX2PreampPresent)
-                {
-                    if (!tcAlexControl.TabPages.Contains(tpAlex2FilterControl))
-                    {
-                        Common.TabControlInsert(tcAlexControl, tpAlex2FilterControl, 8);
-                    }
-                    else
-                    {
-                        if (tcAlexControl.TabPages.IndexOf(tpAlex2FilterControl) != 8)
-                        {
-                            tcAlexControl.TabPages.Remove(tpAlex2FilterControl);
-                            Common.TabControlInsert(tcAlexControl, tpAlex2FilterControl, 8);
-                        }
-                    }
-                } */
-            // else // if (!console.RX2PreampPresent)
-            // {
-            if (tcAlexControl.TabPages.Contains(tpAlex2FilterControl))
+            if (radGenModelANAN8000D.Checked)
             {
-                tcAlexControl.TabPages.Remove(tpAlex2FilterControl);
-                tcAlexControl.SelectedIndex = 0;
+                if (!tcAlexControl.TabPages.Contains(tpAlex2FilterControl))
+                {
+                    tcAlexControl.TabPages.Add(tpAlex2FilterControl);
+                    //Common.TabControlInsert(tcAlexControl, tpAlex2FilterControl, 2);
+                }
+                //else
+                //{
+                //    if (tcAlexControl.TabPages.IndexOf(tpAlex2FilterControl) != 2)
+                //    {
+                //        tcAlexControl.TabPages.Remove(tpAlex2FilterControl);
+                //        Common.TabControlInsert(tcAlexControl, tpAlex2FilterControl, 2);
+                //    }
+                //}
             }
-            // }
+            else
+            {
+                if (tcAlexControl.TabPages.Contains(tpAlex2FilterControl))
+                {
+                    tcAlexControl.TabPages.Remove(tpAlex2FilterControl);
+                    //tcAlexControl.SelectedIndex = 0;
+                }
+            }
 
             // now make sure enablements are correct 
             if (!chkAlexPresent.Checked)
@@ -8743,6 +9191,7 @@ namespace PowerSDR
             if (done) MessageBox.Show("Level Calibration complete.");
             btnCalLevel.Enabled = true;
             //  UpdateDisplayMeter();
+
         }
 
         private void chkGeneralDisablePTT_CheckedChanged(object sender, System.EventArgs e)
@@ -12719,7 +13168,7 @@ namespace PowerSDR
                 udANANPAGainVHF13.Value = 56.2M;
             }
 
-            if (radGenModelOrion.Checked && !chkBypassANANPASettings.Checked)
+            if (radGenModelANAN200D.Checked && !chkBypassANANPASettings.Checked)
             {
                 OrionPAGain160 = 49.5f;
                 OrionPAGain80 = 50.5f;
@@ -12779,6 +13228,36 @@ namespace PowerSDR
                 udPAGainVHF13.Value = 56.2M;
             }
 
+            if (radGenModelANAN8000D.Checked)
+            {
+                ANAN8000DPAGain160 = 48.9f;
+                ANAN8000DPAGain80 = 49.7f;
+                ANAN8000DPAGain60 = 49.1f;
+                ANAN8000DPAGain40 = 49.2f;
+                ANAN8000DPAGain30 = 48.8f;
+                ANAN8000DPAGain20 = 47.6f;
+                ANAN8000DPAGain17 = 44.6f;
+                ANAN8000DPAGain15 = 43.7f;
+                ANAN8000DPAGain12 = 43.3f;
+                ANAN8000DPAGain10 = 44.3f;
+                ANAN8000DPAGain6 = 40.0f;
+
+                udANAN8000DPAGainVHF0.Value = 65.0M;
+                udANAN8000DPAGainVHF1.Value = 65.0M;
+                udANAN8000DPAGainVHF2.Value = 65.0M;
+                udANAN8000DPAGainVHF3.Value = 65.0M;
+                udANAN8000DPAGainVHF4.Value = 65.0M;
+                udANAN8000DPAGainVHF5.Value = 65.0M;
+                udANAN8000DPAGainVHF6.Value = 65.0M;
+                udANAN8000DPAGainVHF7.Value = 65.0M;
+                udANAN8000DPAGainVHF8.Value = 65.0M;
+                udANAN8000DPAGainVHF9.Value = 65.0M;
+                udANAN8000DPAGainVHF10.Value = 65.0M;
+                udANAN8000DPAGainVHF11.Value = 65.0M;
+                udANAN8000DPAGainVHF12.Value = 65.0M;
+                udANAN8000DPAGainVHF13.Value = 65.0M;
+            }
+
             if (radGenModelHermes.Checked)
             {
                 HermesPAGain160 = 41.0f;
@@ -12808,7 +13287,8 @@ namespace PowerSDR
                 udHermesPAGainVHF12.Value = 56.2M;
                 udHermesPAGainVHF13.Value = 56.2M;
             }
-
+	        // DG8MG
+		    // Extension for Charly 25 and HAMlab hardware
             if (radGenModelCharly25.Checked || radGenModelHAMlab.Checked)
             {
                 udCHARLY25PAGain160.Value = 25.0M;
@@ -12838,6 +13318,7 @@ namespace PowerSDR
                 udCHARLY25PAGainVHF12.Value = 12.0M;
                 udCHARLY25PAGainVHF13.Value = 13.0M;
             }
+	        // DG8MG
 
         }
 
@@ -15364,6 +15845,11 @@ namespace PowerSDR
             console.MouseTuneStep = chkMouseTuneStep.Checked;
         }
 
+        private void chkWheelReverse_CheckedChanged(object sender, System.EventArgs e)
+        {
+            console.WheelReverse = chkWheelReverse.Checked;
+        }
+
         private void chkGenDDSExpert_CheckedChanged(object sender, System.EventArgs e)
         {
             /*  if (chkGenDDSExpert.Checked && chkGenDDSExpert.Focused)
@@ -16087,7 +16573,7 @@ namespace PowerSDR
                 // if (console.RX2PreampPresent && !radGenModelANAN100D.Checked) console.comboRX2Preamp.Visible = false;
                 if (chkApolloPresent.Checked) chkApolloPresent.Checked = false;
                 if (radGenModelHermes.Checked || radGenModelANAN10.Checked || radGenModelANAN10E.Checked || radGenModelANAN100.Checked ||
-                     radGenModelANAN100D.Checked || radGenModelOrion.Checked) JanusAudio.SetHermesFilter(0);
+                     radGenModelANAN100D.Checked || radGenModelANAN200D.Checked) JanusAudio.SetHermesFilter(0);
             }
             else
             {
@@ -17075,7 +17561,7 @@ namespace PowerSDR
                 lblPenelopeFWVer.Text = "";
             }
 
-            if (console.PowerOn && radGenModelOrion.Checked)
+            if (console.PowerOn && radGenModelANAN200D.Checked)
             {
                 //byte[] ver_bytes = new byte[1];
                 //JanusAudio.GetMetisCodeVersion(ver_bytes);
@@ -18239,11 +18725,41 @@ namespace PowerSDR
             console.Alex6BPHPFBypass = chkAlex6BPHPF.Checked;
         }
 
+        private void chkBPF1_1_5BP_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF1_1_5BPBypass = chkBPF1_1_5BP.Checked;
+        }
+
+        private void chkBPF1_6_5BP_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF1_6_5BPBypass = chkBPF1_6_5BP.Checked;
+        }
+
+        private void chkBPF1_9_5BP_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF1_9_5BPBypass = chkBPF1_9_5BP.Checked;
+        }
+
+        private void chkBPF1_13BP_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF1_13BPBypass = chkBPF1_13BP.Checked;
+        }
+
+        private void chkBPF1_20BP_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF1_20BPBypass = chkBPF1_20BP.Checked;
+        }
+
+        private void chkBPF1_6BP_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF1_6BPBypass = chkBPF1_6BP.Checked;
+        }
+
         private void chkAlex21_5BPHPF_CheckedChanged(object sender, EventArgs e)
         {
             console.Alex21_5BPHPFBypass = chkAlex21_5BPHPF.Checked;
         }
-
+        
         private void chkAlex26_5BPHPF_CheckedChanged(object sender, EventArgs e)
         {
             console.Alex26_5BPHPFBypass = chkAlex26_5BPHPF.Checked;
@@ -18751,7 +19267,7 @@ namespace PowerSDR
                     radGenModelANAN100D_CheckedChanged(this, EventArgs.Empty);
                     break;
                 case HPSDRModel.ANAN200D:
-                    radGenModelOrion_CheckedChanged(this, EventArgs.Empty);
+                    radGenModelANAN200D_CheckedChanged(this, EventArgs.Empty);
                     break;
             }
         }
@@ -18928,9 +19444,19 @@ namespace PowerSDR
             udPA140W.Value = 140;
         }
 
+        public void ForceEnablePureSignal()
+        {
+            chkDisablePureSignal.Checked = false;
+        }
+
         private void chkDisablePureSignal_CheckedChanged(object sender, EventArgs e)
         {
             int nr;
+            if (console.psform.AutoCalEnabled)
+            {
+                chkDisablePureSignal.Checked = false;
+                return;
+            }
             if (console.CurrentHPSDRModel == HPSDRModel.HPSDR && !console.initializing)
                 chkDisablePureSignal.Checked = true;
             console.psform.PSEnabled = !chkDisablePureSignal.Checked;
@@ -19540,6 +20066,11 @@ namespace PowerSDR
         private void ud6mLNAGainOffset_ValueChanged(object sender, EventArgs e)
         {
             console.RX6mGainOffset = (float)ud6mLNAGainOffset.Value;
+        }
+
+        private void ud6mRx2LNAGainOffset_ValueChanged(object sender, EventArgs e)
+        {
+            console.RX6mGainOffsetRx2 = (float)ud6mRx2LNAGainOffset.Value;
         }
 
         private void udDSPEERpdelay_ValueChanged(object sender, EventArgs e)
@@ -20251,6 +20782,31 @@ namespace PowerSDR
         private void chkDispNormalize_CheckedChanged(object sender, EventArgs e)
         {
             console.specRX.GetSpecRX(0).NormOneHzPan = chkDispNormalize.Checked;
+        }
+
+        private void udGenTxDelay_ValueChanged(object sender, EventArgs e)
+        {
+            console.TxDelayLoops = (int)udGenTxDelay.Value;
+        }
+
+        private void chkBPF2Gnd_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF2Gnd = chkBPF2Gnd.Checked;
+        }
+
+        private void udSpaceMoxDelay_ValueChanged(object sender, EventArgs e)
+        {
+            console.SpaceMoxDelay = (int)udSpaceMoxDelay.Value;
+        }
+
+        private void chkANAN8000DLEDisplayVoltsAmps_CheckedChanged(object sender, EventArgs e)
+        {
+            console.ANAN8000DLEDisplayVoltsAmps = chkANAN8000DLEDisplayVoltsAmps.Checked;
+        }
+
+        private void chkEnableXVTRHF_CheckedChanged(object sender, EventArgs e)
+        {
+            console.EnableXVTRHF = chkEnableXVTRHF.Checked;
         }
 
         // DG8MG

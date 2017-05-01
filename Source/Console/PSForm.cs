@@ -46,8 +46,7 @@ namespace PowerSDR
         private static bool autoON = false;
         private static bool singlecalON = false;
         private int oldCalCount = 0;
-        private int alpha, red, green, blue;
-        private int splashcount = 0;
+        private int red, green, blue;
         private int aastate = 0;
         private static double PShwpeak;
         private static double GetPSpeakval;
@@ -59,7 +58,7 @@ namespace PowerSDR
         private int save_autoON = 0;
         private int save_singlecalON = 0;
         private int deltadB = 0;
-
+        private static bool topmost = false;
         #endregion
 
         #region properties
@@ -84,6 +83,27 @@ namespace PowerSDR
                 if (!psenabled) ResetPureSignal();
                 fixFreqs();
                 ChangeDispRcvr();
+            }
+        }
+
+        private static bool autocal_enabled = false;
+        public bool AutoCalEnabled
+        {
+            get { return autocal_enabled; }
+            set
+            {
+                autocal_enabled = value;
+                if (autocal_enabled)
+                {
+                    autoON = true;
+                    singlecalON = false;
+                    puresignal.SetPSControl(txachannel, 0, 0, 1, 0);
+                }
+                else
+                {
+                    puresignal.SetPSControl(txachannel, 1, 0, 0, 0);
+                    autoON = false;
+                }
             }
         }
 
@@ -246,8 +266,35 @@ namespace PowerSDR
             set
             {
                 mox = value;
+                puresignal.SetPSMox(txachannel, value);
                 fixFreqs();
                 ChangeDispRcvr();
+            }
+        }
+
+        private int ints = 16;
+        public int Ints
+        {
+            get
+            {
+                return ints;
+            }
+            set
+            {
+                ints = value;
+            }
+        }
+
+        private int spi = 256;
+        public int Spi
+        {
+            get
+            {
+                return spi;
+            }
+            set
+            {
+                spi = value;
             }
         }
 
@@ -257,16 +304,13 @@ namespace PowerSDR
 
         private void PSForm_Load(object sender, EventArgs e)
         {
-            this.KeyPreview = true;     // needed to use KeyDown event
-            if (autoON == true)
-                btnPSAutoCalibrate.BackColor = Color.FromArgb(gcolor);
             if (ttgenON == true)
                 btnPSTwoToneGen.BackColor = Color.FromArgb(gcolor);
-            btnPSTwoToneGen.Enabled = !mox;
             fixed (double* ptr = &PShwpeak)
                 puresignal.GetPSHWPeak(txachannel, ptr);
             PSpeak.Text = PShwpeak.ToString();
             PSdispRX.Text = dispRCVR.ToString();
+            btnPSAdvanced_Click(this, e);
         }
 
         private void PSForm_Closing(object sender, FormClosingEventArgs e)
@@ -278,6 +322,8 @@ namespace PowerSDR
                 ampv.Close();
                 ampv = null;
             }
+            advancedON = true;
+            btnPSAdvanced_Click(this, e);
             this.Hide();
             e.Cancel = true;
             Common.SaveForm(this, "PureSignal");
@@ -301,40 +347,41 @@ namespace PowerSDR
             }
         }
 
-        private void btnPSInformation_Click(object sender, EventArgs e)
-        {
-            string CurrentAppPath = Environment.CurrentDirectory;
-            System.Diagnostics.Process.Start(CurrentAppPath + "\\PureSignal.pdf");
-        }
-
-        private void btnPSAutoCalibrate_Click(object sender, EventArgs e)
-        {
-            if (autoON == false)
-            {
-                btnPSAutoCalibrate.BackColor = Color.FromArgb(gcolor);
-                autoON = true;
-                singlecalON = false;
-                puresignal.SetPSControl(txachannel, 0, 0, 1, 0);
-            }
-            else
-            {
-                puresignal.SetPSControl(txachannel, 1, 0, 0, 0);
-                btnPSAutoCalibrate.BackColor = SystemColors.Control;
-                autoON = false;
-            }
-        }
+        //public void AutoCal_Click()
+        //{
+        //    if (psenabled)
+        //    {
+        //        if (autoON == false)
+        //        {
+        //            autoON = true;
+        //            singlecalON = false;
+        //            puresignal.SetPSControl(txachannel, 0, 0, 1, 0);
+        //            if (!console.initializing) console.PSAutoCal = autoON;
+        //        }
+        //        else
+        //        {
+        //            puresignal.SetPSControl(txachannel, 1, 0, 0, 0);
+        //            autoON = false;
+        //            console.TxtLeftForeColor = Color.DodgerBlue;
+        //            if (!console.initializing) console.PSAutoCal = autoON;
+        //        }
+        //    }
+        //}
 
         private void btnPSCalibrate_Click(object sender, EventArgs e)
         {
-            btnPSAutoCalibrate.BackColor = SystemColors.Control;
             singlecalON = true;
             autoON = false;
             puresignal.SetPSControl(txachannel, 0, 1, 0, 0);
+            // if (!console.initializing) console.PSAutoCal = autoON;
         }
 
         private void btnPSReset_Click(object sender, EventArgs e)
         {
             ResetPureSignal();
+            if (psenabled) console.TxtLeftForeColor = Color.DodgerBlue;
+            console.ForcePureSignalAutoCalDisable();
+            // if (!console.initializing) console.PSAutoCal = autoON;
         }
 
         private void udPSMoxDelay_ValueChanged(object sender, EventArgs e)
@@ -386,37 +433,20 @@ namespace PowerSDR
             if (openfile1.ShowDialog() == DialogResult.OK)
             {
                 puresignal.PSRestoreCorr(txachannel, openfile1.FileName);
-                btnPSAutoCalibrate.BackColor = SystemColors.Control;
                 singlecalON = false;
                 autoON = false;
             }
         }
 
-        private void splashtrans(int ct, int ct0, int ct1, int a0, int r0, int g0, int b0, int a1, int r1, int g1, int b1)
-        {
-            if ((ct0 <= ct) && (ct <= ct1))
-            {
-                int ict = ct - ct0;
-                double splashfrac = (double)ict / (double)(ct1 - ct0 + 1);
-                int ax = (int)(a0 + (a1 - a0) * splashfrac);
-                int rx = (int)(r0 + (r1 - r0) * splashfrac);
-                int gx = (int)(g0 + (g1 - g0) * splashfrac);
-                int bx = (int)(b0 + (b1 - b0) * splashfrac);
-                lblPSWelcome.ForeColor = Color.FromArgb((ax << 24) | (rx << 16) | (gx << 8) | bx);
-            }
-        }
-
         private void timer1_Tick(object sender, EventArgs e)    // display loop
         {
-            splashtrans(splashcount, 0, 10, 255, 255, 255, 255, 255, 255, 220, 0);
-            splashtrans(splashcount, 10, 20, 255, 255, 220, 0, 255, 255, 20, 0);
-            splashtrans(splashcount, 20, 120, 255, 255, 20, 0, 255, 0, 0, 0);
-            if (splashcount > 120)
-            {
-                lblPSWelcome.Visible = false;
-                lblPSWarning.Visible = true;
-            }
-            if (splashcount < 1000) splashcount++;
+            if (this.TopMost != topmost)
+                this.TopMost = topmost;
+            if(psenabled)
+                if (autoON)
+                    console.TxtLeftForeColor = Color.FromArgb(0, 255, 0);
+                else
+                    console.TxtLeftForeColor = Color.DodgerBlue;
             puresignal.getinfo(txachannel);
             lblPSInfo0.Text = puresignal.Info[0].ToString();
             lblPSInfo1.Text = puresignal.Info[1].ToString();
@@ -428,22 +458,24 @@ namespace PowerSDR
 
             if (puresignal.Info[14] == 1)
             {
-                lblPSInfoCO.BackColor = Color.FromArgb(gcolor);
+                if (psenabled)
+                    if (puresignal.Info[4] > 90)
+                        console.TxtRightBackColor = Color.FromArgb(0, 255, 0);
+                    else
+                        console.TxtRightBackColor = Color.FromArgb(255, 255, 0);
                 btnPSSave.Enabled = true;
-                btnPSSave.BackColor = SystemColors.Control;
             }
             else
             {
-                lblPSInfoCO.BackColor = Color.Black;
+                if (psenabled) console.TxtRightBackColor = Color.Black;
                 btnPSSave.Enabled = false;
-                btnPSSave.BackColor = SystemColors.ButtonShadow;
             }
             lblPSInfo15.Text = puresignal.Info[15].ToString();
-            if ((alpha -= 5) < 0) alpha = 0;
+
             if (puresignal.Info[5] != oldCalCount)
             {
                 oldCalCount = puresignal.Info[5];
-                alpha = 255;
+                
                 if (puresignal.Info[4] > 181)
                 {
                     red = 0; green = 0; blue = 255;
@@ -461,7 +493,11 @@ namespace PowerSDR
                     red = 255; green = 000; blue = 000;
                 }
             }
-            lblPSInfoFB.BackColor = Color.FromArgb((alpha << 24) | (red << 16) | (green << 8) | blue);
+            red = Math.Max(0, red - 5);
+            green = Math.Max(0, green - 5);
+            blue = Math.Max(0, blue - 5);
+            Color FBColor = Color.FromArgb(red, green, blue);
+            if(psenabled) console.TxtCenterBackColor = FBColor;
             lblPSfb2.Text = puresignal.Info[4].ToString();
 
             if (!psenabled)
@@ -517,20 +553,6 @@ namespace PowerSDR
             }
         }
 
-        private void PS_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            if (e.Control == true && e.Alt == true)
-                switch (e.KeyCode)
-                {
-                    case Keys.I:
-                        grpPSInfo.Visible = true;
-                        break;
-                    case Keys.N:
-                        grpPSInfo.Visible = false;
-                        break;
-                }
-        }
-
         private void PSpeak_TextChanged(object sender, EventArgs e)
         {
             PShwpeak = Convert.ToDouble(PSpeak.Text);
@@ -568,6 +590,81 @@ namespace PowerSDR
             autoattenuate = chkPSAutoAttenuate.Checked;
         }
 
+        private void chkPSPin_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkPSPin.Checked)
+                puresignal.SetPSPinMode(txachannel, 1);
+            else
+                puresignal.SetPSPinMode(txachannel, 0);
+        }
+
+        private void chkPSMap_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkPSMap.Checked)
+                puresignal.SetPSMapMode(txachannel, 1);
+            else
+                puresignal.SetPSMapMode(txachannel, 0);
+        }
+
+        private void chkPSStbl_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkPSStbl.Checked)
+                puresignal.SetPSStabilize(txachannel, 1);
+            else
+                puresignal.SetPSStabilize(txachannel, 0);
+        }
+
+        private void comboPSTint_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboPSTint.SelectedIndex)
+            {
+                case 0:
+                    puresignal.SetPSIntsAndSpi(txachannel, 16, 256);
+                    ints = 16;
+                    spi = 256;
+                    btnPSSave.Enabled = btnPSRestore.Enabled = true;
+                    break;
+                case 1:
+                    puresignal.SetPSIntsAndSpi(txachannel, 8, 512);
+                    ints = 8;
+                    spi = 512;
+                    btnPSSave.Enabled = btnPSRestore.Enabled = false;
+                    break;
+                case 2:
+                    puresignal.SetPSIntsAndSpi(txachannel, 4, 1024);
+                    ints = 4;
+                    spi = 1024;
+                    btnPSSave.Enabled = btnPSRestore.Enabled = false;
+                    break;
+                default:
+                    puresignal.SetPSIntsAndSpi(txachannel, 16, 256);
+                    ints = 16;
+                    spi = 256;
+                    btnPSSave.Enabled = btnPSRestore.Enabled = true;
+                    break;
+            }
+        }
+
+        private bool advancedON = true;
+        private void btnPSAdvanced_Click(object sender, EventArgs e)
+        {
+            if (advancedON)
+            {
+                advancedON = false;
+                console.psform.ClientSize = new System.Drawing.Size(560, 60);
+            }
+            else
+            {
+                advancedON = true;
+                console.psform.ClientSize = new System.Drawing.Size(560, 300);
+            }
+        }
+
+        private void chkPSOnTop_CheckedChanged(object sender, EventArgs e)
+        {
+            topmost = chkPSOnTop.Checked;
+        }
+
         #endregion
 
         #region methods
@@ -592,11 +689,15 @@ namespace PowerSDR
             SetPSReceivers(console.CurrentHPSDRModel);
             chkPSRelaxPtol_CheckedChanged(this, e);
             chkPSAutoAttenuate_CheckedChanged(this, e);
+            chkPSPin_CheckedChanged(this, e);
+            chkPSMap_CheckedChanged(this, e);
+            chkPSStbl_CheckedChanged(this, e);
+            comboPSTint_SelectedIndexChanged(this, e);
+            chkPSOnTop_CheckedChanged(this, e);
         }
 
         public void ResetPureSignal()
         {
-            btnPSAutoCalibrate.BackColor = SystemColors.Control;
             singlecalON = false;
             autoON = false;
             fixFreqs();
@@ -610,8 +711,8 @@ namespace PowerSDR
                 case HPSDRModel.ANAN10E:
                     if (psenabled && mox)
                     {
-                        dispRCVR = -1;                     // comment this line to display  
-                        // Display.BlankBottomDisplay = true; // comment this line to display
+                        dispRCVR = -1;                          // comment this line to display  
+                        // Display.BlankBottomDisplay = true;   // comment this line to display
                     }
                     else
                     {
@@ -660,6 +761,11 @@ namespace PowerSDR
                     rxRCVR = 4;
                     txRCVR = 5;
                     break;
+                case HPSDRModel.ORIONMKII:
+                case HPSDRModel.ANAN8000D:
+                    rxRCVR = 4;
+                    txRCVR = 5;
+                    break;
                 case HPSDRModel.HPSDR:
                     rxRCVR = 1;
                     txRCVR = 4;
@@ -699,6 +805,10 @@ namespace PowerSDR
                     newnr = Math.Max(5, nr);
                     break;
                 case HPSDRModel.ANAN200D:
+                    newnr = Math.Max(5, nr);
+                    break;
+                case HPSDRModel.ORIONMKII:
+                case HPSDRModel.ANAN8000D:
                     newnr = Math.Max(5, nr);
                     break;
                 case HPSDRModel.HPSDR:
@@ -770,6 +880,11 @@ namespace PowerSDR
                         SetRXFreq(rxRCVR, txfreq, false);
                         SetRXFreq(txRCVR, txfreq, false);
                         break;
+                    case HPSDRModel.ORIONMKII:
+                    case HPSDRModel.ANAN8000D:
+                        SetRXFreq(rxRCVR, txfreq, false);
+                        SetRXFreq(txRCVR, txfreq, false);
+                        break;
                     case HPSDRModel.HPSDR:
                         SetRXFreq(rxRCVR, txfreq, false);
                         SetRXFreq(txRCVR, txfreq, false);
@@ -833,6 +948,9 @@ namespace PowerSDR
         [DllImport("wdsp.dll", EntryPoint = "SetPSControl", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetPSControl(int channel, int reset, int mancal, int automode, int turnon);
 
+        [DllImport("wdsp.dll", EntryPoint = "SetPSMox", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetPSMox(int channel, bool mox);
+
         [DllImport("wdsp.dll", EntryPoint = "SetPSLoopDelay", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetPSLoopDelay(int channel, double delay);
 
@@ -868,6 +986,18 @@ namespace PowerSDR
 
         [DllImport("wdsp.dll", EntryPoint = "SetPSFeedbackRate", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetPSFeedbackRate(int channel, int rate);
+
+        [DllImport("wdsp.dll", EntryPoint = "SetPSPinMode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetPSPinMode(int channel, int pin);
+
+        [DllImport("wdsp.dll", EntryPoint = "SetPSMapMode", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetPSMapMode(int channel, int map);
+
+        [DllImport("wdsp.dll", EntryPoint = "SetPSStabilize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetPSStabilize(int channel, int stbl);
+
+        [DllImport("wdsp.dll", EntryPoint = "SetPSIntsAndSpi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetPSIntsAndSpi(int channel, int ints, int spi);
 
         #endregion
 
