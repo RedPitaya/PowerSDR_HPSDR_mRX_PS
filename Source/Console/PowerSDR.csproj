@@ -7,7 +7,7 @@
     <ProjectGuid>{831AEB2F-CA78-4057-85D7-32B4816ED6AE}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>hpsdr5-64.ico</ApplicationIcon>
+    <ApplicationIcon>redpitaya.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>PowerSDR</AssemblyName>
@@ -403,6 +403,7 @@
     <Compile Include="xvtr.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Content Include="redpitaya.ico" />
     <EmbeddedResource Include="Resources\digital7.ttf" />
     <None Include="ClassDiagram1.cd" />
     <None Include="Resources\grabbing.cur" />
@@ -563,7 +564,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Visual.C++.14.0.x86">
       <Visible>False</Visible>
-      <ProductName>Visual C++ "14" Runtime Libraries %28x86%29</ProductName>
+      <ProductName>Visual C++ "14"-Laufzeitbibliotheken %28x86%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>

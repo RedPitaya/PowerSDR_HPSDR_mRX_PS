@@ -849,6 +849,54 @@
   <data name="&gt;&gt;chkTUN.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="chkC25ANT.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
+    <value>Button</value>
+  </data>
+  <data name="chkC25ANT.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="chkC25ANT.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="chkC25ANT.Image" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="chkC25ANT.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkC25ANT.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 30</value>
+  </data>
+  <data name="chkC25ANT.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 23</value>
+  </data>
+  <data name="chkC25ANT.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="chkC25ANT.Text" xml:space="preserve">
+    <value>ANT1</value>
+  </data>
+  <data name="chkC25ANT.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="chkC25ANT.ToolTip" xml:space="preserve">
+    <value>Switch from antenna 1 to antenna 2 and vise versa.</value>
+  </data>
+  <data name="chkC25ANT.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.Name" xml:space="preserve">
+    <value>chkC25ANT</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBoxTS, PowerSDR, Version=1.2017.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.Parent" xml:space="preserve">
+    <value>panelOptions</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <data name="chkSR.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
     <value>Button</value>
   </data>
@@ -7575,54 +7623,6 @@
   <data name="&gt;&gt;ptbCWAPFFreq.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="chkC25ANT.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
-    <value>Button</value>
-  </data>
-  <data name="chkC25ANT.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="chkC25ANT.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="chkC25ANT.Image" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="chkC25ANT.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="chkC25ANT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 30</value>
-  </data>
-  <data name="chkC25ANT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 23</value>
-  </data>
-  <data name="chkC25ANT.TabIndex" type="System.Int32, mscorlib">
-    <value>35</value>
-  </data>
-  <data name="chkC25ANT.Text" xml:space="preserve">
-    <value>ANT1</value>
-  </data>
-  <data name="chkC25ANT.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="chkC25ANT.ToolTip" xml:space="preserve">
-    <value>Switch from antenna 1 to antenna 2 and vise versa.</value>
-  </data>
-  <data name="chkC25ANT.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;chkC25ANT.Name" xml:space="preserve">
-    <value>chkC25ANT</value>
-  </data>
-  <data name="&gt;&gt;chkC25ANT.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBoxTS, PowerSDR, Version=1.2017.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;chkC25ANT.Parent" xml:space="preserve">
-    <value>panelOptions</value>
-  </data>
-  <data name="&gt;&gt;chkC25ANT.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="picSquelch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>Off</value>
   </data>
@@ -14184,6 +14184,78 @@
   <data name="&gt;&gt;panelModeSpecificFM.ZOrder" xml:space="preserve">
     <value>40</value>
   </data>
+  <metadata name="ilC25ImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>453, 54</value>
+  </metadata>
+  <data name="ilC25ImageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABc
+        DgAAAk1TRnQBSQFMAgEBAgEAARABAAEQAQABIAEAASABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        AwABgAMAASADAAEBAQABCAYAARAYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
+        AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
+        AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
+        AWYDAAGZAwABzAIAATMDAAIzAgABMwFmAgABMwGZAgABMwHMAgABMwH/AgABZgMAAWYBMwIAAmYCAAFm
+        AZkCAAFmAcwCAAFmAf8CAAGZAwABmQEzAgABmQFmAgACmQIAAZkBzAIAAZkB/wIAAcwDAAHMATMCAAHM
+        AWYCAAHMAZkCAALMAgABzAH/AgAB/wFmAgAB/wGZAgAB/wHMAQABMwH/AgAB/wEAATMBAAEzAQABZgEA
+        ATMBAAGZAQABMwEAAcwBAAEzAQAB/wEAAf8BMwIAAzMBAAIzAWYBAAIzAZkBAAIzAcwBAAIzAf8BAAEz
+        AWYCAAEzAWYBMwEAATMCZgEAATMBZgGZAQABMwFmAcwBAAEzAWYB/wEAATMBmQIAATMBmQEzAQABMwGZ
+        AWYBAAEzApkBAAEzAZkBzAEAATMBmQH/AQABMwHMAgABMwHMATMBAAEzAcwBZgEAATMBzAGZAQABMwLM
+        AQABMwHMAf8BAAEzAf8BMwEAATMB/wFmAQABMwH/AZkBAAEzAf8BzAEAATMC/wEAAWYDAAFmAQABMwEA
+        AWYBAAFmAQABZgEAAZkBAAFmAQABzAEAAWYBAAH/AQABZgEzAgABZgIzAQABZgEzAWYBAAFmATMBmQEA
+        AWYBMwHMAQABZgEzAf8BAAJmAgACZgEzAQADZgEAAmYBmQEAAmYBzAEAAWYBmQIAAWYBmQEzAQABZgGZ
+        AWYBAAFmApkBAAFmAZkBzAEAAWYBmQH/AQABZgHMAgABZgHMATMBAAFmAcwBmQEAAWYCzAEAAWYBzAH/
+        AQABZgH/AgABZgH/ATMBAAFmAf8BmQEAAWYB/wHMAQABzAEAAf8BAAH/AQABzAEAApkCAAGZATMBmQEA
+        AZkBAAGZAQABmQEAAcwBAAGZAwABmQIzAQABmQEAAWYBAAGZATMBzAEAAZkBAAH/AQABmQFmAgABmQFm
+        ATMBAAGZATMBZgEAAZkBZgGZAQABmQFmAcwBAAGZATMB/wEAApkBMwEAApkBZgEAA5kBAAKZAcwBAAKZ
+        Af8BAAGZAcwCAAGZAcwBMwEAAWYBzAFmAQABmQHMAZkBAAGZAswBAAGZAcwB/wEAAZkB/wIAAZkB/wEz
+        AQABmQHMAWYBAAGZAf8BmQEAAZkB/wHMAQABmQL/AQABzAMAAZkBAAEzAQABzAEAAWYBAAHMAQABmQEA
+        AcwBAAHMAQABmQEzAgABzAIzAQABzAEzAWYBAAHMATMBmQEAAcwBMwHMAQABzAEzAf8BAAHMAWYCAAHM
+        AWYBMwEAAZkCZgEAAcwBZgGZAQABzAFmAcwBAAGZAWYB/wEAAcwBmQIAAcwBmQEzAQABzAGZAWYBAAHM
+        ApkBAAHMAZkBzAEAAcwBmQH/AQACzAIAAswBMwEAAswBZgEAAswBmQEAA8wBAALMAf8BAAHMAf8CAAHM
+        Af8BMwEAAZkB/wFmAQABzAH/AZkBAAHMAf8BzAEAAcwC/wEAAcwBAAEzAQAB/wEAAWYBAAH/AQABmQEA
+        AcwBMwIAAf8CMwEAAf8BMwFmAQAB/wEzAZkBAAH/ATMBzAEAAf8BMwH/AQAB/wFmAgAB/wFmATMBAAHM
+        AmYBAAH/AWYBmQEAAf8BZgHMAQABzAFmAf8BAAH/AZkCAAH/AZkBMwEAAf8BmQFmAQAB/wKZAQAB/wGZ
+        AcwBAAH/AZkB/wEAAf8BzAIAAf8BzAEzAQAB/wHMAWYBAAH/AcwBmQEAAf8CzAEAAf8BzAH/AQAC/wEz
+        AQABzAH/AWYBAAL/AZkBAAL/AcwBAAJmAf8BAAFmAf8BZgEAAWYC/wEAAf8CZgEAAf8BZgH/AQAC/wFm
+        AQABIQEAAaUBAANfAQADdwEAA4YBAAOWAQADywEAA7IBAAPXAQAD3QEAA+MBAAPqAQAD8QEAA/gBAAHw
+        AfsB/wEAAaQCoAEAA4ADAAH/AgAB/wMAAv8BAAH/AwAB/wEAAf8BAAL/AgAD/wwAAf8BGgEWARcCRgEX
+        AW8BkwHzDQAC/wX0Af8B8wH0Af8C9AH/CwAB9AHzAfRMAAH0ARcJQAEWAf8NAAT/AfQBAAX/DAAC8wH/
+        SwABGgFGC0ABbwH/CQAB8wEPAxMFFAYVB0MDEQFDAREBEAFtSQABGw5AAW8B/wgAAeoM/xAAAgdHAAH0
+        AUYPQAEWAf8HAAETA/8BBxj/AfAB70cAAbcRQAEbBwABEwH/AbwB/wFtAfEC9AHwAvQB8gHzAfQB8wH0
+        AfMC/wHzAbwB/wHxAfAB/wHzAvQB8wHwAe9GAAH/ARcHQApGAZQHAAETAfcB8AETAZIB8QHrAW0BvAHz
+        AZIB7AG8AQcBvAEHAW0C/wHqAfEBbQESAbwBEwEHAfIB7AH0AbwBB0YAAfMHQAEWAfUK/wcAARQB9wHz
+        AeoBBwHzAW0B6gHtAe8BEwG8AQcBFQHrAfcBQwFtAe0B9AHrAZIB7AH0AfcBBwERARMCvAEHRQAB9QEX
+        BkABFgH/AgAB9AL4Ae4CAAHzAe8BBwcAARQB9AHsAfcB8gGSAfcB8AHsAfMB9wHsAfMBbQH/Am0B/wEQ
+        Ae0B9AEHAfcB8AHrAfIB7AH/ARQBvAEHRAAB/wEWB0ABGgMAAfMCDgHtAgABBwIOBwABFAL0A/MB9AHz
+        AfQC8wL0AfcB9AHvAbwB7AG8AfIB7AEHAfAB7AHvAfQB7QHsAfACB0QAARoIQAEaAwAB8wIOAe0CAAEH
+        AQ4BQwcAARQB9BvzAgdEAAEWCEABFwH1AgAB/wLyAfQCAAH/AvQHAAESCwoBkgvzAa4FCgEHRAABRglA
+        ARcCvQQaAr0CGgHzBwABFAHzCfIBkgHtC/IBrgHvA/IB7wEHRAABFwFAAZQBRhFAAZQHAAEUAQcB7wIH
+        AbwF8QGSAewE8QcHAeoB7QPvAewBB0QAAhYB/wEXEEABFwH1BwABEwOuAWYBrgXwAZIBrgPwAfEBXwFm
+        A+oBiwGuAmYDrgFmAQdEAAH0AfUBAAFvEEABFgH/BwABFQHxAvAB7wGuBfAB7QGuBPABXwG8BfABrgHv
+        A/AB9wEHRwABbxFAAZQHAAEVAfACvAH3Aa4FvAHtAa4DvAHwAV8GvAGuAfcDvAGSAQdHAAFvDkABRgJA
+        ARYHAAEVA7wB9wHqBbwBkQGuBLwBCgEHBbwBiwH3A7wB7QEHRwABFgJAAhcJQAGUAfQCQAEaBwABFQG8
+        AgcB9wHqBQcBkQGuAwcBvAEKBgcB6gH3AwcB7QEHRwABGgJAAZQB9QFGB0ABRgL/AUYBQAH0BwABQwG8
+        AQcBuwGSAWYFuwGRAa4BuwMHAQoBBwW7AWwB7QO7AewBB0cAAf8BlAFAAZMBAAEaB0ABRgH1Af8BRgGU
+        CAABQwO7AZEBZgW7AZEBiwO7AQcBCga7AWYBkQO7AewBB0gAAf8BFwFvAQAB9AhAAb0BAAHzAf8IAAFD
+        AbsC7wGRAWYBuwTvAZEBbAG7Au8BuwEKAbsE7wG7AWYBkQPvAewBB0kAAfMBFgEAAfQDQAFGAb0BRgJA
+        AZMLAAFDA7sBkQFmBbsBrgFmBLsBCgH3BbsBZgGRA7sB6wEHSgAB/wEAARsDQAEaAQABFgJAAZQLAAFD
+        AbsC9wGRAWYF9wGuAWYE9wEKBvcBZgGRA/cB6wEHTAABlANAAfMBAAG9AkABGgsAAUMBtQKRAa4BZgWR
+        Aa4BZgORAfcBCgaRAWYBrgORAW0BB0wAAW8DQAG9AQABGgFAAUYB/wsAAUMBtAKRAa4BZgWRAa4BZgOR
+        AbQBCgaRAWYBrgORAWwBB0wAAZQDQAGUAQABGgFAARoMAAFDA5EBrgFmBZEBiw0KAYsDkQFsAQdMAAH/
+        ARcCQAFGAf8B9QHzDQABQwORAYsBZguRAQoLkQFsAQdNAAH1AUYCQAGUDwABEQORAYsBZQuLAQoLkQFs
+        AQdOAAEbAkABFwH/DgABEQGQAYsBkAGLDWUGkAWLAWwBB04AAf8BFgFAAbcPAAHsAWYbbAEOAfRPAAH0
+        AZQB/xAAAQcR7wr3AfJBAAFCAU0BPgcAAT4DAAEoAwABgAMAASADAAEBAQABAQYAAQIWAAP/AQAB/wHg
+        AQcB/wHAAQAB/wHjCAAB/wHAAQEB/wHwAUEB/wHjCAAB/wGAAQAB/wGAAgABAQgAAf8CAAF/AYABAwH/
+        AfwIAAH+AgABPwGACwAB/gIAAT8BgAsAAfwCAAE/AYALAAH8AgABPwGACwAB+AEBAYYBPwGACwAB8AED
+        AYYBPwGACwAB8AEDAYYBPwGACwAB8AEBAYYBPwGACwAB8AIAAT8BgAsAAfACAAE/AYALAAHwAgABPwGA
+        CwAB8gIAAT8BgAsAAf4CAAE/AYALAAH+AgABPwGACwAB/gIAAT8BgAsAAf4CAAE/AYALAAH+ARABAAF/
+        AYALAAH/ARABAgF/AYALAAH/AZABAwH/AYALAAH/AdABQwH/AYALAAH/AfABQwH/AYALAAH/AfABQwH/
+        AYALAAH/AfABRwH/AYALAAH/AfABDwH/AYALAAH/AfgBPwH/AYALAAH/AfwBHwH/AYALAAH/AfwBPwH/
+        AYALAAH/Af4BPwH/AcACAAEBCAAL
+</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -16500,6 +16572,12 @@
   </data>
   <data name="&gt;&gt;timerNotchZoom.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ilC25ImageList.Name" xml:space="preserve">
+    <value>ilC25ImageList</value>
+  </data>
+  <data name="&gt;&gt;ilC25ImageList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Console</value>

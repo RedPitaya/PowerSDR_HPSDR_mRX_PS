@@ -372,17 +372,17 @@ namespace PowerSDR
        
         // DG8MG
         // Extension for Charly 25 and HAMlab Attenuator and Preamp
-        C25LC_MINUS36,
-        C25LC_MINUS24,
-        C25LC_MINUS18,
-        C25LC_MINUS12,
-        C25LC_MINUS6,
-        C25LC_OFF,
-        C25LC_PLUS6,
-        C25LC_PLUS12,
-        C25LC_PLUS18,
-        C25LC_PLUS24,
-        C25LC_PLUS36,
+        C25_MINUS36,
+        C25_MINUS24,
+        C25_MINUS18,
+        C25_MINUS12,
+        C25_MINUS6,
+        C25_OFF,
+        C25_PLUS6,
+        C25_PLUS12,
+        C25_PLUS18,
+        C25_PLUS24,
+        C25_PLUS36,
         // DG8MG
         LAST,
     }
@@ -1561,6 +1561,7 @@ namespace PowerSDR
         private LabelTS lblRX1APF;
         private LabelTS lblRX2APF;
         public CheckBoxTS chkC25ANT;
+        public ImageList ilC25ImageList;
         public PictureBox picWaterfall;
 
         #endregion
@@ -1999,6 +2000,7 @@ namespace PowerSDR
             this.chkRX2SR = new System.Windows.Forms.CheckBoxTS();
             this.chkMOX = new System.Windows.Forms.CheckBoxTS();
             this.chkTUN = new System.Windows.Forms.CheckBoxTS();
+            this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
             this.chkSR = new System.Windows.Forms.CheckBoxTS();
             this.comboTuneMode = new System.Windows.Forms.ComboBoxTS();
             this.chkX2TR = new System.Windows.Forms.CheckBoxTS();
@@ -2167,7 +2169,6 @@ namespace PowerSDR
             this.ptbCWAPFGain = new PowerSDR.PrettyTrackBar();
             this.ptbCWAPFBandwidth = new PowerSDR.PrettyTrackBar();
             this.ptbCWAPFFreq = new PowerSDR.PrettyTrackBar();
-            this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
             this.picSquelch = new System.Windows.Forms.PictureBox();
             this.timer_clock = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStripFilterRX1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -2464,6 +2465,7 @@ namespace PowerSDR
             this.lblFMDeviation = new System.Windows.Forms.LabelTS();
             this.comboFMMemory = new System.Windows.Forms.ComboBoxTS();
             this.lblFMMic = new System.Windows.Forms.LabelTS();
+            this.ilC25ImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ptbRX2RF)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbFilterShift)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbFilterWidth)).BeginInit();
@@ -2727,6 +2729,17 @@ namespace PowerSDR
             this.chkTUN.Name = "chkTUN";
             this.toolTip1.SetToolTip(this.chkTUN, resources.GetString("chkTUN.ToolTip"));
             this.chkTUN.CheckedChanged += new System.EventHandler(this.chkTUN_CheckedChanged);
+            // 
+            // chkC25ANT
+            // 
+            resources.ApplyResources(this.chkC25ANT, "chkC25ANT");
+            this.chkC25ANT.BackColor = System.Drawing.Color.Transparent;
+            this.chkC25ANT.FlatAppearance.BorderSize = 0;
+            this.chkC25ANT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkC25ANT.Name = "chkC25ANT";
+            this.toolTip1.SetToolTip(this.chkC25ANT, resources.GetString("chkC25ANT.ToolTip"));
+            this.chkC25ANT.UseVisualStyleBackColor = false;
+            this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
             // 
             // chkSR
             // 
@@ -4761,17 +4774,6 @@ namespace PowerSDR
             this.toolTip1.SetToolTip(this.ptbCWAPFFreq, resources.GetString("ptbCWAPFFreq.ToolTip"));
             this.ptbCWAPFFreq.Value = 0;
             this.ptbCWAPFFreq.Scroll += new PowerSDR.PrettyTrackBar.ScrollHandler(this.ptbCWAPFFreq_Scroll);
-            // 
-            // chkC25ANT
-            // 
-            resources.ApplyResources(this.chkC25ANT, "chkC25ANT");
-            this.chkC25ANT.BackColor = System.Drawing.Color.Transparent;
-            this.chkC25ANT.FlatAppearance.BorderSize = 0;
-            this.chkC25ANT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkC25ANT.Name = "chkC25ANT";
-            this.toolTip1.SetToolTip(this.chkC25ANT, resources.GetString("chkC25ANT.ToolTip"));
-            this.chkC25ANT.UseVisualStyleBackColor = false;
-            this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
             // 
             // picSquelch
             // 
@@ -7355,6 +7357,13 @@ namespace PowerSDR
             this.lblFMMic.ForeColor = System.Drawing.Color.White;
             this.lblFMMic.Name = "lblFMMic";
             // 
+            // ilC25ImageList
+            // 
+            this.ilC25ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilC25ImageList.ImageStream")));
+            this.ilC25ImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilC25ImageList.Images.SetKeyName(0, "redpitaya.ico");
+            this.ilC25ImageList.Images.SetKeyName(1, "hpsdr5-32.ico");
+            // 
             // Console
             // 
             resources.ApplyResources(this, "$this");
@@ -7786,8 +7795,8 @@ namespace PowerSDR
                         // Extension for Charly 25 and HAMlab Attenuator and Preamp
                         if ((current_hpsdr_model == HPSDRModel.CHARLY25) || (current_hpsdr_model == HPSDRModel.HAMLAB))
                         {
-                            rx1_preamp_by_band[i] = PreampMode.C25LC_OFF;
-                            rx2_preamp_by_band[i] = PreampMode.C25LC_OFF;
+                            rx1_preamp_by_band[i] = PreampMode.C25_OFF;
+                            rx2_preamp_by_band[i] = PreampMode.C25_OFF;
                         }
                         else
                         {
@@ -7801,8 +7810,8 @@ namespace PowerSDR
                     default:
                         if ((current_hpsdr_model == HPSDRModel.CHARLY25) || (current_hpsdr_model == HPSDRModel.HAMLAB))
                         {
-                            rx1_preamp_by_band[i] = PreampMode.C25LC_OFF;
-                            rx2_preamp_by_band[i] = PreampMode.C25LC_OFF;
+                            rx1_preamp_by_band[i] = PreampMode.C25_OFF;
+                            rx2_preamp_by_band[i] = PreampMode.C25_OFF;
                         }
                         else
                         {
@@ -8043,17 +8052,17 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
-            rx1_preamp_offset[(int)PreampMode.C25LC_MINUS36] = 36.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_MINUS24] = 24.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_MINUS18] = 18.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_MINUS12] = 12.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_MINUS6] = 6.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_OFF] = 0.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_PLUS6] = -6.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_PLUS12] = -12.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_PLUS18] = -18.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_PLUS24] = -24.0f;
-            rx1_preamp_offset[(int)PreampMode.C25LC_PLUS36] = -36.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_MINUS36] = 36.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_MINUS24] = 24.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_MINUS18] = 18.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_MINUS12] = 12.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_MINUS6] = 6.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_OFF] = 0.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_PLUS6] = -6.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_PLUS12] = -12.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_PLUS18] = -18.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_PLUS24] = -24.0f;
+            rx1_preamp_offset[(int)PreampMode.C25_PLUS36] = -36.0f;
             // DG8MG
 
             // DG8MG
@@ -8069,23 +8078,23 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
-            rx2_preamp_offset[(int)PreampMode.C25LC_MINUS36] = 36.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_MINUS24] = 24.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_MINUS18] = 18.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_MINUS12] = 12.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_MINUS6] = 6.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_OFF] = 0.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_PLUS6] = -6.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_PLUS12] = -12.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_PLUS18] = -18.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_PLUS24] = -24.0f;
-            rx2_preamp_offset[(int)PreampMode.C25LC_PLUS36] = -36.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_MINUS36] = 36.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_MINUS24] = 24.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_MINUS18] = 18.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_MINUS12] = 12.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_MINUS6] = 6.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_OFF] = 0.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_PLUS6] = -6.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_PLUS12] = -12.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_PLUS18] = -18.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_PLUS24] = -24.0f;
+            rx2_preamp_offset[(int)PreampMode.C25_PLUS36] = -36.0f;
 
             C25_RX1_level_table = new float[(int)Band.LAST, (int)PreampMode.LAST, 3];  // Three settings per band and preamp/attenuator mode (display offset, preamp offset, multimeter offset)
             for (int band = 0; band < (int)Band.LAST; band++)
             {
                 // Fill table with default values
-                for (int mode = (int)PreampMode.C25LC_MINUS36; mode <= (int)PreampMode.C25LC_PLUS36; mode++)
+                for (int mode = (int)PreampMode.C25_MINUS36; mode <= (int)PreampMode.C25_PLUS36; mode++)
                 {
                     C25_RX1_level_table[band, mode, 0] = 0f;
                     C25_RX1_level_table[band, mode, 1] = rx1_preamp_offset[mode];
@@ -8097,7 +8106,7 @@ namespace PowerSDR
             for (int band = 0; band < (int)Band.LAST; band++)
             {
                 // Fill table with default values
-                for (int mode = (int)PreampMode.C25LC_MINUS36; mode <= (int)PreampMode.C25LC_PLUS36; mode++)
+                for (int mode = (int)PreampMode.C25_MINUS36; mode <= (int)PreampMode.C25_PLUS36; mode++)
                 {
                     C25_RX2_level_table[band, mode, 0] = 0f;
                     C25_RX2_level_table[band, mode, 1] = rx2_preamp_offset[mode];
@@ -8906,7 +8915,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             for (int i = 0; i < (int)Band.LAST; i++)
             {
-                for (int j = (int)PreampMode.C25LC_MINUS36; j <= (int)PreampMode.C25LC_PLUS36; j++)
+                for (int j = (int)PreampMode.C25_MINUS36; j <= (int)PreampMode.C25_PLUS36; j++)
                 {
                     s = "c25_rx1_level_table[" + i + "]";
                     s += "[" + j + "]/";
@@ -8919,7 +8928,7 @@ namespace PowerSDR
 
             for (int i = 0; i < (int)Band.LAST; i++)
             {
-                for (int j = (int)PreampMode.C25LC_MINUS36; j <= (int)PreampMode.C25LC_PLUS36; j++)
+                for (int j = (int)PreampMode.C25_MINUS36; j <= (int)PreampMode.C25_PLUS36; j++)
                 {
                     s = "c25_rx2_level_table[" + i + "]";
                     s += "[" + j + "]/";
@@ -16388,7 +16397,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if ((current_hpsdr_model == HPSDRModel.CHARLY25) || (current_hpsdr_model == HPSDRModel.HAMLAB))
             {
-                RX1PreampMode = PreampMode.C25LC_OFF;			// set preamp to 0dB
+                RX1PreampMode = PreampMode.C25_OFF;			// set preamp to 0dB
             }
             else
             {
@@ -16540,7 +16549,7 @@ namespace PowerSDR
 
                 Band band = BandByFreq(freq, -1, false, current_region);
 
-                for (int rx1_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx1_preamp_mode <= (int)PreampMode.C25LC_PLUS36; rx1_preamp_mode++)
+                for (int rx1_preamp_mode = (int)PreampMode.C25_MINUS36; rx1_preamp_mode <= (int)PreampMode.C25_PLUS36; rx1_preamp_mode++)
                 {
                     // Set preamp to current rx1_preamp_mode
                     RX1PreampMode = (PreampMode)rx1_preamp_mode;
@@ -16567,7 +16576,7 @@ namespace PowerSDR
                     C25_RX1_level_table[(int)band, (int)rx1_preamp_mode, 2] = level - avg;
                 }
 
-                RX1PreampMode = PreampMode.C25LC_OFF;  // set preamp to 0dB
+                RX1PreampMode = PreampMode.C25_OFF;  // set preamp to 0dB
             }
             else
             {
@@ -16881,7 +16890,7 @@ namespace PowerSDR
 
             PreampMode preamp = RX2PreampMode;              // save current preamp mode
 
-            RX2PreampMode = PreampMode.C25LC_OFF;			// set preamp to 0dB
+            RX2PreampMode = PreampMode.C25_OFF;			// set preamp to 0dB
 
             MeterRXMode rx_meter = RX2MeterMode;			    // save current RX Meter mode
             RX2MeterMode = MeterRXMode.OFF;				        // turn RX2 Meter off
@@ -16978,7 +16987,7 @@ namespace PowerSDR
 
 
 
-                for (int rx2_preamp_mode = (int)PreampMode.C25LC_MINUS36; rx2_preamp_mode <= (int)PreampMode.C25LC_PLUS36; rx2_preamp_mode++)
+                for (int rx2_preamp_mode = (int)PreampMode.C25_MINUS36; rx2_preamp_mode <= (int)PreampMode.C25_PLUS36; rx2_preamp_mode++)
                 {
                     // Set preamp to current rx2_preamp_mode
                     RX2PreampMode = (PreampMode)rx2_preamp_mode;
@@ -17005,13 +17014,13 @@ namespace PowerSDR
                     C25_RX2_level_table[(int)band, (int)rx2_preamp_mode, 2] = level - avg;
                 }
 
-                RX2PreampMode = PreampMode.C25LC_OFF;  // set preamp to 0dB
+                RX2PreampMode = PreampMode.C25_OFF;  // set preamp to 0dB
             }
             else  // No RX2 preamps and attenuators present
             */
             {
                 // Set preamp to 0dB
-                RX2PreampMode = PreampMode.C25LC_OFF;
+                RX2PreampMode = PreampMode.C25_OFF;
                 Thread.Sleep(100);
                 // get the value of the signal strength meter
                 num2 = 0.0f;
@@ -17027,10 +17036,10 @@ namespace PowerSDR
                 avg2 = num2 / 50.0f;
                 float off_offset = avg2 - avg;
 
-                C25_RX2_level_table[(int)band, (int)PreampMode.C25LC_OFF, 1] = -off_offset;
+                C25_RX2_level_table[(int)band, (int)PreampMode.C25_OFF, 1] = -off_offset;
 
                 // calculate the difference between the current value and the correct multimeter value
-                C25_RX2_level_table[(int)band, (int)PreampMode.C25LC_OFF, 2] = level - avg;
+                C25_RX2_level_table[(int)band, (int)PreampMode.C25_OFF, 2] = level - avg;
             }
 
             Thread.Sleep(5000);
@@ -21699,7 +21708,7 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with Charly 25LC as default hardware
+        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with Charly 25 as default hardware
         private HPSDRModel current_hpsdr_model = HPSDRModel.CHARLY25;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG
@@ -25942,67 +25951,67 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab Attenuator and Preamp 
-                    case PreampMode.C25LC_MINUS36:
+                    case PreampMode.C25_MINUS36:
                         rx1_att_value = 0;
                         merc_preamp = 0;  // No preamp active 
                         alex_atten = 3;  // 12dB and 24dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_MINUS24:
+                    case PreampMode.C25_MINUS24:
                         rx1_att_value = 0;
                         merc_preamp = 0;  // No preamp active
                         alex_atten = 2;  // 24dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_MINUS18:
+                    case PreampMode.C25_MINUS18:
                         rx1_att_value = 0;
                         merc_preamp = 1;  // 18dB preamp active
                         alex_atten = 3;  // 12dB and 24dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_MINUS12:
+                    case PreampMode.C25_MINUS12:
                         rx1_att_value = 0;
                         merc_preamp = 0;  // No preamp active
                         alex_atten = 1;  // 12dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_MINUS6:
+                    case PreampMode.C25_MINUS6:
                         rx1_att_value = 0;
                         merc_preamp = 1;  // 18dB preamp active
                         alex_atten = 2;  // 24dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_OFF:
+                    case PreampMode.C25_OFF:
                         rx1_att_value = 0;
                         merc_preamp = 0;  // No preamp active
                         alex_atten = 0;  // No attenuator active
                         break;
 
-                    case PreampMode.C25LC_PLUS6:
+                    case PreampMode.C25_PLUS6:
                         rx1_att_value = 0;
                         merc_preamp = 1;  // 18dB preamp active
                         alex_atten = 1;  // 12dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_PLUS12:
+                    case PreampMode.C25_PLUS12:
                         rx1_att_value = 0;
                         merc_preamp = 2;  // Two preamps must be active
                         alex_atten = 2;  // 24dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_PLUS18:
+                    case PreampMode.C25_PLUS18:
                         rx1_att_value = 0;
                         merc_preamp = 1;  // 18dB preamp active
                         alex_atten = 0;  // No attenuator active
                         break;
 
-                    case PreampMode.C25LC_PLUS24:
+                    case PreampMode.C25_PLUS24:
                         rx1_att_value = 0;
                         merc_preamp = 2;  // Two preamps must be active
                         alex_atten = 1;  // 12dB attenuator active
                         break;
 
-                    case PreampMode.C25LC_PLUS36:
+                    case PreampMode.C25_PLUS36:
                         rx1_att_value = 0;
                         merc_preamp = 2;  // Two preamps must be active
                         alex_atten = 0;  // No attenuator active
@@ -26076,57 +26085,57 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab Attenuator and Preamp
-                    case PreampMode.C25LC_MINUS36:
+                    case PreampMode.C25_MINUS36:
                         comboPreamp.Text = "-36dB";
                         lblPreamp.Text = "ATT";
                         break;
 
-                    case PreampMode.C25LC_MINUS24:
+                    case PreampMode.C25_MINUS24:
                         comboPreamp.Text = "-24dB";
                         lblPreamp.Text = "ATT";
                         break;
 
-                    case PreampMode.C25LC_MINUS18:
+                    case PreampMode.C25_MINUS18:
                         comboPreamp.Text = "-18dB";
                         lblPreamp.Text = "ATT";
                         break;
 
-                    case PreampMode.C25LC_MINUS12:
+                    case PreampMode.C25_MINUS12:
                         comboPreamp.Text = "-12dB";
                         lblPreamp.Text = "ATT";
                         break;
 
-                    case PreampMode.C25LC_MINUS6:
+                    case PreampMode.C25_MINUS6:
                         comboPreamp.Text = "  -6dB";
                         lblPreamp.Text = "ATT";
                         break;
 
-                    case PreampMode.C25LC_OFF:
+                    case PreampMode.C25_OFF:
                         comboPreamp.Text = "   0dB";
                         lblPreamp.Text = "ATT";
                         break;
 
-                    case PreampMode.C25LC_PLUS6:
+                    case PreampMode.C25_PLUS6:
                         comboPreamp.Text = "   6dB";
                         lblPreamp.Text = "PRE";
                         break;
 
-                    case PreampMode.C25LC_PLUS12:
+                    case PreampMode.C25_PLUS12:
                         comboPreamp.Text = " 12dB";
                         lblPreamp.Text = "PRE";
                         break;
 
-                    case PreampMode.C25LC_PLUS18:
+                    case PreampMode.C25_PLUS18:
                         comboPreamp.Text = " 18dB";
                         lblPreamp.Text = "PRE";
                         break;
 
-                    case PreampMode.C25LC_PLUS24:
+                    case PreampMode.C25_PLUS24:
                         comboPreamp.Text = " 24dB";
                         lblPreamp.Text = "PRE";
                         break;
 
-                    case PreampMode.C25LC_PLUS36:
+                    case PreampMode.C25_PLUS36:
                         comboPreamp.Text = " 36dB";
                         lblPreamp.Text = "PRE";
                         break;
@@ -35019,47 +35028,47 @@ namespace PowerSDR
                 // DG8MG
                 // Extension for Charly 25 and HAMlab Attenuator and Preamp
                 case "-36dB":
-                    mode = PreampMode.C25LC_MINUS36;
+                    mode = PreampMode.C25_MINUS36;
                     break;
 
                 case "-24dB":
-                    mode = PreampMode.C25LC_MINUS24;
+                    mode = PreampMode.C25_MINUS24;
                     break;
 
                 case "-18dB":
-                    mode = PreampMode.C25LC_MINUS18;
+                    mode = PreampMode.C25_MINUS18;
                     break;
 
                 case "-12dB":
-                    mode = PreampMode.C25LC_MINUS12;
+                    mode = PreampMode.C25_MINUS12;
                     break;
 
                 case "  -6dB":
-                    mode = PreampMode.C25LC_MINUS6;
+                    mode = PreampMode.C25_MINUS6;
                     break;
 
                 case "   0dB":
-                    mode = PreampMode.C25LC_OFF;
+                    mode = PreampMode.C25_OFF;
                     break;
 
                 case "   6dB":
-                    mode = PreampMode.C25LC_PLUS6;
+                    mode = PreampMode.C25_PLUS6;
                     break;
 
                 case " 12dB":
-                    mode = PreampMode.C25LC_PLUS12;
+                    mode = PreampMode.C25_PLUS12;
                     break;
 
                 case " 18dB":
-                    mode = PreampMode.C25LC_PLUS18;
+                    mode = PreampMode.C25_PLUS18;
                     break;
 
                 case " 24dB":
-                    mode = PreampMode.C25LC_PLUS24;
+                    mode = PreampMode.C25_PLUS24;
                     break;
 
                 case " 36dB":
-                    mode = PreampMode.C25LC_PLUS36;
+                    mode = PreampMode.C25_PLUS36;
                     break;
                 // DG8MG
 
@@ -36126,7 +36135,7 @@ namespace PowerSDR
                         {
                             temp_mode = RX1PreampMode;
                             SetupForm.HermesEnableAttenuator = false;
-                            RX1PreampMode = PreampMode.C25LC_OFF;
+                            RX1PreampMode = PreampMode.C25_OFF;
                             break;
                         }
 
@@ -36134,7 +36143,7 @@ namespace PowerSDR
                         {
                             temp_mode = RX1PreampMode;
                             SetupForm.HermesEnableAttenuator = false;
-                            RX1PreampMode = PreampMode.C25LC_OFF;
+                            RX1PreampMode = PreampMode.C25_OFF;
                             break;
                         }
 
@@ -49192,8 +49201,8 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab Attenuator and Preamp
-        private String[] C25LC_attenuator_settings = { "-36dB", "-24dB", "-18dB", "-12dB", "  -6dB" };
-        private String[] C25LC_preamp_settings = { "   0dB", "   6dB", " 12dB", " 18dB", " 24dB", " 36dB" };
+        private String[] C25_attenuator_settings = { "-36dB", "-24dB", "-18dB", "-12dB", "  -6dB" };
+        private String[] C25_preamp_settings = { "   0dB", "   6dB", " 12dB", " 18dB", " 24dB", " 36dB" };
         // DG8MG
 
         public void SetComboPreampForHPSDR()
@@ -49210,8 +49219,8 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if (CurrentHPSDRModel == HPSDRModel.CHARLY25 || CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {
-                comboPreamp.Items.AddRange(C25LC_attenuator_settings);
-                comboPreamp.Items.AddRange(C25LC_preamp_settings);
+                comboPreamp.Items.AddRange(C25_attenuator_settings);
+                comboPreamp.Items.AddRange(C25_preamp_settings);
                 comboPreamp.SelectedIndex = 5;  // Initial index for 0dB
             }
             else
@@ -49241,8 +49250,8 @@ namespace PowerSDR
                 // Extension for C25 RX2 Preamp and Attenuator 
                 if (CurrentHPSDRModel == HPSDRModel.CHARLY25 || CurrentHPSDRModel == HPSDRModel.HAMLAB)
                 {
-                    comboRX2Preamp.Items.AddRange(C25LC_attenuator_settings);
-                    comboRX2Preamp.Items.AddRange(C25LC_preamp_settings);
+                    comboRX2Preamp.Items.AddRange(C25_attenuator_settings);
+                    comboRX2Preamp.Items.AddRange(C25_preamp_settings);
                     comboRX2Preamp.SelectedIndex = 5;  // Initial index for 0dB
                 }
                 else

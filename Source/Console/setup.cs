@@ -50,7 +50,7 @@ namespace PowerSDR
     using System.IO.Ports;
     //using TDxInput;
     using Midi2Cat;
-
+    
     public partial class Setup : Form
     {
         #region Variable Declaration
@@ -7573,38 +7573,55 @@ namespace PowerSDR
         }
 
         // DG8MG
-        // Extension for Charly 25LC hardware
+        // Extension for Charly 25 hardware
         private void radGenModelCharly25_CheckedChanged(object sender, System.EventArgs e)
         {
             HPSDRModel old_model = console.CurrentHPSDRModel;
 
-            if (radGenModelCharly25.Checked)  // Charly 25LC is selected
+            if (radGenModelCharly25.Checked)  // Charly 25 is selected
             {
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.CHARLY25;
                 console.CurrentHPSDRModel = HPSDRModel.CHARLY25;
-                console.chkSR.Visible = false;  // Charly 25LC doesn't need this functionality
-                console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25LC
-                console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25LC visible
+             
+                /*
+                Type formType = typeof(Form);
+
+                foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+                {
+                    if (formType.IsAssignableFrom(t))
+                    {
+                        PropertyInfo property = t.GetProperty("Icon");                     
+                        Debug.WriteLine(t.Name);
+                    }
+                }
+                */
+
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());
+                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());
+
+                console.chkSR.Visible = false;  // Charly 25 doesn't need this functionality
+                console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25
+                console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25 visible
                 chkPennyPresent.Checked = true;  
-                chkPennyPresent.Visible = false;  // Charly 25LC doesn't need this functionality
-                chkPennyLane.Checked = false;  // Charly 25LC doesn't need this functionality
-                chkPennyLane.Visible = false;  // Charly 25LC doesn't need this functionality
-                chkMercuryPresent.Checked = false;  // Charly 25LC doesn't need this functionality
-                chkMercuryPresent.Visible = false;  // Charly 25LC doesn't need this functionality
-                chkJanusPresent.Checked = false;  // Charly 25LC doesn't need this functionality
-                chkJanusPresent.Visible = false;  // Charly 25LC doesn't need this functionality
-                chkExcaliburPresent.Checked = false;  // Charly 25LC doesn't need this functionality
-                chkExcaliburPresent.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkPennyPresent.Visible = false;  // Charly 25 doesn't need this functionality
+                chkPennyLane.Checked = false;  // Charly 25 doesn't need this functionality
+                chkPennyLane.Visible = false;  // Charly 25 doesn't need this functionality
+                chkMercuryPresent.Checked = false;  // Charly 25 doesn't need this functionality
+                chkMercuryPresent.Visible = false;  // Charly 25 doesn't need this functionality
+                chkJanusPresent.Checked = false;  // Charly 25 doesn't need this functionality
+                chkJanusPresent.Visible = false;  // Charly 25 doesn't need this functionality
+                chkExcaliburPresent.Checked = false;  // Charly 25 doesn't need this functionality
+                chkExcaliburPresent.Visible = false;  // Charly 25 doesn't need this functionality
                 groupBox10MhzClock.Visible = true;
                 groupBox122MHz.Visible = true;
                 groupBoxMicSource.Visible = true;
-                chkHermesStepAttenuator.Checked = false;  // Charly 25LC doesn't need this functionality
-                grpHermesStepAttenuator.Visible = false;  // Charly 25LC doesn't need this functionality
-                chkAlexPresent.Checked = false;  // Charly 25LC doesn't need this functionality
-                chkAlexPresent.Visible = false;  // Charly 25LC doesn't need this functionality
-                chkApolloPresent.Checked = false;  // Charly 25LC doesn't need this functionality
-                chkApolloPresent.Visible = false;  // Charly 25LC doesn't need this functionality
+                chkHermesStepAttenuator.Checked = false;  // Charly 25 doesn't need this functionality
+                grpHermesStepAttenuator.Visible = false;  // Charly 25 doesn't need this functionality
+                chkAlexPresent.Checked = false;  // Charly 25 doesn't need this functionality
+                chkAlexPresent.Visible = false;  // Charly 25 doesn't need this functionality
+                chkApolloPresent.Checked = false;  // Charly 25 doesn't need this functionality
+                chkApolloPresent.Visible = false;  // Charly 25 doesn't need this functionality
                 groupBoxRXOptions.Text = "Mercury Options";
                 radMetis.Text = "RedPitaya (Ethernet)";
                 grpMetisAddr.Text = "RedPitaya Address";
@@ -7614,8 +7631,8 @@ namespace PowerSDR
                 chkAutoPACalibrate.Visible = true;
                 grpCHARLY25PAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                chkATTOnTX.Checked = false;  // Charly 25LC doesn't have a TX step attenuator
-                console.RX2PreampPresent = false;  // Charly 25LC doesn't have a RX2 preamp
+                chkATTOnTX.Checked = false;  // Charly 25 doesn't have a TX step attenuator
+                console.RX2PreampPresent = false;  // Charly 25 doesn't have a RX2 preamp
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
                 chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
@@ -7624,9 +7641,9 @@ namespace PowerSDR
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
-                chkVACAllowBypass.Checked = false;  // Charly 25LC needs this to be unchecked
-                console.psform.AutoAttenuate = false;  // Charly 25LC doesn't have this functionality
-                console.psform.AutoAttenuate_Visible = false;  // Charly 25LC doesn't have this functionality
+                chkVACAllowBypass.Checked = false;  // Charly 25 needs this to be unchecked
+                console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
+                console.psform.AutoAttenuate_Visible = false;  // Charly 25 doesn't have this functionality
 
                 if (!tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -7634,8 +7651,9 @@ namespace PowerSDR
                     tcSetup.SelectedIndex = 0;
                 }
             }
-            else  // Charly 25LC is deselected
+            else  // Charly 25 is deselected
             {
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // reset to the openHPSDR icon
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
@@ -7651,7 +7669,7 @@ namespace PowerSDR
             }
 
             // DG8MG: Test me!
-            // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly 25LC
+            // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly 25
             {
                 // add or remove setup pages for HPSDR stuff 
                 // AddHPSDRPages();  // Fix me: Is it really needed? DG8MG
@@ -7711,7 +7729,7 @@ namespace PowerSDR
                 chkLimitRX.Enabled = true;
                 tpPennyCtrl.Text = "Penny Ctrl";
             }
-            // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly 25LC
+            // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly 25
 
             if (radMetis.Checked)
             {
@@ -7765,6 +7783,7 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());  // set the Red Pitaya icon
                 console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
@@ -7818,6 +7837,7 @@ namespace PowerSDR
             }
             else  // HAMlab is deselected
             {
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // reset to the openHPSDR icon
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
@@ -20395,7 +20415,7 @@ namespace PowerSDR
             console.RX1DSPMode = DSPMode.AM;
             console.RX1Filter = Filter.F10;
 
-            console.RX1PreampMode = PreampMode.C25LC_OFF;
+            console.RX1PreampMode = PreampMode.C25_OFF;
             lbC25RXAttPreTestResults.Items.Clear();
 
             // Measure the reference level
@@ -20415,13 +20435,13 @@ namespace PowerSDR
 
             if (sender == btnC25RXAttTest)
             {
-                rxattpretest_first_mode = (int)PreampMode.C25LC_MINUS36;
-                rxattpretest_last_mode = (int)PreampMode.C25LC_MINUS6;
+                rxattpretest_first_mode = (int)PreampMode.C25_MINUS36;
+                rxattpretest_last_mode = (int)PreampMode.C25_MINUS6;
             }
             else
             {
-                rxattpretest_first_mode = (int)PreampMode.C25LC_PLUS6;
-                rxattpretest_last_mode = (int)PreampMode.C25LC_PLUS36;
+                rxattpretest_first_mode = (int)PreampMode.C25_PLUS6;
+                rxattpretest_last_mode = (int)PreampMode.C25_PLUS36;
             }
 
             // Measure the levels at the different attenuator and preamp settings
