@@ -525,7 +525,7 @@ namespace PowerSDR
         HermesII = 2,
         Angelia = 4,
         Orion = 5,
-        OrionMKII = 10 // ANAN-8000DLE OrionMkII
+        OrionMKII = 10, // ANAN-8000DLE OrionMkII
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
@@ -8193,8 +8193,8 @@ namespace PowerSDR
             // DG8MG
 
             // DG8MG
-            // Extended the array from 8 to 18 for Charly 25 and HAMlab RX2 Attenuator and Preamp
-            rx2_preamp_offset = new float[18];
+            // Extended the array from 8 to 20 for Charly 25 and HAMlab RX2 Attenuator and Preamp
+            rx2_preamp_offset = new float[20];
             // DG8MG
 
             rx2_preamp_offset[(int)PreampMode.HPSDR_OFF] = 20.0f;
@@ -50511,7 +50511,7 @@ namespace PowerSDR
                 }
                 else
                 {
-                    if (anan100dpresent || orionpresent)
+                    if (anan100dpresent || anan200dpresent || anan8000dpresent || orionmkiipresent)
                         comboRX2Preamp.Items.AddRange(anan100d_preamp_settings);
                     else
                         comboRX2Preamp.Items.AddRange(on_off_preamp_settings);

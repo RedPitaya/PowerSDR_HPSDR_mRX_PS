@@ -207,6 +207,9 @@
   <data name="chkRX2Squelch.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
+  <data name="chkRX2Squelch.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
   <data name="chkRX2Squelch.Image" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -7574,6 +7577,54 @@
   </data>
   <data name="&gt;&gt;ptbCWAPFFreq.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="chkC25ANT.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
+    <value>Button</value>
+  </data>
+  <data name="chkC25ANT.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="chkC25ANT.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="chkC25ANT.Image" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="chkC25ANT.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkC25ANT.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 30</value>
+  </data>
+  <data name="chkC25ANT.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 23</value>
+  </data>
+  <data name="chkC25ANT.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="chkC25ANT.Text" xml:space="preserve">
+    <value>ANT1</value>
+  </data>
+  <data name="chkC25ANT.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="chkC25ANT.ToolTip" xml:space="preserve">
+    <value>Switch from antenna 1 to antenna 2 and vise versa.</value>
+  </data>
+  <data name="chkC25ANT.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.Name" xml:space="preserve">
+    <value>chkC25ANT</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBoxTS, PowerSDR, Version=1.2017.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.Parent" xml:space="preserve">
+    <value>panelOptions</value>
+  </data>
+  <data name="&gt;&gt;chkC25ANT.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="picSquelch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>Off</value>
