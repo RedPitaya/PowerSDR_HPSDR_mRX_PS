@@ -7653,7 +7653,8 @@ namespace PowerSDR
             }
             else  // Charly 25 is deselected
             {
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // reset to the openHPSDR icon
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon
+                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
@@ -7783,7 +7784,8 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());  // set the Red Pitaya icon
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon
+                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());
                 console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
@@ -7837,7 +7839,8 @@ namespace PowerSDR
             }
             else  // HAMlab is deselected
             {
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // reset to the openHPSDR icon
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon
+                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting

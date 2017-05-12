@@ -403,6 +403,7 @@
     <Compile Include="xvtr.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Content Include="C25.ico" />
     <Content Include="redpitaya.ico" />
     <EmbeddedResource Include="Resources\digital7.ttf" />
     <None Include="ClassDiagram1.cd" />

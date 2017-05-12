@@ -7361,8 +7361,9 @@ namespace PowerSDR
             // 
             this.ilC25ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilC25ImageList.ImageStream")));
             this.ilC25ImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilC25ImageList.Images.SetKeyName(0, "redpitaya.ico");
-            this.ilC25ImageList.Images.SetKeyName(1, "hpsdr5-32.ico");
+            this.ilC25ImageList.Images.SetKeyName(0, "C25.ico");
+            this.ilC25ImageList.Images.SetKeyName(1, "redpitaya.ico");
+            this.ilC25ImageList.Images.SetKeyName(2, "hpsdr5-32.ico");
             // 
             // Console
             // 
