@@ -3,7 +3,7 @@
 //=================================================================
 // PowerSDR is a C# implementation of a Software Defined Radio.
 // Copyright (C) 2004-2009  FlexRadio Systems 
-// Copyright (C) 2010-2015  Doug Wigley
+// Copyright (C) 2010-2017  Doug Wigley
 // Credit is given to Sizenko Alexander of Style-7 (http://www.styleseven.com/) for the Digital-7 font.
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -169,8 +169,10 @@ namespace PowerSDR
         ANAN100B,
         ANAN100D,
         ANAN200D,
+        ORIONMKII,
+        ANAN8000D,
         CHARLY25,
-        HAMLAB,
+        HAMLAB
     }
 
     public enum HPSDRModel
@@ -184,9 +186,11 @@ namespace PowerSDR
         ANAN100B,
         ANAN100D,
         ANAN200D,
+        ORIONMKII,
+        ANAN8000D,
         CHARLY25,
         HAMLAB,
-        LAST,
+        LAST
     }
 
     public enum BPFBand
@@ -357,10 +361,6 @@ namespace PowerSDR
     public enum PreampMode
     {
         FIRST = -1,
-        // OFF,
-        // LOW,
-        // MED,
-        // HIGH,
         HPSDR_OFF,
         HPSDR_ON,
         HPSDR_MINUS10,
@@ -368,7 +368,8 @@ namespace PowerSDR
         HPSDR_MINUS30,
         HPSDR_MINUS40,
         HPSDR_MINUS50,
-        // STEP_ATTEN,
+        HPSDR_SMINUS10,
+        HPSDR_SMINUS30,
        
         // DG8MG
         // Extension for Charly 25 and HAMlab Attenuator and Preamp
@@ -521,12 +522,14 @@ namespace PowerSDR
     {
         Metis = 0,
         Hermes = 1,
-        Griffin = 2,
+        HermesII = 2,
         Angelia = 4,
         Orion = 5,
+        OrionMKII = 10, // ANAN-8000DLE OrionMkII
+
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        RedPitaya = 10,
+        RedPitaya = 100,
         // DG8MG
     }
 
@@ -587,6 +590,7 @@ namespace PowerSDR
         private Thread poll_cw_thread;
         private Thread poll_pa_pwr_thread;					// polls the FWD and REV power if the PA is installed
         private Thread poll_tx_inhibit_thead;
+        private Thread display_volts_amps_thead;            // calculate and display fwdvolts and amps for ANAN-8000DLE
         private Thread sql_update_thread;					// polls the RX signal strength
         private Thread rx2_sql_update_thread;				// polls the RX2 signal strength
         private Thread vox_update_thread;					// polls the mic input
@@ -617,6 +621,7 @@ namespace PowerSDR
         public FilterForm filterRX2Form;
         public DiversityForm diversityForm;
         public RAForm raForm;
+
         public RadioInfo radio_info;
         public ContactInfo contact_info;
 
@@ -661,7 +666,7 @@ namespace PowerSDR
         // public PAQualify PAQualForm;
         //public ProductionTest ProdTestForm;
 
-        private bool run_setup_wizard;                      // Used to run the wizard the first time the software comes up
+        private bool run_setup_wizard;						// Used to run the wizard the first time the software comes up
         private bool show_alpha_warning = false;
         //   private bool show_mobile_warning = false;
 
@@ -732,12 +737,13 @@ namespace PowerSDR
         private RadioButtonTS[] vhf_text;
         private bool was_panadapter = false;				// used to restore panadater when switching to spectrum DSP mode
         private bool was_waterfall = false;					// used to restore waterfall when switching to spectrum DSP mode
+
         public float[] rx1_preamp_offset;					// offset values for each preamp mode in dB
         public float[] rx2_preamp_offset;					// offset values for each preamp mode in dB
         public float rx1_meter_cal_offset;					// multimeter calibration offset per volume setting in dB
         public float rx2_meter_cal_offset;					// multimeter calibration offset per volume setting in dB
-        //public float rx1_filter_size_cal_offset = 9;		// filter offset based on DSP filter size
-        //public float rx2_filter_size_cal_offset = 9;		// filter offset based on DSP filter size
+        public float[] rx_meter_cal_offset_by_radio;
+        public float[] rx_display_cal_offset_by_radio;
         private int[] rx1_step_attenuator_by_band;
         private int[] rx2_step_attenuator_by_band;
         private int[] tx_step_attenuator_by_band;
@@ -931,6 +937,11 @@ namespace PowerSDR
         private Point txt_display_cursor_freq_basis = new Point(100, 100);		//k6jca
         private Point txt_display_cursor_power_basis = new Point(100, 100);		//k6jca
         private Point txt_display_cursor_offset_basis = new Point(100, 100);		//k6jca
+
+        private Point txt_display_orion_mkii_pa_volts_basis = new Point(100, 100);		//k6jca
+        private Point txt_display_orion_mkii_blank_basis = new Point(100, 100);		//k6jca
+        private Point txt_display_orion_mkii_pa_amps_basis = new Point(100, 100);		//k6jca
+
         private Point gr_multirx_basis = new Point(100, 100);		//k6jca
 
         private Point pan_rx2_divider_basis = new Point(100, 100);
@@ -1561,7 +1572,16 @@ namespace PowerSDR
         private LabelTS lblRX1APF;
         private LabelTS lblRX2APF;
         public CheckBoxTS chkC25ANT;
+		// DG8MG
         public ImageList ilC25ImageList;
+		// DG8MG
+        private ToolStripMenuItem NR2ToolStripMenuItem1;
+        private ToolStripMenuItem NR2StripMenuItem2;
+        private ToolStripMenuItem SNBtoolStripMenuItem;
+        private ToolStripMenuItem SNBtoolStripMenuItem1;
+        private TextBoxTS txtDisplayOrionMKIIPAVolts;
+        private TextBoxTS txtDisplayOrionMKIIPAAmps;
+        private TextBoxTS txtDisplayOrionMKIIBlank;
         public PictureBox picWaterfall;
 
         #endregion
@@ -1893,27 +1913,47 @@ namespace PowerSDR
             }
             else if (rx1_meter_cal_offset == 0.0f)
             {
-                rx1_meter_cal_offset = -2.44f;
-                rx2_meter_cal_offset = -2.44f;
+                switch (current_hpsdr_model)
+                {
+                    case HPSDRModel.ORIONMKII:
+                    case HPSDRModel.ANAN8000D:
+                        rx1_meter_cal_offset = 3.00f;
+                        rx2_meter_cal_offset = 3.00f;
+                        break;
+                    default:
+                        rx1_meter_cal_offset = -2.44f;
+                        rx2_meter_cal_offset = -2.44f;
+                        break;
+                }
             }
             // DG8MG
 
             if (rx1_display_cal_offset == 0.0f)
             {
-                RX1DisplayCalOffset = -2.1f;
-            }
 
-            foreach (string s in CmdLineArgs)
-            {
-                if (s == "-autostart")
-                    chkPower.Checked = true;
-                else if (s.StartsWith("-datapath:"))
+                switch (current_hpsdr_model)
                 {
-                    string path = s.Substring(s.IndexOf(":") + 1);
-                    if (Directory.Exists(path))
-                        AppDataPath = path;
+                    case HPSDRModel.ORIONMKII:
+                    case HPSDRModel.ANAN8000D:
+                        RX1DisplayCalOffset = 3.36f;
+                        break;
+                    default:
+                        RX1DisplayCalOffset = -2.1f;
+                        break;
                 }
             }
+
+            //foreach (string s in CmdLineArgs)
+            //{
+            //    if (s == "-autostart")
+            //        chkPower.Checked = true;
+            //    else if (s.StartsWith("-datapath:"))
+            //    {
+            //        string path = s.Substring(s.IndexOf(":") + 1);
+            //        if (Directory.Exists(path))
+            //            AppDataPath = path;
+            //    }
+            //}
 
             SyncDSP();
 
@@ -1928,6 +1968,22 @@ namespace PowerSDR
             UpdateWaterfallLevelValues();
             UpdateDisplayGridLevelValues();
             UpdateDiversityValues();
+
+            foreach (string s in CmdLineArgs)
+            {
+                if (s == "-autostart")
+                {
+                    //Thread.Sleep(5000);
+                    chkPower.Checked = true;
+                }
+                else if (s.StartsWith("-datapath:"))
+                {
+                    string path = s.Substring(s.IndexOf(":") + 1);
+                    if (Directory.Exists(path))
+                        AppDataPath = path;
+                }
+            }
+
         }
 
 
@@ -2000,7 +2056,6 @@ namespace PowerSDR
             this.chkRX2SR = new System.Windows.Forms.CheckBoxTS();
             this.chkMOX = new System.Windows.Forms.CheckBoxTS();
             this.chkTUN = new System.Windows.Forms.CheckBoxTS();
-            this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
             this.chkSR = new System.Windows.Forms.CheckBoxTS();
             this.comboTuneMode = new System.Windows.Forms.ComboBoxTS();
             this.chkX2TR = new System.Windows.Forms.CheckBoxTS();
@@ -2169,6 +2224,7 @@ namespace PowerSDR
             this.ptbCWAPFGain = new PowerSDR.PrettyTrackBar();
             this.ptbCWAPFBandwidth = new PowerSDR.PrettyTrackBar();
             this.ptbCWAPFFreq = new PowerSDR.PrettyTrackBar();
+            this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
             this.picSquelch = new System.Windows.Forms.PictureBox();
             this.timer_clock = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStripFilterRX1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -2200,9 +2256,11 @@ namespace PowerSDR
             this.modeControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dSPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NRToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.NR2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.ANFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NB2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SNBtoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BINToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MultiRXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RX1AVGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2282,9 +2340,11 @@ namespace PowerSDR
             this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripMenuItem();
             this.dSPToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.nR2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.NR2StripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.aNF2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nB2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.nBRX2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SNBtoolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.bIN2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RX2AVGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RX2PeakToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2392,16 +2452,19 @@ namespace PowerSDR
             this.grpDIGSampleRate = new System.Windows.Forms.GroupBoxTS();
             this.panelDisplay = new System.Windows.Forms.PanelTS();
             this.txtDisplayPeakOffset = new System.Windows.Forms.TextBoxTS();
-            this.txtDisplayCursorOffset = new System.Windows.Forms.TextBoxTS();
             this.txtOverload = new System.Windows.Forms.TextBox();
-            this.txtDisplayCursorPower = new System.Windows.Forms.TextBoxTS();
             this.lblDisplayZoom = new System.Windows.Forms.LabelTS();
-            this.txtDisplayCursorFreq = new System.Windows.Forms.TextBoxTS();
             this.txtDisplayPeakPower = new System.Windows.Forms.TextBoxTS();
             this.txtDisplayPeakFreq = new System.Windows.Forms.TextBoxTS();
             this.lblDisplayPan = new System.Windows.Forms.LabelTS();
             this.picDisplay = new System.Windows.Forms.PictureBox();
             this.picWaterfall = new System.Windows.Forms.PictureBox();
+            this.txtDisplayCursorFreq = new System.Windows.Forms.TextBoxTS();
+            this.txtDisplayOrionMKIIBlank = new System.Windows.Forms.TextBoxTS();
+            this.txtDisplayCursorOffset = new System.Windows.Forms.TextBoxTS();
+            this.txtDisplayOrionMKIIPAVolts = new System.Windows.Forms.TextBoxTS();
+            this.txtDisplayCursorPower = new System.Windows.Forms.TextBoxTS();
+            this.txtDisplayOrionMKIIPAAmps = new System.Windows.Forms.TextBoxTS();
             this.panelMode = new System.Windows.Forms.PanelTS();
             this.panelBandHF = new System.Windows.Forms.PanelTS();
             this.txtVFOAFreq = new System.Windows.Forms.TextBoxTS();
@@ -2730,17 +2793,6 @@ namespace PowerSDR
             this.toolTip1.SetToolTip(this.chkTUN, resources.GetString("chkTUN.ToolTip"));
             this.chkTUN.CheckedChanged += new System.EventHandler(this.chkTUN_CheckedChanged);
             // 
-            // chkC25ANT
-            // 
-            resources.ApplyResources(this.chkC25ANT, "chkC25ANT");
-            this.chkC25ANT.BackColor = System.Drawing.Color.Transparent;
-            this.chkC25ANT.FlatAppearance.BorderSize = 0;
-            this.chkC25ANT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkC25ANT.Name = "chkC25ANT";
-            this.toolTip1.SetToolTip(this.chkC25ANT, resources.GetString("chkC25ANT.ToolTip"));
-            this.chkC25ANT.UseVisualStyleBackColor = false;
-            this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
-            // 
             // chkSR
             // 
             resources.ApplyResources(this.chkSR, "chkSR");
@@ -2785,7 +2837,7 @@ namespace PowerSDR
             this.chkFWCATUBypass.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.chkFWCATUBypass.Name = "chkFWCATUBypass";
             this.toolTip1.SetToolTip(this.chkFWCATUBypass, resources.GetString("chkFWCATUBypass.ToolTip"));
-            this.chkFWCATUBypass.Click += new System.EventHandler(this.chkFWCATUBypass_Click);
+            this.chkFWCATUBypass.CheckedChanged += new System.EventHandler(this.chkFWCATUBypass_CheckedChanged_1);
             // 
             // chkFWCATU
             // 
@@ -4775,6 +4827,17 @@ namespace PowerSDR
             this.ptbCWAPFFreq.Value = 0;
             this.ptbCWAPFFreq.Scroll += new PowerSDR.PrettyTrackBar.ScrollHandler(this.ptbCWAPFFreq_Scroll);
             // 
+            // chkC25ANT
+            // 
+            resources.ApplyResources(this.chkC25ANT, "chkC25ANT");
+            this.chkC25ANT.BackColor = System.Drawing.Color.Transparent;
+            this.chkC25ANT.FlatAppearance.BorderSize = 0;
+            this.chkC25ANT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkC25ANT.Name = "chkC25ANT";
+            this.toolTip1.SetToolTip(this.chkC25ANT, resources.GetString("chkC25ANT.ToolTip"));
+            this.chkC25ANT.UseVisualStyleBackColor = false;
+            this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
+            // 
             // picSquelch
             // 
             this.picSquelch.BackColor = System.Drawing.SystemColors.ControlText;
@@ -4901,6 +4964,7 @@ namespace PowerSDR
             this.RAtoolStripMenuItem});
             resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // setupToolStripMenuItem
             // 
@@ -4991,9 +5055,11 @@ namespace PowerSDR
             // 
             this.dSPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NRToolStripMenuItem,
+            this.NR2ToolStripMenuItem1,
             this.ANFToolStripMenuItem,
             this.NBToolStripMenuItem,
             this.NB2ToolStripMenuItem,
+            this.SNBtoolStripMenuItem,
             this.BINToolStripMenuItem,
             this.MultiRXToolStripMenuItem,
             this.RX1AVGToolStripMenuItem,
@@ -5007,6 +5073,12 @@ namespace PowerSDR
             this.NRToolStripMenuItem.Name = "NRToolStripMenuItem";
             resources.ApplyResources(this.NRToolStripMenuItem, "NRToolStripMenuItem");
             this.NRToolStripMenuItem.Click += new System.EventHandler(this.mnuDSP_Click);
+            // 
+            // NR2ToolStripMenuItem1
+            // 
+            this.NR2ToolStripMenuItem1.Name = "NR2ToolStripMenuItem1";
+            resources.ApplyResources(this.NR2ToolStripMenuItem1, "NR2ToolStripMenuItem1");
+            this.NR2ToolStripMenuItem1.Click += new System.EventHandler(this.mnuDSP_Click);
             // 
             // ANFToolStripMenuItem
             // 
@@ -5025,6 +5097,12 @@ namespace PowerSDR
             this.NB2ToolStripMenuItem.Name = "NB2ToolStripMenuItem";
             resources.ApplyResources(this.NB2ToolStripMenuItem, "NB2ToolStripMenuItem");
             this.NB2ToolStripMenuItem.Click += new System.EventHandler(this.mnuDSP_Click);
+            // 
+            // SNBtoolStripMenuItem
+            // 
+            this.SNBtoolStripMenuItem.Name = "SNBtoolStripMenuItem";
+            resources.ApplyResources(this.SNBtoolStripMenuItem, "SNBtoolStripMenuItem");
+            this.SNBtoolStripMenuItem.Click += new System.EventHandler(this.mnuDSP_Click);
             // 
             // BINToolStripMenuItem
             // 
@@ -5566,9 +5644,11 @@ namespace PowerSDR
             // 
             this.dSPToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.nR2ToolStripMenuItem,
+            this.NR2StripMenuItem2,
             this.aNF2ToolStripMenuItem,
             this.nB2ToolStripMenuItem1,
             this.nBRX2ToolStripMenuItem,
+            this.SNBtoolStripMenuItem1,
             this.bIN2ToolStripMenuItem,
             this.RX2AVGToolStripMenuItem,
             this.RX2PeakToolStripMenuItem});
@@ -5580,6 +5660,12 @@ namespace PowerSDR
             this.nR2ToolStripMenuItem.Name = "nR2ToolStripMenuItem";
             resources.ApplyResources(this.nR2ToolStripMenuItem, "nR2ToolStripMenuItem");
             this.nR2ToolStripMenuItem.Click += new System.EventHandler(this.mnuDSPRX2_Click);
+            // 
+            // NR2StripMenuItem2
+            // 
+            this.NR2StripMenuItem2.Name = "NR2StripMenuItem2";
+            resources.ApplyResources(this.NR2StripMenuItem2, "NR2StripMenuItem2");
+            this.NR2StripMenuItem2.Click += new System.EventHandler(this.mnuDSPRX2_Click);
             // 
             // aNF2ToolStripMenuItem
             // 
@@ -5598,6 +5684,12 @@ namespace PowerSDR
             this.nBRX2ToolStripMenuItem.Name = "nBRX2ToolStripMenuItem";
             resources.ApplyResources(this.nBRX2ToolStripMenuItem, "nBRX2ToolStripMenuItem");
             this.nBRX2ToolStripMenuItem.Click += new System.EventHandler(this.mnuDSPRX2_Click);
+            // 
+            // SNBtoolStripMenuItem1
+            // 
+            this.SNBtoolStripMenuItem1.Name = "SNBtoolStripMenuItem1";
+            resources.ApplyResources(this.SNBtoolStripMenuItem1, "SNBtoolStripMenuItem1");
+            this.SNBtoolStripMenuItem1.Click += new System.EventHandler(this.mnuDSPRX2_Click);
             // 
             // bIN2ToolStripMenuItem
             // 
@@ -5686,14 +5778,15 @@ namespace PowerSDR
             resources.ApplyResources(this.panelOptions, "panelOptions");
             this.panelOptions.BackColor = System.Drawing.Color.Transparent;
             this.panelOptions.Controls.Add(this.ckQuickPlay);
-            this.panelOptions.Controls.Add(this.chkMON);
             this.panelOptions.Controls.Add(this.ckQuickRec);
-            this.panelOptions.Controls.Add(this.chkRX2SR);
-            this.panelOptions.Controls.Add(this.chkMOX);
-            this.panelOptions.Controls.Add(this.chkTUN);
-            this.panelOptions.Controls.Add(this.chkC25ANT);
             this.panelOptions.Controls.Add(this.chkSR);
             this.panelOptions.Controls.Add(this.comboTuneMode);
+            this.panelOptions.Controls.Add(this.chkRX2SR);
+            this.panelOptions.Controls.Add(this.chkMOX);
+            this.panelOptions.Controls.Add(this.chkFWCATUBypass);
+            this.panelOptions.Controls.Add(this.chkMON);
+            this.panelOptions.Controls.Add(this.chkTUN);
+            this.panelOptions.Controls.Add(this.chkC25ANT);
             this.panelOptions.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.panelOptions.Name = "panelOptions";
             // 
@@ -6195,15 +6288,14 @@ namespace PowerSDR
             // 
             resources.ApplyResources(this.panelDSP, "panelDSP");
             this.panelDSP.BackColor = System.Drawing.Color.Transparent;
-            this.panelDSP.Controls.Add(this.btnTNFAdd);
             this.panelDSP.Controls.Add(this.chkMUT);
-            this.panelDSP.Controls.Add(this.chkTNF);
             this.panelDSP.Controls.Add(this.chkNR);
             this.panelDSP.Controls.Add(this.chkDSPNB2);
             this.panelDSP.Controls.Add(this.chkBIN);
             this.panelDSP.Controls.Add(this.chkNB);
             this.panelDSP.Controls.Add(this.chkANF);
-            this.panelDSP.Controls.Add(this.chkFWCATUBypass);
+            this.panelDSP.Controls.Add(this.btnTNFAdd);
+            this.panelDSP.Controls.Add(this.chkTNF);
             this.panelDSP.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.panelDSP.Name = "panelDSP";
             // 
@@ -6569,17 +6661,20 @@ namespace PowerSDR
             this.panelDisplay.Controls.Add(this.ptbDisplayZoom);
             this.panelDisplay.Controls.Add(this.ptbDisplayPan);
             this.panelDisplay.Controls.Add(this.txtDisplayPeakOffset);
-            this.panelDisplay.Controls.Add(this.txtDisplayCursorOffset);
             this.panelDisplay.Controls.Add(this.txtOverload);
-            this.panelDisplay.Controls.Add(this.txtDisplayCursorPower);
             this.panelDisplay.Controls.Add(this.lblDisplayZoom);
-            this.panelDisplay.Controls.Add(this.txtDisplayCursorFreq);
             this.panelDisplay.Controls.Add(this.txtDisplayPeakPower);
             this.panelDisplay.Controls.Add(this.btnDisplayPanCenter);
             this.panelDisplay.Controls.Add(this.txtDisplayPeakFreq);
             this.panelDisplay.Controls.Add(this.lblDisplayPan);
             this.panelDisplay.Controls.Add(this.picDisplay);
             this.panelDisplay.Controls.Add(this.picWaterfall);
+            this.panelDisplay.Controls.Add(this.txtDisplayCursorOffset);
+            this.panelDisplay.Controls.Add(this.txtDisplayOrionMKIIPAVolts);
+            this.panelDisplay.Controls.Add(this.txtDisplayCursorPower);
+            this.panelDisplay.Controls.Add(this.txtDisplayOrionMKIIPAAmps);
+            this.panelDisplay.Controls.Add(this.txtDisplayCursorFreq);
+            this.panelDisplay.Controls.Add(this.txtDisplayOrionMKIIBlank);
             this.panelDisplay.Name = "panelDisplay";
             // 
             // txtDisplayPeakOffset
@@ -6593,17 +6688,6 @@ namespace PowerSDR
             this.txtDisplayPeakOffset.ReadOnly = true;
             this.txtDisplayPeakOffset.GotFocus += new System.EventHandler(this.HideFocus);
             // 
-            // txtDisplayCursorOffset
-            // 
-            this.txtDisplayCursorOffset.BackColor = System.Drawing.Color.Black;
-            this.txtDisplayCursorOffset.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDisplayCursorOffset.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.txtDisplayCursorOffset, "txtDisplayCursorOffset");
-            this.txtDisplayCursorOffset.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.txtDisplayCursorOffset.Name = "txtDisplayCursorOffset";
-            this.txtDisplayCursorOffset.ReadOnly = true;
-            this.txtDisplayCursorOffset.GotFocus += new System.EventHandler(this.HideFocus);
-            // 
             // txtOverload
             // 
             this.txtOverload.BackColor = System.Drawing.Color.Black;
@@ -6614,31 +6698,11 @@ namespace PowerSDR
             this.txtOverload.Name = "txtOverload";
             this.txtOverload.ReadOnly = true;
             // 
-            // txtDisplayCursorPower
-            // 
-            this.txtDisplayCursorPower.BackColor = System.Drawing.Color.Black;
-            this.txtDisplayCursorPower.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDisplayCursorPower.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.txtDisplayCursorPower, "txtDisplayCursorPower");
-            this.txtDisplayCursorPower.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.txtDisplayCursorPower.Name = "txtDisplayCursorPower";
-            this.txtDisplayCursorPower.ReadOnly = true;
-            // 
             // lblDisplayZoom
             // 
             this.lblDisplayZoom.ForeColor = System.Drawing.Color.White;
             resources.ApplyResources(this.lblDisplayZoom, "lblDisplayZoom");
             this.lblDisplayZoom.Name = "lblDisplayZoom";
-            // 
-            // txtDisplayCursorFreq
-            // 
-            this.txtDisplayCursorFreq.BackColor = System.Drawing.Color.Black;
-            this.txtDisplayCursorFreq.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDisplayCursorFreq.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.txtDisplayCursorFreq, "txtDisplayCursorFreq");
-            this.txtDisplayCursorFreq.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.txtDisplayCursorFreq.Name = "txtDisplayCursorFreq";
-            this.txtDisplayCursorFreq.ReadOnly = true;
             // 
             // txtDisplayPeakPower
             // 
@@ -6689,6 +6753,67 @@ namespace PowerSDR
             this.picWaterfall.Name = "picWaterfall";
             this.picWaterfall.TabStop = false;
             this.picWaterfall.Resize += new System.EventHandler(this.picWaterfall_Resize);
+            // 
+            // txtDisplayCursorFreq
+            // 
+            this.txtDisplayCursorFreq.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayCursorFreq.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayCursorFreq.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayCursorFreq, "txtDisplayCursorFreq");
+            this.txtDisplayCursorFreq.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayCursorFreq.Name = "txtDisplayCursorFreq";
+            this.txtDisplayCursorFreq.ReadOnly = true;
+            // 
+            // txtDisplayOrionMKIIBlank
+            // 
+            this.txtDisplayOrionMKIIBlank.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayOrionMKIIBlank.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayOrionMKIIBlank.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayOrionMKIIBlank, "txtDisplayOrionMKIIBlank");
+            this.txtDisplayOrionMKIIBlank.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayOrionMKIIBlank.Name = "txtDisplayOrionMKIIBlank";
+            this.txtDisplayOrionMKIIBlank.ReadOnly = true;
+            // 
+            // txtDisplayCursorOffset
+            // 
+            this.txtDisplayCursorOffset.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayCursorOffset.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayCursorOffset.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayCursorOffset, "txtDisplayCursorOffset");
+            this.txtDisplayCursorOffset.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayCursorOffset.Name = "txtDisplayCursorOffset";
+            this.txtDisplayCursorOffset.ReadOnly = true;
+            this.txtDisplayCursorOffset.GotFocus += new System.EventHandler(this.HideFocus);
+            // 
+            // txtDisplayOrionMKIIPAVolts
+            // 
+            this.txtDisplayOrionMKIIPAVolts.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayOrionMKIIPAVolts.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayOrionMKIIPAVolts.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayOrionMKIIPAVolts, "txtDisplayOrionMKIIPAVolts");
+            this.txtDisplayOrionMKIIPAVolts.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayOrionMKIIPAVolts.Name = "txtDisplayOrionMKIIPAVolts";
+            this.txtDisplayOrionMKIIPAVolts.ReadOnly = true;
+            // 
+            // txtDisplayCursorPower
+            // 
+            this.txtDisplayCursorPower.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayCursorPower.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayCursorPower.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayCursorPower, "txtDisplayCursorPower");
+            this.txtDisplayCursorPower.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayCursorPower.Name = "txtDisplayCursorPower";
+            this.txtDisplayCursorPower.ReadOnly = true;
+            // 
+            // txtDisplayOrionMKIIPAAmps
+            // 
+            this.txtDisplayOrionMKIIPAAmps.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayOrionMKIIPAAmps.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayOrionMKIIPAAmps.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayOrionMKIIPAAmps, "txtDisplayOrionMKIIPAAmps");
+            this.txtDisplayOrionMKIIPAAmps.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayOrionMKIIPAAmps.Name = "txtDisplayOrionMKIIPAAmps";
+            this.txtDisplayOrionMKIIPAAmps.ReadOnly = true;
             // 
             // panelMode
             // 
@@ -7404,12 +7529,12 @@ namespace PowerSDR
             this.Controls.Add(this.ptbSquelch);
             this.Controls.Add(this.panelRX2Power);
             this.Controls.Add(this.lblRF2);
-            this.Controls.Add(this.panelBandHF);
-            this.Controls.Add(this.panelBandVHF);
             this.Controls.Add(this.panelModeSpecificPhone);
             this.Controls.Add(this.panelModeSpecificFM);
             this.Controls.Add(this.panelModeSpecificDigital);
             this.Controls.Add(this.panelModeSpecificCW);
+            this.Controls.Add(this.panelBandHF);
+            this.Controls.Add(this.panelBandVHF);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Console";
@@ -7775,12 +7900,29 @@ namespace PowerSDR
             //for (int i = 0; i < (int)Band.LAST; i++) tx_ant_by_band[i] = FWCAnt.ANT1;
             //rx1_loop_by_band = new bool[(int)Band.LAST];
 
+            rx_meter_cal_offset_by_radio = new float[(int)HPSDRModel.LAST];
+            rx_display_cal_offset_by_radio = new float[(int)HPSDRModel.LAST];
+            for (int i = 0; i < (int)HPSDRModel.LAST; i++)
+            {
+                switch ((HPSDRModel)i)
+                {
+                    case HPSDRModel.ANAN8000D:
+                    case HPSDRModel.ORIONMKII:
+                        rx_meter_cal_offset_by_radio[i] = 9.6215f; //3.00f;
+                        rx_display_cal_offset_by_radio[i] = 9.6721f; //3.36f;
+                        break;
+                    default:
+                        rx_meter_cal_offset_by_radio[i] = 0.98f;
+                        rx_display_cal_offset_by_radio[i] = -2.1f;
+                        break;
+                }
+            }
+
             rx1_preamp_by_band = new PreampMode[(int)Band.LAST];
             rx2_preamp_by_band = new PreampMode[(int)Band.LAST];
             rx1_step_attenuator_by_band = new int[(int)Band.LAST];
             rx2_step_attenuator_by_band = new int[(int)Band.LAST];
             tx_step_attenuator_by_band = new int[(int)Band.LAST];
-
             for (int i = 0; i < (int)Band.LAST; i++)
             {
                 switch ((Band)i)
@@ -7807,7 +7949,6 @@ namespace PowerSDR
                             rx2_step_attenuator_by_band[i] = 20;
                         }
                         break;
-
                     default:
                         if ((current_hpsdr_model == HPSDRModel.CHARLY25) || (current_hpsdr_model == HPSDRModel.HAMLAB))
                         {
@@ -8033,14 +8174,9 @@ namespace PowerSDR
             new_meter_data = -200.0f;
 
             // DG8MG
-            // Extended the array from 7 to 18 for Charly 25 and HAMlab Attenuator and Preamp
-            rx1_preamp_offset = new float[18];
+            // Extended the array from 9 to 20 for Charly 25 and HAMlab Attenuator and Preamp
+            rx1_preamp_offset = new float[20];
             // DG8MG
-
-            // rx1_preamp_offset[(int)PreampMode.OFF] = 20.0f;
-            // rx1_preamp_offset[(int)PreampMode.LOW] = 0.0f;
-            // rx1_preamp_offset[(int)PreampMode.MED] = 0.0f;
-            // rx1_preamp_offset[(int)PreampMode.HIGH] = 0.0f;
 
             rx1_preamp_offset[(int)PreampMode.HPSDR_OFF] = 20.0f; //atten inline
             rx1_preamp_offset[(int)PreampMode.HPSDR_ON] = 0.0f; //no atten
@@ -8049,6 +8185,8 @@ namespace PowerSDR
             rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS30] = 30.0f;
             rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS40] = 40.0f;
             rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS50] = 50.0f;
+            rx1_preamp_offset[(int)PreampMode.HPSDR_SMINUS10] = 10.0f;
+            rx1_preamp_offset[(int)PreampMode.HPSDR_SMINUS30] = 30.0f;
             // rx1_preamp_offset[(int)PreampMode.STEP_ATTEN] = (float)RX1AttenuatorData;
 
             // DG8MG
@@ -8067,8 +8205,8 @@ namespace PowerSDR
             // DG8MG
 
             // DG8MG
-            // Extended the array from 8 to 18 for Charly 25 and HAMlab RX2 Attenuator and Preamp
-            rx2_preamp_offset = new float[18];
+            // Extended the array from 8 to 20 for Charly 25 and HAMlab RX2 Attenuator and Preamp
+            rx2_preamp_offset = new float[20];
             // DG8MG
 
             rx2_preamp_offset[(int)PreampMode.HPSDR_OFF] = 20.0f;
@@ -8128,39 +8266,10 @@ namespace PowerSDR
             InitAGCModes();						// Initialize AGC Modes
             InitMultiMeterModes();				// Initialize MultiMeter Modes
 
-            //ProcessSampleThreadController[] pstc = new ProcessSampleThreadController[3];
-            //audio_process_thread = new Thread[3];
-            //for (uint proc_thread = 0; proc_thread < 3; proc_thread++)
-            //{
-            //    pstc[proc_thread] = new ProcessSampleThreadController(proc_thread);
-            //    audio_process_thread[proc_thread] = new Thread(new ThreadStart(pstc[proc_thread].ProcessSampleThread));
-            //    audio_process_thread[proc_thread].Name = "Audio Process Thread " + proc_thread.ToString();
-            //    audio_process_thread[proc_thread].Priority = ThreadPriority.Highest;
-            //    audio_process_thread[proc_thread].IsBackground = true;
-            //    audio_process_thread[proc_thread].Start();
-            //
-            //
-            //                    audio_process_thread = new Thread(	// create audio process thread
-            //                        new ThreadStart(DttSP.ProcessSamplesThread));
-            //                    audio_process_thread.Name = "Audio Process Thread ";
-            //                    audio_process_thread.Priority = ThreadPriority.Highest;
-            //                    audio_process_thread.IsBackground = true;
-            //                    audio_process_thread.Start();
-            //
-            //}
-
-            //hw = new HW();					// create hardware object
-
             siolisten = new SIOListenerII(this);
             sio2listen = new SIO2ListenerII(this);
             sio3listen = new SIO3ListenerII(this);
             sio4listen = new SIO4ListenerII(this);
-
-            // Keyer = new CWKeyer2(this);			// create new Keyer
-            // CWSensorItem.Init();
-            //CWPTT.Init();
-            //CWPTT.MoxChanged += new CWPTT.MoxCallback(SetConsoleMox);
-            // CWPTT.MuteChanged += new CWPTT.MuteCallback(SetTRMute);
 
             EQForm = new EQForm(this);
 
@@ -8168,6 +8277,7 @@ namespace PowerSDR
 
             SetupForm = new Setup(this);		// create Setup form
             SetupForm.StartPosition = FormStartPosition.Manual;
+
             SetupForm.AddHPSDRPages();
             // SetComboPreampForHPSDR();
 
@@ -8201,7 +8311,7 @@ namespace PowerSDR
             quick_save_filter = Filter.F3;
             quick_save_mode = DSPMode.LSB;
             ptbPWR.Value = 100;
-            btnDisplayPanCenter_Click(this, EventArgs.Empty);
+
             comboTXProfile.Text = SetupForm.TXProfile;
             comboDigTXProfile.Text = SetupForm.TXProfile;
             comboFMTXProfile.Text = SetupForm.TXProfile;
@@ -8262,12 +8372,12 @@ namespace PowerSDR
             ptbPanSubRX_Scroll(this, EventArgs.Empty);
             ptbRX2RF_Scroll(this, EventArgs.Empty);
             ptbRX2Squelch_Scroll(this, EventArgs.Empty);
+            btnDisplayPanCenter_Click(this, EventArgs.Empty);
             initializing = false;
             // double freq = double.Parse(txtVFOAFreq.Text);
             // Band b = BandByFreq(freq, rx1_xvtr_index, false, current_region);
             // if (b != rx1_band)
             // SetRX1Band(b);
-
             RX1PreampMode = rx1_preamp_by_band[(int)rx1_band];
             RX1AttenuatorData = rx1_step_attenuator_by_band[(int)rx1_band];
             RX2PreampMode = rx2_preamp_by_band[(int)rx2_band];
@@ -8682,7 +8792,12 @@ namespace PowerSDR
             a.Add("rx2_squelch_threshold_scroll/" + rx2_squelch_threshold_scroll);
             a.Add("rx2_fm_squelch_threshold_scroll/" + rx2_fm_squelch_threshold_scroll);
 
+            a.Add("click_tune_display/" + click_tune_display);
+            a.Add("VFOAFreq/" + VFOAFreq);
             a.Add("center_frequency/" + center_frequency);
+
+            a.Add("click_tune_rx2_display/" + click_tune_rx2_display);
+            a.Add("VFOBFreq/" + VFOBFreq);
             a.Add("center_rx2_frequency/" + center_rx2_frequency);
 
             a.Add("diversity_gain_160m/" + diversity_gain_160m);
@@ -9069,6 +9184,18 @@ namespace PowerSDR
             s = "diversity_rx1_ref_by_band/";
             for (int i = 0; i < (int)Band.LAST; i++)
                 s += Convert.ToUInt16(diversity_rx1_ref_by_band[i]).ToString() + "|";
+            s = s.Substring(0, s.Length - 1);
+            a.Add(s);
+
+            s = "rx_meter_cal_offset_by_radio/";
+            for (int i = 0; i < (int)HPSDRModel.LAST; i++)
+                s += (rx_meter_cal_offset_by_radio[i]).ToString("f4") + "|";
+            s = s.Substring(0, s.Length - 1);
+            a.Add(s);
+
+            s = "rx_display_cal_offset_by_radio/";
+            for (int i = 0; i < (int)HPSDRModel.LAST; i++)
+                s += (rx_display_cal_offset_by_radio[i]).ToString("f4") + "|";
             s = s.Substring(0, s.Length - 1);
             a.Add(s);
 
@@ -9558,7 +9685,6 @@ namespace PowerSDR
                        for (int i = 0; i < (int)Band.LAST; i++)
                            rx1_loop_by_band[i] = Convert.ToBoolean(int.Parse(list[i]));
                    } */
-
                 else if (name.StartsWith("rx1_preamp_by_band"))
                 {
                     string[] list = val.Split('|');
@@ -9630,6 +9756,18 @@ namespace PowerSDR
                     string[] list = val.Split('|');
                     for (int i = 0; i < (int)Band.LAST; i++)
                         diversity_rx1_ref_by_band[i] = Convert.ToBoolean(int.Parse(list[i]));
+                }
+                else if (name.StartsWith("rx_meter_cal_offset_by_radio"))
+                {
+                    string[] list = val.Split('|');
+                    for (int i = 0; i < (int)HPSDRModel.LAST; i++)
+                        rx_meter_cal_offset_by_radio[i] = float.Parse(list[i]);
+                }
+                else if (name.StartsWith("rx_display_cal_offset_by_radio"))
+                {
+                    string[] list = val.Split('|');
+                    for (int i = 0; i < (int)HPSDRModel.LAST; i++)
+                        rx_display_cal_offset_by_radio[i] = float.Parse(list[i]);
                 }
 
                 /*  else if (name.StartsWith("tx2_by_band"))
@@ -10013,6 +10151,12 @@ namespace PowerSDR
                         break;
                     case "rx2_fm_squelch_threshold_scroll":
                         rx2_fm_squelch_threshold_scroll = int.Parse(val);
+                        break;
+                    case "click_tune_display":
+                        click_tune_display = bool.Parse(val);
+                        break;
+                    case "VFOAFreq":
+                        VFOAFreq = double.Parse(val);
                         break;
                     case "center_frequency":
                         center_frequency = double.Parse(val);
@@ -13401,6 +13545,91 @@ namespace PowerSDR
                 }
             }
 
+            if (current_hpsdr_model == HPSDRModel.ANAN8000D)
+            {
+                switch (b)
+                {
+                    case Band.B160M:
+                        retval = SetupForm.ANAN8000DPAGain160;
+                        break;
+                    case Band.B80M:
+                        retval = SetupForm.ANAN8000DPAGain80;
+                        break;
+                    case Band.B60M:
+                        retval = SetupForm.ANAN8000DPAGain60;
+                        break;
+                    case Band.B40M:
+                        retval = SetupForm.ANAN8000DPAGain40;
+                        break;
+                    case Band.B30M:
+                        retval = SetupForm.ANAN8000DPAGain30;
+                        break;
+                    case Band.B20M:
+                        retval = SetupForm.ANAN8000DPAGain20;
+                        break;
+                    case Band.B17M:
+                        retval = SetupForm.ANAN8000DPAGain17;
+                        break;
+                    case Band.B15M:
+                        retval = SetupForm.ANAN8000DPAGain15;
+                        break;
+                    case Band.B12M:
+                        retval = SetupForm.ANAN8000DPAGain12;
+                        break;
+                    case Band.B10M:
+                        retval = SetupForm.ANAN8000DPAGain10;
+                        break;
+                    case Band.B6M:
+                        retval = SetupForm.ANAN8000DPAGain6;
+                        break;
+                    case Band.VHF0:
+                        retval = SetupForm.ANAN8000DPAGainVHF0;
+                        break;
+                    case Band.VHF1:
+                        retval = SetupForm.ANAN8000DPAGainVHF1;
+                        break;
+                    case Band.VHF2:
+                        retval = SetupForm.ANAN8000DPAGainVHF2;
+                        break;
+                    case Band.VHF3:
+                        retval = SetupForm.ANAN8000DPAGainVHF3;
+                        break;
+                    case Band.VHF4:
+                        retval = SetupForm.ANAN8000DPAGainVHF4;
+                        break;
+                    case Band.VHF5:
+                        retval = SetupForm.ANAN8000DPAGainVHF5;
+                        break;
+                    case Band.VHF6:
+                        retval = SetupForm.ANAN8000DPAGainVHF6;
+                        break;
+                    case Band.VHF7:
+                        retval = SetupForm.ANAN8000DPAGainVHF7;
+                        break;
+                    case Band.VHF8:
+                        retval = SetupForm.ANAN8000DPAGainVHF8;
+                        break;
+                    case Band.VHF9:
+                        retval = SetupForm.ANAN8000DPAGainVHF9;
+                        break;
+                    case Band.VHF10:
+                        retval = SetupForm.ANAN8000DPAGainVHF10;
+                        break;
+                    case Band.VHF11:
+                        retval = SetupForm.ANAN8000DPAGainVHF11;
+                        break;
+                    case Band.VHF12:
+                        retval = SetupForm.ANAN8000DPAGainVHF12;
+                        break;
+                    case Band.VHF13:
+                        retval = SetupForm.ANAN8000DPAGainVHF13;
+                        break;
+                    default:
+                        retval = 1000;
+                        break;
+                }
+            }
+
             if (current_hpsdr_model == HPSDRModel.HERMES)
             {
                 switch (b)
@@ -13657,6 +13886,7 @@ namespace PowerSDR
                         break;
                 }
             }
+            // DG8MG
             return retval;
         }
 
@@ -13873,7 +14103,7 @@ namespace PowerSDR
             double v_det = adc * 0.062963;			// scale factor in V/bit including pot ratio
             double v_out = v_det * 10.39853;		// scale factor in V/V for bridge output to detector voltage
             return v_out * PABandOffset(tx_band);
-            //double v_det = adc * 0.0304;
+            //double v_det = fwd_adc * 0.0304;
             //			double v_out = 0;
             //			if(v_det >= 1.6)
             //				v_out = (-0.241259304*v_det+12.07915098)*v_det*PABandOffset(CurrentBand);
@@ -13911,7 +14141,7 @@ namespace PowerSDR
 
         /*public float CalibratedPAPower()
         {
-            float watts = alex_fwd; // computeAlexFwdPower();
+            float fwdwatts = alex_fwd; // computeAlexFwdPower();
            //******************************************************************
            // Begin with both numbers in each line equal to the comment value.
            // For each power level from 10W to maximum, adjust power such that
@@ -13935,10 +14165,10 @@ namespace PowerSDR
                                              SetupForm.PA120W / 120.0f,   // 120W 
                                              SetupForm.PA130W / 130.0f,   // 130W
                                              SetupForm.PA140W / 140.0f }; // 140W
-            int idx = (int)(0.1f * watts);
-            float frac = 0.1f * watts - idx;
-            watts *= (1.0f - frac) * table[idx] + frac * table[idx + 1];
-            return watts;
+            int idx = (int)(0.1f * fwdwatts);
+            float frac = 0.1f * fwdwatts - idx;
+            fwdwatts *= (1.0f - frac) * table[idx] + frac * table[idx + 1];
+            return fwdwatts;
         }*/
 
         public float CalibratedPAPower()
@@ -14011,19 +14241,19 @@ namespace PowerSDR
             return watts;
         }
 
-        //public double FWCPAPower(int adc) // adc in, watts out
+        //public double FWCPAPower(int fwd_adc) // fwd_adc in, fwdwatts out
         //{
-        //    if (adc < 2) return 0.0;
+        //    if (fwd_adc < 2) return 0.0;
         //    double[] table = { 1.0, 2.0, 5.0, 10.0, 20.0, 90.0 };
 
-        //    double watts = 0.0;
-        //    double volts = (double)adc / 4096 * 2.5;
-        //    double v2 = Math.Pow(volts, 2);
+        //    double fwdwatts = 0.0;
+        //    double fwdvolts = (double)fwd_adc / 4096 * 2.5;
+        //    double v2 = Math.Pow(fwdvolts, 2);
 
         //    int high_index = 0;
         //    for (int i = 0; i < 6; i++)
         //    {
-        //        if (volts < pa_bridge_table[(int)tx_band][i])
+        //        if (fwdvolts < pa_bridge_table[(int)tx_band][i])
         //        {
         //            high_index = i;
         //            break;
@@ -14040,12 +14270,12 @@ namespace PowerSDR
         //        v_high = pa_bridge_table[(int)tx_band][high_index];
         //        if (high_index != 0) p_low = table[high_index - 1];
         //        p_high = table[high_index];
-        //        Debug.Assert(v_low <= volts && v_high >= volts);
+        //        Debug.Assert(v_low <= fwdvolts && v_high >= fwdvolts);
 
         //        double v_low_2 = Math.Pow(v_low, 2.0);
         //        double v_high_2 = Math.Pow(v_high, 2.0);
 
-        //        watts = p_low + (p_high - p_low) * ((v2 - v_low_2) / (v_high_2 - v_low_2));
+        //        fwdwatts = p_low + (p_high - p_low) * ((v2 - v_low_2) / (v_high_2 - v_low_2));
         //    }
         //    else
         //    {
@@ -14057,11 +14287,11 @@ namespace PowerSDR
         //            double a = 70.0 / (v_high_2 - v_low_2);
         //            double b = 90.0 / (a * v_high_2);
 
-        //            watts = a * v2 + b;
+        //            fwdwatts = a * v2 + b;
         //        }
         //    }
 
-        //    return watts;
+        //    return fwdwatts;
         //}
 
         private static bool CheckForOpenProcesses()
@@ -14471,118 +14701,239 @@ namespace PowerSDR
 
         public void SetAlexHPF(double freq)
         {
+            if (current_hpsdr_model == HPSDRModel.ANAN8000D) SetBPF1(freq);
+            //if (current_hpsdr_hardware == HPSDRHW.OrionMKII) SetBPF1(freq);
+            else
+            {
+                if (chkPower.Checked && alexpresent && SetupForm.radAlexManualCntl.Checked)
+                {
+                    if (mox && disable_hpf_on_tx)
+                    {
+                        JanusAudio.SetAlexHPFBits(0x20);
+                        SetupForm.radDHPFTXled.Checked = true;
+                        return;
+                    }
+
+                    if (alex_hpf_bypass)
+                    {
+                        JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                        SetupForm.radBPHPFled.Checked = true;
+                        return;
+                    }
+
+                    if ((decimal)freq >= SetupForm.udAlex1_5HPFStart.Value && // 1.5 MHz HPF
+                         (decimal)freq <= SetupForm.udAlex1_5HPFEnd.Value)
+                    {
+                        if (alex1_5bphpf_bypass)
+                        {
+                            JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                            SetupForm.radBPHPFled.Checked = true;
+                        }
+                        else
+                        {
+                            JanusAudio.SetAlexHPFBits(0x10);
+                            SetupForm.rad1_5HPFled.Checked = true;
+                        }
+                    }
+
+                    else if ((decimal)freq >= SetupForm.udAlex6_5HPFStart.Value && // 6.5 MHz HPF
+                             (decimal)freq <= SetupForm.udAlex6_5HPFEnd.Value)
+                    {
+                        if (alex6_5bphpf_bypass)
+                        {
+                            JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                            SetupForm.radBPHPFled.Checked = true;
+                        }
+                        else
+                        {
+                            JanusAudio.SetAlexHPFBits(0x08);
+                            SetupForm.rad6_5HPFled.Checked = true;
+                        }
+                    }
+
+                    else if ((decimal)freq >= SetupForm.udAlex9_5HPFStart.Value && // 9.5 MHz HPF
+                             (decimal)freq <= SetupForm.udAlex9_5HPFEnd.Value)
+                    {
+                        if (alex9_5bphpf_bypass)
+                        {
+                            JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                            SetupForm.radBPHPFled.Checked = true;
+                        }
+                        else
+                        {
+                            JanusAudio.SetAlexHPFBits(0x04);
+                            SetupForm.rad9_5HPFled.Checked = true;
+                        }
+                    }
+
+                    else if ((decimal)freq >= SetupForm.udAlex13HPFStart.Value && // 13 MHz HPF
+                             (decimal)freq <= SetupForm.udAlex13HPFEnd.Value)
+                    {
+                        if (alex13bphpf_bypass)
+                        {
+                            JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                            SetupForm.radBPHPFled.Checked = true;
+                        }
+                        else
+                        {
+                            JanusAudio.SetAlexHPFBits(0x01);
+                            SetupForm.rad13HPFled.Checked = true;
+                        }
+                    }
+
+                    else if ((decimal)freq >= SetupForm.udAlex20HPFStart.Value && // 20 MHz HPF
+                             (decimal)freq <= SetupForm.udAlex20HPFEnd.Value)
+                    {
+                        if (alex20bphpf_bypass)
+                        {
+                            JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                            SetupForm.radBPHPFled.Checked = true;
+                        }
+                        else
+                        {
+                            JanusAudio.SetAlexHPFBits(0x02);
+                            SetupForm.rad20HPFled.Checked = true;
+                        }
+                    }
+
+                    else if ((decimal)freq >= SetupForm.udAlex6BPFStart.Value && // 6m BPF/LNA
+                             (decimal)freq <= SetupForm.udAlex6BPFEnd.Value)
+                    {
+                        if (alex6bphpf_bypass || disable_6m_lna_on_rx || (mox && disable_6m_lna_on_tx))
+                        {
+                            JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                            SetupForm.radBPHPFled.Checked = true;
+                        }
+                        else
+                        {
+                            JanusAudio.SetAlexHPFBits(0x40);
+                            SetupForm.rad6BPFled.Checked = true;
+                        }
+                    }
+                    else
+                    {
+                        JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
+                        SetupForm.radBPHPFled.Checked = true;
+                    }
+                }
+            }
+        }
+
+        public void SetBPF1(double freq)
+        {
             if (chkPower.Checked && alexpresent && SetupForm.radAlexManualCntl.Checked)
             {
                 if (mox && disable_hpf_on_tx)
                 {
                     JanusAudio.SetAlexHPFBits(0x20);
-                    SetupForm.radDHPFTXled.Checked = true;
+                    SetupForm.BPF1BPTXled = true;
                     return;
                 }
 
                 if (alex_hpf_bypass)
                 {
                     JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                    SetupForm.radBPHPFled.Checked = true;
+                    SetupForm.BPBPF1led = true;
                     return;
                 }
 
-                if ((decimal)freq >= SetupForm.udAlex1_5HPFStart.Value && // 1.5 MHz HPF
-                     (decimal)freq <= SetupForm.udAlex1_5HPFEnd.Value)
+                if (freq >= SetupForm.BPF1_1_5Start && // 1.5 MHz HPF
+                     freq <= SetupForm.BPF1_1_5End)
                 {
-                    if (alex1_5bphpf_bypass)
+                    if (bpf1_1_5bp_bypass)
                     {
                         JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                        SetupForm.radBPHPFled.Checked = true;
+                        SetupForm.BPBPF1led = true;
                     }
                     else
                     {
                         JanusAudio.SetAlexHPFBits(0x10);
-                        SetupForm.rad1_5HPFled.Checked = true;
+                        SetupForm.BPF1_1_5led = true;
                     }
                 }
 
-                else if ((decimal)freq >= SetupForm.udAlex6_5HPFStart.Value && // 6.5 MHz HPF
-                         (decimal)freq <= SetupForm.udAlex6_5HPFEnd.Value)
+                else if (freq >= SetupForm.BPF1_6_5Start && // 6.5 MHz HPF
+                         freq <= SetupForm.BPF1_6_5End)
                 {
-                    if (alex6_5bphpf_bypass)
+                    if (bpf1_6_5bp_bypass)
                     {
                         JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                        SetupForm.radBPHPFled.Checked = true;
+                        SetupForm.BPBPF1led = true;
                     }
                     else
                     {
                         JanusAudio.SetAlexHPFBits(0x08);
-                        SetupForm.rad6_5HPFled.Checked = true;
+                        SetupForm.BPF1_6_5led = true;
                     }
                 }
 
-                else if ((decimal)freq >= SetupForm.udAlex9_5HPFStart.Value && // 9.5 MHz HPF
-                         (decimal)freq <= SetupForm.udAlex9_5HPFEnd.Value)
+                else if (freq >= SetupForm.BPF1_9_5Start && // 9.5 MHz HPF
+                         freq <= SetupForm.BPF1_9_5End)
                 {
-                    if (alex9_5bphpf_bypass)
+                    if (bpf1_9_5bp_bypass)
                     {
                         JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                        SetupForm.radBPHPFled.Checked = true;
+                        SetupForm.BPBPF1led = true;
                     }
                     else
                     {
                         JanusAudio.SetAlexHPFBits(0x04);
-                        SetupForm.rad9_5HPFled.Checked = true;
+                        SetupForm.BPF1_9_5led = true;
                     }
                 }
 
-                else if ((decimal)freq >= SetupForm.udAlex13HPFStart.Value && // 13 MHz HPF
-                         (decimal)freq <= SetupForm.udAlex13HPFEnd.Value)
+                else if (freq >= SetupForm.BPF1_13Start && // 13 MHz HPF
+                         freq <= SetupForm.BPF1_13End)
                 {
-                    if (alex13bphpf_bypass)
+                    if (bpf1_13bp_bypass)
                     {
                         JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                        SetupForm.radBPHPFled.Checked = true;
+                        SetupForm.BPBPF1led = true;
                     }
                     else
                     {
                         JanusAudio.SetAlexHPFBits(0x01);
-                        SetupForm.rad13HPFled.Checked = true;
+                        SetupForm.BPF1_13led = true;
                     }
                 }
 
-                else if ((decimal)freq >= SetupForm.udAlex20HPFStart.Value && // 20 MHz HPF
-                         (decimal)freq <= SetupForm.udAlex20HPFEnd.Value)
+                else if (freq >= SetupForm.BPF1_20Start && // 20 MHz HPF
+                         freq <= SetupForm.BPF1_20End)
                 {
-                    if (alex20bphpf_bypass)
+                    if (bpf1_20bp_bypass)
                     {
                         JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                        SetupForm.radBPHPFled.Checked = true;
+                        SetupForm.BPBPF1led = true;
                     }
                     else
                     {
                         JanusAudio.SetAlexHPFBits(0x02);
-                        SetupForm.rad20HPFled.Checked = true;
+                        SetupForm.BPF1_20led = true;
                     }
                 }
 
-                else if ((decimal)freq >= SetupForm.udAlex6BPFStart.Value && // 6m BPF/LNA
-                         (decimal)freq <= SetupForm.udAlex6BPFEnd.Value)
+                else if (freq >= SetupForm.BPF1_6Start && // 6m BPF/LNA
+                         freq <= SetupForm.BPF1_6End)
                 {
-                    if (alex6bphpf_bypass || disable_6m_lna_on_rx || (mox && disable_6m_lna_on_tx))
+                    if (bpf1_6bp_bypass || disable_6m_lna_on_rx || (mox && disable_6m_lna_on_tx))
                     {
                         JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                        SetupForm.radBPHPFled.Checked = true;
+                        SetupForm.BPBPF1led = true;
                     }
                     else
                     {
                         JanusAudio.SetAlexHPFBits(0x40);
-                        SetupForm.rad6BPFled.Checked = true;
+                        SetupForm.BPF1_6led = true;
                     }
                 }
                 else
                 {
                     JanusAudio.SetAlexHPFBits(0x20); // Bypass HPF
-                    SetupForm.radBPHPFled.Checked = true;
+                    SetupForm.BPBPF1led = true;
                 }
             }
         }
+
 
         public void SetAlex2HPF(double freq)
         {
@@ -16407,10 +16758,9 @@ namespace PowerSDR
             // DG8MG
 
             MeterRXMode rx_meter = CurrentMeterRXMode;			// save current RX Meter mode
-            CurrentMeterRXMode = MeterRXMode.OFF;               // turn RX Meter off
+            CurrentMeterRXMode = MeterRXMode.OFF;				// turn RX Meter off
 
             //   bool display_avg = chkDisplayAVG.Checked;			// save current average state
-
             //   chkDisplayAVG.Checked = false;
 
             float old_multimeter_cal = rx1_meter_cal_offset;
@@ -16765,8 +17115,8 @@ namespace PowerSDR
             // calculate the difference between the current value and the correct multimeter value
             float diff = level - (avg + rx1_meter_cal_offset + rx1_preamp_offset[(int)rx1_preamp_mode]);
             rx1_meter_cal_offset += diff;
-
             rx2_meter_cal_offset = rx1_meter_cal_offset;
+            rx_meter_cal_offset_by_radio[(int)current_hpsdr_model] = rx1_meter_cal_offset;
 
             // calculate the difference between the current value and the correct spectrum value
             diff = level - (avg2 + rx1_display_cal_offset + rx1_preamp_offset[(int)rx1_preamp_mode]);
@@ -16786,19 +17136,19 @@ namespace PowerSDR
                  } */
 
             RX1DisplayCalOffset += diff;
+            rx_display_cal_offset_by_radio[(int)current_hpsdr_model] = RX1DisplayCalOffset;
 
             //   if (!rx2_preamp_present)
             //     RX2DisplayCalOffset = RX1DisplayCalOffset;
 
             ret_val = true;
 
-            end:
+        end:
             if (!progress.Visible) progress.Text = "";
             progress.Hide();
             //  EnableAllFilters();
             //  EnableAllModes();
             //  VFOLock = false;
-
             comboPreamp.Enabled = true;
             comboDisplayMode.Enabled = true;
             comboMeterRXMode.Enabled = true;
@@ -16811,10 +17161,9 @@ namespace PowerSDR
 
             comboDisplayMode.Text = display;
             chkRIT.Checked = rit_on;							// restore RIT on
-            udRIT.Value = rit_val;                              // restore RIT value
+            udRIT.Value = rit_val;								// restore RIT value
             //SetupForm.RXOnly = rx_only;						// restore RX Only			
             //  DisplayAVG = display_avg;							// restore AVG value
-
             RX1PreampMode = preamp;					        	// restore preamp value
             SetupForm.HermesEnableAttenuator = step_attn;
             // RX1Filter = am_filter;							// restore AM filter
@@ -17116,29 +17465,29 @@ namespace PowerSDR
 
             float[] a = new float[Display.BUFFER_SIZE];
 
-            bool rit_on = chkRIT.Checked;                       // save current RIT On
-            chkRIT.Checked = false;                             // turn RIT off
-            int rit_val = (int)udRIT.Value;                     // save current RIT value
+            bool rit_on = chkRIT.Checked;						// save current RIT On
+            chkRIT.Checked = false;								// turn RIT off
+            int rit_val = (int)udRIT.Value;						// save current RIT value
 
-            double vfoa = VFOAFreq;                             // save current VFOA
+            double vfoa = VFOAFreq;								// save current VFOA
 
             string display = comboDisplayMode.Text;
             comboDisplayMode.Text = "Spectrum";
 
-            int dsp_buf_size = SetupForm.DSPPhoneRXBuffer;      // save current DSP buffer size
-            SetupForm.DSPPhoneRXBuffer = 4096;                  // set DSP Buffer Size to 2048
+            int dsp_buf_size = SetupForm.DSPPhoneRXBuffer;		// save current DSP buffer size
+            SetupForm.DSPPhoneRXBuffer = 4096;					// set DSP Buffer Size to 2048
 
-            Filter filter = RX1Filter;                      // save current filter
+            Filter filter = RX1Filter;						// save current filter
 
-            DSPMode dsp_mode = rx1_dsp_mode;                // save current DSP demod mode
-            DSPMode dsp2_mode = rx2_dsp_mode;               // save current DSP demod mode
+            DSPMode dsp_mode = rx1_dsp_mode;				// save current DSP demod mode
+            DSPMode dsp2_mode = rx2_dsp_mode;				// save current DSP demod mode
 
-            RX1DSPMode = DSPMode.DSB;                       // set mode to DSB
-                                                            //Thread.Sleep(50);
-            RX2DSPMode = DSPMode.DSB;                       // set mode to DSB
+            RX1DSPMode = DSPMode.DSB;						// set mode to DSB
+            //Thread.Sleep(50);
+            RX2DSPMode = DSPMode.DSB;						// set mode to DSB
 
-            VFOAFreq = freq;                                    // set VFOA frequency
-                                                                //Thread.Sleep(100);
+            VFOAFreq = freq;									// set VFOA frequency
+            //Thread.Sleep(100);
             VFOBFreq = freq;
             //Thread.Sleep(100);
 
@@ -17148,7 +17497,7 @@ namespace PowerSDR
             bool rx2 = rx2_enabled;
             RX2Enabled = true;
 
-            Filter rx1_filter = RX1Filter;                  // save current AM filter
+            Filter rx1_filter = RX1Filter;					// save current AM filter
             UpdateRX1Filters(-500, 500);
 
             Filter rx2_filter = RX2Filter;
@@ -17158,30 +17507,28 @@ namespace PowerSDR
             // chkRX1Preamp.Checked = false;							// turn preamp off
             //Thread.Sleep(50);
 
-            bool rx2_preamp = chkRX2Preamp.Checked;                 // save current preamp mode
-            chkRX2Preamp.Checked = false;                           // turn preamp off
+            bool rx2_preamp = chkRX2Preamp.Checked;					// save current preamp mode
+            chkRX2Preamp.Checked = false;							// turn preamp off
             Thread.Sleep(50);
 
             //  PreampMode preamp = RX2PreampMode;				// save current preamp mode
+            RX2PreampMode = PreampMode.HPSDR_ON;		    	// set to high
 
-            RX2PreampMode = PreampMode.HPSDR_ON;                // set to high
-
-            MeterRXMode rx_meter = CurrentMeterRXMode;          // save current RX Meter mode
-            CurrentMeterRXMode = MeterRXMode.OFF;               // turn RX Meter off
+            MeterRXMode rx_meter = CurrentMeterRXMode;			// save current RX Meter mode
+            CurrentMeterRXMode = MeterRXMode.OFF;				// turn RX Meter off
 
             MeterRXMode rx2_meter = RX2MeterMode;
             RX2MeterMode = MeterRXMode.OFF;
 
-            bool display_avg = chkDisplayAVG.Checked;           // save current average state
+            bool display_avg = chkDisplayAVG.Checked;			// save current average state
             chkDisplayAVG.Checked = false;
-            chkDisplayAVG.Checked = true;                       // set average state to off
+            chkDisplayAVG.Checked = true;						// set average state to off
 
             float old_multimeter_cal = rx2_meter_cal_offset;
             float old_display_cal = rx2_display_cal_offset;
 
             chkRX1Preamp.Enabled = false;
             chkRX2Preamp.Enabled = false;
-
             comboDisplayMode.Enabled = false;
             comboMeterRXMode.Enabled = false;
             comboRX2MeterMode.Enabled = false;
@@ -17219,7 +17566,7 @@ namespace PowerSDR
             float avg = 0;
             // int max_index = 0;
 
-            for (int i = 0; i < 4095; i++)                      // find the maximum signal
+            for (int i = 0; i < 4095; i++)						// find the maximum signal
             {
                 avg += a[i];
                 if (a[i] > max)
@@ -17260,6 +17607,7 @@ namespace PowerSDR
             }
             avg = num / 50.0f;
 
+
             RX2PreampMode = PreampMode.HPSDR_OFF;
             //RX1PreampMode = PreampMode.HPSDR_OFF;
             Thread.Sleep(200);
@@ -17293,7 +17641,7 @@ namespace PowerSDR
                 //    DttSP.GetSpectrum(2, ptr);		// read again to clear out changed DSP
                 calibration_mutex.ReleaseMutex();
 
-                max = float.MinValue;                       // find the max spectrum value
+                max = float.MinValue;						// find the max spectrum value
                 for (int j = 0; j < Display.BUFFER_SIZE; j++)
                     if (a[j] > max) max = a[j];
 
@@ -17316,22 +17664,21 @@ namespace PowerSDR
             RX2DisplayCalOffset = diff;
             //UpdateDisplayOffsets();
 
-            //   for (int i = 0; i < (int)Band.LAST; i++)
-            //   {
-            //     rx2_level_table[i][0] = (float)Math.Round(diff, 3);//rx2_display_cal_offset, 3);
-            //     //rx2_level_table[i][1] = (float)Math.Round(-fwc_preamp_offset, 3);
-            //     rx2_level_table[i][2] = (float)Math.Round(rx2_meter_cal_offset, 3);
-            //   } 
+            /*   for (int i = 0; i < (int)Band.LAST; i++)
+               {
+                   rx2_level_table[i][0] = (float)Math.Round(diff, 3);//rx2_display_cal_offset, 3);
+                   //rx2_level_table[i][1] = (float)Math.Round(-fwc_preamp_offset, 3);
+                   rx2_level_table[i][2] = (float)Math.Round(rx2_meter_cal_offset, 3);
+               } */
             // RX2DisplayCalOffset += diff;
             ret_val = true;
 
-            end2:
+        end2:
             if (!progress.Visible) progress.Text = "";
             progress.Hide();
             EnableAllFilters();
             EnableAllModes();
             VFOLock = false;
-
             chkRX1Preamp.Enabled = true;
             chkRX2Preamp.Enabled = true;
             comboDisplayMode.Enabled = true;
@@ -17347,30 +17694,29 @@ namespace PowerSDR
             RX2Enabled = rx2;
             //Thread.Sleep(50);
             comboDisplayMode.Text = display;
-            chkRIT.Checked = rit_on;                            // restore RIT on
-            udRIT.Value = rit_val;                              // restore RIT value
-                                                                //SetupForm.RXOnly = rx_only;						// restore RX Only			
-            DisplayAVG = display_avg;                           // restore AVG value
-                                                                // chkRX1Preamp.Checked = rx1_preamp;					// restore preamp value
+            chkRIT.Checked = rit_on;							// restore RIT on
+            udRIT.Value = rit_val;								// restore RIT value
+            //SetupForm.RXOnly = rx_only;						// restore RX Only			
+            DisplayAVG = display_avg;							// restore AVG value
+            // chkRX1Preamp.Checked = rx1_preamp;					// restore preamp value
             chkRX2Preamp.Checked = rx2_preamp;
-
-            RX1Filter = rx1_filter;                         // restore AM filter
-            RX1DSPMode = dsp_mode;                          // restore DSP mode*
-                                                            //Thread.Sleep(50);
-            RX2Filter = rx2_filter;                         // restore AM filter
-            RX2DSPMode = dsp2_mode;                         // restore DSP mode
-            RX1Filter = filter;                             // restore filter
+            RX1Filter = rx1_filter;							// restore AM filter
+            RX1DSPMode = dsp_mode;							// restore DSP mode*
+            //Thread.Sleep(50);
+            RX2Filter = rx2_filter;							// restore AM filter
+            RX2DSPMode = dsp2_mode;							// restore DSP mode
+            RX1Filter = filter;								// restore filter
             if (dsp_buf_size != 4096)
-                chkPower.Checked = false;                       // go to standby
-            SetupForm.DSPPhoneRXBuffer = dsp_buf_size;              // restore DSP Buffer Size
-            VFOAFreq = vfoa;                                    // restore vfo frequency
-                                                                //Thread.Sleep(100);
+                chkPower.Checked = false;						// go to standby
+            SetupForm.DSPPhoneRXBuffer = dsp_buf_size;				// restore DSP Buffer Size
+            VFOAFreq = vfoa;									// restore vfo frequency
+            //Thread.Sleep(100);
             if (dsp_buf_size != 4096)
             {
                 Thread.Sleep(100);
                 chkPower.Checked = true;
             }
-            CurrentMeterRXMode = rx_meter;                      // restore RX Meter mode
+            CurrentMeterRXMode = rx_meter;						// restore RX Meter mode
             RX2MeterMode = rx2_meter;
 
             //			Debug.WriteLine("rx1_meter_cal_offset: "+rx1_meter_cal_offset);
@@ -17485,7 +17831,7 @@ namespace PowerSDR
 
                         double watts = 0.0;
                         //pa_power_mutex.WaitOne();
-                        //watts = PAPower(pa_fwd_power);
+                        //fwdwatts = PAPower(pa_fwd_power);
                         watts = alex_fwd; // (double)computeAlexFwdPower();       //HPSDR
                         //pa_power_mutex.ReleaseMutex();
 
@@ -17497,7 +17843,7 @@ namespace PowerSDR
                         Audio.TXInputSignal = Audio.SignalSource.RADIO;
                         //Audio.TXOutputSignal = Audio.SignalSource.RADIO;
 
-                        //Debug.WriteLine("watts: "+watts.ToString());
+                        //Debug.WriteLine("fwdwatts: "+fwdwatts.ToString());
 
                         if (!progress.Visible)
                             goto end;
@@ -17635,7 +17981,7 @@ namespace PowerSDR
 
             ret_val = true;
 
-            end:
+        end:
             if (!progress.Visible) progress.Text = "";
             progress.Hide();
 
@@ -17666,7 +18012,7 @@ namespace PowerSDR
             //MessageBox.Show(t1.Duration.ToString());
             return ret_val;
 
-            error:
+        error:
             MessageBox.Show("Calculated gain is invalid.  Please double check connections and try again.\n"/* +
                 "If this problem persists, contact support@flex-radio.com for support."*/,
                 "Invalid Gain Found",
@@ -17796,10 +18142,10 @@ namespace PowerSDR
             //                                goto end;
             //                        }
 
-            //                        double watts = 0;
+            //                        double fwdwatts = 0;
             //                        if (fwc_init && (current_model == Model.FLEX5000 || current_model == Model.FLEX3000))
-            //                            watts = FWCPAPower(pa_fwd_power);
-            //                        else watts = PAPower(pa_fwd_power);
+            //                            fwdwatts = FWCPAPower(pa_fwd_power);
+            //                        else fwdwatts = PAPower(pa_fwd_power);
 
             //                        if (HighSWR)
             //                        {
@@ -17812,7 +18158,7 @@ namespace PowerSDR
             //                            goto end;
             //                        }
 
-            //                        Debug.WriteLine("watts: " + watts.ToString("f3"));
+            //                        Debug.WriteLine("fwdwatts: " + fwdwatts.ToString("f3"));
             //                        if (target > 50)
             //                        {
             //                            Audio.TXInputSignal = Audio.SignalSource.RADIO;
@@ -17828,7 +18174,7 @@ namespace PowerSDR
             //                        }
             //                        else Thread.Sleep(100);
 
-            //                        double diff = target - watts;
+            //                        double diff = target - fwdwatts;
             //                        if (Math.Abs(diff) < tol)
             //                        {
             //                            found_power = true;
@@ -17858,7 +18204,7 @@ namespace PowerSDR
             //                                double x1 = Math.Pow(last_volts, 2.0);
             //                                double x2 = Math.Pow(Audio.SourceScale, 2.0);
             //                                double y1 = last_watts;
-            //                                double y2 = watts;
+            //                                double y2 = fwdwatts;
 
             //                                double a = (y2 - y1) / (x2 - x1);
             //                                double b = y2 - a * x2;
@@ -17872,7 +18218,7 @@ namespace PowerSDR
             //                                }
             //                                last_volts = Audio.SourceScale;
             //                                Audio.SourceScale = next_volts / audio_volts1;
-            //                                //double v_ratio = Math.Sqrt(target) / Math.Sqrt(Math.Max(1, watts));
+            //                                //double v_ratio = Math.Sqrt(target) / Math.Sqrt(Math.Max(1, fwdwatts));
             //                                //Audio.RadioVolume *= v_ratio;
             //                                if (fwc_init && (current_model == Model.FLEX5000 || current_model == Model.FLEX3000))
             //                                {
@@ -17881,11 +18227,11 @@ namespace PowerSDR
             //                            }
             //                            else
             //                            {
-            //                                Audio.SourceScale *= Math.Sqrt(target / watts);
+            //                                Audio.SourceScale *= Math.Sqrt(target / fwdwatts);
             //                            }
             //                        }
 
-            //                        last_watts = watts;
+            //                        last_watts = fwdwatts;
 
             //                        // check for error conditions
             //                        if (count++ == 12) // poop out
@@ -18029,7 +18375,7 @@ namespace PowerSDR
 
             ret_val = true;
 
-            end:
+        end:
             progress.Hide();
             chkMOX.Checked = false;
             Audio.TXInputSignal = Audio.SignalSource.RADIO;
@@ -18104,6 +18450,12 @@ namespace PowerSDR
         // Properties
         // ======================================================
 
+        private int txdelayloops = 0;
+        public int TxDelayLoops
+        {
+            get { return txdelayloops; }
+            set { txdelayloops = value; }
+        }
 
         private IntPtr n1mm_handle = IntPtr.Zero;
         public IntPtr N1MMHandle
@@ -18394,7 +18746,6 @@ namespace PowerSDR
                     // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator 
                     if (RX2StepAttPresent) udRX2StepAttData_ValueChanged(this, EventArgs.Empty);
                     else comboRX2Preamp_SelectedIndexChanged(this, EventArgs.Empty);
-
                     wdsp.SetEXTDIVRun(0, 0);
                     chkRX2.Enabled = true;
                 }
@@ -18500,6 +18851,29 @@ namespace PowerSDR
             }
         }
 
+        private bool bpf2_gnd = true;
+        public bool BPF2Gnd
+        {
+            get { return bpf2_gnd; }
+            set
+            {
+                bpf2_gnd = value;
+                JanusAudio.SetGndRx2onTx(Convert.ToInt32(value));
+            }
+        }
+
+        private bool enable_xvtr_hf = false;
+        public bool EnableXVTRHF
+        {
+            get { return enable_xvtr_hf; }
+            set
+            {
+                enable_xvtr_hf = value;
+            }
+        }
+
+        public bool ANAN8000DLEDisplayVoltsAmps { get; set; }
+
         private bool rx1_step_att_present = false;
         public bool RX1StepAttPresent
         {
@@ -18545,13 +18919,14 @@ namespace PowerSDR
             {
                 rx1_attenuator_data = value;
                 if (initializing) return;
-                if (AlexPresent && !ANAN10Present && !ANAN10EPresent /* && !ANAN100BPresent */)
+                if (AlexPresent && !ANAN10Present && !ANAN10EPresent
+                                && !ANAN8000DPresent)
                     udRX1StepAttData.Maximum = (decimal)61;
                 else udRX1StepAttData.Maximum = (decimal)31;
 
                 if (rx1_step_att_present)
                 {
-                    if (AlexPresent && !ANAN10Present && !ANAN10EPresent /* && !ANAN100BPresent */)
+                    if (AlexPresent && !ANAN10Present && !ANAN10EPresent && !ANAN8000DPresent)
                     {
                         if (rx1_attenuator_data <= 31)
                         {
@@ -18877,6 +19252,10 @@ namespace PowerSDR
             {
                 if (value)
                 {
+                    if (current_hpsdr_model != HPSDRModel.ANAN100D &&
+                         current_hpsdr_model != HPSDRModel.ANAN200D &&
+                         current_hpsdr_model != HPSDRModel.ORIONMKII &&
+                         current_hpsdr_model != HPSDRModel.ANAN8000D) return;
                     if (diversityForm == null || diversityForm.IsDisposed)
                         diversityForm = new DiversityForm(this);
                     diversityForm.Focus();
@@ -18884,7 +19263,7 @@ namespace PowerSDR
                 }
                 else
                     if (diversityForm != null)
-                    this.Invoke(new MethodInvoker(diversityForm.Close));
+                        this.Invoke(new MethodInvoker(diversityForm.Close));
             }
         }
 
@@ -18905,7 +19284,7 @@ namespace PowerSDR
                 }
                 else
                     if (CWXForm != null)
-                    this.Invoke(new MethodInvoker(CWXForm.Close));
+                        this.Invoke(new MethodInvoker(CWXForm.Close));
             }
         }
 
@@ -18992,7 +19371,7 @@ namespace PowerSDR
             }
         }
 
-        private float rx_6m_gain_offset = 20;
+        private float rx_6m_gain_offset = 13;
         public float RX6mGainOffset
         {
             get { return rx_6m_gain_offset; }
@@ -19004,6 +19383,18 @@ namespace PowerSDR
             }
         }
 
+        private float rx_6m_gain_offset_rx2 = 13;
+        public float RX6mGainOffsetRx2
+        {
+            get { return rx_6m_gain_offset_rx2; }
+            set
+            {
+                rx_6m_gain_offset_rx2 = value;
+                if (SetupForm != null)
+                    txtVFOBFreq_LostFocus(this, EventArgs.Empty);
+            }
+        }
+
         private float rx1_6m_gain_offset = 0;
         public float RX16mGainOffset
         {
@@ -19012,6 +19403,17 @@ namespace PowerSDR
             {
                 rx1_6m_gain_offset = value;
                 UpdateRX1DisplayOffsets();
+            }
+        }
+
+        private float rx2_6m_gain_offset = 0;
+        public float RX26mGainOffset
+        {
+            get { return rx2_6m_gain_offset; }
+            set
+            {
+                rx2_6m_gain_offset = value;
+                UpdateRX2DisplayOffsets();
             }
         }
 
@@ -19220,6 +19622,7 @@ namespace PowerSDR
 
         private PreampMode[] rx2_preamp_by_band;
 
+
         private double[] fm_tx_offset_by_band_mhz;
 
         private int[] power_by_band;
@@ -19258,6 +19661,8 @@ namespace PowerSDR
             set { mouse_tune_step = value; }
         }
 
+        public bool WheelReverse { get; set; }
+
         private bool new_power_cal = false;
         public bool NewPowerCal
         {
@@ -19291,7 +19696,11 @@ namespace PowerSDR
             if (rx1_step_att_present)
             {
                 Display.RX1PreampOffset = rx1_attenuator_data;
-                if (current_hpsdr_model != HPSDRModel.ANAN100D && current_hpsdr_model != HPSDRModel.ANAN200D && !rx2_preamp_present || mox)
+                if (current_hpsdr_model != HPSDRModel.ANAN100D &&
+                   current_hpsdr_model != HPSDRModel.ANAN200D &&
+                   current_hpsdr_model != HPSDRModel.ORIONMKII &&
+                   current_hpsdr_model != HPSDRModel.ANAN8000D &&
+                   !rx2_preamp_present || mox)
                     Display.RX2PreampOffset = rx1_attenuator_data;
             }
             else
@@ -19314,8 +19723,12 @@ namespace PowerSDR
                 {
                     Display.RX1PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
 
-                    if (current_hpsdr_model != HPSDRModel.ANAN100D && current_hpsdr_model != HPSDRModel.ANAN200D && !rx2_preamp_present)
-                        Display.RX2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
+                	if (current_hpsdr_model != HPSDRModel.ANAN100D &&
+                     current_hpsdr_model != HPSDRModel.ANAN200D &&
+                     current_hpsdr_model != HPSDRModel.ORIONMKII &&
+                     current_hpsdr_model != HPSDRModel.ANAN8000D &&
+                     !rx2_preamp_present)
+                    Display.RX2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
                 }
                 // DG8MG
             }
@@ -19348,7 +19761,11 @@ namespace PowerSDR
             }
             else
             {
-                if (current_hpsdr_model == HPSDRModel.ANAN100D || current_hpsdr_model == HPSDRModel.ANAN200D || rx2_preamp_present)
+                if (current_hpsdr_model == HPSDRModel.ANAN100D ||
+                   current_hpsdr_model == HPSDRModel.ANAN200D ||
+                   current_hpsdr_model == HPSDRModel.ORIONMKII ||
+                   current_hpsdr_model == HPSDRModel.ANAN8000D ||
+                   rx2_preamp_present)
                 {
                     Display.RX2PreampOffset = rx2_preamp_offset[(int)rx2_preamp_mode];
                 }
@@ -19372,7 +19789,6 @@ namespace PowerSDR
                     // DG8MG
 
                     break;
-
                 default:
 
                     // DG8MG
@@ -19748,13 +20164,13 @@ namespace PowerSDR
             get { return peak_background_color; }
             set
             {
+                //txtDisplayPeakOffset.BackColor = value;
+                //txtDisplayPeakPower.BackColor = value;
+                //txtDisplayPeakFreq.BackColor = value;
                 peak_background_color = value;
                 txtDisplayCursorOffset.BackColor = value;
                 txtDisplayCursorPower.BackColor = value;
                 txtDisplayCursorFreq.BackColor = value;
-                txtDisplayPeakOffset.BackColor = value;
-                txtDisplayPeakPower.BackColor = value;
-                txtDisplayPeakFreq.BackColor = value;
                 txtOverload.BackColor = value;
             }
         }
@@ -21675,6 +22091,13 @@ namespace PowerSDR
             }
         }
 
+        private double ptt_hang_time = 50.0;
+        public double PTTHangTime
+        {
+            get { return ptt_hang_time; }
+            set { ptt_hang_time = value; }
+        }
+
         private double vox_hang_time = 250.0;
         public double VOXHangTime
         {
@@ -21748,6 +22171,8 @@ namespace PowerSDR
                         break;
                     case HPSDRModel.ANAN100D:
                     case HPSDRModel.ANAN200D:
+                    case HPSDRModel.ORIONMKII:
+                    case HPSDRModel.ANAN8000D:
                         if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
                             comboMeterTXMode.Items.Insert(1, "Ref Pwr");
                         if (!comboMeterTXMode.Items.Contains("SWR"))
@@ -21758,7 +22183,10 @@ namespace PowerSDR
                         break;
 
                 }
+
                 SetComboPreampForHPSDR();
+                rx1_meter_cal_offset = rx_meter_cal_offset_by_radio[(int)current_hpsdr_model];
+                RX1DisplayCalOffset = rx_display_cal_offset_by_radio[(int)current_hpsdr_model];
             }
         }
 
@@ -21864,7 +22292,7 @@ namespace PowerSDR
                         //comboPreamp_SelectedIndexChanged(this, EventArgs.Empty);
                         // chkBCI.Visible = false;
                         chkFWCATU.Visible = true;
-                        chkFWCATUBypass.Visible = false;
+                        // chkFWCATUBypass.Visible = false;
                         //  panelAntenna.Visible = false;
                         // chkX2TR.Visible = false;
 
@@ -21897,7 +22325,7 @@ namespace PowerSDR
                         //mnuFWC.Visible = false;
                         // panelAntenna.Visible = false;
                         chkFWCATU.Visible = false;
-                        chkFWCATUBypass.Visible = false;
+                        // chkFWCATUBypass.Visible = false;
                         break;
                 }
 
@@ -22479,8 +22907,12 @@ namespace PowerSDR
                     UpdateAlexRXFilter();
                 }
 
-                if (!mox) SetAlex2LPF(rx2_dds_freq_mhz);
-                SetAlex2HPF(rx2_dds_freq_mhz);
+                if (current_hpsdr_model == HPSDRModel.ORIONMKII ||
+                    current_hpsdr_model == HPSDRModel.ANAN8000D)
+                {
+                    SetAlex2HPF(rx2_dds_freq_mhz);
+                }
+
                 if (!stereo_diversity)
                     psform.RX2freq = rx2_dds_freq_mhz;
                 if (RX2Enabled)
@@ -22493,7 +22925,7 @@ namespace PowerSDR
             }
         }
 
-        bool tx_dds_freq_updated = false;
+        // bool tx_dds_freq_updated = false;
         // uint tx_dds_freq_tw;
         double tx_dds_freq_mhz = 7.1;
         private void UpdateTXDDSFreq()
@@ -22522,7 +22954,7 @@ namespace PowerSDR
                     }
 
                     SetAlexLPF(tx_dds_freq_mhz);
-                    SetAlex2LPF(tx_dds_freq_mhz);
+                    // SetAlex2LPF(tx_dds_freq_mhz);
                 }
                 //  else SetAlex2TXFilters(rx2_dds_freq_mhz);
 
@@ -23109,6 +23541,32 @@ namespace PowerSDR
                     chkNR.CheckState = CheckState.Unchecked;
                 else if (value == 1)
                     chkNR.CheckState = CheckState.Indeterminate;
+            }
+        }
+
+        private int cat_rx2_nr_status = 0;
+        public int CATRX2NR
+        {
+            get { return cat_rx2_nr_status; }
+            set
+            {
+                if (value == 0)
+                    chkRX2NR.CheckState = CheckState.Unchecked;
+                else if (value == 1)
+                    chkRX2NR.CheckState = CheckState.Checked;
+            }
+        }
+
+        private int cat_rx2_nr2_status = 0;
+        public int CATRX2NR2
+        {
+            get { return cat_rx2_nr2_status; }
+            set
+            {
+                if (value == 0)
+                    chkRX2NR.CheckState = CheckState.Unchecked;
+                else if (value == 1)
+                    chkRX2NR.CheckState = CheckState.Indeterminate;
             }
         }
 
@@ -24178,6 +24636,7 @@ namespace PowerSDR
         }
 
         // Added 07/30/05 BT for cat commands next 8 functions
+
         public string CATReadSigStrength()
         {
             float num = 0f;
@@ -25230,6 +25689,13 @@ namespace PowerSDR
             }
         }
 
+        // Sets or reads the PS-A button
+        public bool PSA
+        {
+            get { return chkFWCATUBypass.Checked; }
+            set { chkFWCATUBypass.Checked = value; }
+        }
+
         public bool MOX
         {
             get { return chkMOX.Checked; }
@@ -25338,7 +25804,13 @@ namespace PowerSDR
                 if (chkPower.Checked)
                 {
                     double freq = Double.Parse(txtVFOAFreq.Text);
+                    double freq2 = Double.Parse(txtVFOBFreq.Text);
                     SetAlexHPF(freq);
+                    if (!initializing && anan8000dpresent)
+                    {
+                        SetAlex2HPF(freq2);
+                        txtVFOBFreq_LostFocus(this, EventArgs.Empty);
+                    }
                     if (!initializing)
                         txtVFOAFreq_LostFocus(this, EventArgs.Empty);
                 }
@@ -25422,6 +25894,21 @@ namespace PowerSDR
             }
         }
 
+        private bool bpf1_1_5bp_bypass = false;
+        public bool BPF1_1_5BPBypass
+        {
+            get { return bpf1_1_5bp_bypass; }
+            set
+            {
+                bpf1_1_5bp_bypass = value;
+                //   if (chkPower.Checked)
+                //   {
+                double freq = Double.Parse(txtVFOAFreq.Text);
+                SetAlexHPF(freq);
+                //   }
+            }
+        }
+
         private bool alex21_5bphpf_bypass = false;
         public bool Alex21_5BPHPFBypass
         {
@@ -25449,6 +25936,21 @@ namespace PowerSDR
                     double freq = Double.Parse(txtVFOAFreq.Text);
                     SetAlexHPF(freq);
                 }
+            }
+        }
+
+        private bool bpf1_6_5bp_bypass = false;
+        public bool BPF1_6_5BPBypass
+        {
+            get { return bpf1_6_5bp_bypass; }
+            set
+            {
+                bpf1_6_5bp_bypass = value;
+                //   if (chkPower.Checked)
+                //   {
+                double freq = Double.Parse(txtVFOAFreq.Text);
+                SetAlexHPF(freq);
+                //   }
             }
         }
 
@@ -25482,6 +25984,21 @@ namespace PowerSDR
             }
         }
 
+        private bool bpf1_9_5bp_bypass = false;
+        public bool BPF1_9_5BPBypass
+        {
+            get { return bpf1_9_5bp_bypass; }
+            set
+            {
+                bpf1_9_5bp_bypass = value;
+                //   if (chkPower.Checked)
+                //   {
+                double freq = Double.Parse(txtVFOAFreq.Text);
+                SetAlexHPF(freq);
+                //   }
+            }
+        }
+
         private bool alex29_5bphpf_bypass = false;
         public bool Alex29_5BPHPFBypass
         {
@@ -25512,6 +26029,21 @@ namespace PowerSDR
             }
         }
 
+        private bool bpf1_13bp_bypass = false;
+        public bool BPF1_13BPBypass
+        {
+            get { return bpf1_13bp_bypass; }
+            set
+            {
+                bpf1_13bp_bypass = value;
+                //   if (chkPower.Checked)
+                //   {
+                double freq = Double.Parse(txtVFOAFreq.Text);
+                SetAlexHPF(freq);
+                //   }
+            }
+        }
+
         private bool alex213bphpf_bypass = false;
         public bool Alex213BPHPFBypass
         {
@@ -25539,6 +26071,21 @@ namespace PowerSDR
                     double freq = Double.Parse(txtVFOAFreq.Text);
                     SetAlexHPF(freq);
                 }
+            }
+        }
+
+        private bool bpf1_20bp_bypass = false;
+        public bool BPF1_20BPBypass
+        {
+            get { return bpf1_20bp_bypass; }
+            set
+            {
+                bpf1_20bp_bypass = value;
+                //   if (chkPower.Checked)
+                //   {
+                double freq = Double.Parse(txtVFOAFreq.Text);
+                SetAlexHPF(freq);
+                //   }
             }
         }
 
@@ -25574,6 +26121,23 @@ namespace PowerSDR
             }
         }
 
+        private bool bpf1_6bp_bypass = false;
+        public bool BPF1_6BPBypass
+        {
+            get { return bpf1_6bp_bypass; }
+            set
+            {
+                bpf1_6bp_bypass = value;
+                //   if (chkPower.Checked)
+                //   {
+                double freq = Double.Parse(txtVFOAFreq.Text);
+                SetAlexHPF(freq);
+                if (!initializing)
+                    txtVFOAFreq_LostFocus(this, EventArgs.Empty);
+                //   }
+            }
+        }
+
         private bool alex26bphpf_bypass = false;
         public bool Alex26BPHPFBypass
         {
@@ -25581,11 +26145,13 @@ namespace PowerSDR
             set
             {
                 alex26bphpf_bypass = value;
-                if (chkPower.Checked)
-                {
-                    double freq = Double.Parse(txtVFOBFreq.Text);
-                    SetAlex2HPF(freq);
-                }
+                // if (chkPower.Checked)
+                //  {
+                double freq = Double.Parse(txtVFOBFreq.Text);
+                SetAlex2HPF(freq);
+                if (!initializing)
+                    txtVFOBFreq_LostFocus(this, EventArgs.Empty);
+                // }
             }
         }
 
@@ -25720,13 +26286,13 @@ namespace PowerSDR
             }
         }
 
-        private bool orionpresent = false;
-        public bool OrionPresent
+        private bool anan200dpresent = false;
+        public bool ANAN200DPresent
         {
-            get { return orionpresent; }
+            get { return anan200dpresent; }
             set
             {
-                orionpresent = value;
+                anan200dpresent = value;
                 /*  if (anan100dpresent)
                   {
                       if (!comboMeterTXMode.Items.Contains("Fwd SWR"))
@@ -25740,6 +26306,41 @@ namespace PowerSDR
                               comboMeterTXMode.Items.Remove("Fwd SWR");
                       }
                   } */
+            }
+        }
+
+        private bool orionmkiipresent = false;
+        public bool ORIONMKIIPresent
+        {
+            get { return orionmkiipresent; }
+            set
+            {
+                orionmkiipresent = value;
+                CurrentHPSDRHardware = HPSDRHW.OrionMKII;
+            }
+        }
+
+
+        private bool anan8000dpresent = false;
+        public bool ANAN8000DPresent
+        {
+            get { return anan8000dpresent; }
+            set
+            {
+                anan8000dpresent = value;
+                CurrentHPSDRHardware = HPSDRHW.OrionMKII;
+            }
+        }
+
+        private bool mkiibpfpresent = false;
+        public bool MKIIBPFPresent
+        {
+            get { return mkiibpfpresent; }
+            set
+            {
+                mkiibpfpresent = value;
+                // if (value) NetworkIO.SetMKIIBPF(1);
+                // else NetworkIO.SetMKIIBPF(0);
             }
         }
 
@@ -25808,8 +26409,8 @@ namespace PowerSDR
                         SetAlexHPF(fwc_dds_freq);
                         SetAlexLPF(tx_dds_freq_mhz);
 
-                        SetAlex2HPF(rx2_dds_freq_mhz);
-                        SetAlex2LPF(rx2_dds_freq_mhz);
+                        // SetAlex2HPF(rx2_dds_freq_mhz);
+                        // SetAlex2LPF(rx2_dds_freq_mhz);
                     }
 
                     alex_enabled = 1;
@@ -25922,6 +26523,16 @@ namespace PowerSDR
                     case PreampMode.HPSDR_OFF: //-20dB
                         rx1_att_value = 20;
                         merc_preamp = 0; //attn inline
+                        alex_atten = 0;
+                        break;
+                    case PreampMode.HPSDR_SMINUS10:
+                        rx1_att_value = 10;
+                        merc_preamp = 1;
+                        alex_atten = 0;
+                        break;
+                    case PreampMode.HPSDR_SMINUS30:
+                        rx1_att_value = 30;
+                        merc_preamp = 1;
                         alex_atten = 0;
                         break;
                     case PreampMode.HPSDR_MINUS10:
@@ -26072,6 +26683,14 @@ namespace PowerSDR
                         comboPreamp.Text = "-20db";
                         break;
 
+                    case PreampMode.HPSDR_SMINUS10:
+                        comboPreamp.Text = "-10dB";
+                        break;
+
+                    case PreampMode.HPSDR_SMINUS30:
+                        comboPreamp.Text = "-30dB";
+                        break;
+
                     case PreampMode.HPSDR_MINUS30:
                         comboPreamp.Text = "-30db";
                         break;
@@ -26200,7 +26819,9 @@ namespace PowerSDR
                 }
 
                 if (current_hpsdr_model == HPSDRModel.ANAN100D ||
-                    current_hpsdr_model == HPSDRModel.ANAN200D)
+                    current_hpsdr_model == HPSDRModel.ANAN200D ||
+                    current_hpsdr_model == HPSDRModel.ORIONMKII ||
+                    current_hpsdr_model == HPSDRModel.ANAN8000D)
                 {
                     JanusAudio.EnableADC2StepAtten(1);
                     JanusAudio.SetADC2StepAttenData(rx2_att_value);
@@ -26326,6 +26947,16 @@ namespace PowerSDR
             set
             {
                 mox_delay = value;
+            }
+        }
+
+        private int space_mox_delay = 0;
+        public int SpaceMoxDelay
+        {
+            get { return space_mox_delay; }
+            set
+            {
+                space_mox_delay = value;
             }
         }
 
@@ -26908,12 +27539,12 @@ namespace PowerSDR
             set
             {
                 peak_text_color = value;
+                //txtDisplayPeakOffset.ForeColor = value;
+                //txtDisplayPeakPower.ForeColor = value;
+                //txtDisplayPeakFreq.ForeColor = value;
                 txtDisplayCursorOffset.ForeColor = value;
                 txtDisplayCursorPower.ForeColor = value;
                 txtDisplayCursorFreq.ForeColor = value;
-                txtDisplayPeakOffset.ForeColor = value;
-                txtDisplayPeakPower.ForeColor = value;
-                txtDisplayPeakFreq.ForeColor = value;
             }
         }
 
@@ -27462,6 +28093,7 @@ namespace PowerSDR
             set { spacebar_last_btn = value; }
         }
 
+        private bool spacebar_ptt_hang = false;
         private bool spacebar_ptt = true;
         public bool SpaceBarPTT
         {
@@ -27688,7 +28320,7 @@ namespace PowerSDR
                     */
             }
         }
-
+        private bool old_psdisabled = true;
         private int change_overload_color_count = 0;
         private int oload_select = 0;                   // selection of which overload to display this time
         private const int num_oloads = 2;               // number of possible overload displays
@@ -27752,7 +28384,7 @@ namespace PowerSDR
             }
             // return;
             //~~~~~~
-            // if mercury update the adc overload indicator 
+            // if mercury update the fwd_adc overload indicator 
             // if ((current_model == Model.HPSDR && MercuryPresent) ||
             //  (current_model == Model.HERMES))
             //  {
@@ -27840,20 +28472,110 @@ namespace PowerSDR
                     break;
             }
 
-            txtDisplayPeakOffset.Text = x.ToString("f1") + "Hz";
-            txtDisplayPeakPower.Text = y.ToString("f1") + "dBm";
+            if (old_psdisabled != SetupForm.DisablePureSignal)
+            {
+                old_psdisabled = SetupForm.DisablePureSignal;
+                if (SetupForm.DisablePureSignal)
+                {
+                    txtDisplayPeakOffset.Font = new Font("Arial", 9.75f, FontStyle.Regular);
+                    txtDisplayPeakPower.Font = new Font("Arial", 9.75f, FontStyle.Regular);
 
-            double Freq = double.Parse(txtVFOAFreq.Text);
-            string temp_text;
-            if (click_tune_display && !mox)    // Correct Right hand peak frequency when CTUN on -G3OQD
-                temp_text = (freq + (center_frequency - Freq)).ToString("f6") + " MHz";      // Disply Right hand peak frequency under Spectrum - G3OQD                            
+                    txtDisplayPeakFreq.Font = new Font("Arial", 9.75f, FontStyle.Regular);
+                }
+                else
+                {
+                    txtDisplayPeakOffset.BackColor = Color.Black;
+                    txtDisplayPeakOffset.Font = new Font("Cambria", 9.00f, FontStyle.Bold | FontStyle.Italic);
+                    txtDisplayPeakOffset.Text = "PureSignal 2";
+                    txtDisplayPeakPower.ForeColor = Color.Black;
+                    txtDisplayPeakPower.Font = new Font("Arial", 9.25f, FontStyle.Bold);
+                    txtDisplayPeakPower.Text = "Feedback";
+                    txtDisplayPeakFreq.ForeColor = Color.Black;
+                    txtDisplayPeakFreq.Font = new Font("Arial", 9.25f, FontStyle.Bold);
+                    txtDisplayPeakFreq.Text = "Correcting";
+                }
+            }
+            if (SetupForm.DisablePureSignal)
+            {
+                txtDisplayPeakOffset.BackColor = peak_background_color;
+                txtDisplayPeakPower.BackColor = peak_background_color;
+                txtDisplayPeakFreq.BackColor = peak_background_color;
+                switch (Display.CurrentDisplayMode)
+                {
+                    case DisplayMode.HISTOGRAM:
+                    case DisplayMode.PANADAPTER:
+                    case DisplayMode.SPECTRUM:
+                    case DisplayMode.WATERFALL:
+                    case DisplayMode.PANAFALL:
+                    case DisplayMode.PANASCOPE:
+                    case DisplayMode.SPECTRASCOPE:
+                        txtDisplayPeakOffset.ForeColor = peak_text_color;
+                        txtDisplayPeakPower.ForeColor = peak_text_color;
+                        txtDisplayPeakFreq.ForeColor = peak_text_color;
+                        txtDisplayPeakOffset.Text = x.ToString("f1") + "Hz";
+                        txtDisplayPeakPower.Text = y.ToString("f1") + "dBm";
+
+                        double Freq = double.Parse(txtVFOAFreq.Text);
+                        string temp_text;
+                        if (click_tune_display && !mox)    // Correct Right hand peak frequency when CTUN on -G3OQD
+                            temp_text = (freq + (center_frequency - Freq)).ToString("f6") + " MHz";      // Disply Right hand peak frequency under Spectrum - G3OQD                            
+                        else
+                            temp_text = freq.ToString("f6") + " MHz";  // Right hand - Peak frequency readout
+
+                        int jper = temp_text.IndexOf(separator) + 4;
+                        txtDisplayPeakFreq.Text = String.Copy(temp_text.Insert(jper, " "));
+                        break;
+                    default:
+                        txtDisplayPeakOffset.Text = "";
+                        txtDisplayPeakPower.Text = "";
+                        txtDisplayPeakFreq.Text = "";
+                        break;
+                }
+
+            }
+
+            if (anan8000dpresent && ANAN8000DLEDisplayVoltsAmps)
+            {
+                txtDisplayOrionMKIIPAVolts.BringToFront();
+                txtDisplayOrionMKIIPAAmps.BringToFront();
+                txtDisplayOrionMKIIBlank.BringToFront();
+            }
             else
-                temp_text = freq.ToString("f6") + " MHz";  // Right hand - Peak frequency readout
+            {
+                txtDisplayCursorFreq.BringToFront();
+                txtDisplayCursorOffset.BringToFront();
+                txtDisplayCursorPower.BringToFront();
+            }
+        }
 
+        private Color txtcenterBackColor = Color.Black;
+        public Color TxtCenterBackColor
+        {
+            set
+            {
+                txtcenterBackColor = value;
+                txtDisplayPeakPower.BackColor = value;
+            }
+        }
 
+        private Color txtrightBackColor = Color.Black;
+        public Color TxtRightBackColor
+        {
+            set
+            {
+                txtrightBackColor = value;
+                txtDisplayPeakFreq.BackColor = value;
+            }
+        }
 
-            int jper = temp_text.IndexOf(separator) + 4;
-            txtDisplayPeakFreq.Text = String.Copy(temp_text.Insert(jper, " "));
+        private Color txtleftForeColor = Color.Red;
+        public Color TxtLeftForeColor
+        {
+            set
+            {
+                txtleftForeColor = value;
+                txtDisplayPeakOffset.ForeColor = value;
+            }
         }
 
         private float PixelToHz(float x)
@@ -28405,7 +29127,24 @@ namespace PowerSDR
                                                 else
                                                     pixel_x = (int)(256 + (num - 50) / 50 * 32);
                                             }
-                                            else if (alexpresent)
+                                            else if (anan8000dpresent &&  tx_xvtr_index < 0)
+                                            {
+                                                if (num <= 1.0f)
+                                                    pixel_x = (int)(0 + num * 16);
+                                                else if (num <= 5.0f)
+                                                    pixel_x = (int)(16 + (num - 1) / 4 * 48);
+                                                else if (num <= 10.0f)
+                                                    pixel_x = (int)(64 + (num - 5) / 5 * 48);
+                                                else if (num <= 50.0f)
+                                                    pixel_x = (int)(112 + (num - 10) / 40 * 48);
+                                                else if (num <= 100.0f)
+                                                    pixel_x = (int)(160 + (num - 50) / 50 * 48);
+                                                else if (num <= 200.0f)
+                                                    pixel_x = (int)(200 + (num - 100) / 20 * 48);
+                                                else
+                                                    pixel_x = (int)(256 + (num - 120) / 20 * 32);
+                                            }
+                                            else if (alexpresent && !anan8000dpresent)
                                             {
                                                 if (num <= 1.0f)
                                                     pixel_x = (int)(0 + num * 16);
@@ -28480,7 +29219,24 @@ namespace PowerSDR
                                                 else
                                                     pixel_x = (int)(122 + (num - 50) / 50 * 16);
                                             }
-                                            else if (alexpresent)
+                                            else if (anan8000dpresent && tx_xvtr_index < 0)
+                                            {
+                                                if (num <= 5.0f)
+                                                    pixel_x = (int)(0 + num * 2);
+                                                else if (num <= 10.0f)
+                                                    pixel_x = (int)(2 + (num - 1) / 4 * 24);
+                                                else if (num <= 20.0f)
+                                                    pixel_x = (int)(26 + (num - 10) / 5 * 24);
+                                                else if (num <= 100.0f)
+                                                    pixel_x = (int)(50 + (num - 20) / 40 * 24);
+                                                else if (num <= 200.0f)
+                                                    pixel_x = (int)(74 + (num - 100) / 50 * 24);
+                                                else if (num <= 250.0f)
+                                                    pixel_x = (int)(98 + (num - 200) / 20 * 24);
+                                                else
+                                                    pixel_x = (int)(122 + (num - 250) / 20 * 16);
+                                            }
+                                            else if (alexpresent && !anan8000dpresent)
                                             {
                                                 if (num <= 1.0f)
                                                     pixel_x = (int)(0 + num * 2);
@@ -28829,7 +29585,7 @@ namespace PowerSDR
                         meter_data_ready = false;
                     }
 
-                    if (avg_num == Display.CLEAR_FLAG) // reset average -- just use new value
+                    if (avg_num == Display.CLEAR_FLAG || Double.IsNaN(avg_num)) // reset average -- just use new value
                     {
                         num = avg_num = current_meter_data;
                     }
@@ -28997,7 +29753,62 @@ namespace PowerSDR
                             case MeterTXMode.REVERSE_POWER:
                                 if (alexpresent || apollopresent) num = Math.Round(num);
 
-                                if ((alexpresent || pa_present) && (!anan10present && !anan10Epresent && !apollopresent))
+                                if (alexpresent && ((orionmkiipresent || anan8000dpresent) && tx_xvtr_index < 0) )
+                                {
+                                    g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
+                                    g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 10, 2);
+                                    spacing = (W * 0.75 - 2.0) / 4.0;
+                                    string_height = 0;
+                                    string[] list = { "10", "20", "100", "200" };
+                                    for (int i = 1; i < 5; i++)
+                                    {
+                                        g.FillRectangle(low_brush, (int)(i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                        g.FillRectangle(low_brush, (int)(i * spacing), H - 4 - 6, 2, 6);
+
+                                        string s = list[i - 1];
+                                        SizeF size = g.MeasureString("0", font7, 1, StringFormat.GenericTypographic);
+                                        double string_width = size.Width - 2.0;
+                                        string_height = size.Height - 2.0;
+
+                                        g.DrawString(s, font7, low_brush, (int)(i * spacing - string_width * s.Length + (int)(i / 3) + (int)(i / 4)), (int)(H - 4 - 8 - string_height));
+                                    }
+                                    spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+                                    for (int i = 1; i < 2; i++)
+                                    {
+                                        g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                        g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing), H - 4 - 6, 2, 6);
+
+                                        //Font f = new Font("Arial", 7.0f, FontStyle.Bold);
+                                        SizeF size = g.MeasureString("0", font7, 3, StringFormat.GenericTypographic);
+                                        double string_width = size.Width - 2.0;
+
+                                        g.TextRenderingHint = TextRenderingHint.SystemDefault;
+                                        g.DrawString("250+", font7, high_brush, (int)(W * 0.75 + i * spacing - (int)3.5 * string_width), (int)(H - 4 - 8 - string_height));
+                                    }
+
+                                    if (num <= 200.0) // low area
+                                    {
+                                        spacing = (W * 0.75 - 2.0) / 4.0;
+                                        if (num <= 10.0)
+                                            pixel_x = (int)(num / 10.0 * (int)spacing);
+                                        else if (num <= 20.0)
+                                            pixel_x = (int)(spacing + (num - 10.0) / 10.0 * spacing);
+                                        else if (num <= 100.0)
+                                            pixel_x = (int)(2 * spacing + (num - 20.0) / 80.0 * spacing);
+                                        else // <= 100
+                                            pixel_x = (int)(3 * spacing + (num - 100.0) / 100.0 * spacing);
+                                    }
+                                    else
+                                    {
+                                        spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+                                        if (num <= 250.0)
+                                            pixel_x = (int)(W * 0.75 + (num - 200.0) / 50.0 * spacing);
+                                        else
+                                            pixel_x = (int)(W * 0.75 + spacing + (num - 250.0) / 125.0 * spacing);
+                                    }
+                                }
+
+                                else if ((alexpresent || pa_present) && (!anan10present && !anan10Epresent && !apollopresent && !anan8000dpresent))
                                 {
                                     g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
                                     g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 10, 2);
@@ -29231,7 +30042,149 @@ namespace PowerSDR
                                 break;
                             case MeterTXMode.SWR_POWER:
 
-                                if ((alexpresent || pa_present) && (!anan10present && !anan10Epresent && !apollopresent))
+                                if (alexpresent && (orionmkiipresent || anan8000dpresent))
+                                {
+                                    //  g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
+                                    // g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 10, 2);
+
+                                    g.FillRectangle(high_brush, (int)(W * 0.75), (H / 2) - 1, (int)(W * 0.25) - 4, 2);
+                                    g.FillRectangle(low_brush, 0, (H / 2) - 1, (int)(W * 0.75), 4); // horizontal white line
+                                    g.FillRectangle(high_brush, (int)(W * 0.75), (H / 2) + 1, (int)(W * 0.25) - 9, 2); //horizontal red line
+                                    // SWR stuff first
+                                    spacing = (W * 0.5) / 10.0;
+                                    string_height = 0;
+                                    string[] swrx_list = { "1.5", "2" };
+                                    for (int i = 1; i < 10; i++)
+                                    {
+                                        g.FillRectangle(low_brush, (int)(i * spacing), (H / 2) - 4, 1, 3);
+                                    }
+                                    for (int i = 1; i < 3; i++)
+                                    {
+                                        spacing = (W * 0.5) / 2.0;
+                                        g.FillRectangle(low_brush, (int)(i * spacing), (H / 2) - 7, 2, 6);
+
+                                        string s = swrx_list[i - 1];
+                                        //Font f = new Font("Arial", 7.0f, FontStyle.Bold);
+                                        SizeF size = g.MeasureString("0", font7, 1, StringFormat.GenericTypographic);
+                                        double string_width = size.Width - 2.0;
+                                        string_height = size.Height - 2.0;
+
+                                        //g.TextRenderingHint = TextRenderingHint.AntiAlias;
+                                        //g.SmoothingMode = SmoothingMode.AntiAlias;
+                                        g.DrawString(s, font7, low_brush, (int)(i * spacing - string_width * s.Length + 2.0 - 1 * (int)(i / 2) + 3 * (int)(i / 4)), (int)((H / 2) - 9 - string_height));
+                                        //g.SmoothingMode = SmoothingMode.None;
+                                    }
+                                    g.FillRectangle(low_brush, (int)(W * 0.625), (H / 2) - 4, 1, 3); // small tic 2.5:1
+
+                                    string[] swrx_hi_list = { "3", "4", "5" };
+
+                                    spacing = (W * 0.75 - 2.0 - 9.0) / 2.0;
+                                    for (int i = 1; i < 2; i++)
+                                    {
+                                        // g.FillRectangle(high_brush, (int)(i * spacing - spacing * 0.75), H - 4 - 3, 1, 3);
+                                    }
+
+                                    for (int i = 1; i < 4; i++)
+                                    {
+                                        // spacing = (W * 0.55 - 2.0) / 2.0;
+                                        // spacing = (W * 0.33 - 2.0) / 3.0;
+                                        spacing = (W * 0.25 - 6.0) / 2.0;
+                                        g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing - spacing * 0.5), (H / 2) - 4, 1, 3);
+                                        g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing - spacing), (H / 2) - 7, 2, 6);
+                                        // g.FillRectangle(high_brush, (int)((double)W * 0.55 + i * spacing - spacing * 0.5), H - 4 - 6, 2, 6);
+                                        string s = swrx_hi_list[i - 1];
+                                        //Font f = new Font("Arial", 7.0f, FontStyle.Bold);
+                                        SizeF size = g.MeasureString("0", font7, 1, StringFormat.GenericTypographic);
+                                        double string_width = size.Width - 2.0;
+                                        string_height = size.Height - 2.0;
+
+                                        //g.TextRenderingHint = TextRenderingHint.AntiAlias;
+                                        //g.SmoothingMode = SmoothingMode.AntiAlias;
+                                        //g.DrawString(s, font7, high_brush, (int)(i * spacing - string_width * s.Length + 2.0 - 2 * (int)(i / 2) + 3 * (int)(i / 4)), (int)(H - 4 - 8 - string_height));
+                                        // g.DrawString(s, font7, high_brush, (int)(W * 0.75 + i * spacing - spacing - (int)2.5 * string_width), (int)(H - 4 - 8 - string_height));
+                                        g.DrawString(s, font7, high_brush, (int)(W * 0.75 + i * spacing - spacing - (int)1.0 * string_width), (int)((H / 2) - 9 - string_height));
+                                        //g.SmoothingMode = SmoothingMode.None;
+                                    }
+
+                                    if (current_swrmeter_data <= 3.0) // low area
+                                    {
+                                        spacing = (W * 0.75) / 3.0;
+
+                                        if (current_swrmeter_data <= 1.5)
+                                            pixel_x_swr = (int)((current_swrmeter_data - 1.0) / 0.5 * spacing);
+                                        else if (current_swrmeter_data <= 2.0)
+                                            pixel_x_swr = (int)(spacing + (current_swrmeter_data - 1.5) / 0.5 * spacing);
+                                        else //if (current_swrmeter_data <= 3.0)
+                                            pixel_x_swr = (int)(2 * spacing + (current_swrmeter_data - 2.0) / 1.0 * spacing);
+                                        // else //  current_swrmeter_data <= 4.0
+                                        //  pixel_x_swr = (int)(3 * spacing + (current_swrmeter_data - 3.0) / 1.0 * spacing);
+                                    }
+                                    else
+                                    {
+                                        spacing = (W * 0.25 - 6.0) / 2.0;
+                                        if (current_swrmeter_data <= 4.0)
+                                            pixel_x_swr = (int)(W * 0.75 + (current_swrmeter_data - 3.0) / 1.0 * spacing);
+                                        else if (current_swrmeter_data <= 5.0)
+                                            pixel_x_swr = (int)(W * 0.75 + spacing + (current_swrmeter_data - 4.0) / 1.0 * spacing);
+                                        else
+                                            pixel_x_swr = (int)(W * 0.75 + 2 * spacing + (current_swrmeter_data - 5.0) / 4.0 * spacing);
+                                    }
+                                    if (double.IsInfinity(current_swrmeter_data)) pixel_x_swr = W - 2;
+
+
+
+                                    spacing = (W * 0.75 - 2.0) / 4.0;
+                                    string_height = 0;
+                                    string[] list = { "10", "20", "100", "200" };
+                                    for (int i = 1; i < 5; i++)
+                                    {
+                                        g.FillRectangle(low_brush, (int)(i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                        g.FillRectangle(low_brush, (int)(i * spacing), H - 4 - 6, 2, 6);
+
+                                        string s = list[i - 1];
+                                        SizeF size = g.MeasureString("0", font7, 1, StringFormat.GenericTypographic);
+                                        double string_width = size.Width - 2.0;
+                                        string_height = size.Height - 2.0;
+
+                                        g.DrawString(s, font7, low_brush, (int)(i * spacing - string_width * s.Length + (int)(i / 3) + (int)(i / 4)), (int)(H - 4 - 8 - string_height));
+                                    }
+                                    spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+                                    for (int i = 1; i < 2; i++)
+                                    {
+                                        g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                        g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing), H - 4 - 6, 2, 6);
+
+                                        //Font f = new Font("Arial", 7.0f, FontStyle.Bold);
+                                        SizeF size = g.MeasureString("0", font7, 3, StringFormat.GenericTypographic);
+                                        double string_width = size.Width - 2.0;
+
+                                        g.TextRenderingHint = TextRenderingHint.SystemDefault;
+                                        g.DrawString("250+", font7, high_brush, (int)(W * 0.75 + i * spacing - (int)3.5 * string_width), (int)(H - 4 - 8 - string_height));
+                                    }
+
+                                    if (num <= 200.0) // low area
+                                    {
+                                        spacing = (W * 0.75 - 2.0) / 4.0;
+                                        if (num <= 10.0)
+                                            pixel_x = (int)(num / 10.0 * (int)spacing);
+                                        else if (num <= 20.0)
+                                            pixel_x = (int)(spacing + (num - 10.0) / 10.0 * spacing);
+                                        else if (num <= 100.0)
+                                            pixel_x = (int)(2 * spacing + (num - 20.0) / 80.0 * spacing);
+                                        else // <= 100
+                                            pixel_x = (int)(3 * spacing + (num - 100.0) / 100.0 * spacing);
+                                    }
+                                    else
+                                    {
+                                        spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+                                        if (num <= 250.0)
+                                            pixel_x = (int)(W * 0.75 + (num - 200.0) / 50.0 * spacing);
+                                        else
+                                            pixel_x = (int)(W * 0.75 + spacing + (num - 250.0) / 125.0 * spacing);
+                                    }
+                                }
+
+                                else if ((alexpresent || pa_present) && (!anan10present && !anan10Epresent && !apollopresent))
                                 {
                                     g.FillRectangle(high_brush, (int)(W * 0.75), (H / 2) - 1, (int)(W * 0.25) - 4, 2);
                                     g.FillRectangle(low_brush, 0, (H / 2) - 1, (int)(W * 0.75), 4); // horizontal white line
@@ -29659,6 +30612,7 @@ namespace PowerSDR
                                 }
                                 break;
                             case MeterTXMode.SWR:
+
                                 g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
                                 g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 4, 2);
                                 // spacing = (W * 0.75 - 2.0) / 4.0;
@@ -30016,7 +30970,13 @@ namespace PowerSDR
                                 case MeterTXMode.REVERSE_POWER:
                                 case MeterTXMode.SWR_POWER:
                                     if (anan10present || anan10Epresent || apollopresent) output = num.ToString(format) + " W";
-                                    else if (alexpresent || pa_present) output = num.ToString(format) + " W";
+                                    else if ((alexpresent || pa_present))
+                                    {
+                                        if (anan8000dpresent && tx_xvtr_index >= 0)
+                                            output = num.ToString(format) + " mW";
+                                        else
+                                            output = num.ToString(format) + " W";
+                                    }
                                     else output = num.ToString(format) + " mW";
                                     break;
                                 case MeterTXMode.SWR:
@@ -31099,7 +32059,6 @@ namespace PowerSDR
 
         private HiPerfTimer meter_timer = new HiPerfTimer();
         private float multimeter_avg = Display.CLEAR_FLAG;
-
         private void UpdateMultimeter()
         {
             meter_timer.Start();
@@ -31237,14 +32196,34 @@ namespace PowerSDR
                                 break;
                             case MeterTXMode.FORWARD_POWER:
                             case MeterTXMode.SWR_POWER:
-                                if (alexpresent || apollopresent)
+                               if (alexpresent || apollopresent)
                                 {
-                                    new_meter_data = calfwdpower;
-                                    if (pa_values)
+                                    if (anan8000dpresent)
                                     {
-                                        // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
-                                        SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
-                                        SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
+                                        if (tx_xvtr_index >= 0)
+                                        {
+                                            new_meter_data = drivepwr;
+                                        }
+                                        else
+                                        {
+                                            new_meter_data = calfwdpower;
+                                            if (pa_values)
+                                            {
+                                                // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
+                                                SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
+                                                SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        new_meter_data = calfwdpower;
+                                        if (pa_values)
+                                        {
+                                            // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
+                                            SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
+                                            SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
+                                        }
                                     }
                                 }
                                 else
@@ -31257,7 +32236,7 @@ namespace PowerSDR
 
                                 if (alexpresent || apollopresent)
                                 {
-                                    new_meter_data = (float)alex_rev;
+                                    new_meter_data = alex_rev;
                                     // if (pa_values) SetupForm.txtPARevPower.Text = new_meter_data.ToString("f3");
                                 }
                                 break;
@@ -31283,7 +32262,6 @@ namespace PowerSDR
 
         private HiPerfTimer rx2_meter_timer = new HiPerfTimer();
         private float rx2_meter_avg = Display.CLEAR_FLAG;
-
         private void UpdateRX2MeterData()
         {
             rx2_meter_timer.Start();
@@ -31324,7 +32302,11 @@ namespace PowerSDR
                           else 
                           rx2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
                           */
-                    if (current_hpsdr_model == HPSDRModel.ANAN100D || current_hpsdr_model == HPSDRModel.ANAN200D || rx2_preamp_present)
+                    if (current_hpsdr_model == HPSDRModel.ANAN100D ||
+                        current_hpsdr_model == HPSDRModel.ANAN200D ||
+                        current_hpsdr_model == HPSDRModel.ORIONMKII ||
+                        current_hpsdr_model == HPSDRModel.ANAN8000D ||
+                        rx2_preamp_present)
                     {
                         if (rx2_step_att_present)
                             rx2PreampOffset = (float)rx2_attenuator_data;
@@ -31349,8 +32331,9 @@ namespace PowerSDR
                         {
                             rx2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
                         }
+
                     }
-                    
+
                     switch (mode)
                     {
                         case MeterRXMode.SIGNAL_STRENGTH:
@@ -31368,34 +32351,11 @@ namespace PowerSDR
                             else
                             {
                             // DG8MG
-
-                                if (rx2_preamp_present)
-                                {
-                                    if (alexpresent)
-                                    {
-                                        num = num +
-                                          rx1_meter_cal_offset +
-                                          rx2PreampOffset +
-                                          //rx2_filter_size_cal_offset +
-                                          rx2_xvtr_gain_offset;
-                                    }
-                                    else
-                                    {
-                                        num = num +
-                                          rx1_meter_cal_offset +
-                                          rx2PreampOffset +
-                                          //rx2_filter_size_cal_offset +
-                                          rx2_xvtr_gain_offset;
-                                    }
-                                }
-                                else
-                                {
-                                    num = num +
-                                      rx1_meter_cal_offset +
-                                      rx2PreampOffset +
-                                      //rx2_filter_size_cal_offset +
-                                      rx2_xvtr_gain_offset;
-                                }
+                            	num = num +
+                              	  rx1_meter_cal_offset +
+                                  rx2PreampOffset +
+                                  rx2_xvtr_gain_offset;
+                                if (anan8000dpresent) num += rx2_6m_gain_offset;
                             }
                             rx2_meter_new_data = num;
                             break;
@@ -31420,8 +32380,8 @@ namespace PowerSDR
                                 num = num +
                                   rx1_meter_cal_offset +
                                   rx2PreampOffset +
-                                    //rx2_filter_size_cal_offset +
                                   rx2_xvtr_gain_offset;
+                                if (anan8000dpresent) num += rx2_6m_gain_offset;
                             }
                             // DG8MG
 
@@ -31471,21 +32431,115 @@ namespace PowerSDR
             return batt_volts;
         }
 
+        private void displayMKIIPAVoltsAmps()
+        {
+            while (chkPower.Checked && anan8000dpresent)
+            {
+                computeMKIIPAVolts();
+                computeMKIIPAAmps();
+                Thread.Sleep(600);
+            }
+        }
+        public void computeMKIIPAVolts()
+        {
+            float adc = 0;
+            float addadc = 0;
+            float volt_div = (22.0f + 1.0f) / 1.1f; // Voltage divider (R1 + R2) / R2
+
+            for (int count = 0; count < 100; count++)
+            {
+                adc = JanusAudio.getAIN3();
+                addadc += adc;
+                Thread.Sleep(1);
+           }
+            adc = addadc / 100.0f;
+
+            float volts = (adc / 4095.0f) * 5.0f;
+            volts = volts * volt_div;
+
+            txtDisplayOrionMKIIPAVolts.Text = "Vd " + volts.ToString("N1") + "V";
+        }
+
+        public void computeMKIIPAAmps()
+        {
+            float adc = 0;
+            float addadc = 0;
+
+            for (int count = 0; count < 100; count++)
+            {
+                adc = JanusAudio.getAIN4();
+                addadc += adc;
+                Thread.Sleep(1);
+            }
+            adc = addadc / 100.0f;
+           // float fwdvolts = ((float)fwd_adc / 4095.0f) * 5000.0f;
+            //float amps = ((fwdvolts - 360.0f) / 120.0f);
+            float amps = (0.01f * adc - 2.91f);
+            if (amps < 0) amps = 0.0f;
+            txtDisplayOrionMKIIPAAmps.Text = "Id " + amps.ToString("N1") + "A";
+        }
+
         public float computeRefPower()
         {
-            float bridge_volt = 0.09f;
-            float refvoltage = 3.3f;
-            int adc_cal_offset = 10;
-            if (tx_band == Band.B6M) adc_cal_offset = 200;
-            if (current_hpsdr_model == HPSDRModel.ANAN200D) refvoltage = 5.0f;
-            if (current_hpsdr_model == HPSDRModel.ANAN100 ||
-                current_hpsdr_model == HPSDRModel.ANAN100D) bridge_volt = 0.095f;
+            int adc = 0;
+            int addadc = 0;
 
-            if (current_hpsdr_model == HPSDRModel.ANAN200D) bridge_volt = 0.108f;
+            float bridge_volt = 0; 
+            float refvoltage = 0;
+            int adc_cal_offset = 0;
 
-            int adc = JanusAudio.getRefPower();
-            if (adc < adc_cal_offset) adc = adc_cal_offset = 0;
+            switch(current_hpsdr_model)
+            {
+                case HPSDRModel.ANAN100:
+                case HPSDRModel.ANAN100B:
+                    bridge_volt = 0.095f;
+                    if (tx_band == Band.B6M) 
+                        bridge_volt = 0.5f;
+                    refvoltage = 3.3f;
+                    adc_cal_offset = 3;
+                    break;
+                case HPSDRModel.ANAN100D:
+                    bridge_volt = 0.095f;
+                    if (tx_band == Band.B6M) 
+                        bridge_volt = 0.5f;
+                    refvoltage = 3.3f;
+                    adc_cal_offset = 3;
+                   break;
+                case HPSDRModel.ANAN200D:
+                    bridge_volt = 0.108f;
+                    if (tx_band == Band.B6M) 
+                       bridge_volt = 0.5f;
+                    refvoltage = 5.0f;
+                    adc_cal_offset = 2;
+                    break;
+                case HPSDRModel.ORIONMKII:
+                case HPSDRModel.ANAN8000D:
+                    bridge_volt = 0.08f;
+                    if (tx_band == Band.B6M) 
+                       bridge_volt = 0.08f;
+                    refvoltage = 5.0f;
+                    adc_cal_offset = 16;
+                    break;
+                default:
+                    bridge_volt = 0.09f;
+                    if (tx_band == Band.B6M) 
+                       bridge_volt = 0.09f;
+                    refvoltage = 3.3f;
+                    adc_cal_offset = 3;
+                    break;
+            }
+
+            for (int count = 0; count < 50; count++)
+            {
+                adc = JanusAudio.getRefPower();
+                addadc += adc;
+                Thread.Sleep(1);
+          }
+            adc = addadc / 50;
+            if (adc < 0) adc = 0;
+
             float volts = (float)((adc - adc_cal_offset) / 4095.0 * refvoltage);
+            if (volts < 0) volts = 0;
             float watts = (float)(Math.Pow(volts, 2) / bridge_volt);
             if (watts < 0) watts = 0;
 
@@ -31502,28 +32556,55 @@ namespace PowerSDR
         public float computeAlexFwdPower()
         {
 
-            // float p_min = float.MaxValue; //32767.0f;
-            // float p_max = float.MinValue; //-32768.0f;
+             int adc = 0;
+             int addadc = 0;
 
-            int adc = 0;
-            int addadc = 0;
+            float bridge_volt = 0;
+            float refvoltage = 0;
+            int adc_cal_offset = 0;
 
-            float bridge_volt = 0.09f;
-            float refvoltage = 3.3f;
-            if (current_hpsdr_model == HPSDRModel.ANAN200D) refvoltage = 5.0f;
-            if (current_hpsdr_model == HPSDRModel.ANAN100 ||
-                current_hpsdr_model == HPSDRModel.ANAN100D) bridge_volt = 0.095f;
-            if (current_hpsdr_model == HPSDRModel.ANAN200D) bridge_volt = 0.108f; // 0.083f;
-
-            for (int count = 0; count < 3; count++)
+            switch (current_hpsdr_model)
             {
-                Thread.Sleep(1);
+                case HPSDRModel.ANAN100:
+                case HPSDRModel.ANAN100B:
+                    bridge_volt = 0.095f;
+                    refvoltage = 3.3f;
+                    adc_cal_offset = 6;
+                    break;
+                case HPSDRModel.ANAN100D:
+                    bridge_volt = 0.095f;
+                    refvoltage = 3.3f;
+                    adc_cal_offset = 6;
+                    break;
+                case HPSDRModel.ANAN200D:
+                    bridge_volt = 0.108f;
+                    refvoltage = 5.0f;
+                    adc_cal_offset = 4;
+                    break;
+                case HPSDRModel.ORIONMKII:
+                case HPSDRModel.ANAN8000D:
+                    bridge_volt = 0.08f;
+                    refvoltage = 5.0f;
+                    adc_cal_offset = 18;
+                    break;
+                default:
+                    bridge_volt = 0.09f;
+                    refvoltage = 3.3f;
+                    adc_cal_offset = 6;
+                    break;
+            }
+
+            for (int count = 0; count < 50; count++)
+            {
                 adc = JanusAudio.getAlexFwdPower();
                 addadc += adc;
-            }
-            adc = addadc / 3;
+                Thread.Sleep(1);
+           }
+            adc = addadc / 50;
+            if (adc < 0) adc = 0;
 
-            float volts = (float)(adc / 4095.0f * refvoltage);
+            float volts = (float)((adc - adc_cal_offset) / 4095.0f * refvoltage);
+            if (volts < 0) volts = 0;
             float watts = (float)(Math.Pow(volts, 2) / bridge_volt);
 
             if (PAValues)
@@ -31534,6 +32615,102 @@ namespace PowerSDR
             if (watts < 0) watts = 0;
             return watts;
         }
+
+        public void computeFwdRevPower(out float fwdpwr, out float revpwr)
+        {
+            int fwd_adc = 0;
+            int rev_adc = 0;
+            int addfwdadc = 0;
+            int addrevadc = 0;
+            float fwd_bridge_volt = 0;
+            float rev_bridge_volt = 0;
+            float refvoltage = 0;
+            int fwd_adc_cal_offset = 0;
+            int rev_adc_cal_offset = 0;
+
+            switch (current_hpsdr_model)
+            {
+                case HPSDRModel.ANAN100:
+                case HPSDRModel.ANAN100B:
+                    fwd_bridge_volt = 0.095f;
+                    if (tx_band == Band.B6M)
+                        rev_bridge_volt = 0.5f;
+                    refvoltage = 3.3f;
+                    fwd_adc_cal_offset = 6;
+                    rev_adc_cal_offset = 3;
+                    break;
+                case HPSDRModel.ANAN100D:
+                    fwd_bridge_volt = 0.095f;
+                    if (tx_band == Band.B6M)
+                       rev_bridge_volt = 0.5f;
+                    refvoltage = 3.3f;
+                    fwd_adc_cal_offset = 6;
+                    rev_adc_cal_offset = 3;
+                    break;
+                case HPSDRModel.ANAN200D:
+                    fwd_bridge_volt = 0.108f;
+                    if (tx_band == Band.B6M)
+                       rev_bridge_volt = 0.5f;
+                    refvoltage = 5.0f;
+                    fwd_adc_cal_offset = 4;
+                    rev_adc_cal_offset = 2;
+                    break;
+                case HPSDRModel.ORIONMKII:
+                case HPSDRModel.ANAN8000D:
+                    fwd_bridge_volt = 0.08f;
+                    if (tx_band == Band.B6M)
+                       rev_bridge_volt = 0.08f;
+                    refvoltage = 5.0f;
+                    fwd_adc_cal_offset = 18;
+                    rev_adc_cal_offset = 16;
+                    break;
+                default:
+                    fwd_bridge_volt = 0.09f;
+                    if (tx_band == Band.B6M) 
+                       rev_bridge_volt = 0.09f;
+                    refvoltage = 3.3f;
+                    fwd_adc_cal_offset = 6;
+                    rev_adc_cal_offset = 3;
+                    break;
+            }
+
+            for (int count = 0; count < 100; count++)
+            {
+                fwd_adc = JanusAudio.getAlexFwdPower();
+                addfwdadc += fwd_adc;
+                rev_adc = JanusAudio.getRefPower();
+                addrevadc += rev_adc;
+                Thread.Sleep(1);
+           }
+
+            rev_adc = addrevadc / 100;
+            if (rev_adc < 0) rev_adc = 0;
+            float revvolts = (float)((rev_adc - rev_adc_cal_offset) / 4095.0f * refvoltage);
+            if (revvolts < 0) revvolts = 0;
+            float revwatts = (float)(Math.Pow(revvolts, 2) / rev_bridge_volt);
+            if (revwatts < 0) revwatts = 0;
+
+            fwd_adc = addfwdadc / 100;
+            if (fwd_adc < 0) fwd_adc = 0;
+            float fwdvolts = (float)((fwd_adc - fwd_adc_cal_offset) / 4095.0f * refvoltage);
+            if (fwdvolts < 0) fwdvolts = 0;
+            float fwdwatts = (float)(Math.Pow(fwdvolts, 2) / fwd_bridge_volt);
+            if (fwdwatts < 0) fwdwatts = 0;
+
+            revpwr = revwatts;
+            fwdpwr = fwdwatts;
+      
+            if (PAValues)
+            {
+                SetupForm.textFwdADCValue.Text = fwd_adc.ToString();
+                SetupForm.textFwdVoltage.Text = fwdvolts.ToString("f2") + " V";
+                SetupForm.textRevADCValue.Text = rev_adc.ToString();
+                SetupForm.textRevVoltage.Text = revvolts.ToString("f2") + " V";
+                SetupForm.textPAFwdPower.Text = fwdwatts.ToString("f1") + " W";
+                SetupForm.textPARevPower.Text = revwatts.ToString("f1") + " W";
+            }
+
+       }
 
         public float computeFwdPower()
         {
@@ -31769,14 +32946,13 @@ namespace PowerSDR
             if (PAValues)
             {
                 SetupForm.textFwdADCValue.Text = power_int.ToString();
-                // SetupForm.textFwdVoltage.Text = volts.ToString("f2") + " V";
+                // SetupForm.textFwdVoltage.Text = fwdvolts.ToString("f2") + " V";
             }
 
             return (float)result;
         }
 
         private float sql_data = -200.0f;
-
         private void UpdateSQL()
         {
             while (chkPower.Checked)
@@ -31823,7 +32999,6 @@ namespace PowerSDR
         }
 
         private float rx2_sql_data = -200.0f;
-
         private void UpdateRX2SQL()
         {
             while (chkPower.Checked && rx2_enabled)
@@ -31901,6 +33076,7 @@ namespace PowerSDR
 
         private bool mon_recall = false;
         private static HiPerfTimer vox_timer = new HiPerfTimer();
+        // private static HiPerfTimer ptt_timer = new HiPerfTimer();
         private int dotdashptt = 0;
 
         private void PollPTT()
@@ -31974,7 +33150,7 @@ namespace PowerSDR
 
                             if (chkVAC1.Checked && allow_vac_bypass)
                                 Audio.VACBypass = true;
-
+                            // ptt_timer.Start();
                             chkMOX.Checked = true;
                             //  if (!mox)
                             //  {
@@ -32011,10 +33187,15 @@ namespace PowerSDR
                             case PTTMode.MIC:
                                 if (!mic_ptt)
                                 {
+                                    //  ptt_timer.Stop();
+                                    // if (ptt_timer.DurationMsec > ptt_hang_time)
+                                    //  {
                                     chkMOX.Checked = false;
                                     if (chkVAC1.Checked && Audio.VACBypass)
                                         Audio.VACBypass = false;
+                                    // }
                                 }
+                                // else ptt_timer.Start();
                                 break;
                             case PTTMode.CW:
                                 if (!cw_ptt)
@@ -32077,7 +33258,6 @@ namespace PowerSDR
                     // DG8MG
 
                     //SetConsoleMox(state);
-
                 }
 
                 last_bmp = dotdashptt;
@@ -32170,7 +33350,9 @@ namespace PowerSDR
                     SetupForm.HermesAttenuatorData = old_satt_data;
 
                     if (current_hpsdr_model == HPSDRModel.ANAN100D ||
-                        current_hpsdr_model == HPSDRModel.ANAN200D)
+                       current_hpsdr_model == HPSDRModel.ANAN200D ||
+                       current_hpsdr_model == HPSDRModel.ORIONMKII ||
+                       current_hpsdr_model == HPSDRModel.ANAN8000D)
                     {
                         RX2PreampMode = rx2_preamp;
                         // RX2StepAttPresent = old_rx2_satt;
@@ -32190,7 +33372,9 @@ namespace PowerSDR
                     old_satt = rx1_step_att_present;
 
                     if (current_hpsdr_model == HPSDRModel.ANAN100D ||
-                        current_hpsdr_model == HPSDRModel.ANAN200D)
+                       current_hpsdr_model == HPSDRModel.ANAN200D ||
+                       current_hpsdr_model == HPSDRModel.ORIONMKII ||
+                       current_hpsdr_model == HPSDRModel.ANAN8000D)
                     {
                         rx2_preamp = RX2PreampMode;
                         old_rx2_satt_data = rx2_attenuator_data;// RX2AttenuatorData;
@@ -32204,11 +33388,16 @@ namespace PowerSDR
 
         private void PollTXInhibit()
         {
+            bool inhibit_input;
             while (chkPower.Checked)
             {
                 if (tx_inhibit_enabled && current_hpsdr_model != HPSDRModel.HPSDR)
                 {
-                    bool inhibit_input = JanusAudio.getUserI01();
+                    if (anan8000dpresent)
+                    inhibit_input = JanusAudio.getUserI02();
+                    else
+                    inhibit_input = JanusAudio.getUserI01();
+
                     if (tx_inhibit_sense)
                     {
                         if (inhibit_input) TXInhibit = true;
@@ -32565,7 +33754,7 @@ namespace PowerSDR
         //    return;
         //    //int count = 0;
         //    int high_swr_count = 0;
-        //    int fwd = 0, rev = 0/*, temp, volts*/;
+        //    int fwd = 0, rev = 0/*, temp, fwdvolts*/;
         //    //float old_temp = 0.0f, old_supply = 0.0f;
         //    while (chkPower.Checked)
         //    {
@@ -32617,8 +33806,8 @@ namespace PowerSDR
         //            if(count%300 == 299) // check voltage every ~60s
         //            {
         //                Thread.Sleep(40);
-        //                FWC.ReadPAADC(2, out volts);
-        //                float new_supply = (float)volts/4096*2.5f*11;
+        //                FWC.ReadPAADC(2, out fwdvolts);
+        //                float new_supply = (float)fwdvolts/4096*2.5f*11;
         //                if(old_supply == 0.0f) old_supply = new_supply;
         //                else old_supply = (0.1f * new_supply) + (0.9f * old_supply);
         //                if(old_supply > 15.0 || old_supply < 13.0)
@@ -32662,19 +33851,33 @@ namespace PowerSDR
             {
                 if (mox)
                 {
+                   // computeFwdRevPower(out alex_fwd, out alex_rev);
                     alex_fwd = computeAlexFwdPower(); //high power
                     alex_rev = computeRefPower();
 
-                    if (current_hpsdr_model == HPSDRModel.ANAN200D)
-                        drivepwr = computeOrionFwdPower();
-                    else
-                        drivepwr = computeFwdPower(); // low power
+                    switch (current_hpsdr_model)
+                    {
+                        case HPSDRModel.ANAN200D:
+                            drivepwr = computeOrionFwdPower();
+                            break;
+                        case HPSDRModel.ORIONMKII:
+                        case HPSDRModel.ANAN8000D:
+                            drivepwr = computeOrionMkIIFwdPower();
+                            break;
+                        default:
+                            drivepwr = computeFwdPower(); // low power
+                            break;
+                    }
 
                     calfwdpower = CalibratedPAPower();
 
                     rho = (float)Math.Sqrt(alex_rev / alex_fwd);
-                    swr = (1.0f + rho) / (1.0f - rho);
-                    if (alex_fwd == 0 && alex_rev == 0) swr = 1.0f;
+                    if (float.IsNaN(rho) || float.IsInfinity(rho))
+                        swr = 1.0f;
+                    else   
+                        swr = (1.0f + rho) / (1.0f - rho);
+
+                    if ((alex_fwd == 0 && alex_rev == 0) || swr < 1.0f) swr = 1.0f;
 
                     if (alexpresent || apollopresent)
                     {
@@ -32712,6 +33915,9 @@ namespace PowerSDR
                         else swr_pass = false;
                     }
 
+                    if (tx_xvtr_index >= 0 || hf_tr_relay)
+                        swr_pass = true;
+
                     if (swr > 2.0 && swrprotection && !swr_pass)
                     {
                         high_swr_count++;
@@ -32737,13 +33943,15 @@ namespace PowerSDR
 
                 end:
                     swr_pass = false;
+                if (float.IsNaN(swr) || float.IsInfinity(swr) || swr < 1.0f)
+                    alex_swr = 1.0f;
+                else
                     alex_swr = swr;
+
+                //Thread.Sleep(50);
                 }
 
-                // volts_138 = computeHermesDCVoltage();
-
-                Thread.Sleep(100);
-                // roughly 132ms loop
+                Thread.Sleep(1);
             }
 
             alex_fwd = 0;
@@ -32770,23 +33978,24 @@ namespace PowerSDR
 
         private void timer_peak_text_Tick(object sender, System.EventArgs e)
         {
-            switch (Display.CurrentDisplayMode)
-            {
-                case DisplayMode.HISTOGRAM:
-                case DisplayMode.PANADAPTER:
-                case DisplayMode.SPECTRUM:
-                case DisplayMode.WATERFALL:
-                case DisplayMode.PANAFALL:
-                case DisplayMode.PANASCOPE:
-                case DisplayMode.SPECTRASCOPE:
-                    UpdatePeakText();
-                    break;
-                default:
-                    txtDisplayPeakOffset.Text = "";
-                    txtDisplayPeakPower.Text = "";
-                    txtDisplayPeakFreq.Text = "";
-                    break;
-            }
+            UpdatePeakText();
+            //switch (Display.CurrentDisplayMode)
+            //{
+            //    case DisplayMode.HISTOGRAM:
+            //    case DisplayMode.PANADAPTER:
+            //    case DisplayMode.SPECTRUM:
+            //    case DisplayMode.WATERFALL:
+            //    case DisplayMode.PANAFALL:
+            //    case DisplayMode.PANASCOPE:
+            //    case DisplayMode.SPECTRASCOPE:
+            //        UpdatePeakText();
+            //        break;
+            //    default:
+            //        txtDisplayPeakOffset.Text = "";
+            //        txtDisplayPeakPower.Text = "";
+            //        txtDisplayPeakFreq.Text = "";
+            //        break;
+            //}
         }
 
         private int last_sec;		// for time of day clock
@@ -32895,8 +34104,8 @@ namespace PowerSDR
         //        {
         //            int val = 0;
         //            // FWC.ReadPAADC(3, out val);
-        //            float volts = (float)val / 4096 * 2.5f;
-        //            double temp_c = 301 - volts * 1000 / 2.2;
+        //            float fwdvolts = (float)val / 4096 * 2.5f;
+        //            double temp_c = 301 - fwdvolts * 1000 / 2.2;
 
         //            if (temp_c < 150.0 && temp_c > -30.0) // filter unreasonable temps
         //            {
@@ -33358,7 +34567,6 @@ namespace PowerSDR
                     case Keys.N:
                         chkANF.Checked = !chkANF.Checked;
                         break;
-                  
                     case Keys.P:
                         RX1PreampMode = (PreampMode)(((int)rx1_preamp_mode + 1) % (int)PreampMode.LAST);
                         break;
@@ -33499,6 +34707,7 @@ namespace PowerSDR
                                 if (spacebar_ptt)
                                 {
                                     current_ptt_mode = PTTMode.SPACE;
+                                    //  spacebar_ptt_hang = true;
                                     chkMOX.Checked = !chkMOX.Checked;
                                     if (chkMOX.Checked)
                                     {
@@ -34179,6 +35388,7 @@ namespace PowerSDR
                 {
                     if (chkPower.Checked)
                     {
+                        //  spacebar_ptt_hang = true;
                         chkMOX.Checked = true;
                     }
                 }
@@ -34402,6 +35612,16 @@ namespace PowerSDR
                     poll_tx_inhibit_thead.Start();
                 }
 
+                if ((display_volts_amps_thead == null || !display_volts_amps_thead.IsAlive) && anan8000dpresent)
+                {
+                    display_volts_amps_thead = new Thread(new ThreadStart(displayMKIIPAVoltsAmps));
+                    display_volts_amps_thead.Name = "Update Volts Amps Thread";
+                    display_volts_amps_thead.Priority = ThreadPriority.Normal;
+                    display_volts_amps_thead.IsBackground = true;
+                    display_volts_amps_thead.Start();
+                }
+
+
                 if (!rx_only)
                 {
                     chkMOX.Enabled = true;
@@ -34443,6 +35663,9 @@ namespace PowerSDR
 
                 SetupForm.UpdateGeneraHardware();
                 SetMicGain();
+                UpdateRX1DDSFreq();
+                UpdateRX2DDSFreq();
+                UpdateTXDDSFreq();
             }
             else
             {
@@ -34538,6 +35761,11 @@ namespace PowerSDR
                 {
                     if (!poll_cw_thread.Join(500))
                         poll_cw_thread.Abort();
+                }
+                if (display_volts_amps_thead != null)
+                {
+                    if (!display_volts_amps_thead.Join(500))
+                        display_volts_amps_thead.Abort();
                 }
 
                 // DG8MG
@@ -34991,37 +36219,28 @@ namespace PowerSDR
             {
                 case "-20dB":
                     mode = PreampMode.HPSDR_OFF;
-                    // comboPreamp.Text = "-20dB";
-                    // if (!rx2_preamp_present)
-                    //  comboRX2Preamp.Text = "-20dB";
                     break;
-
-                // case "Low":
-                // case "Med":
-                // case "High":
                 case "0dB":
                     mode = PreampMode.HPSDR_ON;
-                    // comboPreamp.Text = "0dB";
-                    // if (!rx2_preamp_present)
-                    //   comboRX2Preamp.Text = "0dB";
                     break;
-
+                case "-10dB":
+                    mode = PreampMode.HPSDR_SMINUS10;
+                    break;
+                case "-30dB":
+                    mode = PreampMode.HPSDR_SMINUS30;
+                    break;
                 case "-10db":
                     mode = PreampMode.HPSDR_MINUS10;
                     break;
-
                 case "-20db":
                     mode = PreampMode.HPSDR_MINUS20;
                     break;
-
                 case "-30db":
                     mode = PreampMode.HPSDR_MINUS30;
                     break;
-
                 case "-40db":
                     mode = PreampMode.HPSDR_MINUS40;
                     break;
-
                 case "-50db":
                     mode = PreampMode.HPSDR_MINUS50;
                     break;
@@ -35273,7 +36492,7 @@ namespace PowerSDR
             //  }
             //  else
             //   {
-            //     const double TARGET = 0.8;		// audio in volts needed to hit 1W 
+            //     const double TARGET = 0.8;		// audio in fwdvolts needed to hit 1W 
             //      Audio.RadioVolume = (double)Math.Sqrt((double)ptbPWR.Value / 100.0) / audio_volts1 * TARGET;
             //  }
 
@@ -35317,7 +36536,7 @@ namespace PowerSDR
             {
                 ptbAF.Focus();
             }
-            
+
             //if (ptbAF.Focused) btnHidden.Focus();
         }
 
@@ -35634,14 +36853,15 @@ namespace PowerSDR
 
             if (tx)
             {
+                if (bpf2_gnd) JanusAudio.SetGndRx2onTx(1);
 
                 if (chkVFOSplit.Checked)
                     txtVFOBFreq_LostFocus(this, EventArgs.Empty);
-                else
-                    if (click_tune_display)
-                    {
-                        txtVFOAFreq_LostFocus(this, EventArgs.Empty);
-                    }
+                else if (click_tune_display)
+                {
+                    txtVFOAFreq_LostFocus(this, EventArgs.Empty);
+                }
+
                 if (click_tune_rx2_display)
                 {
                     txtVFOBFreq_LostFocus(this, EventArgs.Empty);
@@ -35653,7 +36873,7 @@ namespace PowerSDR
                     UpdateRX1DDSFreq();
                     UpdateRX2DDSFreq();
                     UpdateTXDDSFreq();
-                    tx_dds_freq_updated = false;
+                    //  tx_dds_freq_updated = false;
                 }
 
                 Band lo_band = Band.FIRST;
@@ -35674,7 +36894,12 @@ namespace PowerSDR
                     // Penny.getPenny().UpdateExtCtrl(lo_band, lo_bandb, mox);
 
                     if (alex_ant_ctrl_enabled)
-                        Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                    {
+                       // if(anan8000dpresent)
+                       //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
+                       // else
+                            Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                    }
                 }
                 else
                 {
@@ -35684,8 +36909,7 @@ namespace PowerSDR
                     if (alex_ant_ctrl_enabled)
                         Alex.getAlex().UpdateAlexAntSelection(tx_band, mox, false);
                 }
-
-                // Hdw.TransmitRelay = true;
+                JanusAudio.SetDelayXmit(1, TxDelayLoops);
 
                 // DG8MG: Test me! -> Sidetone generator needed!
                 // Extension for Charly 25 and HAMlab hardware
@@ -35766,7 +36990,12 @@ namespace PowerSDR
                     // Penny.getPenny().UpdateExtCtrl(lo_band, lo_bandb, mox);
 
                     if (alex_ant_ctrl_enabled)
-                        Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                    {
+                      //  if (anan8000dpresent)
+                       //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
+                      //  else
+                            Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                    }
                 }
                 else
                 {
@@ -35777,7 +37006,7 @@ namespace PowerSDR
                         Alex.getAlex().UpdateAlexAntSelection(rx1_band, mox, false);
                 }
 
-
+                JanusAudio.SetGndRx2onTx(0);
             }
 
         }
@@ -36175,38 +37404,6 @@ namespace PowerSDR
                 else JanusAudio.SetTxAttenData(rx1_attenuator_data);
                 // DG8MG
 
-                /*              if (attontx)
-                                {
-                                    if (current_hpsdr_model == HPSDRModel.HPSDR)
-                                    {
-                                        temp_mode = RX1PreampMode;
-                                        SetupForm.HermesEnableAttenuator = false;
-                                        RX1PreampMode = PreampMode.HPSDR_OFF;			// set to -20dB
-                                        if (rx2_preamp_present)
-                                        {
-                                            temp_mode2 = RX2PreampMode;
-                                            RX2PreampMode = PreampMode.HPSDR_OFF;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //tx_step_attenuator_by_band[(int)rx1_band] = SetupForm.ATTOnTX;
-                                        SetupForm.HermesAttenuatorData = tx_step_attenuator_by_band[(int)rx1_band];
-                                        JanusAudio.SetTxAttenData(tx_step_attenuator_by_band[(int)rx1_band]);
-                                        SetupForm.HermesEnableAttenuator = true;
-                                        comboRX2Preamp.Enabled = false;
-                                        udRX2StepAttData.Enabled = false;
-
-                                        //if (current_hpsdr_model == HPSDRModel.ANAN100D || current_hpsdr_model == HPSDRModel.ANAN200D)
-                                        //{
-                                        //    RX2ATT = SetupForm.ATTOnTX;
-                                        //    RX2StepAttPresent = true;
-                                        //}
-                                    }
-                                }
-                                else JanusAudio.SetTxAttenData(rx1_attenuator_data);
-                */
-
                 AudioMOXChanged(tx);    // set MOX in audio.cs
                 HdwMOXChanged(tx, freq);// flip the hardware
                 psform.Mox = tx;
@@ -36225,7 +37422,13 @@ namespace PowerSDR
             }
             else                        // change to RX mode
             {
+                // if (spacebar_ptt_hang)
+                //{
+                //  spacebar_ptt_hang = false;
+                if (space_mox_delay > 0) Thread.Sleep(space_mox_delay); // default 0
+                //  }
                 mox = tx;
+                psform.Mox = tx;    //
                 wdsp.SetChannelState(wdsp.id(1, 0), 0, 1);  // turn off the transmitter (no action if it's already off)
 
                 if (radio.GetDSPTX(0).CurrentDSPMode == DSPMode.CWL ||
@@ -36240,9 +37443,9 @@ namespace PowerSDR
 
                 AudioMOXChanged(tx);    // set audio.cs to RX
                 HdwMOXChanged(tx, freq);// flip the hardware
-                psform.Mox = tx;
+                // psform.Mox = tx;
 
-                if (ANAN10EPresent) if (mox_delay > 0) Thread.Sleep(mox_delay);
+                if (ANAN10EPresent || ANAN100BPresent) if (mox_delay > 0) Thread.Sleep(mox_delay);
 
                 wdsp.SetChannelState(wdsp.id(0, 0), 1, 0);  // turn on appropriate receivers
                 if (RX2Enabled)
@@ -36293,26 +37496,6 @@ namespace PowerSDR
                 else JanusAudio.SetTxAttenData(rx1_attenuator_data);
                 // DG8MG
 
-                /*                if (attontx)
-                                {
-                                    if (current_hpsdr_model == HPSDRModel.HPSDR)
-                                    {
-                                        RX1PreampMode = temp_mode;
-                                        if (rx2_preamp_present)
-                                            RX2PreampMode = temp_mode2;
-                                    }
-                                    else
-                                    {
-                                        comboRX2Preamp.Enabled = true;
-                                        udRX2StepAttData.Enabled = true;
-
-                                        update_preamp_mode = true;
-                                        update_preamp = true;
-                                        UpdatePreamps();
-                                    }
-                                }
-                                else JanusAudio.SetTxAttenData(rx1_attenuator_data);
-                */
             }
 
             if (!tx)
@@ -36557,6 +37740,8 @@ namespace PowerSDR
                                 lblMultiSMeter.Text = "    1              5             10            15            20            25+";
                             else if (apollopresent)
                                 lblMultiSMeter.Text = "    1              5             10            15            30            50+";
+                            else if (anan8000dpresent)
+                                lblMultiSMeter.Text = "    1              10            20            100          200          240+";
                             else if (alexpresent || pa_present)
                                 lblMultiSMeter.Text = "    1              5             10            50           100          120+";
                             else
@@ -36596,6 +37781,8 @@ namespace PowerSDR
                                 lblMultiSMeter.Text = "1      5     10    15   20    25+";
                             else if (apollopresent)
                                 lblMultiSMeter.Text = "1      5     10    15   30    50+";
+                            else if (anan8000dpresent)
+                                lblMultiSMeter.Text = "1      10    20   100  200  240+";
                             else if (alexpresent || pa_present)
                                 lblMultiSMeter.Text = "1      5     10    50   100  120+";
                             else
@@ -37668,7 +38855,7 @@ namespace PowerSDR
             return TuneLocation.Other;
         }
 
-        private void Console_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void Console_MouseWheel(object sender, MouseEventArgs e)
         {
             //			if(this.ActiveControl is TextBoxTS && this.ActiveControl != txtVFOAFreq
             //				&& this.ActiveControl != txtVFOBFreq) return;
@@ -37693,8 +38880,10 @@ namespace PowerSDR
                 ToggleFocusMasterTimer();
 
             if (e.Delta == 0) return;
-
-            int num_steps = (e.Delta > 0 ? 1 : -1);	// 1 per click
+            int num_steps = 0;
+            if (WheelReverse)
+                num_steps = (e.Delta > 0 ? -1 : 1);	// 1 per click
+            else num_steps = (e.Delta > 0 ? 1 : -1);	// 1 per click
             //int numberToMove = e.Delta / 120;	// 1 per click
 
             if (vfo_char_width == 0)
@@ -37872,7 +39061,9 @@ namespace PowerSDR
 
         private void txtVFOAFreq_LostFocus(object sender, System.EventArgs e)
         {
-            if (current_hpsdr_model == HPSDRModel.ANAN200D) UpdateRXADCCtrl();
+            if (current_hpsdr_model == HPSDRModel.ANAN200D ||
+                 current_hpsdr_model == HPSDRModel.ORIONMKII ||
+                 current_hpsdr_model == HPSDRModel.ANAN8000D) UpdateRXADCCtrl();
 
             if (txtVFOAFreq.Text == "." || txtVFOAFreq.Text == "")
             {
@@ -37884,7 +39075,7 @@ namespace PowerSDR
             if (freq > 30.0) rx1_above30 = true;
             else rx1_above30 = false;
 
-            if (!click_tune_display || update_centerfreq || initializing)
+            if (!click_tune_display || update_centerfreq || (initializing && !click_tune_display))
             {
                 center_frequency = freq;
                 update_centerfreq = false;
@@ -38002,19 +39193,41 @@ namespace PowerSDR
                 RX1XVTRGainOffset = XVTRForm.GetRXGain(rx1_xvtr_index);
                 if (tx_xvtr_index >= 0)
                 {
-                    if (XVTRForm.GetDisablePA(tx_xvtr_index)) JanusAudio.SetAlexTRRelayBit(1);
-                    else JanusAudio.SetAlexTRRelayBit(0);
+                    if (XVTRForm.GetDisablePA(tx_xvtr_index))
+                    {
+                        JanusAudio.SetXVTREnable(1); // enable
+                        JanusAudio.SetAlexTRRelayBit(1); // disable
+                    }
+                    else
+                    {
+                        JanusAudio.SetXVTREnable(0); // disable
+                        JanusAudio.SetAlexTRRelayBit(0); // enable
+                    }
                 }
             }
 
             if (rx1_xvtr_index < 0)
             {
                 RX1XVTRGainOffset = 0.0f;
-                if (hf_tr_relay) JanusAudio.SetAlexTRRelayBit(1);
-                else JanusAudio.SetAlexTRRelayBit(0);
+                if (hf_tr_relay)
+                {
+                   // JanusAudio.SetXVTREnable(0); 
+                    JanusAudio.SetAlexTRRelayBit(1);
+                }
+                else
+                {
+                   // JanusAudio.SetXVTREnable(0); 
+                    JanusAudio.SetAlexTRRelayBit(0);
+                }
+
+                if (enable_xvtr_hf)
+                    JanusAudio.SetXVTREnable(1); // enable
+                else 
+                    JanusAudio.SetXVTREnable(0); // disable
 
                 if (rx1_step_att_present) udRX1StepAttData_ValueChanged(this, EventArgs.Empty);
                 else comboPreamp_SelectedIndexChanged(this, EventArgs.Empty);
+
             }
 
             //tx
@@ -38081,7 +39294,12 @@ namespace PowerSDR
                     // Penny.getPenny().UpdateExtCtrl(lo_band, lo_bandb, mox);
 
                     if (alex_ant_ctrl_enabled)
-                        Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                    {
+                       // if (anan8000dpresent)
+                       //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
+                       // else
+                            Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                    }
                 }
                 else
                 {
@@ -38125,12 +39343,24 @@ namespace PowerSDR
                 }
             }
 
-            if (alexpresent && rx1_band == Band.B6M &&
-               (chkSR.Checked || (!chkSR.Checked && !disable_6m_lna_on_rx && !alex6bphpf_bypass && !alex_hpf_bypass)) &&
-                current_hpsdr_model != HPSDRModel.ANAN10 &&
-                current_hpsdr_model != HPSDRModel.ANAN10E)
-                RX16mGainOffset = -RX6mGainOffset;
-            else RX16mGainOffset = 0;
+            if (anan8000dpresent)
+            {
+                if (alexpresent && rx1_band == Band.B6M &&
+                   (chkSR.Checked || (!chkSR.Checked && !disable_6m_lna_on_rx && !bpf1_6bp_bypass && !alex_hpf_bypass)) &&
+                    current_hpsdr_model != HPSDRModel.ANAN10 &&
+                    current_hpsdr_model != HPSDRModel.ANAN10E)
+                    RX16mGainOffset = -RX6mGainOffset;
+                else RX16mGainOffset = 0;
+            }
+            else
+            {
+                if (alexpresent && rx1_band == Band.B6M &&
+                   (chkSR.Checked || (!chkSR.Checked && !disable_6m_lna_on_rx && !alex6bphpf_bypass && !alex_hpf_bypass)) &&
+                    current_hpsdr_model != HPSDRModel.ANAN10 &&
+                    current_hpsdr_model != HPSDRModel.ANAN10E)
+                    RX16mGainOffset = -RX6mGainOffset;
+                else RX16mGainOffset = 0;
+            }
 
             double rx_freq = freq;
             double tx_freq = freq;
@@ -38247,7 +39477,7 @@ namespace PowerSDR
                     if (!chkVFOSplit.Checked && !chkFullDuplex.Checked && !rx1_spectrum_drag && !chkVFOBTX.Checked)
                     {
                         tx_dds_freq_mhz = tx_freq;
-                        tx_dds_freq_updated = true;
+                        // tx_dds_freq_updated = true;
                         UpdateTXDDSFreq(); // update tx freq
                     }
                     if (!click_tune_display)
@@ -38308,6 +39538,7 @@ namespace PowerSDR
             // UpdateRX1Notches();
             wdsp.RXANBPSetTuneFrequency(wdsp.id(0, 0), (FWCDDSFreq + f_LO) * 1.0e6);
             wdsp.RXANBPSetTuneFrequency(wdsp.id(0, 1), (FWCDDSFreq + f_LO) * 1.0e6);
+
             UpdatePreamps();
 
         }
@@ -38533,7 +39764,7 @@ namespace PowerSDR
                 if (!rx1_sub_drag)
                 {
                     tx_dds_freq_mhz = freq;
-                    tx_dds_freq_updated = true;
+                    // tx_dds_freq_updated = true;
                     UpdateTXDDSFreq();
                 }
                 last_tx_xvtr_index = tx_xvtr_index;
@@ -38588,6 +39819,14 @@ namespace PowerSDR
             double freq = double.Parse(txtVFOBFreq.Text);
             if (freq > 30.0) rx2_above30 = true;
             else rx2_above30 = false;
+
+            if (anan8000dpresent)
+            {
+                if (alexpresent && rx2_band == Band.B6M &&
+                   (chkSR.Checked || (!chkSR.Checked && !disable_6m_lna_on_rx && !alex26bphpf_bypass && !alex2_hpf_bypass)))
+                    RX26mGainOffset = -RX6mGainOffsetRx2;
+                else RX26mGainOffset = 0;
+            }
 
             if (!click_tune_rx2_display || update_rx2_centerfreq)
             {
@@ -38808,8 +40047,16 @@ namespace PowerSDR
             {
                 tx_freq = XVTRForm.TranslateFreq(tx_freq);
 
-                if (XVTRForm.GetDisablePA(tx_xvtr_index)) JanusAudio.SetAlexTRRelayBit(1);
-                else JanusAudio.SetAlexTRRelayBit(0);
+                if (XVTRForm.GetDisablePA(tx_xvtr_index))
+                {
+                    JanusAudio.SetXVTREnable(1); 
+                    JanusAudio.SetAlexTRRelayBit(1);
+                }
+                else
+                {
+                    JanusAudio.SetXVTREnable(0); 
+                    JanusAudio.SetAlexTRRelayBit(0);
+                }
             }
 
             //tx
@@ -38837,8 +40084,21 @@ namespace PowerSDR
                     return;
                 }
 
-                if (hf_tr_relay) JanusAudio.SetAlexTRRelayBit(1);
-                else JanusAudio.SetAlexTRRelayBit(0);
+                if (hf_tr_relay)
+                {
+                  //  JanusAudio.SetXVTREnable(0); 
+                    JanusAudio.SetAlexTRRelayBit(1);
+                }
+                else
+                {
+                  //  JanusAudio.SetXVTREnable(0); 
+                    JanusAudio.SetAlexTRRelayBit(0);
+                }
+
+                if (enable_xvtr_hf)
+                    JanusAudio.SetXVTREnable(1); // enable
+                else
+                    JanusAudio.SetXVTREnable(0); // disable
 
             }
 
@@ -38933,7 +40193,7 @@ namespace PowerSDR
             if (!rx1_sub_drag)
             {
                 tx_dds_freq_mhz = tx_freq;
-                tx_dds_freq_updated = true;
+                // tx_dds_freq_updated = true;
                 UpdateTXDDSFreq();
 
                 //if (rx2_enabled) 
@@ -39996,7 +41256,6 @@ namespace PowerSDR
                                         case AGCMode.FIXD:
                                             cal_offset = 0.0f;
                                             break;
-
                                         default:
                                             cal_offset = 2.0f + (Display.RX1DisplayCalOffset +
                                            (Display.RX1PreampOffset - Display.AlexPreampOffset) - Display.RX2FFTSizeOffset);
@@ -40010,7 +41269,6 @@ namespace PowerSDR
                                         case AGCMode.FIXD:
                                             cal_offset = 0.0f;
                                             break;
-
                                         default:
                                             cal_offset = 2.0f + (Display.RX1DisplayCalOffset +
                                            (Display.RX1PreampOffset - Display.AlexPreampOffset) - Display.RX1FFTSizeOffset);
@@ -41002,9 +42260,10 @@ namespace PowerSDR
                                     }
                                 }
 
-                                if (!chkMOX.Checked && (chkRIT.Checked && current_click_tune_mode == ClickTuneMode.VFOA))
-                                    udRIT.Value = 0;
-                                else if (chkMOX.Checked && chkXIT.Checked && current_click_tune_mode == ClickTuneMode.VFOB)
+                                // if (!chkMOX.Checked && (chkRIT.Checked && current_click_tune_mode == ClickTuneMode.VFOA))
+                                //  udRIT.Value = 0;
+                                // else 
+                                if (chkMOX.Checked && chkXIT.Checked && current_click_tune_mode == ClickTuneMode.VFOB)
                                     udXIT.Value = 0;
                                 break;
                             default:
@@ -44662,6 +45921,7 @@ namespace PowerSDR
             wdsp.SetRXASNBARun(wdsp.id(0, 0), chkDSPNB2.Checked);
             wdsp.SetRXASNBARun(wdsp.id(0, 1), chkDSPNB2.Checked);
             cat_snb_status = Convert.ToInt32(chkDSPNB2.Checked);
+            SNBtoolStripMenuItem.Checked = chkDSPNB2.Checked;
         }
 
         private void chkRX2NB2_CheckedChanged(object sender, EventArgs e)
@@ -44670,6 +45930,7 @@ namespace PowerSDR
             else chkRX2NB2.BackColor = SystemColors.Control;
             wdsp.SetRXASNBARun(wdsp.id(2, 0), chkRX2NB2.Checked);
             cat_rx2snb_status = Convert.ToInt32(chkRX2NB2.Checked);
+            SNBtoolStripMenuItem1.Checked = chkRX2NB2.Checked;
         }
 
         #endregion
@@ -45125,31 +46386,9 @@ namespace PowerSDR
             else base.WndProc(ref m);
         }
 
-        public void FWCATUBypass()
-        {
-            // chkFWCATU.Checked = false;
-            //  chkFWCATUBypass.Checked = true;
-        }
-
-        public void FWCATUTuned()
-        {
-            // chkFWCATU.Checked = true;
-            // chkFWCATUBypass.Checked = false;
-        }
-
-        public void FWCATUFailed()
-        {
-            // chkFWCATU.Checked = false;
-            // chkFWCATUBypass.Checked = true;
-        }
-
         public void SetATUFeedback(string s)
         {
             // toolTip1.SetToolTip(chkFWCATU, s);
-        }
-
-        private void chkFWCATUBypass_Click(object sender, System.EventArgs e)
-        {
         }
 
         private void chkSplitDisplay_CheckedChanged(object sender, System.EventArgs e)
@@ -45346,6 +46585,10 @@ namespace PowerSDR
                     txtDisplayCursorPower.Location = new Point(txt_display_cursor_power_basis.X, txt_display_cursor_power_basis.Y + v_delta);
                     txtDisplayCursorOffset.Location = new Point(txt_display_cursor_offset_basis.X, txt_display_cursor_offset_basis.Y + v_delta);
 
+                    txtDisplayOrionMKIIPAVolts.Location = new Point(txt_display_orion_mkii_pa_volts_basis.X, txt_display_orion_mkii_pa_volts_basis.Y + v_delta);
+                    txtDisplayOrionMKIIBlank.Location = new Point(txt_display_orion_mkii_blank_basis.X, txt_display_orion_mkii_blank_basis.Y + v_delta);
+                    txtDisplayOrionMKIIPAAmps.Location = new Point(txt_display_orion_mkii_pa_amps_basis.X, txt_display_orion_mkii_pa_amps_basis.Y + v_delta);
+
                     //chkPower.Location = new Point(chk_power_basis.X, chk_power_basis.Y + (v_delta / 8));
                     panelPower.Location = new Point(gr_power_basis.X, gr_power_basis.Y + (v_delta / 8));
                     //chkRX2.Location = new Point(chk_rx2_enable_basis.X, chk_rx2_enable_basis.Y + v_delta);
@@ -45457,6 +46700,11 @@ namespace PowerSDR
             txt_display_cursor_freq_basis = this.txtDisplayCursorFreq.Location;
             txt_display_cursor_power_basis = this.txtDisplayCursorPower.Location;
             txt_display_cursor_offset_basis = this.txtDisplayCursorOffset.Location;
+
+            txt_display_orion_mkii_pa_volts_basis = this.txtDisplayOrionMKIIPAVolts.Location;
+            txt_display_orion_mkii_blank_basis = this.txtDisplayOrionMKIIBlank.Location;
+            txt_display_orion_mkii_pa_amps_basis = this.txtDisplayOrionMKIIPAAmps.Location;
+
             chk_power_basis = this.chkPower.Location;
             gr_power_basis = this.panelPower.Location;
             gr_rx2_enable_basis = this.panelRX2Power.Location;
@@ -45490,6 +46738,7 @@ namespace PowerSDR
             chk_rx2_enable_basis = this.chkRX2.Location;
 
             // gr_rx2_enable_basis = this.panelRX2Power.Location; //
+
             combo_rx2_preamp_basis = this.comboRX2Preamp.Location;
             lbl_rx2_band_basis = this.lblRX2Band.Location;
             combo_rx2_band_basis = this.comboRX2Band.Location;
@@ -45600,7 +46849,6 @@ namespace PowerSDR
                     UpdateRXADCCtrl();
                     chkDX_CheckedChanged(this, EventArgs.Empty); // stereo_diversity
                     // comboRX2Preamp_SelectedIndexChanged(this, EventArgs.Empty);
-
                     if (RX2StepAttPresent) udRX2StepAttData_ValueChanged(this, EventArgs.Empty);
                     else comboRX2Preamp_SelectedIndexChanged(this, EventArgs.Empty);
 
@@ -47046,7 +48294,6 @@ namespace PowerSDR
 
         private void chkRX1Preamp_CheckedChanged(object sender, System.EventArgs e)
         {
-            // if (!fwc_init || current_model != Model.FLEX5000) return;
             if (chkRX1Preamp.Checked)
             {
                 chkRX1Preamp.BackColor = button_selected_color;
@@ -48543,32 +49790,7 @@ namespace PowerSDR
         private const int MAX_NOTCHES_INITIALLY_IN_PASSBAND = 3;//;   //used to be 3
         private void btnTNFAdd_Click(object sender, EventArgs e)
         {
-            // calculate the mid-point for the filter
-            int low = radio.GetDSPRX(0, 0).RXFilterLow;
-            int high = radio.GetDSPRX(0, 0).RXFilterHigh;
-            int midpoint = (low + high) / 2;
 
-            if (midpoint < -9999 || midpoint > 9999)
-                throw new Exception("TNF: The filter limits [" + low + "," + high + "] do not make sense");
-
-            double vfo = VFOAFreq;
-            if (chkRIT.Checked) vfo += (double)udRIT.Value * 1e-6; // check for RIT
-
-            double rf_freq = vfo + midpoint * 1e-6;
-
-            // if there's already another notch within 100Hz, then quit now
-            if (NotchList.NotchNearFreq(rf_freq, 100))
-                return;
-
-            // if there's already 3+ filters within the RF window, quit now
-            if (NotchList.NotchesInBW(VFOAFreq, low, high).Count >= 3)
-                return;
-
-            NotchList.List.Add(new Notch(rf_freq, default_notch_width));
-
-            UpdateRX1Notches();
-            UpdateRX1SubNotches();
-            UpdateRX2Notches();
         }
 
         private void addNotch(int thread, int subrx, uint count, double freq, double bw)
@@ -49194,7 +50416,6 @@ namespace PowerSDR
             chkSR.Checked = true;
         }
 
-        
         private String[] on_off_preamp_settings = { "0dB", "-20dB" };
         private String[] anan100d_preamp_settings = { "0dB", "-10dB", "-20dB", "-30dB" };
         //private String[] alex_preamp_settings = { "0db", "-20db", "-10dB", "-20dB", "-30dB", "-40dB", "-50dB" };
@@ -49226,18 +50447,63 @@ namespace PowerSDR
             }
             else
             {
-                if (diversity2 && current_hpsdr_model != HPSDRModel.HPSDR)
-                {
-                    comboPreamp.Items.AddRange(anan100d_preamp_settings);
-                }
-                else
-                {
-                    comboPreamp.Items.AddRange(on_off_preamp_settings);
-                    if (alexpresent && !anan10present && !anan10Epresent)
-                    {
-                        comboPreamp.Items.AddRange(alex_preamp_settings);
-                    }
-                }
+            	//if (diversity2 && current_hpsdr_model != HPSDRModel.HPSDR)
+            	//{
+            	//    comboPreamp.Items.AddRange(anan100d_preamp_settings);
+	            //}
+	            //else
+	            //{
+	            //    comboPreamp.Items.AddRange(on_off_preamp_settings);
+	            //    if (alexpresent && !anan10present && !anan10Epresent)
+	            //    {
+	            //        comboPreamp.Items.AddRange(alex_preamp_settings);
+	            //    }
+	            //}
+	
+	            switch (current_hpsdr_model)
+	            {
+	                case HPSDRModel.HPSDR:
+	                    comboPreamp.Items.AddRange(on_off_preamp_settings);
+	                    if (alexpresent)
+	                    {
+	                        comboPreamp.Items.AddRange(alex_preamp_settings);
+	                    }
+	
+	                    break;
+	                case HPSDRModel.HERMES:
+	                    if (alexpresent)
+	                    {
+	                        comboPreamp.Items.AddRange(on_off_preamp_settings);
+	                        comboPreamp.Items.AddRange(alex_preamp_settings);
+	                    }
+	                    else
+	                        comboPreamp.Items.AddRange(anan100d_preamp_settings);
+	
+	                    break;
+	                case HPSDRModel.ANAN10:
+	                case HPSDRModel.ANAN10E:
+	                    comboPreamp.Items.AddRange(anan100d_preamp_settings);
+	                    break;
+	                case HPSDRModel.ANAN100:
+	                case HPSDRModel.ANAN100B:
+	                    comboPreamp.Items.AddRange(on_off_preamp_settings);
+	                    comboPreamp.Items.AddRange(alex_preamp_settings);
+	                    break;
+	                case HPSDRModel.ANAN100D:
+	                case HPSDRModel.ANAN200D:
+	                    if (alexpresent)
+	                    {
+	                        comboPreamp.Items.AddRange(on_off_preamp_settings);
+	                        comboPreamp.Items.AddRange(alex_preamp_settings);
+	                    }
+	                    else
+	                        comboPreamp.Items.AddRange(anan100d_preamp_settings);
+	                    break;
+	                case HPSDRModel.ANAN8000D:
+	                case HPSDRModel.ORIONMKII:
+	                    comboPreamp.Items.AddRange(anan100d_preamp_settings);
+	                    break;
+	            }
             }
             // DG8MG
 
@@ -49257,7 +50523,7 @@ namespace PowerSDR
                 }
                 else
                 {
-                    if (anan100dpresent || orionpresent)
+                    if (anan100dpresent || anan200dpresent || anan8000dpresent || orionmkiipresent)
                         comboRX2Preamp.Items.AddRange(anan100d_preamp_settings);
                     else
                         comboRX2Preamp.Items.AddRange(on_off_preamp_settings);
@@ -49844,6 +51110,10 @@ namespace PowerSDR
             txtDisplayCursorFreq.Location = new Point(txt_display_cursor_freq_basis.X, txt_display_cursor_freq_basis.Y + v_delta);
             txtDisplayCursorPower.Location = new Point(txt_display_cursor_power_basis.X, txt_display_cursor_power_basis.Y + v_delta);
             txtDisplayCursorOffset.Location = new Point(txt_display_cursor_offset_basis.X, txt_display_cursor_offset_basis.Y + v_delta);
+
+            txtDisplayOrionMKIIPAVolts.Location = new Point(txt_display_orion_mkii_pa_volts_basis.X, txt_display_orion_mkii_pa_volts_basis.Y + v_delta);
+            txtDisplayOrionMKIIBlank.Location = new Point(txt_display_orion_mkii_blank_basis.X, txt_display_orion_mkii_blank_basis.Y + v_delta);
+            txtDisplayOrionMKIIPAAmps.Location = new Point(txt_display_orion_mkii_pa_amps_basis.X, txt_display_orion_mkii_pa_amps_basis.Y + v_delta);
 
             // :NOTE: Force update on pan control
             ptbDisplayPan.Value = ptbDisplayPan.Value;
@@ -50481,6 +51751,10 @@ namespace PowerSDR
             txtDisplayPeakPower.Location = new Point(txtDisplayPeakOffset.Location.X + txtDisplayPeakOffset.Width, top);
             txtDisplayPeakFreq.Location = new Point(txtDisplayPeakPower.Location.X + txtDisplayPeakPower.Width, top);
 
+            txtDisplayOrionMKIIPAVolts.Location = new Point(picDisplay.Location.X, top);
+            txtDisplayOrionMKIIPAAmps.Location = new Point(txtDisplayOrionMKIIPAVolts.Location.X + txtDisplayOrionMKIIPAVolts.Width, top);
+            txtDisplayOrionMKIIBlank.Location = new Point(txtDisplayOrionMKIIPAAmps.Location.X + txtDisplayOrionMKIIPAAmps.Width, top);
+
             top = txtDisplayPeakOffset.Location.Y + txtDisplayPeakOffset.Height + 5;
             int dynamicWidth = picDisplay.Width - (lblDisplayPan.Width + btnDisplayPanCenter.Width + 5 +
                 comboDisplayMode.Width + 5 + lblDisplayZoom.Width + radDisplayZoom05.Width * 4);
@@ -50679,15 +51953,25 @@ namespace PowerSDR
             switch (menu_item)
             {
                 case "NR":
-                    chkNR.Checked = !chkNR.Checked;
+                    if (chkNR.CheckState == CheckState.Unchecked || chkNR.CheckState == CheckState.Indeterminate) chkNR.CheckState = CheckState.Checked;
+                    else if (chkNR.CheckState == CheckState.Checked) chkNR.CheckState = CheckState.Unchecked;
+                    break;
+                case "NR2":
+                    if (chkNR.CheckState == CheckState.Unchecked || chkNR.CheckState == CheckState.Checked) chkNR.CheckState = CheckState.Indeterminate;
+                    else if (chkNR.CheckState == CheckState.Indeterminate) chkNR.CheckState = CheckState.Unchecked;
                     break;
                 case "ANF":
                     chkANF.Checked = !chkANF.Checked;
                     break;
                 case "NB":
-                    chkNB.Checked = !chkNB.Checked;
+                    if (chkNB.CheckState == CheckState.Unchecked || chkNB.CheckState == CheckState.Indeterminate) chkNB.CheckState = CheckState.Checked;
+                    else if (chkNB.CheckState == CheckState.Checked) chkNB.CheckState = CheckState.Unchecked;
                     break;
                 case "NB2":
+                    if (chkNB.CheckState == CheckState.Unchecked || chkNB.CheckState == CheckState.Checked) chkNB.CheckState = CheckState.Indeterminate;
+                    else if (chkNB.CheckState == CheckState.Indeterminate) chkNB.CheckState = CheckState.Unchecked;
+                    break;
+                case "SNB":
                     chkDSPNB2.Checked = !chkDSPNB2.Checked;
                     break;
                 case "BIN":
@@ -50714,19 +51998,29 @@ namespace PowerSDR
             switch (menu_item)
             {
                 case "NR":
-                    chkRX2NR.Checked = !chkRX2NR.Checked;
+                    if (chkRX2NR.CheckState == CheckState.Unchecked || chkRX2NR.CheckState == CheckState.Indeterminate) chkRX2NR.CheckState = CheckState.Checked;
+                    else if (chkRX2NR.CheckState == CheckState.Checked) chkRX2NR.CheckState = CheckState.Unchecked;
+                    break;
+                case "NR2":
+                    if (chkRX2NR.CheckState == CheckState.Unchecked || chkRX2NR.CheckState == CheckState.Checked) chkRX2NR.CheckState = CheckState.Indeterminate;
+                    else if (chkRX2NR.CheckState == CheckState.Indeterminate) chkRX2NR.CheckState = CheckState.Unchecked;
                     break;
                 case "ANF":
                     chkRX2ANF.Checked = !chkRX2ANF.Checked;
                     break;
                 case "NB":
-                    chkRX2NB.Checked = !chkRX2NB.Checked;
+                    if (chkRX2NB.CheckState == CheckState.Unchecked || chkRX2NB.CheckState == CheckState.Indeterminate) chkRX2NB.CheckState = CheckState.Checked;
+                    else if (chkRX2NB.CheckState == CheckState.Checked) chkRX2NB.CheckState = CheckState.Unchecked;
                     break;
                 case "NB2":
-                    chkRX2NB2.Checked = !chkRX2NB2.Checked;
+                    if (chkRX2NB.CheckState == CheckState.Unchecked || chkRX2NB.CheckState == CheckState.Checked) chkRX2NB.CheckState = CheckState.Indeterminate;
+                    else if (chkRX2NB.CheckState == CheckState.Indeterminate) chkRX2NB.CheckState = CheckState.Unchecked;
                     break;
                 case "BIN":
                     chkRX2BIN.Checked = !chkRX2BIN.Checked;
+                    break;
+                case "SNB":
+                    chkRX2NB2.Checked = !chkRX2NB2.Checked;
                     break;
                 case "AVG":
                     chkRX2DisplayAVG.Checked = !chkRX2DisplayAVG.Checked;
@@ -51211,9 +52505,9 @@ namespace PowerSDR
 
         private void linearityToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            psform.Dispose();
-            if (psform.IsDisposed)
-                psform = new PSForm(this);
+            //psform.Dispose();
+            //if (psform.IsDisposed)
+            //    psform = new PSForm(this);
             psform.Show();
             psform.Focus();
         }
@@ -51342,16 +52636,18 @@ namespace PowerSDR
                     radio.GetDSPRX(0, 0).NoiseReduction = true;
                     radio.GetDSPRX(0, 1).NoiseReduction = true;
                     NRToolStripMenuItem.Checked = true;
+                    NR2ToolStripMenuItem1.Checked = false;
                     cat_nr2_status = 0;
                     cat_nr_status = 1;
                     chkNR.Text = "NR";
                     break;
-                case CheckState.Indeterminate: // ANR2
+                case CheckState.Indeterminate: // NR2
                     radio.GetDSPRX(0, 0).NoiseReduction = false;
                     radio.GetDSPRX(0, 1).NoiseReduction = false;
                     radio.GetDSPRX(0, 0).RXANR2Run = 1;
                     radio.GetDSPRX(0, 1).RXANR2Run = 1;
                     NRToolStripMenuItem.Checked = false;
+                    NR2ToolStripMenuItem1.Checked = true;
                     cat_nr_status = 0;
                     cat_nr2_status = 1;
                     chkNR.Text = "NR2";
@@ -51362,6 +52658,7 @@ namespace PowerSDR
                     radio.GetDSPRX(0, 0).RXANR2Run = 0;
                     radio.GetDSPRX(0, 1).RXANR2Run = 0;
                     NRToolStripMenuItem.Checked = false;
+                    NR2ToolStripMenuItem1.Checked = false;
                     cat_nr_status = 0;
                     cat_nr2_status = 0;
                     chkNR.Text = "NR";
@@ -51380,14 +52677,20 @@ namespace PowerSDR
                     radio.GetDSPRX(1, 0).NoiseReduction = true;
                     radio.GetDSPRX(1, 1).NoiseReduction = true;
                     nR2ToolStripMenuItem.Checked = true;
+                    NR2StripMenuItem2.Checked = false;
+                    cat_rx2_nr2_status = 0;
+                    cat_rx2_nr_status = 1;
                     chkRX2NR.Text = "NR";
                     break;
-                case CheckState.Indeterminate: // ANR2
+                case CheckState.Indeterminate: // NR2
                     radio.GetDSPRX(1, 0).RXANR2Run = 1;
                     radio.GetDSPRX(1, 1).RXANR2Run = 1;
                     radio.GetDSPRX(1, 0).NoiseReduction = false;
                     radio.GetDSPRX(1, 1).NoiseReduction = false;
                     nR2ToolStripMenuItem.Checked = false;
+                    NR2StripMenuItem2.Checked = true;
+                    cat_rx2_nr_status = 0;
+                    cat_rx2_nr2_status = 1;
                     chkRX2NR.Text = "NR2";
                     break;
                 case CheckState.Unchecked: // all off
@@ -51396,6 +52699,9 @@ namespace PowerSDR
                     radio.GetDSPRX(1, 0).RXANR2Run = 0;
                     radio.GetDSPRX(1, 1).RXANR2Run = 0;
                     nR2ToolStripMenuItem.Checked = false;
+                    NR2StripMenuItem2.Checked = false;
+                    cat_rx2_nr_status = 0;
+                    cat_rx2_nr2_status = 0;
                     chkRX2NR.Text = "NR";
                     break;
 
@@ -51428,6 +52734,7 @@ namespace PowerSDR
                     specRX.GetSpecRX(0).NBOn = false;
                     specRX.GetSpecRX(0).NB2On = false;
                     NB2ToolStripMenuItem.Checked = false;
+                    NBToolStripMenuItem.Checked = false;
                     cat_nb1_status = 0;
                     cat_nb2_status = 0;
                     chkNB.Text = "NB";
@@ -51445,18 +52752,27 @@ namespace PowerSDR
                     specRX.GetSpecRX(1).NB2On = false;
                     specRX.GetSpecRX(1).NBOn = true;
                     nB2ToolStripMenuItem1.Checked = true;
+                    nBRX2ToolStripMenuItem.Checked = false;
+                    cat_rx2nb1_status = 1;
+                    cat_rx2nb2_status = 0;
                     chkRX2NB.Text = "NB";
                     break;
                 case CheckState.Indeterminate: // NB2
                     specRX.GetSpecRX(1).NBOn = false;
                     specRX.GetSpecRX(1).NB2On = true;
+                    nBRX2ToolStripMenuItem.Checked = true;
                     nB2ToolStripMenuItem1.Checked = false;
+                    cat_rx2nb1_status = 0;
+                    cat_rx2nb2_status = 1;
                     chkRX2NB.Text = "NB2";
                     break;
                 case CheckState.Unchecked: // all off                    
                     specRX.GetSpecRX(1).NBOn = false;
                     specRX.GetSpecRX(1).NB2On = false;
                     nB2ToolStripMenuItem1.Checked = false;
+                    nBRX2ToolStripMenuItem.Checked = false;
+                    cat_rx2nb1_status = 0;
+                    cat_rx2nb2_status = 0;
                     chkRX2NB.Text = "NB";
                     break;
 
@@ -51471,6 +52787,42 @@ namespace PowerSDR
             if (!radioBtnTS.Checked) return;
 
             // radBandVHF_Click(sender, EventArgs.Empty);
+        }
+
+        public void ForcePureSignalAutoCalDisable()
+        {
+            chkFWCATUBypass.Checked = false;
+        }
+
+        private void chkFWCATUBypass_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkFWCATUBypass.Checked)
+            {
+                SetupForm.ForceEnablePureSignal();
+                psform.AutoCalEnabled = true;
+            }
+            else
+            {
+                psform.AutoCalEnabled = false;
+            }
+        }
+
+        private void chkFWCATUBypass_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if (chkFWCATUBypass.Checked)
+            {
+                SetupForm.ForceEnablePureSignal();
+                psform.AutoCalEnabled = true;
+            }
+            else
+            {
+                psform.AutoCalEnabled = false;
+            }
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
 
         // DG8MG

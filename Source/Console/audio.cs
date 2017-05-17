@@ -5706,8 +5706,8 @@ namespace PowerSDR
         public static bool Start(int nr)
         {
             bool retval = false;
-            phase_buf_l = new float[block_size1];
-            phase_buf_r = new float[block_size1];
+            phase_buf_l = new float[2048];
+            phase_buf_r = new float[2048];
 
             unsafe
             {

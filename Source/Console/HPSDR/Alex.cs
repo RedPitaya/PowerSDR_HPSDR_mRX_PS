@@ -310,7 +310,7 @@ namespace PowerSDR
                 init_update = false;
                 Thread.Sleep(10);
             }
-			JanusAudio.SetAlexAntBits(rx_only_ant, trx_ant, rx_out); 
+			JanusAudio.SetAlexAntBits(rx_only_ant, trx_ant, rx_out);
 
 			// don't allow changing antenna selections when mox is activated 
 		/*	if ( tx )  

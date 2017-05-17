@@ -1122,6 +1122,7 @@ namespace PowerSDR
             // 
             // EQForm
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(5, 13);
             this.ClientSize = new System.Drawing.Size(544, 502);
             this.Controls.Add(this.rad10Band);
             this.Controls.Add(this.rad3Band);

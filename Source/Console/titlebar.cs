@@ -29,7 +29,10 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+
+// DG8MG
 using System.Windows.Forms;
+// DG8MG
 
 namespace PowerSDR
 {

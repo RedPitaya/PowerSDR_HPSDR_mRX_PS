@@ -3317,7 +3317,34 @@ namespace PowerSDR
                 else
                     return parser.Error1;
         }
-        
+
+        // Sets or reads the PS-A button on/off status
+        public string ZZLI(string s)
+        {
+            if (s.Length == parser.nSet && (s == "0" || s == "1"))
+            {
+                if (s == "0")
+                    console.PSA = false;
+                else if (s == "1")
+                    console.PSA = true;
+
+                return "";
+            }
+            else if (s.Length == parser.nGet)
+            {
+                bool retval = console.PSA;
+                if (retval)
+                    return "1";
+                else
+                    return "0";
+            }
+            else
+            {
+                return parser.Error1;
+            }
+
+        }
+
         // Sets or reads the MUT button on/off status
 		public string ZZMA(string s)
 		{
@@ -3817,14 +3844,12 @@ namespace PowerSDR
         {
                 if (s.Length == parser.nSet && (s == "0" || s == "1"))
                 {
-                    //console.CATRX2NB2 = Convert.ToInt32(s);
-                    //return "";
-                    return parser.Error1;
+                    console.CATRX2NB2 = Convert.ToInt32(s);
+                    return "";
                 }
                 else if (s.Length == parser.nGet)
                 {
-                    //return console.CATRX2NB2.ToString();
-                    return parser.Error1;
+                    return console.CATRX2NB2.ToString();
                 }
                 else
                 {
@@ -3909,13 +3934,7 @@ namespace PowerSDR
             }
         }
         
-        // Sets or reads the Noise Reduction status
-		//		public string ZZNR()
-		//		{
-		//			int nr = console.CATNR;
-		//			return nr.ToString();
-		//		}
-
+        // Sets or reads the RX1 Noise Reduction status
 		public string ZZNR(string s)
 		{
 			int sx = 0;
@@ -3938,6 +3957,7 @@ namespace PowerSDR
 			}
 		}
 
+        // Sets or reads the RX1 NR2 button status
         public string ZZNS(string s)
         {
             int sx = 0;
@@ -3978,7 +3998,53 @@ namespace PowerSDR
 			}
 		}
 
-		//Sets or reads the RX1 antenna
+        // Sets or reads the Noise Reduction status
+        public string ZZNV(string s)
+        {
+            int sx = 0;
+
+            if (s != "")
+                sx = Convert.ToInt32(s);
+
+            if (s.Length == parser.nSet && (s == "0" || s == "1"))
+            {
+                console.CATRX2NR = sx;
+                return "";
+            }
+            else if (s.Length == parser.nGet)
+            {
+                return console.CATRX2NR.ToString();
+            }
+            else
+            {
+                return parser.Error1;
+            }
+        }
+
+        // Sets or reads the RX2 NR2 button status
+        public string ZZNW(string s)
+        {
+            int sx = 0;
+
+            if (s != "")
+                sx = Convert.ToInt32(s);
+
+            if (s.Length == parser.nSet && (s == "0" || s == "1"))
+            {
+                console.CATRX2NR2 = sx;
+                return "";
+            }
+            else if (s.Length == parser.nGet)
+            {
+                return console.CATRX2NR2.ToString();
+            }
+            else
+            {
+                return parser.Error1;
+            }
+        }
+
+        //Sets or reads the RX1 antenna
 		public string ZZOA(string s)
 		{
                 parser.Verbose_Error_Code = 7;

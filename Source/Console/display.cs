@@ -7106,12 +7106,12 @@ namespace PowerSDR
                 step_index = (step_index + 1) % 4;
                 if (step_index == 0) step_power++;
             }
-            double w_pixel_step = (double)W * freq_step_size / width;
-            int w_steps = width / freq_step_size;
+           // double w_pixel_step = (double)W * freq_step_size / width;
+           // int w_steps = width / freq_step_size;
 
             // calculate vertical step size
             int h_steps = (grid_max - grid_min) / grid_step;
-            double h_pixel_step = (double)H / h_steps;
+            //double h_pixel_step = (double)H / h_steps;
             int top = (int)((double)grid_step * H / y_range);
 
             if (!local_mox && sub_rx1_enabled && rx == 1) //multi-rx
