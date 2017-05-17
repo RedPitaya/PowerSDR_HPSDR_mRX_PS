@@ -1,4 +1,10 @@
-## Release notes of PowerSDR Charly 25 / HAMlab Edition:
+## Release notes of PowerSDR Charly 25 / HAMlab / STEMlab Edition:
+
+#### commit aa9c444a7092a81d6d6cdadea04b8b509e30aaff
+Date:   Thu Apr 27 02:40:35 2017 +0200
+
+- Changed the behaviour of the setup wizard when model Charly 25 or HAMlab / STEMlab is selected to skip the HPSDR and ANAN device specific hardware settings.
+
 
 #### commit 1391b271bfeb09c699a0d44d6d7da7e1c62596af
 Date:   Tue Apr 25 00:47:40 2017 +0200

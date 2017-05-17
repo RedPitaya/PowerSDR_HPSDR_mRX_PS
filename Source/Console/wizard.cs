@@ -267,6 +267,7 @@ namespace PowerSDR
             this.grpModel = new System.Windows.Forms.GroupBoxTS();
             this.radGenModelCharly25 = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelHAMlab = new System.Windows.Forms.RadioButtonTS();
+            this.radGenModelANAN8000D = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN10E = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN100B = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelOrion = new System.Windows.Forms.RadioButtonTS();
@@ -321,7 +322,6 @@ namespace PowerSDR
             this.comboBox10 = new System.Windows.Forms.ComboBoxTS();
             this.lblMessage1 = new System.Windows.Forms.LabelTS();
             this.lblCombo = new System.Windows.Forms.LabelTS();
-            this.radGenModelANAN8000D = new System.Windows.Forms.RadioButtonTS();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grpModel.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -352,10 +352,9 @@ namespace PowerSDR
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
             // grpModel
-            //
+            // 
             this.grpModel.Controls.Add(this.radGenModelCharly25);
             this.grpModel.Controls.Add(this.radGenModelHAMlab);
-            this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Controls.Add(this.radGenModelANAN10E);
             this.grpModel.Controls.Add(this.radGenModelANAN100B);
             this.grpModel.Controls.Add(this.radGenModelOrion);
@@ -368,20 +367,20 @@ namespace PowerSDR
             this.grpModel.Controls.Add(this.radGenModelDemoNone);
             this.grpModel.Controls.Add(this.radGenModelSoftRock40);
             this.grpModel.Controls.Add(this.radGenModelSDR1000);
+            this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Location = new System.Drawing.Point(256, 24);
             this.grpModel.Name = "grpModel";
-            // this.grpModel.Size = new System.Drawing.Size(136, 216);
             this.grpModel.Size = new System.Drawing.Size(144, 216);
             this.grpModel.TabIndex = 20;
             this.grpModel.TabStop = false;
             this.grpModel.Text = "Model";
             this.grpModel.Visible = false;
-            //
+            // 
             // radGenModelCharly25
             // 
             this.radGenModelCharly25.AutoSize = true;
             this.radGenModelCharly25.Image = null;
-            this.radGenModelCharly25.Location = new System.Drawing.Point(19, 155);
+            this.radGenModelCharly25.Location = new System.Drawing.Point(19, 173);
             this.radGenModelCharly25.Name = "radGenModelCharly25";
             this.radGenModelCharly25.Size = new System.Drawing.Size(83, 17);
             this.radGenModelCharly25.TabIndex = 15;
@@ -393,14 +392,25 @@ namespace PowerSDR
             // 
             this.radGenModelHAMlab.AutoSize = true;
             this.radGenModelHAMlab.Image = null;
-            this.radGenModelHAMlab.Location = new System.Drawing.Point(19, 171);
+            this.radGenModelHAMlab.Location = new System.Drawing.Point(19, 190);
             this.radGenModelHAMlab.Name = "radGenModelHAMlab";
             this.radGenModelHAMlab.Size = new System.Drawing.Size(118, 17);
             this.radGenModelHAMlab.TabIndex = 16;
             this.radGenModelHAMlab.Text = "HAMlab / STEMlab";
             this.radGenModelHAMlab.UseVisualStyleBackColor = true;
-            this.radGenModelHAMlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged); 
-            //
+            this.radGenModelHAMlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
+            // 
+            // radGenModelANAN8000D
+            // 
+            this.radGenModelANAN8000D.Image = null;
+            this.radGenModelANAN8000D.Location = new System.Drawing.Point(19, 156);
+            this.radGenModelANAN8000D.Name = "radGenModelANAN8000D";
+            this.radGenModelANAN8000D.Size = new System.Drawing.Size(110, 17);
+            this.radGenModelANAN8000D.TabIndex = 15;
+            this.radGenModelANAN8000D.Text = "ANAN-8000DLE";
+            this.radGenModelANAN8000D.UseVisualStyleBackColor = true;
+            this.radGenModelANAN8000D.CheckedChanged += new System.EventHandler(this.radGenModelANAN8000D_CheckedChanged);
+            // 
             // radGenModelANAN10E
             // 
             this.radGenModelANAN10E.AutoSize = true;
@@ -1200,17 +1210,6 @@ namespace PowerSDR
             this.lblCombo.Size = new System.Drawing.Size(192, 72);
             this.lblCombo.TabIndex = 9;
             this.lblCombo.Text = "lblCombo";
-            // 
-            // radGenModelANAN8000D
-            // 
-            this.radGenModelANAN8000D.Image = null;
-            this.radGenModelANAN8000D.Location = new System.Drawing.Point(19, 156);
-            this.radGenModelANAN8000D.Name = "radGenModelANAN8000D";
-            this.radGenModelANAN8000D.Size = new System.Drawing.Size(110, 24);
-            this.radGenModelANAN8000D.TabIndex = 15;
-            this.radGenModelANAN8000D.Text = "ANAN-8000DLE";
-            this.radGenModelANAN8000D.UseVisualStyleBackColor = true;
-            this.radGenModelANAN8000D.CheckedChanged += new System.EventHandler(this.radGenModelANAN8000D_CheckedChanged);
             // 
             // SetupWizard
             // 

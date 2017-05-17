@@ -1572,6 +1572,9 @@ namespace PowerSDR
         private LabelTS lblRX1APF;
         private LabelTS lblRX2APF;
         public CheckBoxTS chkC25ANT;
+		// DG8MG
+        public ImageList ilC25ImageList;
+		// DG8MG
         private ToolStripMenuItem NR2ToolStripMenuItem1;
         private ToolStripMenuItem NR2StripMenuItem2;
         private ToolStripMenuItem SNBtoolStripMenuItem;
@@ -2525,6 +2528,7 @@ namespace PowerSDR
             this.lblFMDeviation = new System.Windows.Forms.LabelTS();
             this.comboFMMemory = new System.Windows.Forms.ComboBoxTS();
             this.lblFMMic = new System.Windows.Forms.LabelTS();
+            this.ilC25ImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ptbRX2RF)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbFilterShift)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbFilterWidth)).BeginInit();
@@ -7477,6 +7481,14 @@ namespace PowerSDR
             resources.ApplyResources(this.lblFMMic, "lblFMMic");
             this.lblFMMic.ForeColor = System.Drawing.Color.White;
             this.lblFMMic.Name = "lblFMMic";
+            // 
+            // ilC25ImageList
+            // 
+            this.ilC25ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilC25ImageList.ImageStream")));
+            this.ilC25ImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilC25ImageList.Images.SetKeyName(0, "C25.ico");
+            this.ilC25ImageList.Images.SetKeyName(1, "redpitaya.ico");
+            this.ilC25ImageList.Images.SetKeyName(2, "hpsdr5-32.ico");
             // 
             // Console
             // 

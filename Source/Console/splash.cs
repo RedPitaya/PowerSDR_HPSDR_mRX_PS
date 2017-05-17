@@ -118,9 +118,9 @@ namespace PowerSDR
             // pnlStatus
             // 
             this.pnlStatus.BackColor = System.Drawing.Color.Transparent;
-            this.pnlStatus.Location = new System.Drawing.Point(42, 260);
+            this.pnlStatus.Location = new System.Drawing.Point(12, 180);
             this.pnlStatus.Name = "pnlStatus";
-            this.pnlStatus.Size = new System.Drawing.Size(300, 20);
+            this.pnlStatus.Size = new System.Drawing.Size(251, 16);
             this.pnlStatus.TabIndex = 2;
             this.pnlStatus.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlStatus_Paint);
             // 
@@ -143,11 +143,11 @@ namespace PowerSDR
             // lblStatus
             // 
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatus.ForeColor = System.Drawing.Color.White;
+            this.lblStatus.ForeColor = System.Drawing.Color.Black;
             this.lblStatus.Image = null;
-            this.lblStatus.Location = new System.Drawing.Point(-6, 149);
+            this.lblStatus.Location = new System.Drawing.Point(12, 198);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(400, 16);
+            this.lblStatus.Size = new System.Drawing.Size(251, 15);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "Status";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -155,10 +155,12 @@ namespace PowerSDR
             // Splash
             // 
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(397, 318);
-            this.Controls.Add(this.pnlStatus);
-            this.Controls.Add(this.lblTimeRemaining);
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ClientSize = new System.Drawing.Size(275, 279);
             this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.lblTimeRemaining);
+            this.Controls.Add(this.pnlStatus);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Splash";
@@ -418,9 +420,16 @@ namespace PowerSDR
 			{
 				LinearGradientBrush brBackground = 
 					new LinearGradientBrush(m_rProgress, 
-					Color.FromArgb(100, 100, 100),
-					Color.FromArgb(130, 255, 130), 
-					LinearGradientMode.Horizontal);
+					
+                    // DG8MG
+                    // Changed the colours to the Red Pitaya CI
+                    // Color.FromArgb(100, 100, 100),
+                    Color.FromArgb(0, 0 , 0),
+                    // Color.FromArgb(130, 255, 130),
+                    Color.FromArgb(224, 19, 38),
+                    // DG8MG
+
+                    LinearGradientMode.Horizontal);
 				e.Graphics.FillRectangle(brBackground, m_rProgress);
 			}
 		}
