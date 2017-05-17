@@ -665,7 +665,6 @@ int IsOkToSendDataToFPGA(void) {
 
 unsigned int lastOutPower = 0; 
 
-
 void ForceCandCFrames(int count, int c0, int vfofreq) { 
 	int	numwritten;	
 	unsigned char buf[1024];
@@ -776,7 +775,7 @@ void IOThreadMainLoop(void) {
 	int fwd_power_stage; 
 	int ref_power_stage; 
 	int alex_fwd_power; 
-	int ain4;
+	int ain3, ain4;
 	short *sample_bufp = NULL;
 	int sample_count = 0;
 	int i;
@@ -837,6 +836,10 @@ void IOThreadMainLoop(void) {
 	int zero_read_count = 0; 		
 	int nc = 2 * nreceivers + 1;
 	sample_bufp_size =  nc * sizeof(int) * BlockSize;
+	//reset_control_idx = 0;
+	delay_Xmit = 0;
+	reset_delay_xmit = 0;
+	delay_Xmit_loop = 0;
 
 	// how big is outbuf ... account for us being fixed at 48 khz on output side
 	outbuflen = 4 * sizeof(short) * BlockSize;
@@ -1062,7 +1065,11 @@ void IOThreadMainLoop(void) {
 						break;
 					case 0x18:
 						ain4 |=  (((int)(ControlBytesIn[2])) & 0xff); // bits 7-0 of AIN4
-						if ((AIN4 = ain4 - 20) < 0) AIN4 = 0;
+						if (amp_protect_on && !is_orion_mkii)
+						{
+							if ((AIN4 = ain4 - 20) < 0) AIN4 = 0;							
+						}
+						else AIN4 = ain4;
 						break;
 					case 0x20:
 						Mercury2FWVersion =  (int)(ControlBytesIn[2] >> 1);										                 
@@ -1087,7 +1094,7 @@ void IOThreadMainLoop(void) {
 						alex_fwd_power = ((ControlBytesIn[3] << 8) & 0xff00); //bits 15-8 (AIN1) Alex
 						break;
 					case 0x10:
-						//ain3 = ((ControlBytesIn[3] << 8) & 0xff00); // AIN3
+						ain3 = ((ControlBytesIn[3] << 8) & 0xff00); // AIN3
 						break;
 					case 0x18://bits 15-8 (AIN6) Hermes
 						if (HermesPowerEnabled)
@@ -1115,8 +1122,8 @@ void IOThreadMainLoop(void) {
 						AlexFwdPower = alex_fwd_power;
 						break;
 					case 0x10:	
-						//ain3 |=  (((int)(ControlBytesIn[4])) & 0xff);
-						//AIN3 = ain3;
+						ain3 |=  (((int)(ControlBytesIn[4])) & 0xff);
+						AIN3 = ain3;
 						break;
 					case 0x18:
 						if (HermesPowerEnabled) {
@@ -1324,7 +1331,12 @@ void IOThreadMainLoop(void) {
 
 				case OUT_STATE_CONTROL0: //C0
 					out_state = OUT_STATE_CONTROL1;
-					FPGAWriteBufp[writebufpos] = (unsigned char)XmitBit;                                                    
+					if (delay_Xmit)
+					{
+						FPGAWriteBufp[writebufpos] = 0;
+						reset_delay_xmit = 1;
+					}
+					else FPGAWriteBufp[writebufpos] = (unsigned char)XmitBit;                                                    
 					//FPGAWriteBufp[writebufpos] &= 1; // not needed ?
 					switch (out_control_idx) {
 					case 0:
@@ -1340,7 +1352,20 @@ void IOThreadMainLoop(void) {
 					case 23:
 					case 25:
 					case 27:
+					case 29:
+					case 31:
 						FPGAWriteBufp[writebufpos] |= 0;
+
+						if (reset_delay_xmit)
+						{
+							--delay_Xmit_loop;
+							if (delay_Xmit_loop <= 0)
+							{
+								reset_delay_xmit = 0;
+								delay_Xmit = 0;		
+					     		out_control_idx = 0;
+							}
+						}
 						break;
 					case 1: //TX VFO
 						FPGAWriteBufp[writebufpos] |= 2;
@@ -1394,6 +1419,9 @@ void IOThreadMainLoop(void) {
 					case 30: // EER PWM
 						FPGAWriteBufp[writebufpos] |= 0x22; //C0 0010 001x
 						break;
+					case 32: // BPF2
+						FPGAWriteBufp[writebufpos] |= 0x24; //C0 0010 010x
+						break;
 
 					}
 
@@ -1418,46 +1446,47 @@ void IOThreadMainLoop(void) {
 					case 25:
 					case 27:
 					case 29:
-						FPGAWriteBufp[writebufpos] =  (SampleRateIn2Bits & 3) | ( C1Mask & 0xfc ) ;
+					case 31:
+						FPGAWriteBufp[writebufpos] = (SampleRateIn2Bits & 3) | (C1Mask & 0xfc);
 						// printf(" C1Mask: %d\n", C1Mask);
 						break;
 					case 1:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_tx >> 24) & 0xff; // byte 0 of tx freq 
+						FPGAWriteBufp[writebufpos] = (VFOfreq_tx >> 24) & 0xff; // byte 0 of tx freq 
 						break;
 					case 2:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_rx1 >> 24) & 0xff; // RX1
+						FPGAWriteBufp[writebufpos] = (VFOfreq_rx1 >> 24) & 0xff; // RX1
 						break;
 					case 3:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_rx2 >> 24) & 0xff; // RX2
+						FPGAWriteBufp[writebufpos] = (VFOfreq_rx2 >> 24) & 0xff; // RX2
 						break;
 					case 4:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_rx3 >> 24) & 0xff; // RX3
+						FPGAWriteBufp[writebufpos] = (VFOfreq_rx3 >> 24) & 0xff; // RX3
 						break;
 					case 5:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_rx4 >> 24) & 0xff; // RX4
+						FPGAWriteBufp[writebufpos] = (VFOfreq_rx4 >> 24) & 0xff; // RX4
 						break;
 					case 6:
-					//	if (HermesPowerEnabled || enable_cw_keyer) { 															     
-							if (swr_protect == 0.0f) swr_protect = 0.3f;
-							pf = (unsigned char) (OutputPowerFactor * swr_protect);
-							FPGAWriteBufp[writebufpos] = (unsigned char) (pf & 0xff); //(OutputPowerFactor & 0xff);
-							//printf("outPower: %u\n", OutputPowerFactor);  fflush(stdout);
-	/*					} 
-						else 
-						{
-							FPGAWriteBufp[writebufpos] = 0;
-						} */
+						//	if (HermesPowerEnabled || enable_cw_keyer) { 															     
+						if (swr_protect == 0.0f) swr_protect = 0.3f;
+						pf = (unsigned char)(OutputPowerFactor * swr_protect);
+						FPGAWriteBufp[writebufpos] = (unsigned char)(pf & 0xff); //(OutputPowerFactor & 0xff);
+						//printf("outPower: %u\n", OutputPowerFactor);  fflush(stdout);
+						/*					}
+											else
+											{
+											FPGAWriteBufp[writebufpos] = 0;
+											} */
 						break;
-					case 7:					
-						    FPGAWriteBufp[writebufpos] = ( RX2Preamp | RX1Preamp | MicTipRing | MicBias | MicPTT) & 0x7f; 					
-						   // FPGAWriteBufp[writebufpos] = ( MicTR | MicBias ) & 0x30; 
+					case 7:
+						FPGAWriteBufp[writebufpos] = (RX2Preamp | RX1Preamp | MicTipRing | MicBias | MicPTT) & 0x7f;
+						// FPGAWriteBufp[writebufpos] = ( MicTR | MicBias ) & 0x30; 
 						// printf(" pamp1: %d pamp2: %d\n", RX1Preamp, RX2Preamp);
 						break;
 					case 8:
 						if (diversitymode2)
 							FPGAWriteBufp[writebufpos] = (enable_ADC1_step_att | adc1_step_att_data) & 0x3f;
 						else
-						    FPGAWriteBufp[writebufpos] = (enable_ADC2_step_att | adc2_step_att_data) & 0x3f;
+							FPGAWriteBufp[writebufpos] = (enable_ADC2_step_att | adc2_step_att_data) & 0x3f;
 						break;
 					case 9:
 						FPGAWriteBufp[writebufpos] = 0;
@@ -1466,27 +1495,30 @@ void IOThreadMainLoop(void) {
 						FPGAWriteBufp[writebufpos] = 0;
 						break;
 					case 11:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_rx5 >> 24) & 0xff; // RX5
+						FPGAWriteBufp[writebufpos] = (VFOfreq_rx5 >> 24) & 0xff; // RX5
 						break;
 					case 12:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_rx6 >> 24) & 0xff; // RX6
+						FPGAWriteBufp[writebufpos] = (VFOfreq_rx6 >> 24) & 0xff; // RX6
 						break;
 					case 13:
-						FPGAWriteBufp[writebufpos] =  (VFOfreq_rx7 >> 24) & 0xff; // RX7
+						FPGAWriteBufp[writebufpos] = (VFOfreq_rx7 >> 24) & 0xff; // RX7
 						break;
 					case 24: // ADC
-						FPGAWriteBufp[writebufpos] =  ADC_cntrl1 & 0xff;   //RX1, RX2, RX3, and RX4 ADC assignments;
+						FPGAWriteBufp[writebufpos] = ADC_cntrl1 & 0xff;   //RX1, RX2, RX3, and RX4 ADC assignments;
 						break;
-				    case 26:
+					case 26:
 						FPGAWriteBufp[writebufpos] = enable_cw_keyer & 0x01;
 						break;
-				    case 28:
-						FPGAWriteBufp[writebufpos] =  (cw_hang_time >> 2) & 0xff;
+					case 28:
+						FPGAWriteBufp[writebufpos] = (cw_hang_time >> 2) & 0xff;
 						break;
 					case 30:
-						FPGAWriteBufp[writebufpos] =  (eer_pwm_min >> 2) & 0xff;
+						FPGAWriteBufp[writebufpos] = (eer_pwm_min >> 2) & 0xff;
 						break;
-					} 
+					case 32: // BPF2
+						FPGAWriteBufp[writebufpos] = (XmitBit ? gndrx2ontx : 0 | Alex2HPFMask) & 0xff;
+						break;
+					}
 
 					ControlBytesOut[1] = FPGAWriteBufp[writebufpos];
 					break;
@@ -1509,7 +1541,8 @@ void IOThreadMainLoop(void) {
 					case 25:
 					case 27:
 					case 29:
-						FPGAWriteBufp[writebufpos] = (PennyOCBits | (EClass & XmitBit)) & 0xff; 
+					case 31:
+						FPGAWriteBufp[writebufpos] = (PennyOCBits | (EClass & XmitBit)) & 0xff;
 						break;
 					case 1:
 						FPGAWriteBufp[writebufpos] = (VFOfreq_tx >> 16) & 0xff; // TX freq
@@ -1563,6 +1596,9 @@ void IOThreadMainLoop(void) {
 					case 30:
 						FPGAWriteBufp[writebufpos] =  eer_pwm_min & 0x03;
 						break;
+					case 32: // xvtr
+						FPGAWriteBufp[writebufpos] = (xvtr_enable << 1) & 0x02;
+						break;
 					}
 
 					ControlBytesOut[2] = FPGAWriteBufp[writebufpos];
@@ -1585,7 +1621,8 @@ void IOThreadMainLoop(void) {
 					case 25:
 					case 27:
 					case 29:
-						FPGAWriteBufp[writebufpos] = ( AlexAtten | MercDither | MercPreamp |
+					case 31:
+						FPGAWriteBufp[writebufpos] = (AlexAtten | MercDither | MercPreamp |
 							MercRandom | AlexRxAnt | AlexRxOut) & 0xff; 
 						break;
 					case 1:
@@ -1604,7 +1641,7 @@ void IOThreadMainLoop(void) {
 						FPGAWriteBufp[writebufpos] = (VFOfreq_rx4 >> 8) & 0xff;
 						break;
 					case 6:
-						FPGAWriteBufp[writebufpos] = AlexTRRelay | AlexHPFMask & 0xff;
+						FPGAWriteBufp[writebufpos] = (AlexTRRelay | AlexHPFMask) & 0xff;
 						break;
 					case 7: // (0, 1 = open drain pins 1,2) (2, 3 = TTL pins 3,4)
 						FPGAWriteBufp[writebufpos] = (UserOut0 | UserOut1 | UserOut2 | UserOut3) & 0x0f;
@@ -1639,7 +1676,10 @@ void IOThreadMainLoop(void) {
 					case 30:
 						FPGAWriteBufp[writebufpos] =  (eer_pwm_max >> 2) & 0xff;
 						break;
-					}                                                         
+					case 32: // BPF2
+						FPGAWriteBufp[writebufpos] = 0;
+						break;
+					}
 
 					ControlBytesOut[3] = FPGAWriteBufp[writebufpos];
 					break;
@@ -1662,6 +1702,7 @@ void IOThreadMainLoop(void) {
 					case 25:
 					case 27:
 					case 29:
+					case 31:
 						FPGAWriteBufp[writebufpos] = AlexTxAnt | NRx | Duplex | diversitymode2 << 7;
 						break;
 
@@ -1715,6 +1756,9 @@ void IOThreadMainLoop(void) {
 						break;
 					case 30:
 						FPGAWriteBufp[writebufpos] =  eer_pwm_max & 0x03;
+						break;
+					case 32: // BPF2
+						FPGAWriteBufp[writebufpos] = 0;
 						break;
 					}
 
@@ -1776,7 +1820,6 @@ void IOThreadMainLoop(void) {
 						out_control_idx = 6;
 						break; 
 
-
 					case 14:
 						out_control_idx = 2;
 						break;
@@ -1818,18 +1861,34 @@ void IOThreadMainLoop(void) {
 						out_control_idx = 25; 
 						break;
 					case 27: // C0 0
-						out_control_idx = 29; 
+						out_control_idx = 30; 
 						break;
 					case 28: 
 						out_control_idx = 27;
 						break;		
-					case 29:
-						out_control_idx = 30; 
-						break;
+					//case 29:
+					//	out_control_idx = 30; 
+					//	break;
 					case 30: 
-						out_control_idx = 1;
+						out_control_idx = 31; // 0;
 						break;		
+					case 31:
+						out_control_idx = is_orion_mkii ? 32 : 0;
+						break;
+					case 32: // BPF2
+						out_control_idx = 0;
+						break;
 					}
+	/*				if (reset_control_idx)
+					{
+						out_control_idx = 0;
+						reset_control_idx = 0;
+					}*/
+					//if (reset_delay_xmit)
+					//{
+					//	reset_delay_xmit = 0;
+					//	delay_Xmit = 0;
+					//}
 					break; 
 
 				case OUT_STATE_MON_LEFT_HI_NEEDED:

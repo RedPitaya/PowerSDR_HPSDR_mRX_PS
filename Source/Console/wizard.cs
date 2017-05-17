@@ -133,6 +133,7 @@ namespace PowerSDR
         private RadioButtonTS radGenModelOrion;
         private RadioButtonTS radGenModelANAN100B;
         private RadioButtonTS radGenModelANAN10E;
+        private RadioButtonTS radGenModelANAN8000D;
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
@@ -215,6 +216,9 @@ namespace PowerSDR
                 case Model.ANAN200D:
                     radGenModelOrion.Checked = true;
                     break;
+                case Model.ANAN8000D:
+                    radGenModelANAN8000D.Checked = true;
+                    break;
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
@@ -263,6 +267,7 @@ namespace PowerSDR
             this.grpModel = new System.Windows.Forms.GroupBoxTS();
             this.radGenModelCharly25 = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelHAMlab = new System.Windows.Forms.RadioButtonTS();
+            this.radGenModelANAN8000D = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN10E = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN100B = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelOrion = new System.Windows.Forms.RadioButtonTS();
@@ -362,6 +367,7 @@ namespace PowerSDR
             this.grpModel.Controls.Add(this.radGenModelDemoNone);
             this.grpModel.Controls.Add(this.radGenModelSoftRock40);
             this.grpModel.Controls.Add(this.radGenModelSDR1000);
+            this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Location = new System.Drawing.Point(256, 24);
             this.grpModel.Name = "grpModel";
             this.grpModel.Size = new System.Drawing.Size(144, 216);
@@ -374,7 +380,7 @@ namespace PowerSDR
             // 
             this.radGenModelCharly25.AutoSize = true;
             this.radGenModelCharly25.Image = null;
-            this.radGenModelCharly25.Location = new System.Drawing.Point(19, 155);
+            this.radGenModelCharly25.Location = new System.Drawing.Point(19, 173);
             this.radGenModelCharly25.Name = "radGenModelCharly25";
             this.radGenModelCharly25.Size = new System.Drawing.Size(83, 17);
             this.radGenModelCharly25.TabIndex = 15;
@@ -386,13 +392,24 @@ namespace PowerSDR
             // 
             this.radGenModelHAMlab.AutoSize = true;
             this.radGenModelHAMlab.Image = null;
-            this.radGenModelHAMlab.Location = new System.Drawing.Point(19, 171);
+            this.radGenModelHAMlab.Location = new System.Drawing.Point(19, 190);
             this.radGenModelHAMlab.Name = "radGenModelHAMlab";
             this.radGenModelHAMlab.Size = new System.Drawing.Size(118, 17);
             this.radGenModelHAMlab.TabIndex = 16;
             this.radGenModelHAMlab.Text = "HAMlab / STEMlab";
             this.radGenModelHAMlab.UseVisualStyleBackColor = true;
             this.radGenModelHAMlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
+            // 
+            // radGenModelANAN8000D
+            // 
+            this.radGenModelANAN8000D.Image = null;
+            this.radGenModelANAN8000D.Location = new System.Drawing.Point(19, 156);
+            this.radGenModelANAN8000D.Name = "radGenModelANAN8000D";
+            this.radGenModelANAN8000D.Size = new System.Drawing.Size(110, 17);
+            this.radGenModelANAN8000D.TabIndex = 15;
+            this.radGenModelANAN8000D.Text = "ANAN-8000DLE";
+            this.radGenModelANAN8000D.UseVisualStyleBackColor = true;
+            this.radGenModelANAN8000D.CheckedChanged += new System.EventHandler(this.radGenModelANAN8000D_CheckedChanged);
             // 
             // radGenModelANAN10E
             // 
@@ -1596,6 +1613,7 @@ namespace PowerSDR
                         case Model.ANAN100:
                         case Model.ANAN100D:
                         case Model.ANAN200D:
+                        case Model.ANAN8000D:
                             CurPage = Page.HPSDR_HARDWARE_SELECT;
                             btnNext.Focus();
                             break;
@@ -1665,7 +1683,7 @@ namespace PowerSDR
 					break;
                 case Page.HPSDR_HARDWARE_SELECT:
                     CurPage = Page.FINISHED;
-                    // CurPage = Page.REGION;
+                  //  CurPage = Page.REGION;
                     btnFinished.Focus();
                     break;
                 case Page.REGION:
@@ -1747,7 +1765,6 @@ namespace PowerSDR
                     btnPrevious.Focus();
                     break;
 
-                // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
                 case Page.REGION:
                     if (model == Model.CHARLY25 || model == Model.HAMLAB)
@@ -1892,6 +1909,12 @@ namespace PowerSDR
                     console.SetupForm.AlexPresent = alex_present;
                     console.SetupForm.forceAudioSampleRate1("192000");
                     break;
+                case Model.ANAN8000D:
+                    console.SetupForm.PennyLanePresent = pennylane_present;
+                    console.SetupForm.MercuryPresent = mercury_present;
+                    console.SetupForm.AlexPresent = alex_present;
+                    console.SetupForm.forceAudioSampleRate1("192000");
+                    break;
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
@@ -1993,6 +2016,15 @@ namespace PowerSDR
             {
                 FRSRegion CurrentRegion = FRSRegion.Europe;
 
+                /*
+                FRSRegion CurrentRegion = FRSRegion.US;
+                if (comboBox10.Text == "")
+                {
+                    console.SetupForm.comboFRSRegion.Text = "United States";
+                    console.CurrentRegion = CurrentRegion;
+                    return;
+                }
+                */
                 switch (comboBox10.Text)
                 {
                     case "Australia":
@@ -2021,7 +2053,12 @@ namespace PowerSDR
                         break;
                     case "United States":
                         CurrentRegion = FRSRegion.US;
+                        
+                        // DG8MG
                         console.Extended = false;
+                        // Display.Init();
+                        // DG8MG
+                        
                         break;
                     case "Norway":
                         CurrentRegion = FRSRegion.Norway;
@@ -2495,8 +2532,7 @@ namespace PowerSDR
             }
         }
         // DG8MG
-  
-
+        
         private void chkMercury_CheckedChanged(object sender, System.EventArgs e)
         {
             mercury_present = chkMercury.Checked;
@@ -2524,5 +2560,33 @@ namespace PowerSDR
             excalibur_present = chkExcalibur.Checked;
         }
         #endregion
+
+        private void radGenModelANAN8000D_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radGenModelANAN8000D.Checked)
+            {
+                model = Model.ANAN8000D;
+                //if (grpModel.Visible)
+                pictureBox1.Image = null;
+                pictureBox1.Visible = false;
+                //pictureBox1.Image = new Bitmap(GetResource("PowerSDR.images.hpsdr.jpg"));
+                chkMercury.Checked = radGenModelANAN8000D.Checked;
+                chkPennyLane.Checked = radGenModelANAN8000D.Checked;
+                chkMercury.Enabled = false;
+                chkPennyLane.Enabled = false;
+                chkPenny.Enabled = false;
+                chkPenny.Checked = false;
+                chkExcalibur.Enabled = false;
+                chkExcalibur.Checked = false;
+                chkAlex.Checked = true;
+                chkAlex.Enabled = true;
+                radMetis.Checked = true;
+                radMetis.Enabled = false;
+                radMetis.Text = "ANAN";
+                radOzy.Enabled = false;
+            }
+
+        }
+
     }
 }

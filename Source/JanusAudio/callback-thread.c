@@ -181,7 +181,7 @@ void Callback_ProcessBuffer(int *bufp, int buflen) {
 		fprintf(stderr, "Mayday Mayday - bad sample rate in callback-thread.c"); 
 	} 
 	xeerEXTF(0, OUTpointer[2], OUTpointer[3], OUTpointer[2], OUTpointer[3], OUTpointer[0], OUTpointer[1], XmitBit, BlockSize/out_sample_incr);
-	if (amp_protect_on)
+	if (amp_protect_on && !is_orion_mkii)
 	{
 		if (AIN4 > 0) amp_protect_warning = 1;
 		switch (ain4_voltage)
