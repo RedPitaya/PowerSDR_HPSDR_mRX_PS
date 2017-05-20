@@ -63,7 +63,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("3.3.9.0")]
+[assembly: AssemblyVersion("3.3.17.0")]
 
 // DG8MG
 [assembly: AssemblyInformationalVersion("1.{c:ymd-}_{chash:7}")]
