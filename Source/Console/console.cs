@@ -32196,7 +32196,7 @@ namespace PowerSDR
                                 break;
                             case MeterTXMode.FORWARD_POWER:
                             case MeterTXMode.SWR_POWER:
-                               if (alexpresent || apollopresent)
+                                if (alexpresent || apollopresent)
                                 {
                                     if (anan8000dpresent)
                                     {
@@ -32599,7 +32599,7 @@ namespace PowerSDR
                 adc = JanusAudio.getAlexFwdPower();
                 addadc += adc;
                 Thread.Sleep(1);
-           }
+            }
             adc = addadc / 50;
             if (adc < 0) adc = 0;
 
@@ -32681,7 +32681,7 @@ namespace PowerSDR
                 rev_adc = JanusAudio.getRefPower();
                 addrevadc += rev_adc;
                 Thread.Sleep(1);
-           }
+            }
 
             rev_adc = addrevadc / 100;
             if (rev_adc < 0) rev_adc = 0;
@@ -32710,7 +32710,7 @@ namespace PowerSDR
                 SetupForm.textPARevPower.Text = revwatts.ToString("f1") + " W";
             }
 
-       }
+        }
 
         public float computeFwdPower()
         {
@@ -32951,6 +32951,73 @@ namespace PowerSDR
 
             return (float)result;
         }
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        public float computeCharly25FwdPower()
+        {
+            int power_int = JanusAudio.getAlexFwdPower();
+            double power_f = (double)power_int;
+            double result = 0.0;
+
+            if (PAValues)
+            {
+                SetupForm.textFwdADCValue.Text = power_int.ToString();
+            }
+
+            result = power_f;
+
+            /*
+            if (power_int <= 2551)
+            {
+                if (power_int <= 1253)
+                {
+                    if (power_int <= 68)
+                    {
+                        result = 0.0;
+                    }
+                    else  // > 68 
+                    {
+                        result = (power_f - 68.0) * 0.008439;
+                    }
+                }
+
+                else  // > 1253
+                {
+                    if (power_int <= 1856)
+                    {
+                        result = 10.0 + ((power_f - 1253.0) * 0.024876);
+                    }
+                    else  // > 1856
+                    {
+                        result = 25.0 + ((power_f - 1856.0) * 0.035971);
+                    }
+                }
+            }
+
+            else  // > 2551
+            {
+                if (power_int <= 3628)
+                {
+                    if (power_int <= 3101)
+                    {
+                        result = 50.0 + ((power_f - 2551.0) * 0.045454);
+                    }
+                    else  // > 3101, <3628 
+                    {
+                        result = 75.0 + ((power_f - 3101.0) * 0.370370);
+                    }
+                }
+                else  // > 3628
+                {
+                    result = 100.0 + ((power_f - 3628.0) * 0.064935);
+                }
+            }
+            */
+
+            return (float)result;
+        }
+        // DG8MG
 
         private float sql_data = -200.0f;
         private void UpdateSQL()
@@ -33864,6 +33931,15 @@ namespace PowerSDR
                         case HPSDRModel.ANAN8000D:
                             drivepwr = computeOrionMkIIFwdPower();
                             break;
+
+                        // DG8MG
+                        // Extension for Charly 25 and HAMlab hardwware
+                        case HPSDRModel.CHARLY25:
+                        case HPSDRModel.HAMLAB:
+                            drivepwr = computeCharly25FwdPower();
+                            break;
+                        // DG8MG
+
                         default:
                             drivepwr = computeFwdPower(); // low power
                             break;
