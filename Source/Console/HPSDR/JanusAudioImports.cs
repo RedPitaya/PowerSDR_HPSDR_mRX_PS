@@ -261,10 +261,16 @@ namespace PowerSDR
         public static extern int getFwdPower();
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int getRefPower();
+        public static extern float getRefPower();
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int getAlexFwdPower();
+        public static extern float getAlexFwdPower();
+
+        [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int getAIN3();
+
+        [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int getAIN4();
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int getAIN3();
