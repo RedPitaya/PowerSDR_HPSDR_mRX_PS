@@ -33030,6 +33030,7 @@ namespace PowerSDR
             return (float)result;
         }
 */
+
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         public float computeCharly25FwdPower()
