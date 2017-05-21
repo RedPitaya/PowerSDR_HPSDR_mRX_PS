@@ -322,7 +322,6 @@ namespace PowerSDR
             this.comboBox10 = new System.Windows.Forms.ComboBoxTS();
             this.lblMessage1 = new System.Windows.Forms.LabelTS();
             this.lblCombo = new System.Windows.Forms.LabelTS();
-            this.radGenModelANAN8000D = new System.Windows.Forms.RadioButtonTS();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grpModel.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -356,7 +355,6 @@ namespace PowerSDR
             // 
             this.grpModel.Controls.Add(this.radGenModelCharly25);
             this.grpModel.Controls.Add(this.radGenModelHAMlab);
-            this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Controls.Add(this.radGenModelANAN10E);
             this.grpModel.Controls.Add(this.radGenModelANAN100B);
             this.grpModel.Controls.Add(this.radGenModelOrion);
@@ -372,7 +370,6 @@ namespace PowerSDR
             this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Location = new System.Drawing.Point(256, 24);
             this.grpModel.Name = "grpModel";
-            // this.grpModel.Size = new System.Drawing.Size(136, 216);
             this.grpModel.Size = new System.Drawing.Size(144, 216);
             this.grpModel.TabIndex = 20;
             this.grpModel.TabStop = false;
@@ -1213,17 +1210,6 @@ namespace PowerSDR
             this.lblCombo.Size = new System.Drawing.Size(192, 72);
             this.lblCombo.TabIndex = 9;
             this.lblCombo.Text = "lblCombo";
-            // 
-            // radGenModelANAN8000D
-            // 
-            this.radGenModelANAN8000D.Image = null;
-            this.radGenModelANAN8000D.Location = new System.Drawing.Point(19, 156);
-            this.radGenModelANAN8000D.Name = "radGenModelANAN8000D";
-            this.radGenModelANAN8000D.Size = new System.Drawing.Size(110, 24);
-            this.radGenModelANAN8000D.TabIndex = 15;
-            this.radGenModelANAN8000D.Text = "ANAN-8000DLE";
-            this.radGenModelANAN8000D.UseVisualStyleBackColor = true;
-            this.radGenModelANAN8000D.CheckedChanged += new System.EventHandler(this.radGenModelANAN8000D_CheckedChanged);
             // 
             // SetupWizard
             // 

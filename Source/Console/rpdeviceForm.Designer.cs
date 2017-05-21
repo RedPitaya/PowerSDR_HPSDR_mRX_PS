@@ -55,8 +55,8 @@
             this.lblChooseDevice.Name = "lblChooseDevice";
             this.lblChooseDevice.Size = new System.Drawing.Size(567, 54);
             this.lblChooseDevice.TabIndex = 1;
-            this.lblChooseDevice.Text = "There seems to be more than one Charly 25 / HAMlab / STEMlab SDR device active in" +
-    " your network environment!\r\nPlease choose the device you want to start up.\r\n";
+            this.lblChooseDevice.Text = "There seems to be more than one Charly 25 / HAMlab / STEMlab SDR device active in your network " +
+    "environment!\r\nPlease choose the device you want to start up.\r\n";
             this.lblChooseDevice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnChooseDeviceOK

@@ -2929,6 +2929,16 @@ namespace PowerSDR
             t.Columns.Add("TXEQ8", typeof(int));
             t.Columns.Add("TXEQ9", typeof(int));
             t.Columns.Add("TXEQ10", typeof(int));
+            t.Columns.Add("TxEqFreq1", typeof(int));
+            t.Columns.Add("TxEqFreq2", typeof(int));
+            t.Columns.Add("TxEqFreq3", typeof(int));
+            t.Columns.Add("TxEqFreq4", typeof(int));
+            t.Columns.Add("TxEqFreq5", typeof(int));
+            t.Columns.Add("TxEqFreq6", typeof(int));
+            t.Columns.Add("TxEqFreq7", typeof(int));
+            t.Columns.Add("TxEqFreq8", typeof(int));
+            t.Columns.Add("TxEqFreq9", typeof(int));
+            t.Columns.Add("TxEqFreq10", typeof(int));
             t.Columns.Add("DXOn", typeof(bool));
             t.Columns.Add("DXLevel", typeof(int));
             t.Columns.Add("CompanderOn", typeof(bool));
@@ -3018,8 +3028,50 @@ namespace PowerSDR
 
             t.Columns.Add("CESSB_On", typeof(bool));
             t.Columns.Add("Disable_Pure_Signal", typeof(bool));
-            //t.Columns.Add("FlexWire_Input_On", typeof(string));
-            //t.Columns.Add("FlexWire_Input_Level", typeof(int));
+
+            // CFC
+            t.Columns.Add("CFCEnabled", typeof(bool));
+            t.Columns.Add("CFCPostEqEnabled", typeof(bool));
+            t.Columns.Add("CFCPhaseRotatorEnabled", typeof(bool));
+
+            t.Columns.Add("CFCPhaseRotatorFreq", typeof(int));
+            t.Columns.Add("CFCPhaseRotatorStages", typeof(int));
+
+            t.Columns.Add("CFCPreComp", typeof(int));
+            t.Columns.Add("CFCPostEqGain", typeof(int));
+
+            t.Columns.Add("CFCPreComp0", typeof(int));
+            t.Columns.Add("CFCPreComp1", typeof(int));
+            t.Columns.Add("CFCPreComp2", typeof(int));
+            t.Columns.Add("CFCPreComp3", typeof(int));
+            t.Columns.Add("CFCPreComp4", typeof(int));
+            t.Columns.Add("CFCPreComp5", typeof(int));
+            t.Columns.Add("CFCPreComp6", typeof(int));
+            t.Columns.Add("CFCPreComp7", typeof(int));
+            t.Columns.Add("CFCPreComp8", typeof(int));
+            t.Columns.Add("CFCPreComp9", typeof(int));
+
+            t.Columns.Add("CFCPostEqGain0", typeof(int));
+            t.Columns.Add("CFCPostEqGain1", typeof(int));
+            t.Columns.Add("CFCPostEqGain2", typeof(int));
+            t.Columns.Add("CFCPostEqGain3", typeof(int));
+            t.Columns.Add("CFCPostEqGain4", typeof(int));
+            t.Columns.Add("CFCPostEqGain5", typeof(int));
+            t.Columns.Add("CFCPostEqGain6", typeof(int));
+            t.Columns.Add("CFCPostEqGain7", typeof(int));
+            t.Columns.Add("CFCPostEqGain8", typeof(int));
+            t.Columns.Add("CFCPostEqGain9", typeof(int));
+
+            t.Columns.Add("CFCEqFreq0", typeof(int));
+            t.Columns.Add("CFCEqFreq1", typeof(int));
+            t.Columns.Add("CFCEqFreq2", typeof(int));
+            t.Columns.Add("CFCEqFreq3", typeof(int));
+            t.Columns.Add("CFCEqFreq4", typeof(int));
+            t.Columns.Add("CFCEqFreq5", typeof(int));
+            t.Columns.Add("CFCEqFreq6", typeof(int));
+            t.Columns.Add("CFCEqFreq7", typeof(int));
+            t.Columns.Add("CFCEqFreq8", typeof(int));
+            t.Columns.Add("CFCEqFreq9", typeof(int));
 
             #region Default
 
@@ -3040,6 +3092,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = true;
@@ -3129,8 +3191,50 @@ namespace PowerSDR
 
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -3155,6 +3259,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = true;
             dr["DXLevel"] = 5;
             dr["CompanderOn"] = false;
@@ -3244,8 +3358,49 @@ namespace PowerSDR
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
 
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -3273,6 +3428,16 @@ namespace PowerSDR
             t.Columns.Add("TXEQ8", typeof(int));
             t.Columns.Add("TXEQ9", typeof(int));
             t.Columns.Add("TXEQ10", typeof(int));
+            t.Columns.Add("TxEqFreq1", typeof(int));
+            t.Columns.Add("TxEqFreq2", typeof(int));
+            t.Columns.Add("TxEqFreq3", typeof(int));
+            t.Columns.Add("TxEqFreq4", typeof(int));
+            t.Columns.Add("TxEqFreq5", typeof(int));
+            t.Columns.Add("TxEqFreq6", typeof(int));
+            t.Columns.Add("TxEqFreq7", typeof(int));
+            t.Columns.Add("TxEqFreq8", typeof(int));
+            t.Columns.Add("TxEqFreq9", typeof(int));
+            t.Columns.Add("TxEqFreq10", typeof(int));
             t.Columns.Add("DXOn", typeof(bool));
             t.Columns.Add("DXLevel", typeof(int));
             t.Columns.Add("CompanderOn", typeof(bool));
@@ -3362,8 +3527,51 @@ namespace PowerSDR
 
             t.Columns.Add("CESSB_On", typeof(bool));
             t.Columns.Add("Disable_Pure_Signal", typeof(bool));
-            //t.Columns.Add("FlexWire_Input_On", typeof(string));
-            //t.Columns.Add("FlexWire_Input_Level", typeof(int));
+
+            // CFC
+            t.Columns.Add("CFCEnabled", typeof(bool));
+            t.Columns.Add("CFCPostEqEnabled", typeof(bool));
+            t.Columns.Add("CFCPhaseRotatorEnabled", typeof(bool));
+
+            t.Columns.Add("CFCPhaseRotatorFreq", typeof(int));
+            t.Columns.Add("CFCPhaseRotatorStages", typeof(int));
+
+            t.Columns.Add("CFCPreComp", typeof(int));
+            t.Columns.Add("CFCPostEqGain", typeof(int));
+
+            t.Columns.Add("CFCPreComp0", typeof(int));
+            t.Columns.Add("CFCPreComp1", typeof(int));
+            t.Columns.Add("CFCPreComp2", typeof(int));
+            t.Columns.Add("CFCPreComp3", typeof(int));
+            t.Columns.Add("CFCPreComp4", typeof(int));
+            t.Columns.Add("CFCPreComp5", typeof(int));
+            t.Columns.Add("CFCPreComp6", typeof(int));
+            t.Columns.Add("CFCPreComp7", typeof(int));
+            t.Columns.Add("CFCPreComp8", typeof(int));
+            t.Columns.Add("CFCPreComp9", typeof(int));
+
+            t.Columns.Add("CFCPostEqGain0", typeof(int));
+            t.Columns.Add("CFCPostEqGain1", typeof(int));
+            t.Columns.Add("CFCPostEqGain2", typeof(int));
+            t.Columns.Add("CFCPostEqGain3", typeof(int));
+            t.Columns.Add("CFCPostEqGain4", typeof(int));
+            t.Columns.Add("CFCPostEqGain5", typeof(int));
+            t.Columns.Add("CFCPostEqGain6", typeof(int));
+            t.Columns.Add("CFCPostEqGain7", typeof(int));
+            t.Columns.Add("CFCPostEqGain8", typeof(int));
+            t.Columns.Add("CFCPostEqGain9", typeof(int));
+
+            t.Columns.Add("CFCEqFreq0", typeof(int));
+            t.Columns.Add("CFCEqFreq1", typeof(int));
+            t.Columns.Add("CFCEqFreq2", typeof(int));
+            t.Columns.Add("CFCEqFreq3", typeof(int));
+            t.Columns.Add("CFCEqFreq4", typeof(int));
+            t.Columns.Add("CFCEqFreq5", typeof(int));
+            t.Columns.Add("CFCEqFreq6", typeof(int));
+            t.Columns.Add("CFCEqFreq7", typeof(int));
+            t.Columns.Add("CFCEqFreq8", typeof(int));
+            t.Columns.Add("CFCEqFreq9", typeof(int));
+
 
             #region Default
 
@@ -3384,6 +3592,18 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000; 
+
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = true;
@@ -3472,8 +3692,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -3498,6 +3760,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = true;
             dr["DXLevel"] = 5;
             dr["CompanderOn"] = false;
@@ -3585,8 +3857,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -3612,6 +3926,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 0;
             dr["CompanderOn"] = false;
@@ -3698,8 +4022,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -3725,6 +4091,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 0;
             dr["CompanderOn"] = false;
@@ -3811,8 +4187,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -3837,6 +4255,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = false;
@@ -3923,8 +4351,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -3949,6 +4419,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = false;
@@ -4035,8 +4515,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4061,6 +4583,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = false;
@@ -4147,8 +4679,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4173,6 +4747,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = true;
@@ -4259,8 +4843,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4285,6 +4911,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = false;
@@ -4371,8 +5007,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4397,6 +5075,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = true;
             dr["DXLevel"] = 5;
             dr["CompanderOn"] = false;
@@ -4483,8 +5171,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4509,6 +5239,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = true;
@@ -4595,8 +5335,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4621,6 +5403,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = false;
@@ -4707,8 +5499,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4733,6 +5567,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = true;
@@ -4819,8 +5663,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4845,6 +5731,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = false;
@@ -4931,8 +5827,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -4957,6 +5895,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = true;
@@ -5043,8 +5991,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -5069,6 +6059,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = false;
@@ -5155,8 +6155,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
@@ -5181,6 +6223,16 @@ namespace PowerSDR
             dr["TXEQ8"] = 0;
             dr["TXEQ9"] = 0;
             dr["TXEQ10"] = 0;
+            dr["TxEqFreq1"] = 32;
+            dr["TxEqFreq2"] = 63;
+            dr["TxEqFreq3"] = 125;
+            dr["TxEqFreq4"] = 250;
+            dr["TxEqFreq5"] = 500;
+            dr["TxEqFreq6"] = 1000;
+            dr["TxEqFreq7"] = 2000;
+            dr["TxEqFreq8"] = 4000;
+            dr["TxEqFreq9"] = 8000;
+            dr["TxEqFreq10"] = 16000;
             dr["DXOn"] = false;
             dr["DXLevel"] = 3;
             dr["CompanderOn"] = true;
@@ -5267,8 +6319,50 @@ namespace PowerSDR
             dr["Line_Input_Level"] = 0.0;
             dr["CESSB_On"] = false;
             dr["Disable_Pure_Signal"] = true;
-            //dr["FlexWire_Input_On"] = "0";
-            //dr["FlexWire_Input_Level"] = 0;
+
+            // CFC
+            dr["CFCEnabled"] = false;
+            dr["CFCPostEqEnabled"] = false;
+            dr["CFCPhaseRotatorEnabled"] = false;
+
+            dr["CFCPhaseRotatorFreq"] = 338;
+            dr["CFCPhaseRotatorStages"] = 8;
+
+            dr["CFCPreComp"] = 0;
+            dr["CFCPostEqGain"] = 0;
+
+            dr["CFCPreComp0"] = 5;
+            dr["CFCPreComp1"] = 5;
+            dr["CFCPreComp2"] = 5;
+            dr["CFCPreComp3"] = 5;
+            dr["CFCPreComp4"] = 5;
+            dr["CFCPreComp5"] = 5;
+            dr["CFCPreComp6"] = 5;
+            dr["CFCPreComp7"] = 5;
+            dr["CFCPreComp8"] = 5;
+            dr["CFCPreComp9"] = 5;
+
+            dr["CFCPostEqGain0"] = 0;
+            dr["CFCPostEqGain1"] = 0;
+            dr["CFCPostEqGain2"] = 0;
+            dr["CFCPostEqGain3"] = 0;
+            dr["CFCPostEqGain4"] = 0;
+            dr["CFCPostEqGain5"] = 0;
+            dr["CFCPostEqGain6"] = 0;
+            dr["CFCPostEqGain7"] = 0;
+            dr["CFCPostEqGain8"] = 0;
+            dr["CFCPostEqGain9"] = 0;
+
+            dr["CFCEqFreq0"] = 0;
+            dr["CFCEqFreq1"] = 125;
+            dr["CFCEqFreq2"] = 250;
+            dr["CFCEqFreq3"] = 500;
+            dr["CFCEqFreq4"] = 1000;
+            dr["CFCEqFreq5"] = 2000;
+            dr["CFCEqFreq6"] = 3000;
+            dr["CFCEqFreq7"] = 4000;
+            dr["CFCEqFreq8"] = 5000;
+            dr["CFCEqFreq9"] = 10000;
 
             t.Rows.Add(dr);
 
