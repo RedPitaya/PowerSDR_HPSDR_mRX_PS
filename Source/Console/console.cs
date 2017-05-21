@@ -1578,6 +1578,9 @@ namespace PowerSDR
         private ToolStripMenuItem NR2ToolStripMenuItem1;
         private ToolStripMenuItem NR2StripMenuItem2;
         private ToolStripMenuItem SNBtoolStripMenuItem;
+        private ToolStripMenuItem NR2ToolStripMenuItem1;
+        private ToolStripMenuItem NR2StripMenuItem2;
+        private ToolStripMenuItem SNBtoolStripMenuItem;
         private ToolStripMenuItem SNBtoolStripMenuItem1;
         private TextBoxTS txtDisplayOrionMKIIPAVolts;
         private TextBoxTS txtDisplayOrionMKIIPAAmps;
