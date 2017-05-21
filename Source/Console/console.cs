@@ -32248,30 +32248,18 @@ namespace PowerSDR
                                                 // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
                                               //  SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
                                               //  SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
-                                          //  }
-                                            }
+                                          //  }                                         
                                         }
-                                    else
-                                            {
-                                        new_meter_data = calfwdpower;
-                                      //  if (pa_values)
-                                      //  {
-                                            // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
-                                           // SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
-                                           // SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
-                                      //  }
-                                        }
-                                    }
-                                    }
+                                    }                                   
                                     else
                                     {
                                         new_meter_data = calfwdpower;
-                                        if (pa_values)
-                                        {
-                                            // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
-                                            SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
-                                            SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
-                                        }
+                                        //  if (pa_values)
+                                        //  {
+                                        // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
+                                        // SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
+                                        // SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
+                                        //  }
                                     }
                                 }
                                 else
@@ -32514,7 +32502,7 @@ namespace PowerSDR
                 adc = JanusAudio.getAIN3();
                 addadc += adc;
                 Thread.Sleep(1);
-           }
+            }
             adc = addadc / 100.0f;
 
             float volts = (adc / 4095.0f) * 5.0f;
@@ -33035,7 +33023,7 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         public float computeCharly25FwdPower()
         {
-            int power_int = JanusAudio.getAlexFwdPower();
+            float power_int = JanusAudio.getAlexFwdPower();
             double power_f = (double)power_int;
             double result = 0.0;
 
