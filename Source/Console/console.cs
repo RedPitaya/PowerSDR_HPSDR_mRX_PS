@@ -1642,11 +1642,11 @@ namespace PowerSDR
                 // string version = fvi.FileVersion; //.Substring(0, fvi.FileVersion.LastIndexOf("."));
 
                 // DG8MG
-                // Extended path by " Charly25 HAMlab" to avoid incompatibility with other PowerSDR versions
+                // Changed the path to avoid incompatibility with other PowerSDR versions
                 // AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                 //     + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
                 AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+                    + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
                 // DG8MG
 
             }
@@ -2476,12 +2476,12 @@ namespace PowerSDR
             this.lblDisplayPan = new System.Windows.Forms.LabelTS();
             this.picDisplay = new System.Windows.Forms.PictureBox();
             this.picWaterfall = new System.Windows.Forms.PictureBox();
-            this.txtDisplayCursorFreq = new System.Windows.Forms.TextBoxTS();
-            this.txtDisplayOrionMKIIBlank = new System.Windows.Forms.TextBoxTS();
             this.txtDisplayCursorOffset = new System.Windows.Forms.TextBoxTS();
             this.txtDisplayOrionMKIIPAVolts = new System.Windows.Forms.TextBoxTS();
             this.txtDisplayCursorPower = new System.Windows.Forms.TextBoxTS();
             this.txtDisplayOrionMKIIPAAmps = new System.Windows.Forms.TextBoxTS();
+            this.txtDisplayCursorFreq = new System.Windows.Forms.TextBoxTS();
+            this.txtDisplayOrionMKIIBlank = new System.Windows.Forms.TextBoxTS();
             this.panelMode = new System.Windows.Forms.PanelTS();
             this.panelBandHF = new System.Windows.Forms.PanelTS();
             this.txtVFOAFreq = new System.Windows.Forms.TextBoxTS();
@@ -6779,26 +6779,6 @@ namespace PowerSDR
             this.picWaterfall.TabStop = false;
             this.picWaterfall.Resize += new System.EventHandler(this.picWaterfall_Resize);
             // 
-            // txtDisplayCursorFreq
-            // 
-            this.txtDisplayCursorFreq.BackColor = System.Drawing.Color.Black;
-            this.txtDisplayCursorFreq.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDisplayCursorFreq.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.txtDisplayCursorFreq, "txtDisplayCursorFreq");
-            this.txtDisplayCursorFreq.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.txtDisplayCursorFreq.Name = "txtDisplayCursorFreq";
-            this.txtDisplayCursorFreq.ReadOnly = true;
-            // 
-            // txtDisplayOrionMKIIBlank
-            // 
-            this.txtDisplayOrionMKIIBlank.BackColor = System.Drawing.Color.Black;
-            this.txtDisplayOrionMKIIBlank.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDisplayOrionMKIIBlank.Cursor = System.Windows.Forms.Cursors.Default;
-            resources.ApplyResources(this.txtDisplayOrionMKIIBlank, "txtDisplayOrionMKIIBlank");
-            this.txtDisplayOrionMKIIBlank.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.txtDisplayOrionMKIIBlank.Name = "txtDisplayOrionMKIIBlank";
-            this.txtDisplayOrionMKIIBlank.ReadOnly = true;
-            // 
             // txtDisplayCursorOffset
             // 
             this.txtDisplayCursorOffset.BackColor = System.Drawing.Color.Black;
@@ -6839,6 +6819,26 @@ namespace PowerSDR
             this.txtDisplayOrionMKIIPAAmps.ForeColor = System.Drawing.Color.DodgerBlue;
             this.txtDisplayOrionMKIIPAAmps.Name = "txtDisplayOrionMKIIPAAmps";
             this.txtDisplayOrionMKIIPAAmps.ReadOnly = true;
+            // 
+            // txtDisplayCursorFreq
+            // 
+            this.txtDisplayCursorFreq.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayCursorFreq.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayCursorFreq.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayCursorFreq, "txtDisplayCursorFreq");
+            this.txtDisplayCursorFreq.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayCursorFreq.Name = "txtDisplayCursorFreq";
+            this.txtDisplayCursorFreq.ReadOnly = true;
+            // 
+            // txtDisplayOrionMKIIBlank
+            // 
+            this.txtDisplayOrionMKIIBlank.BackColor = System.Drawing.Color.Black;
+            this.txtDisplayOrionMKIIBlank.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDisplayOrionMKIIBlank.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.txtDisplayOrionMKIIBlank, "txtDisplayOrionMKIIBlank");
+            this.txtDisplayOrionMKIIBlank.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.txtDisplayOrionMKIIBlank.Name = "txtDisplayOrionMKIIBlank";
+            this.txtDisplayOrionMKIIBlank.ReadOnly = true;
             // 
             // panelMode
             // 
@@ -7627,6 +7627,7 @@ namespace PowerSDR
             this.panelDisplay2.ResumeLayout(false);
             this.panelDSP.ResumeLayout(false);
             this.panelVFO.ResumeLayout(false);
+            this.panelVFO.PerformLayout();
             this.panelDateTime.ResumeLayout(false);
             this.panelDateTime.PerformLayout();
             this.panelSoundControls.ResumeLayout(false);
@@ -7717,11 +7718,11 @@ namespace PowerSDR
                 string version = fvi.FileVersion.Substring(0, fvi.FileVersion.LastIndexOf("."));
 
                 // DG8MG
-                // Extended path by " Charly25 HAMlab" to avoid incompatibility with other PowerSDR versions
+                // Changed the path to avoid incompatibility with other PowerSDR versions
                 // app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                 //     + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
                 app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+                    + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
                 // DG8MG
 
 #if(DEBUG)
@@ -22165,8 +22166,8 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with Charly 25 as default hardware
-        private HPSDRModel current_hpsdr_model = HPSDRModel.CHARLY25;
+        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with HAMlab / STEMlab as default hardware
+        private HPSDRModel current_hpsdr_model = HPSDRModel.HAMLAB;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG
 
@@ -22222,8 +22223,8 @@ namespace PowerSDR
                 {
                 rx1_meter_cal_offset = rx_meter_cal_offset_by_radio[(int)current_hpsdr_model];
                 RX1DisplayCalOffset = rx_display_cal_offset_by_radio[(int)current_hpsdr_model];
-            }
-        }
+            	}
+        	}
         }
 
         private HPSDRHW current_hpsdr_hardware = HPSDRHW.Metis;
@@ -45773,7 +45774,7 @@ namespace PowerSDR
             {
                 udXIT.Value = udRIT.Value;
                 setXIT_LEDs();
-        }
+	        }
         }
 
         private void setRIT_LEDs()
@@ -45844,7 +45845,7 @@ namespace PowerSDR
             {
                 udRIT.Value = udXIT.Value;
                 setRIT_LEDs();
-        }
+	        }
         }
 
         private void btnXITReset_Click(object sender, System.EventArgs e)

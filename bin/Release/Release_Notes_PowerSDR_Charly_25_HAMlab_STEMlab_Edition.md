@@ -1,5 +1,17 @@
 ## Release notes of PowerSDR Charly 25 / HAMlab / STEMlab Edition:
 
+#### commit d7055b92b9cdb7f0da0bdfb94362b325c02c23da
+Date:   Sun May 21 18:23:34 2017 +0200
+
+- Merged in the features of OpenHPSDR-PowerSDR version 3.3.17.
+
+
+#### commit 4ac12e29dcc63c978b96eaee029bc501f997151d
+Date:   Thu May 18 01:53:36 2017 +0200
+
+- Merged in the features of OpenHPSDR-PowerSDR version 3.3.15.
+
+
 #### commit aa9c444a7092a81d6d6cdadea04b8b509e30aaff
 Date:   Thu Apr 27 02:40:35 2017 +0200
 

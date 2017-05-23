@@ -31,6 +31,7 @@ namespace PowerSDR.Midi2Cat
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Midi2CatSetupForm));
             this.devicesTabControl = new System.Windows.Forms.TabControl();
             this.saveButton = new System.Windows.Forms.Button();
             this.startupPanel = new System.Windows.Forms.Panel();
@@ -110,6 +111,7 @@ namespace PowerSDR.Midi2Cat
             this.Controls.Add(this.startupPanel);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.devicesTabControl);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "Midi2CatSetupForm";
             this.Text = "Midi Controller Setup";

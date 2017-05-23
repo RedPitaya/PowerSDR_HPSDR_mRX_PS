@@ -92,12 +92,12 @@ namespace PowerSDR
             String app_data_path = "";
 
             // DG8MG
-            // Extended path by " Charly25 HAMlab" to avoid incompatibility with other PowerSDR versions
+            // Changed path to avoid incompatibility with other PowerSDR versions
             // app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
             // + "\\FlexRadio Systems\\PowerSDR mRX\\wisdom";
             // + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
             app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                + "\\FlexRadio Systems\\PowerSDR mRX PS Charly25 HAMlab\\";
+                + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
             // DG8MG
 
             wdsp.WDSPwisdom(app_data_path);
