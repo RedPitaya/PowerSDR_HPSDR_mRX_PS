@@ -361,7 +361,6 @@ extern int FwdPower;
 extern float RefPower;
 extern float AlexFwdPower;
 extern int AIN3;
-extern int AIN3;
 extern int AIN4;
 
 int ApolloFilt;

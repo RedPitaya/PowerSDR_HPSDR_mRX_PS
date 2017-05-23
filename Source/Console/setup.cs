@@ -6536,7 +6536,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA20W.Value;
                         break;
-        }
+        		}
                 return rv;
 
             }
@@ -6556,7 +6556,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA40W.Value;
                         break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6575,7 +6575,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA60W.Value;
                         break;
-        }
+        		}
                 return rv;
             }
         }
@@ -6594,7 +6594,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA80W.Value;
                         break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6613,7 +6613,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA100W.Value;
                        break;
-        }
+		        }
                  return rv;
             }
         }
@@ -6632,7 +6632,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                      rv = (float)ud200PA120W.Value;
                        break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6651,7 +6651,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA140W.Value;
                        break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6670,7 +6670,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA160W.Value;
                         break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6689,7 +6689,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA180W.Value;
                         break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6708,7 +6708,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA200W.Value;
                         break;
-        }
+		        }
                  return rv;
             }
         }
@@ -6727,7 +6727,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                     rv = (float)ud200PA220W.Value;
                         break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6746,7 +6746,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                      rv = (float)ud200PA240W.Value;
                        break;
-        }
+		        }
                 return rv;
             }
         }
@@ -6765,7 +6765,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                      rv = (float)ud200PA260W.Value;
                         break;
-        }
+		        }
                  return rv;
             }
         }
@@ -6784,7 +6784,7 @@ namespace PowerSDR
                     case HPSDRModel.ANAN8000D:
                      rv = (float)ud200PA280W.Value;
                         break;
-        }
+		        }
                  return rv;
             }
         }
@@ -8221,8 +8221,8 @@ namespace PowerSDR
                         console.PowerOn = false;
                         Thread.Sleep(100);
                         console.PowerOn = true;
-            }
-        }
+                    }
+                }
             }
         }
 
@@ -19885,8 +19885,8 @@ namespace PowerSDR
                 ud100PA130W.Value = 130;
                 ud100PA140W.Value = 140;
                     break;
-        }
-       }
+	        }
+		}
 
         public void ForceEnablePureSignal()
         {

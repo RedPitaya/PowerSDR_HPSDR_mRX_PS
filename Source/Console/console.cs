@@ -22165,8 +22165,8 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with Charly 25 as default hardware
-        private HPSDRModel current_hpsdr_model = HPSDRModel.CHARLY25;
+        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with HAMlab / STEMlab as default hardware
+        private HPSDRModel current_hpsdr_model = HPSDRModel.HAMLAB;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG
 
@@ -22222,8 +22222,8 @@ namespace PowerSDR
                 {
                 rx1_meter_cal_offset = rx_meter_cal_offset_by_radio[(int)current_hpsdr_model];
                 RX1DisplayCalOffset = rx_display_cal_offset_by_radio[(int)current_hpsdr_model];
-            }
-        }
+            	}
+        	}
         }
 
         private HPSDRHW current_hpsdr_hardware = HPSDRHW.Metis;
@@ -45773,7 +45773,7 @@ namespace PowerSDR
             {
                 udXIT.Value = udRIT.Value;
                 setXIT_LEDs();
-        }
+	        }
         }
 
         private void setRIT_LEDs()
@@ -45844,7 +45844,7 @@ namespace PowerSDR
             {
                 udRIT.Value = udXIT.Value;
                 setRIT_LEDs();
-        }
+	        }
         }
 
         private void btnXITReset_Click(object sender, System.EventArgs e)
