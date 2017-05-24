@@ -123,6 +123,7 @@ namespace PowerSDR
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RemoteProfiles));
             this.btnClose = new System.Windows.Forms.Button();
             this.cboProfiles = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
