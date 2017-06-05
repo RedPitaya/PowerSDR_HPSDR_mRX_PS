@@ -33024,9 +33024,24 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         public float computeCharly25FwdPower()
         {
-            float power_int = JanusAudio.getAlexFwdPower();
-            double power_f = (double)power_int;
+            int i = 0;
+            float power_int = 0;
+            double power_f = 0;
             double result = 0.0;
+
+            for (i = 0; i < 50; i++)
+            {
+                power_int += JanusAudio.getAlexFwdPower();
+            }
+
+            power_int = power_int / 50;
+
+            // Polynominal interpolation with a polynomial degree of 3
+            // y = -5.475282575·10 - 1 x2 + 25.00323026 x + 2.331621005
+            // power_f = -5.475282575 * Math.Pow(10, -1) * Math.Pow(power_int, 2) + 25.00323026 * power_int + 2.331621005;            
+
+            // y = -0.210103721 x3 + 7.051974611 x2 - 49.37859391 x + 98.61457434
+            power_f = -0.210103721 * Math.Pow(power_int, 3) + 7.051974611 * Math.Pow(power_int, 2) - 49.37859391 * power_int + 98.61457434;                       
 
             if (PAValues)
             {
