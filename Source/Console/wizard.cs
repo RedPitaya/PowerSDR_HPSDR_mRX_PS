@@ -355,6 +355,7 @@ namespace PowerSDR
             // 
             this.grpModel.Controls.Add(this.radGenModelCharly25);
             this.grpModel.Controls.Add(this.radGenModelHAMlab);
+            this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Controls.Add(this.radGenModelANAN10E);
             this.grpModel.Controls.Add(this.radGenModelANAN100B);
             this.grpModel.Controls.Add(this.radGenModelOrion);
@@ -367,7 +368,6 @@ namespace PowerSDR
             this.grpModel.Controls.Add(this.radGenModelDemoNone);
             this.grpModel.Controls.Add(this.radGenModelSoftRock40);
             this.grpModel.Controls.Add(this.radGenModelSDR1000);
-            this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Location = new System.Drawing.Point(256, 24);
             this.grpModel.Name = "grpModel";
             this.grpModel.Size = new System.Drawing.Size(144, 216);
@@ -2117,7 +2117,7 @@ namespace PowerSDR
             //console.CurrentRegion = FRSRegion.US;
             // DG8MG
 
-            ArrayList a = new ArrayList();
+			ArrayList a = new ArrayList();
 			a.Add("SetupWizard/1");
 			DB.SaveVars("State", ref a);
 
