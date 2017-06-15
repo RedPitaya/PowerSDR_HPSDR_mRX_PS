@@ -6088,31 +6088,31 @@
             // 
             this.lblC25RX2FbPresent.AutoSize = true;
             this.lblC25RX2FbPresent.Image = null;
-            this.lblC25RX2FbPresent.Location = new System.Drawing.Point(18, 140);
+            this.lblC25RX2FbPresent.Location = new System.Drawing.Point(37, 140);
             this.lblC25RX2FbPresent.Name = "lblC25RX2FbPresent";
-            this.lblC25RX2FbPresent.Size = new System.Drawing.Size(118, 13);
+            this.lblC25RX2FbPresent.Size = new System.Drawing.Size(80, 13);
             this.lblC25RX2FbPresent.TabIndex = 10;
-            this.lblC25RX2FbPresent.Text = "RX2 Filterboard present";
+            this.lblC25RX2FbPresent.Text = "RX2 Filterboard";
             // 
             // lblC25RX1FbPresent
             // 
             this.lblC25RX1FbPresent.AutoSize = true;
             this.lblC25RX1FbPresent.Image = null;
-            this.lblC25RX1FbPresent.Location = new System.Drawing.Point(18, 120);
+            this.lblC25RX1FbPresent.Location = new System.Drawing.Point(37, 120);
             this.lblC25RX1FbPresent.Name = "lblC25RX1FbPresent";
-            this.lblC25RX1FbPresent.Size = new System.Drawing.Size(118, 13);
+            this.lblC25RX1FbPresent.Size = new System.Drawing.Size(80, 13);
             this.lblC25RX1FbPresent.TabIndex = 9;
-            this.lblC25RX1FbPresent.Text = "RX1 Filterboard present";
+            this.lblC25RX1FbPresent.Text = "RX1 Filterboard";
             // 
             // lblC25AudioCodecPresent
             // 
             this.lblC25AudioCodecPresent.AutoSize = true;
             this.lblC25AudioCodecPresent.Image = null;
-            this.lblC25AudioCodecPresent.Location = new System.Drawing.Point(18, 100);
+            this.lblC25AudioCodecPresent.Location = new System.Drawing.Point(37, 100);
             this.lblC25AudioCodecPresent.Name = "lblC25AudioCodecPresent";
-            this.lblC25AudioCodecPresent.Size = new System.Drawing.Size(106, 13);
+            this.lblC25AudioCodecPresent.Size = new System.Drawing.Size(68, 13);
             this.lblC25AudioCodecPresent.TabIndex = 8;
-            this.lblC25AudioCodecPresent.Text = "Audio Codec present";
+            this.lblC25AudioCodecPresent.Text = "Audio Codec";
             // 
             // grpC25TRXBoard
             // 
@@ -6123,26 +6123,27 @@
             this.grpC25TRXBoard.Size = new System.Drawing.Size(147, 65);
             this.grpC25TRXBoard.TabIndex = 7;
             this.grpC25TRXBoard.TabStop = false;
+            this.grpC25TRXBoard.Text = "TRX Board";
             // 
             // lblC25LCPresent
             // 
             this.lblC25LCPresent.AutoSize = true;
             this.lblC25LCPresent.Image = null;
-            this.lblC25LCPresent.Location = new System.Drawing.Point(11, 42);
+            this.lblC25LCPresent.Location = new System.Drawing.Point(30, 40);
             this.lblC25LCPresent.Name = "lblC25LCPresent";
-            this.lblC25LCPresent.Size = new System.Drawing.Size(116, 13);
+            this.lblC25LCPresent.Size = new System.Drawing.Size(78, 13);
             this.lblC25LCPresent.TabIndex = 3;
-            this.lblC25LCPresent.Text = "CHARLY 25LC present";
+            this.lblC25LCPresent.Text = "CHARLY 25LC";
             // 
             // lblC25ABPresent
             // 
             this.lblC25ABPresent.AutoSize = true;
             this.lblC25ABPresent.Image = null;
-            this.lblC25ABPresent.Location = new System.Drawing.Point(11, 16);
+            this.lblC25ABPresent.Location = new System.Drawing.Point(30, 20);
             this.lblC25ABPresent.Name = "lblC25ABPresent";
-            this.lblC25ABPresent.Size = new System.Drawing.Size(117, 13);
+            this.lblC25ABPresent.Size = new System.Drawing.Size(79, 13);
             this.lblC25ABPresent.TabIndex = 2;
-            this.lblC25ABPresent.Text = "CHARLY 25AB present";
+            this.lblC25ABPresent.Text = "CHARLY 25AB";
             // 
             // grpDisablePureSignal
             // 
@@ -51830,7 +51831,7 @@
         private System.Windows.Forms.LabelTS lblC25RX2FbPresent;
         private System.Windows.Forms.LabelTS lblC25RX1FbPresent;
         private System.Windows.Forms.LabelTS lblC25AudioCodecPresent;
-        private System.Windows.Forms.LabelTS lblC25LCPresent;
+        public System.Windows.Forms.LabelTS lblC25LCPresent;
         private System.Windows.Forms.LabelTS lblC25ABPresent;
     }
 }

@@ -35856,7 +35856,12 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 else
                 {
-                    sdr_app_running = true;                  
+                    sdr_app_running = true;
+                    SetupForm.UpdateC25HardwareOptions();
+                    if (SetupForm.lblC25LCPresent.Enabled)
+                    {
+                        chkC25ANT.Enabled = false;
+                    }
                 }
                 // DG8MG
 

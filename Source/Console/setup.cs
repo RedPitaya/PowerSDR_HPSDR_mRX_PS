@@ -3295,11 +3295,12 @@ namespace PowerSDR
         // DG8MG
         public void UpdateC25HardwareOptions()
         {
-            lblC25ABPresent.Enabled = false;
-            lblC25LCPresent.Enabled = false;
-            lblC25AudioCodecPresent.Enabled = false;
-            lblC25RX1FbPresent.Enabled = false;
-            lblC25RX2FbPresent.Enabled = false;
+            lblC25ABPresent.Visible = false;
+            lblC25LCPresent.Enabled = false;  // Used for controlling the antenna switching button on the console 
+            lblC25LCPresent.Visible = false;
+            lblC25AudioCodecPresent.Visible = false;
+            lblC25RX1FbPresent.Visible = false;
+            lblC25RX2FbPresent.Visible = false;
 
             if (console.PowerOn)
             {
@@ -3311,28 +3312,29 @@ namespace PowerSDR
                 if (penelopeFWVersion >= 128 && penelopeFWVersion <= 129)
                 {
                     lblC25LCPresent.Enabled = true;
+                    lblC25LCPresent.Visible = true;
                 }
                 else if (penelopeFWVersion == 130)
                 {
-                    lblC25ABPresent.Enabled = true;
+                    lblC25ABPresent.Visible = true;
                 }
 
                 // Check if an audio codec is present
                 if (ozyFWVersion == 128)
                 {
-                    lblC25AudioCodecPresent.Enabled = true;
+                    lblC25AudioCodecPresent.Visible = true;
                 }
 
                 // Check if a RX1 filterboard is present
                 if (mercuryFWVersion == 146)
                 {
-                    lblC25RX1FbPresent.Enabled = true;
+                    lblC25RX1FbPresent.Visible = true;
                 }
 
                 // Check if a RX2 filterboard is present
                 if (mercuryFWVersion == 147)
                 {
-                    lblC25RX2FbPresent.Enabled = true;
+                    lblC25RX2FbPresent.Visible = true;
                 }
             }
         }
@@ -8546,7 +8548,7 @@ namespace PowerSDR
                 console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // Charly 25 doesn't have this functionality
 
-                if (lblC25AudioCodecPresent.Enabled == true)
+                if (lblC25AudioCodecPresent.Visible)
                 {
                     chkVACAllowBypass.Checked = true;  // Charly 25 with audio codec needs this to be checked
                 }
@@ -8735,7 +8737,7 @@ namespace PowerSDR
                 console.psform.AutoAttenuate = false;  // HAMlab doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // HAMlab doesn't have this functionality
 
-                if (lblC25AudioCodecPresent.Enabled == true)
+                if (lblC25AudioCodecPresent.Visible)
                 {
                     chkVACAllowBypass.Checked = true;  // HAMlab with new audio codec needs this to be checked
                 }
@@ -13744,17 +13746,17 @@ namespace PowerSDR
 		    // Extension for Charly 25 and HAMlab hardware
             if (radGenModelCharly25.Checked || radGenModelHAMlab.Checked)
             {
-                udCHARLY25PAGain160.Value = 25.0M;
-                udCHARLY25PAGain80.Value = 25.0M;
-                udCHARLY25PAGain60.Value = 25.0M;
-                udCHARLY25PAGain40.Value = 25.0M;
-                udCHARLY25PAGain30.Value = 25.0M;
-                udCHARLY25PAGain20.Value = 25.0M;
-                udCHARLY25PAGain17.Value = 25.0M;
-                udCHARLY25PAGain15.Value = 25.0M;
-                udCHARLY25PAGain12.Value = 25.0M;
-                udCHARLY25PAGain10.Value = 25.0M;
-                udCHARLY25PAGain6.Value = 6.0M;
+                udCHARLY25PAGain160.Value = 41.0M;
+                udCHARLY25PAGain80.Value = 43.5M;
+                udCHARLY25PAGain60.Value = 42.0M;
+                udCHARLY25PAGain40.Value = 44.5M;
+                udCHARLY25PAGain30.Value = 44.5M;
+                udCHARLY25PAGain20.Value = 46.0M;
+                udCHARLY25PAGain17.Value = 44.0M;
+                udCHARLY25PAGain15.Value = 45.5M;
+                udCHARLY25PAGain12.Value = 41.0M;
+                udCHARLY25PAGain10.Value = 44.5M;
+                udCHARLY25PAGain6.Value = 41.0M;
 
                 udCHARLY25PAGainVHF0.Value = 0.0M;
                 udCHARLY25PAGainVHF1.Value = 1.0M;
