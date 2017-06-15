@@ -46501,6 +46501,15 @@ namespace PowerSDR
         {
             if (SetupForm.IsDisposed)
                 SetupForm = new Setup(this);
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+            {
+                SetupForm.UpdateC25HardwareOptions();
+            }
+            // DG8MG
+
             SetupForm.Show();
             SetupForm.Focus();
         }
@@ -50766,6 +50775,15 @@ namespace PowerSDR
         {
             if (SetupForm == null || SetupForm.IsDisposed)
                 SetupForm = new Setup(this);
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+            {
+                SetupForm.UpdateC25HardwareOptions();
+            }
+            // DG8MG
+
             SetupForm.Show();
             SetupForm.Focus();
             SetFocusMaster(false);

@@ -3291,6 +3291,53 @@ namespace PowerSDR
                 }
             }
         }
+
+        // DG8MG
+        public void UpdateC25HardwareOptions()
+        {
+            lblC25ABPresent.Enabled = false;
+            lblC25LCPresent.Enabled = false;
+            lblC25AudioCodecPresent.Enabled = false;
+            lblC25RX1FbPresent.Enabled = false;
+            lblC25RX2FbPresent.Enabled = false;
+
+            if (console.PowerOn)
+            {
+                int mercuryFWVersion = JanusAudio.getMercuryFWVersion();
+                int penelopeFWVersion = JanusAudio.getPenelopeFWVersion();
+                int ozyFWVersion = JanusAudio.getOzyFWVersion();
+
+                // Check which Charly 25 TRX board is present
+                if (penelopeFWVersion >= 128 && penelopeFWVersion <= 129)
+                {
+                    lblC25LCPresent.Enabled = true;
+                }
+                else if (penelopeFWVersion == 130)
+                {
+                    lblC25ABPresent.Enabled = true;
+                }
+
+                // Check if an audio codec is present
+                if (ozyFWVersion == 128)
+                {
+                    lblC25AudioCodecPresent.Enabled = true;
+                }
+
+                // Check if a RX1 filterboard is present
+                if (mercuryFWVersion == 146)
+                {
+                    lblC25RX1FbPresent.Enabled = true;
+                }
+
+                // Check if a RX2 filterboard is present
+                if (mercuryFWVersion == 147)
+                {
+                    lblC25RX2FbPresent.Enabled = true;
+                }
+            }
+        }
+        // DG8MG
+
         #endregion
 
         #region Properties
@@ -8464,25 +8511,20 @@ namespace PowerSDR
                 console.chkSR.Visible = false;  // Charly 25 doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25 visible
+                groupBoxHPSDRHW.Visible = false;  // Charly 25 doesn't have this hardware options
+                grpC25HardwareOptions.Visible = true;  // Charly 25 has its own hardware options
                 chkPennyPresent.Checked = true;  
-                chkPennyPresent.Visible = false;  // Charly 25 doesn't need this functionality
                 chkPennyLane.Checked = false;  // Charly 25 doesn't need this functionality
-                chkPennyLane.Visible = false;  // Charly 25 doesn't need this functionality
                 chkMercuryPresent.Checked = false;  // Charly 25 doesn't need this functionality
-                chkMercuryPresent.Visible = false;  // Charly 25 doesn't need this functionality
                 chkJanusPresent.Checked = false;  // Charly 25 doesn't need this functionality
-                chkJanusPresent.Visible = false;  // Charly 25 doesn't need this functionality
                 chkExcaliburPresent.Checked = false;  // Charly 25 doesn't need this functionality
-                chkExcaliburPresent.Visible = false;  // Charly 25 doesn't need this functionality
+                chkAlexPresent.Checked = false;  // Charly 25 doesn't need this functionality
+                chkApolloPresent.Checked = false;  // Charly 25 doesn't need this functionality
                 groupBox10MhzClock.Visible = true;
                 groupBox122MHz.Visible = true;
                 groupBoxMicSource.Visible = true;
                 chkHermesStepAttenuator.Checked = false;  // Charly 25 doesn't need this functionality
                 grpHermesStepAttenuator.Visible = false;  // Charly 25 doesn't need this functionality
-                chkAlexPresent.Checked = false;  // Charly 25 doesn't need this functionality
-                chkAlexPresent.Visible = false;  // Charly 25 doesn't need this functionality
-                chkApolloPresent.Checked = false;  // Charly 25 doesn't need this functionality
-                chkApolloPresent.Visible = false;  // Charly 25 doesn't need this functionality
                 groupBoxRXOptions.Text = "Mercury Options";
                 radMetis.Text = "RedPitaya (Ethernet)";
                 grpMetisAddr.Text = "RedPitaya Address";
@@ -8497,14 +8539,21 @@ namespace PowerSDR
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
                 chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
-                groupBoxHPSDRHW.Visible = true;  // Fix me: Is it really needed?
                 grpOzyType.Visible = true;
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
-                chkVACAllowBypass.Checked = false;  // Charly 25 needs this to be unchecked
                 console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // Charly 25 doesn't have this functionality
+
+                if (lblC25AudioCodecPresent.Enabled == true)
+                {
+                    chkVACAllowBypass.Checked = true;  // Charly 25 with audio codec needs this to be checked
+                }
+                else
+                {
+                    chkVACAllowBypass.Checked = false;  // Charly 25 without audio codec needs this to be unchecked
+                }
 
                 if (!tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -8522,6 +8571,7 @@ namespace PowerSDR
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
+                grpC25HardwareOptions.Visible = false;  // reset to default setting
 
                 if (tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -8533,8 +8583,7 @@ namespace PowerSDR
             // DG8MG: Test me!
             // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for Charly 25
             {
-                // add or remove setup pages for HPSDR stuff 
-                // AddHPSDRPages();  // Fix me: Is it really needed? DG8MG
+                // remove setup pages for HPSDR stuff 
                 RemoveHPSDRPages();
 
                 // force setting of audio card 
@@ -8647,28 +8696,24 @@ namespace PowerSDR
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
                 console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon
                 this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());
+
                 console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
+                groupBoxHPSDRHW.Visible = false;  // HAMlab doesn't have this hardware options
+                grpC25HardwareOptions.Visible = true;  // HAMlab has its own hardware options
                 chkPennyPresent.Checked = true;
-                chkPennyPresent.Visible = false;  // HAMlab doesn't need this functionality
                 chkPennyLane.Checked = false;  // HAMlab doesn't need this functionality
-                chkPennyLane.Visible = false;  // HAMlab doesn't need this functionality
                 chkMercuryPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkMercuryPresent.Visible = false;  // HAMlab doesn't need this functionality
                 chkJanusPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkJanusPresent.Visible = false;  // HAMlab doesn't need this functionality
                 chkExcaliburPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkExcaliburPresent.Visible = false;  // HAMlab doesn't need this functionality
+                chkAlexPresent.Checked = false;  // HAMlab doesn't need this functionality
+                chkApolloPresent.Checked = false;  // HAMlab doesn't need this functionality
                 groupBox10MhzClock.Visible = true;
                 groupBox122MHz.Visible = true;
                 groupBoxMicSource.Visible = true;
                 chkHermesStepAttenuator.Checked = false;  // HAMlab doesn't need this functionality
                 grpHermesStepAttenuator.Visible = false;  // HAMlab doesn't need this functionality
-                chkAlexPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkAlexPresent.Visible = false;  // HAMlab doesn't need this functionality
-                chkApolloPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkApolloPresent.Visible = false;  // HAMlab doesn't need this functionality
                 groupBoxRXOptions.Text = "Mercury Options";
                 radMetis.Text = "RedPitaya (Ethernet)";
                 grpMetisAddr.Text = "RedPitaya Address";
@@ -8683,14 +8728,21 @@ namespace PowerSDR
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
                 chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
-                groupBoxHPSDRHW.Visible = true;  // Fix me: Is it really needed?
                 grpOzyType.Visible = true;
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
-                radMetis.Checked = true;
-                chkVACAllowBypass.Checked = false;  // HAMlab needs this to be unchecked
+                radMetis.Checked = true;             
                 console.psform.AutoAttenuate = false;  // HAMlab doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // HAMlab doesn't have this functionality
+
+                if (lblC25AudioCodecPresent.Enabled == true)
+                {
+                    chkVACAllowBypass.Checked = true;  // HAMlab with new audio codec needs this to be checked
+                }
+                else
+                {
+                    chkVACAllowBypass.Checked = false;  // HAMlab with old USB audio codec needs this to be unchecked
+                }
 
                 if (!tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -8705,10 +8757,10 @@ namespace PowerSDR
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
-                chkVACAllowBypass.Checked = true;  // reset to default setting
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
+                grpC25HardwareOptions.Visible = false;  // reset to default setting
 
                 if (tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -8720,8 +8772,7 @@ namespace PowerSDR
             // DG8MG: Test me!
             // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for HAMlab
             {
-                // add or remove setup pages for HPSDR stuff 
-                // AddHPSDRPages();  // Fix me: Is it really needed? DG8MG
+                // remove setup pages for HPSDR stuff 
                 RemoveHPSDRPages();
 
                 // force setting of audio card 

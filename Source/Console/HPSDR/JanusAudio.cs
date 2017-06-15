@@ -851,6 +851,8 @@ namespace PowerSDR
         {
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
+            Console c = Console.getConsole();
+
             int result = initOzy();
 
             if (result != 0)
@@ -866,6 +868,12 @@ namespace PowerSDR
             }
             
             result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send);
+            
+            // Charly 25 and HAMlab hardware must skip the firmware check
+            if (c.CurrentHPSDRModel == HPSDRModel.CHARLY25 || c.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            {
+                fwVersionsChecked = true;
+            }
             // DG8MG
 
             if (result == 0 && !fwVersionsChecked)
