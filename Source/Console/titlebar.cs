@@ -59,6 +59,11 @@ namespace PowerSDR
 
             return s;
         }
+
+        public static string GetCommitC25Edition()
+        {
+            return Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1);
+        }
         // DG8MG
 
         // returns the PowerSDR version number in "a.b.c" format

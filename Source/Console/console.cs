@@ -893,8 +893,8 @@ namespace PowerSDR
         private float average_revadc = 0.0f;
         private float average_fwdadc = 0.0f;
         private float average_drvadc = 0.0f;
-       // private float fwd_volts = 0.0f;
-       // private float rev_volts = 0.0f;
+        // private float fwd_volts = 0.0f;
+        // private float rev_volts = 0.0f;
         private float volts_138 = 0.0f;
 
         private static MemoryStream msgrab = new MemoryStream(Properties.Resources.grab);
@@ -1976,6 +1976,31 @@ namespace PowerSDR
 
             // update titlebar
             this.Text = TitleBar.GetString();
+
+            // DG8MG
+            try
+            {
+                var latest_release_string = "http://downloads.redpitaya.com/hamlab/powersdr/current_commit.txt";
+                var latest_release_url = string.Format(latest_release_string);
+                System.Console.WriteLine(String.Format("Attempting to get the latest commit from from this download server URL: {0}", latest_release_url));                
+                var webClient = new WebClient();
+                var response = webClient.DownloadString(latest_release_url);
+                System.Console.WriteLine(String.Format("Response from download server: {0}", response));
+
+                if (response.Substring(0, 7) != TitleBar.GetCommitC25Edition())
+                {
+                    ToolStripMenuItem C25DownloadNewReleaseItem = new ToolStripMenuItem("DOWNLOAD NEW RELEASE", null, C25NewReleaseDownloadItem_Click);
+                    C25DownloadNewReleaseItem.ForeColor = Color.Red;
+                    this.menuStrip1.Items.Add(C25DownloadNewReleaseItem);
+                }
+                webClient.Dispose();
+            }
+            catch
+            {               
+                System.Console.WriteLine(String.Format("Exception occurred during latest release commit string download attempt!"));
+            }
+            // DG8MG
+
             SetupForm.UpdateCustomTitle();
 
             if (show_alpha_warning)
@@ -5859,10 +5884,8 @@ namespace PowerSDR
             resources.ApplyResources(this.picRX2Squelch, "picRX2Squelch");
             this.picRX2Squelch.Name = "picRX2Squelch";
             this.picRX2Squelch.TabStop = false;
-			// DG8MG
             this.picRX2Squelch.Paint += new System.Windows.Forms.PaintEventHandler(this.picRX2Squelch_Paint);
-            // DG8MG
-			// 
+            // 
             // panelRX2RF
             // 
             resources.ApplyResources(this.panelRX2RF, "panelRX2RF");
@@ -22286,6 +22309,15 @@ namespace PowerSDR
                     // Extension for Charly 25 and HAMlab hardware
                     case HPSDRModel.CHARLY25:  // Behave like a HPSDR
                     case HPSDRModel.HAMLAB:  // Behave like a HPSDR
+                        chkDX.Checked = false;
+                        chkDX.Visible = false;
+
+                        if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
+                            comboMeterTXMode.Items.Insert(1, "Ref Pwr");
+                        if (!comboMeterTXMode.Items.Contains("SWR"))
+                            comboMeterTXMode.Items.Insert(2, "SWR");
+
+                        break;
                     // DG8MG
 
                     case HPSDRModel.HPSDR:
@@ -22419,8 +22451,11 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    case Model.CHARLY25:  // Behave like a HPSDR
-                    case Model.HAMLAB:  // Behave like a HPSDR
+                    case Model.CHARLY25:
+                    case Model.HAMLAB:
+                        MinFreq = 0.000000;
+                        MaxFreq = 61.0;
+                        break;
                     // DG8MG
 
                     case Model.HPSDR:
@@ -32373,7 +32408,12 @@ namespace PowerSDR
                                 break;
                             case MeterTXMode.FORWARD_POWER:
                             case MeterTXMode.SWR_POWER:
-                                if (alexpresent || apollopresent)
+
+                                // DG8MG
+                                // Extension for Charly 25 and HAMlab hardware
+                                if (alexpresent || apollopresent || current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+                                // DG8MG
+
                                 {
                                     if (anan8000dpresent)
                                     {
@@ -32411,7 +32451,11 @@ namespace PowerSDR
                                 break;
                             case MeterTXMode.REVERSE_POWER:
 
-                                if (alexpresent || apollopresent)
+                                // DG8MG
+                                // Extension for Charly 25 and HAMlab hardware
+                                if (alexpresent || apollopresent || current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+                                // DG8MG
+
                                 {
                                     new_meter_data = alex_rev;
                                     // if (pa_values) SetupForm.txtPARevPower.Text = new_meter_data.ToString("f3");
@@ -33162,81 +33206,25 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        public float computeCharly25FwdPower()
-        {
-            int i = 0;
-            float power_int = 0;
-            double power_f = 0;
+        public float computeCharly25Power(float adc_value)
+        {           
+            double power_f_dbm = 0;
+            double power_f_mW = 0;
             double result = 0.0;
-
-            for (i = 0; i < 50; i++)
-            {
-                power_int += JanusAudio.getAlexFwdPower();
-            }
-
-            power_int = power_int / 50;
 
             // Polynominal interpolation with a polynomial degree of 3
             // y = -5.475282575�10 - 1 x2 + 25.00323026 x + 2.331621005
             // power_f = -5.475282575 * Math.Pow(10, -1) * Math.Pow(power_int, 2) + 25.00323026 * power_int + 2.331621005;            
 
-            // y = -0.210103721 x3 + 7.051974611 x2 - 49.37859391 x + 98.61457434
-            power_f = -0.210103721 * Math.Pow(power_int, 3) + 7.051974611 * Math.Pow(power_int, 2) - 49.37859391 * power_int + 98.61457434;                       
+            // y = -0.210103721 x3 + 7.051974611 x2 - 49.37859391 x + 98.61457434            
+            // power_f = -0.210103721 * Math.Pow(power_int, 3) + 7.051974611 * Math.Pow(power_int, 2) - 49.37859391 * power_int + 98.61457434;                       
 
-            if (PAValues)
-            {
-                SetupForm.textFwdADCValue.Text = power_int.ToString();
-            }
+            // Polynominal interpolation with a polynomial degree of 4
+            // y = -3.509522373�10-10 x4 + 6.422788961�10-7 x3 - 4.154718764�10-4 x2 + 1.274603483�10-1 x + 21.09655237
+            power_f_dbm = -3.509522373 * Math.Pow(10, -10) * Math.Pow(adc_value, 4) + 6.422788961 * Math.Pow(10, -7) * Math.Pow(adc_value, 3) - 4.154718764 * Math.Pow(10, -4) * Math.Pow(adc_value, 2) + 1.274603483 * 0.1 * adc_value + 21.09655237;
+            power_f_mW = Math.Pow(10, power_f_dbm / 10);
 
-            result = power_f;
-
-            /*
-            if (power_int <= 2551)
-            {
-                if (power_int <= 1253)
-                {
-                    if (power_int <= 68)
-                    {
-                        result = 0.0;
-                    }
-                    else  // > 68 
-                    {
-                        result = (power_f - 68.0) * 0.008439;
-                    }
-                }
-
-                else  // > 1253
-                {
-                    if (power_int <= 1856)
-                    {
-                        result = 10.0 + ((power_f - 1253.0) * 0.024876);
-                    }
-                    else  // > 1856
-                    {
-                        result = 25.0 + ((power_f - 1856.0) * 0.035971);
-                    }
-                }
-            }
-
-            else  // > 2551
-            {
-                if (power_int <= 3628)
-                {
-                    if (power_int <= 3101)
-                    {
-                        result = 50.0 + ((power_f - 2551.0) * 0.045454);
-                    }
-                    else  // > 3101, <3628 
-                    {
-                        result = 75.0 + ((power_f - 3101.0) * 0.370370);
-                    }
-                }
-                else  // > 3628
-                {
-                    result = 100.0 + ((power_f - 3628.0) * 0.064935);
-                }
-            }
-            */
+            result = power_f_mW;
 
             return (float)result;
         }
@@ -34184,117 +34172,168 @@ namespace PowerSDR
             {
                 if (mox)
                 {
-                   // computeFwdRevPower(out alex_fwd, out alex_rev);
-                    alex_fwd = computeAlexFwdPower(); //high power
-                    alex_rev = computeRefPower();
-
-                    switch (current_hpsdr_model)
+                    // DG8MG: Debug me!
+                    // Extension for Charly 25 and HAMlab hardwware
+                    if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
-                        case HPSDRModel.ANAN200D:
-                            drivepwr = computeOrionFwdPower();
-                            break;
-                        case HPSDRModel.ORIONMKII:
-                        case HPSDRModel.ANAN8000D:
-                            drivepwr = computeOrionMkIIFwdPower();
-                            break;
+                        float temp_fwdadc = JanusAudio.getAlexFwdPower() - 12;
+                        float temp_revadc = JanusAudio.getRefPower() - 12;
 
-                        // DG8MG
-                        // Extension for Charly 25 and HAMlab hardwware
-                        case HPSDRModel.CHARLY25:
-                        case HPSDRModel.HAMLAB:
-                            drivepwr = computeCharly25FwdPower();
-                            break;
-                        // DG8MG
-
-                        default:
-                            drivepwr = computeFwdPower(); // low power
-                            break;
-                    }
-
-                    calfwdpower = CalibratedPAPower();
-                    average_drivepwr = alpha * average_drivepwr + (1.0f - alpha) * drivepwr;
-
-                    rho = (float)Math.Sqrt(alex_rev / alex_fwd);
-                    if (float.IsNaN(rho) || float.IsInfinity(rho))
-                        swr = 1.0f;
-                    else   
-                        swr = (1.0f + rho) / (1.0f - rho);
-
-                    if ((alex_fwd <= 2.0f && alex_rev <= 2.0f) || swr < 1.0f) swr = 1.0f;
-
-                    if (alexpresent || apollopresent)
-                    {
-                        // in following 'if', K2UE recommends not checking open antenna for the 8000 model
-                        // if (swrprotection && alex_fwd > 10.0f && (alex_fwd - alex_rev) < 1.0f)
-                        //-W2PA Changed to allow 35w - some amplifier tuners need about 30w to reliably start working
-                        if (swrprotection && alex_fwd > 35.0f && (alex_fwd - alex_rev) < 1.0f && current_hpsdr_model != HPSDRModel.ANAN8000D) // open ant condition
+                        if (temp_fwdadc < 0)
                         {
-                            swr = 50.0f;
-                            JanusAudio.SetSWRProtect(0.01f);
-                            chkMOX.Checked = false;
-
-                            MessageBox.Show("Please check your antenna connection.",
-                            "High SWR condition detected",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning,
-                            MessageBoxDefaultButton.Button1,
-                            (MessageBoxOptions)0x40000); // MB_TOPMOST
-
-                            goto end;
+                            average_fwdadc = 0;
                         }
-                    }
-                    else
-                    {
-                        swr = 1.0f;
-                        alex_fwd = 0;
-                        alex_rev = 0;
-                    }
-
-                    if (chkTUN.Checked && disable_swr_on_tune && (alexpresent || apollopresent))
-                    {
-                        //-W2PA Changed to allow 35w - some amplifier tuners need about 30w to reliably start working
-                        if (alex_fwd >= 1.0 && alex_fwd <= 35.0 && ptbPWR.Value <= 70)
+                        else
                         {
-                            swr_pass = true;
+                            average_fwdadc = temp_fwdadc;
                         }
-                        else swr_pass = false;
-                    }
 
-                    if (tx_xvtr_index >= 0 || hf_tr_relay)
-                        swr_pass = true;
-
-                    float alex_fwd_limit = 5.0f;
-                    if (current_hpsdr_model == HPSDRModel.ANAN8000D)        // K2UE idea:  try to determine if Hi-Z or Lo-Z load
-                        alex_fwd_limit = 2.0f * (float)ptbPWR.Value;        //    by comparing alex_fwd with power setting
-
-                    if (swr > 2.0f && alex_fwd > alex_fwd_limit && swrprotection && !swr_pass)
-                    {
-                        high_swr_count++;
-                        if (high_swr_count >= 4)
+                        if (temp_revadc < 0)
                         {
-                            high_swr_count = 0;
+                            average_revadc = 0;
+                        }
+                        else
+                        {
+                            average_revadc = temp_revadc;
+                        }
+
+                        alex_fwd = computeCharly25Power(average_fwdadc);
+                        calfwdpower = alex_fwd;
+                        alex_rev = computeCharly25Power(average_revadc);
+
+                        rho = (float)Math.Sqrt(alex_rev / alex_fwd);
+
+                        if (alex_fwd < 500 || float.IsNaN(rho) || float.IsInfinity(rho))
+                        {
+                            swr = 1.0f;
+                        }
+                        else
+                        {
+                            swr = (1.0f + rho) / (1.0f - rho);
+                        }
+
+                        if (swr >= 3)
+                        {
                             JanusAudio.SetSWRProtect((float)(2.0 / (swr + 1.0)));
                             HighSWR = true;
-
-                           // if (current_display_engine == DisplayEngine.GDI_PLUS)
-                               // picDisplay.Invalidate();
                         }
+                        else
+                        {
+                            JanusAudio.SetSWRProtect(1.0f);
+                            HighSWR = false;
+                        }
+
+                        if (float.IsNaN(swr) || float.IsInfinity(swr) || swr < 1.0f)
+                            alex_swr = 1.0f;
+                        else
+                            alex_swr = swr;
                     }
                     else
+                    // DG8MG
                     {
-                        high_swr_count = 0;
-                        JanusAudio.SetSWRProtect(1.0f);
-                        HighSWR = false;
-                       // if (current_display_engine == DisplayEngine.GDI_PLUS)
-                          //  picDisplay.Invalidate();
-                    }
+                        // computeFwdRevPower(out alex_fwd, out alex_rev);
+                        alex_fwd = computeAlexFwdPower(); //high power
+                        alex_rev = computeRefPower();
 
-                end:
-                    swr_pass = false;
-                if (float.IsNaN(swr) || float.IsInfinity(swr) || swr < 1.0f)
-                    alex_swr = 1.0f;
-                else
-                    alex_swr = swr;
+                        switch (current_hpsdr_model)
+                        {
+                            case HPSDRModel.ANAN200D:
+                                drivepwr = computeOrionFwdPower();
+                                break;
+                            case HPSDRModel.ORIONMKII:
+                            case HPSDRModel.ANAN8000D:
+                                drivepwr = computeOrionMkIIFwdPower();
+                                break;
+                            default:
+                                drivepwr = computeFwdPower(); // low power
+                                break;
+                        }
+
+                        calfwdpower = CalibratedPAPower();
+                        average_drivepwr = alpha * average_drivepwr + (1.0f - alpha) * drivepwr;
+
+                        rho = (float)Math.Sqrt(alex_rev / alex_fwd);
+                        if (float.IsNaN(rho) || float.IsInfinity(rho))
+                            swr = 1.0f;
+                        else
+                            swr = (1.0f + rho) / (1.0f - rho);
+
+                        if ((alex_fwd <= 2.0f && alex_rev <= 2.0f) || swr < 1.0f) swr = 1.0f;
+
+                        if (alexpresent || apollopresent)
+                        {
+                            // in following 'if', K2UE recommends not checking open antenna for the 8000 model
+                            // if (swrprotection && alex_fwd > 10.0f && (alex_fwd - alex_rev) < 1.0f)
+                            //-W2PA Changed to allow 35w - some amplifier tuners need about 30w to reliably start working
+                            if (swrprotection && alex_fwd > 35.0f && (alex_fwd - alex_rev) < 1.0f && current_hpsdr_model != HPSDRModel.ANAN8000D) // open ant condition
+                            {
+                                swr = 50.0f;
+                                JanusAudio.SetSWRProtect(0.01f);
+                                chkMOX.Checked = false;
+
+                                MessageBox.Show("Please check your antenna connection.",
+                                "High SWR condition detected",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning,
+                                MessageBoxDefaultButton.Button1,
+                                (MessageBoxOptions)0x40000); // MB_TOPMOST
+
+                                goto end;
+                            }
+                        }
+                        else
+                        {
+                            swr = 1.0f;
+                            alex_fwd = 0;
+                            alex_rev = 0;
+                        }
+
+                        if (chkTUN.Checked && disable_swr_on_tune && (alexpresent || apollopresent))
+                        {
+                            //-W2PA Changed to allow 35w - some amplifier tuners need about 30w to reliably start working
+                            if (alex_fwd >= 1.0 && alex_fwd <= 35.0 && ptbPWR.Value <= 70)
+                            {
+                                swr_pass = true;
+                            }
+                            else swr_pass = false;
+                        }
+
+                        if (tx_xvtr_index >= 0 || hf_tr_relay)
+                            swr_pass = true;
+
+                        float alex_fwd_limit = 5.0f;
+                        if (current_hpsdr_model == HPSDRModel.ANAN8000D)        // K2UE idea:  try to determine if Hi-Z or Lo-Z load
+                            alex_fwd_limit = 2.0f * (float)ptbPWR.Value;        //    by comparing alex_fwd with power setting
+
+                        if (swr > 2.0f && alex_fwd > alex_fwd_limit && swrprotection && !swr_pass)
+                        {
+                            high_swr_count++;
+                            if (high_swr_count >= 4)
+                            {
+                                high_swr_count = 0;
+                                JanusAudio.SetSWRProtect((float)(2.0 / (swr + 1.0)));
+                                HighSWR = true;
+
+                                // if (current_display_engine == DisplayEngine.GDI_PLUS)
+                                // picDisplay.Invalidate();
+                            }
+                        }
+                        else
+                        {
+                            high_swr_count = 0;
+                            JanusAudio.SetSWRProtect(1.0f);
+                            HighSWR = false;
+                            // if (current_display_engine == DisplayEngine.GDI_PLUS)
+                            //  picDisplay.Invalidate();
+                        }
+
+                        end:
+                        swr_pass = false;
+                        if (float.IsNaN(swr) || float.IsInfinity(swr) || swr < 1.0f)
+                            alex_swr = 1.0f;
+                        else
+                            alex_swr = swr;
+                    }
                 }
                 else if (high_swr) HighSWR = false;
                 Thread.Sleep(1);
@@ -53315,6 +53354,37 @@ namespace PowerSDR
                 JanusAudio.SetAntBits_Charly25(0);
             }
         }
+        
+    	private void C25NewReleaseDownloadItem_Click(object sender, EventArgs e)
+        {
+            Uri latest_release_uri = new Uri("http://downloads.redpitaya.com/hamlab/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");            
+            SaveFileDialog sdC25DownloadNewRelease = new SaveFileDialog();
+            sdC25DownloadNewRelease.FileName = "Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe";
+            sdC25DownloadNewRelease.Title = "Download new PowerSDR release";
+
+            if (sdC25DownloadNewRelease.ShowDialog() == DialogResult.OK)
+            {               
+                // MessageBox.Show("Downloading latest PowerSDR release now, please wait...");
+
+                try
+                {
+                    System.Console.WriteLine(String.Format("Attempting to download the latest release from the download server"));
+                    var webClient = new WebClient();
+                    webClient.DownloadFile(latest_release_uri, sdC25DownloadNewRelease.FileName);                    
+                    webClient.Dispose();
+                }
+                catch
+                {
+                    // Exception occurred during latest release download attempt
+                }
+
+                if (MessageBox.Show("The latest release of PowerSDR was downloaded successfully.\nDo you want to close this PowerSDR session and install the new release of PowerSDR now?","Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Process.Start(sdC25DownloadNewRelease.FileName);
+                    this.Close();
+                }
+            }
+        }   
         // DG8MG
 
     }
