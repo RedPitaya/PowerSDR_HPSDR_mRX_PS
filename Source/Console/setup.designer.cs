@@ -30079,6 +30079,7 @@
             this.tpGainByBand.BackColor = System.Drawing.SystemColors.Control;
             this.tpGainByBand.Controls.Add(this.chkAutoPACalibrate);
             this.tpGainByBand.Controls.Add(this.panelAutoPACalibrate);
+            this.tpGainByBand.Controls.Add(this.grpCHARLY25PAGainByBand);
             this.tpGainByBand.Controls.Add(this.grpANAN8000DPAGainByBand);
             this.tpGainByBand.Controls.Add(this.grpORIONMKIIPAGainByBand);
             this.tpGainByBand.Controls.Add(this.grpPAGainByBand);
@@ -30088,7 +30089,6 @@
             this.tpGainByBand.Controls.Add(this.grpOrionPAGainByBand);
             this.tpGainByBand.Controls.Add(this.grpANANPAGainByBand);
             this.tpGainByBand.Controls.Add(this.grpHermesPAGainByBand);
-            this.tpGainByBand.Controls.Add(this.grpCHARLY25PAGainByBand);
             this.tpGainByBand.Location = new System.Drawing.Point(4, 22);
             this.tpGainByBand.Name = "tpGainByBand";
             this.tpGainByBand.Padding = new System.Windows.Forms.Padding(3);
@@ -40724,10 +40724,10 @@
             this.udCHARLY25PAGain6.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain6.TabIndex = 86;
             this.udCHARLY25PAGain6.Value = new decimal(new int[] {
-            60,
+            41,
             0,
             0,
-            65536});
+            0});
             this.udCHARLY25PAGain6.ValueChanged += new System.EventHandler(this.udPAGain_ValueChanged);
             // 
             // lblCHARLY25PAGainByBand6
@@ -40786,7 +40786,7 @@
             this.udCHARLY25PAGain10.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain10.TabIndex = 18;
             this.udCHARLY25PAGain10.Value = new decimal(new int[] {
-            250,
+            445,
             0,
             0,
             65536});
@@ -40826,10 +40826,10 @@
             this.udCHARLY25PAGain12.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain12.TabIndex = 16;
             this.udCHARLY25PAGain12.Value = new decimal(new int[] {
-            250,
+            41,
             0,
             0,
-            65536});
+            0});
             this.udCHARLY25PAGain12.ValueChanged += new System.EventHandler(this.udPAGain_ValueChanged);
             // 
             // lblCHARLY25PAGainByBand15
@@ -40866,7 +40866,7 @@
             this.udCHARLY25PAGain15.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain15.TabIndex = 14;
             this.udCHARLY25PAGain15.Value = new decimal(new int[] {
-            250,
+            455,
             0,
             0,
             65536});
@@ -40906,10 +40906,10 @@
             this.udCHARLY25PAGain17.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain17.TabIndex = 12;
             this.udCHARLY25PAGain17.Value = new decimal(new int[] {
-            250,
+            44,
             0,
             0,
-            65536});
+            0});
             this.udCHARLY25PAGain17.ValueChanged += new System.EventHandler(this.udPAGain_ValueChanged);
             // 
             // lblCHARLY25PAGainByBand20
@@ -40946,10 +40946,10 @@
             this.udCHARLY25PAGain20.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain20.TabIndex = 10;
             this.udCHARLY25PAGain20.Value = new decimal(new int[] {
-            250,
+            46,
             0,
             0,
-            65536});
+            0});
             this.udCHARLY25PAGain20.ValueChanged += new System.EventHandler(this.udPAGain_ValueChanged);
             // 
             // lblCHARLY25PAGainByBand30
@@ -40986,7 +40986,7 @@
             this.udCHARLY25PAGain30.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain30.TabIndex = 8;
             this.udCHARLY25PAGain30.Value = new decimal(new int[] {
-            250,
+            445,
             0,
             0,
             65536});
@@ -41026,7 +41026,7 @@
             this.udCHARLY25PAGain40.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain40.TabIndex = 6;
             this.udCHARLY25PAGain40.Value = new decimal(new int[] {
-            250,
+            445,
             0,
             0,
             65536});
@@ -41066,10 +41066,10 @@
             this.udCHARLY25PAGain60.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain60.TabIndex = 4;
             this.udCHARLY25PAGain60.Value = new decimal(new int[] {
-            250,
+            42,
             0,
             0,
-            65536});
+            0});
             this.udCHARLY25PAGain60.ValueChanged += new System.EventHandler(this.udPAGain_ValueChanged);
             // 
             // lblCHARLY25PAGainByBand80
@@ -41106,7 +41106,7 @@
             this.udCHARLY25PAGain80.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain80.TabIndex = 2;
             this.udCHARLY25PAGain80.Value = new decimal(new int[] {
-            250,
+            435,
             0,
             0,
             65536});
@@ -41146,7 +41146,7 @@
             this.udCHARLY25PAGain160.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain160.TabIndex = 0;
             this.udCHARLY25PAGain160.Value = new decimal(new int[] {
-            250,
+            410,
             0,
             0,
             65536});
