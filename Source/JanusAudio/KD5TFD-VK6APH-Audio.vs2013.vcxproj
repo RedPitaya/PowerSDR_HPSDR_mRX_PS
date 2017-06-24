@@ -77,6 +77,7 @@
       </DataExecutionPrevention>
       <ImportLibrary>JanusAudio.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

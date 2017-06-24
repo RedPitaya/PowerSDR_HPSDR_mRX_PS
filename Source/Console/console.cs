@@ -1097,7 +1097,7 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        static private bool sdr_app_running = false;
+        public int sdr_app_running = 0;
         // DG8MG
 
         #endregion
@@ -8677,7 +8677,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            sdr_app_running = false;
+            sdr_app_running = 0;
             // DG8MG
         }
 
@@ -35895,7 +35895,6 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 else
                 {
-                    sdr_app_running = true;
                     SetupForm.UpdateC25HardwareOptions();
                     if (SetupForm.lblC25LCPresent.Enabled)
                     {
@@ -36102,13 +36101,14 @@ namespace PowerSDR
 
                 // CWPTT.Stop();
 
-                Audio.callback_return = 2;
-                JanusAudio.StopAudio();
+                Audio.callback_return = 2;                
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (sdr_app_running)
+                if (sdr_app_running > 0)
                 {
+                    JanusAudio.StopAudio();
+
                     if (vac_enabled)
                     {
                         Audio.StopAudioVAC();
@@ -36164,17 +36164,26 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if ((sdr_app_running == true) && (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB))
+                if ((sdr_app_running > 0) && (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB))
                 {
                     try
                     {
-                        System.Console.WriteLine(String.Format("Attempting to stop SDR application on RedPitaya IP {0}", JanusAudio.Metis_IP_address));
-                        var rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
-                        var url = string.Format(rp_app_string);
+                        string rp_app_string = "";
+
+                        if (sdr_app_running == 1)
+                        {
+                            rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
+                        }
+                        else if (sdr_app_running == 2)
+                        {
+                            rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=stemlab_sdr_transceiver_hpsdr";
+                        }
+
+                        System.Console.WriteLine(String.Format("Attempting to stop SDR application on RedPitaya: {0}", rp_app_string));
                         var webClient = new WebClient();
-                        var response = webClient.DownloadString(url);
+                        var response = webClient.DownloadString(rp_app_string);
                         System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
-                        sdr_app_running = false;
+                        sdr_app_running = 0;
                     }
                     catch
                     {

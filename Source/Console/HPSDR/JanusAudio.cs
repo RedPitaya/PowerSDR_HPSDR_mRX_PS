@@ -292,26 +292,23 @@ namespace PowerSDR
                 IPAddress hostIP;
                 if (IPAddress.TryParse(EthernetHostIPAddress, out hostIP) && IPAddress.TryParse(Metis_IP_address, out targetIP))
                 {
-
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
                     if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
-                        try
+                        int result = StartupRPDeviceRemotely();
+
+                        if (result < 1)
                         {
-                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
-                            var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
-                            var url = string.Format(rp_app_string);
-                            var webClient = new WebClient();
-                            var response = webClient.DownloadString(url);
-                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
-                        }
-                        catch
-                        {
-                            // Exception occurred during SDR application startup attempt
+                            c.sdr_app_running = 0;
+
                             if (cleanup)
                                 Win32.WSACleanup();
                             return -1;
+                        }
+                        else
+                        {
+                            c.sdr_app_running = result;
                         }
                     }
                     // DG8MG
@@ -362,21 +359,19 @@ namespace PowerSDR
                     // Extension for Charly 25 and HAMlab hardware
                     if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
                     {
-                        try
+                        int result = StartupRPDeviceRemotely();
+
+                        if (result < 1)
                         {
-                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
-                            var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
-                            var url = string.Format(rp_app_string);
-                            var webClient = new WebClient();
-                            var response = webClient.DownloadString(url);
-                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
-                        }
-                        catch
-                        {
-                            // Exception occurred during SDR application startup attempt
+                            c.sdr_app_running = 0;
+
                             if (cleanup)
                                 Win32.WSACleanup();
                             return -1;
+                        }
+                        else
+                        {
+                            c.sdr_app_running = result;
                         }
                     }
                     // DG8MG
@@ -459,21 +454,19 @@ namespace PowerSDR
 
                     if (Metis_IP_address != "" && Metis_IP_address != "0.0.0.0")
                     {
-                        try
+                        int result = StartupRPDeviceRemotely();
+
+                        if (result < 1)
                         {
-                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
-                            var rp_app_string = "http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr";
-                            var url = string.Format(rp_app_string);
-                            var webClient = new WebClient();
-                            var response = webClient.DownloadString(url);
-                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
-                        }
-                        catch
-                        {
-                            // Exception occurred during SDR application startup attempt
+                            c.sdr_app_running = 0;
+
                             if (cleanup)
                                 Win32.WSACleanup();
                             return -1;
+                        }
+                        else
+                        {
+                            c.sdr_app_running = result;
                         }
 
                         // Try to discover the running SDR application on the RedPitaya via any available network interface
@@ -1528,6 +1521,84 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
+        // Try to start up the SDR app on the RedPitaya device remotely
+        private static int StartupRPDeviceRemotely()
+        {
+            bool pingable = false;
+            Ping pinger = new Ping();
+
+            // Try to ping the current Metis IP address
+            try
+            {
+                PingReply reply = pinger.Send(Metis_IP_address);
+                pingable = reply.Status == IPStatus.Success;
+            }
+            catch (PingException)
+            {
+                // Discard PingExceptions and return false;
+            }
+
+            // If it's pingable
+            if (pingable)
+            {
+                // try to start up the SDR app via the new URL for the stemlab_sdr_transceiver_hpsdr
+                try
+                {
+                    System.Console.WriteLine(String.Format("Attempting to start STEMlab SDR application on RedPitaya IP {0}", Metis_IP_address));
+                    var stemlab_webClient = new WebClient();
+                    var stemlab_response = stemlab_webClient.DownloadString("http://" + Metis_IP_address + "/bazaar?start=stemlab_sdr_transceiver_hpsdr");
+                    System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", stemlab_response));
+
+                    // if the attempt to start up the STEMlab SDR app was not successful
+                    if (!stemlab_response.Contains("OK"))
+                    {
+                        stemlab_webClient.Dispose();
+
+                        // try via the old URL for sdr_transceiver_hpsdr
+                        try
+                        {
+                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                            var sdr_webClient = new WebClient();
+                            var sdr_response = sdr_webClient.DownloadString("http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr");
+                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", sdr_response));
+
+                            // If the attempt to start up the SDR app was not successful
+                            if (!sdr_response.Contains("OK"))
+                            {
+                                sdr_webClient.Dispose();
+                                return -1;
+                            }
+                            // The start up of the SDR app was successful
+                            else
+                            {
+                                return 1;
+                            }
+                        }
+                        catch
+                        {
+                            // Exception occurred during SDR application startup attempt
+                            return -1;
+                        }
+                    }
+                    // The start up of the STEMlab SDR app was successful
+                    else
+                    {
+                        return 2;
+                    }
+                }
+                catch
+                {
+                    // Exception occurred during STEMlab SDR application startup attempt
+                    return -1;
+                }
+            }
+            // Current Metis IP address is not pingable 
+            else
+            {
+                return -1;
+            }
+        }
+        
         // Choose the RedPitaya device to start up
         private static IPAddress ChooseRPDevice(Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices, Console c)
         {
