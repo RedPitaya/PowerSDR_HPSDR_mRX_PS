@@ -30,10 +30,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// DG8MG
-using System.Timers;
-// DG8MG
-
 namespace PowerSDR
 {
     using System;
@@ -50,6 +46,12 @@ namespace PowerSDR
     using System.IO.Ports;
     //using TDxInput;
     using Midi2Cat;
+
+    // DG8MG
+    using System.Timers;
+    using System.Net;
+    using System.Net.Cache;
+    // DG8MG
 
     public partial class Setup : Form
     {
@@ -3293,8 +3295,10 @@ namespace PowerSDR
         }
 
         // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         public void UpdateC25HardwareOptions()
         {
+            string sdr_app_version = "";
             lblC25ABPresent.Visible = false;
             lblC25LCPresent.Enabled = false;  // Used for controlling the antenna switching button on the console 
             lblC25LCPresent.Visible = false;
@@ -3304,6 +3308,23 @@ namespace PowerSDR
 
             if (console.PowerOn)
             {
+                // Try to read the SDR application version from the Red Pitaya device
+                try
+                {                    
+                    RequestCachePolicy policy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+                    System.Console.WriteLine(String.Format("Attempting to read the SDR application version from the RedPitaya IP {0}", JanusAudio.Metis_IP_address));
+                    var sdr_version_webClient = new WebClient();
+                    sdr_version_webClient.CachePolicy = policy;
+                    sdr_app_version = sdr_version_webClient.DownloadString("http://" + JanusAudio.Metis_IP_address + "/stemlab_sdr_transceiver_hpsdr/sdr_app.version");
+                    System.Console.WriteLine(String.Format("Version number from RedPitaya: {0}", sdr_app_version));                    
+                }
+                catch
+                {
+                    // Exception occurred during SDR application version read attempt
+                }
+
+                lblMetisCodeVersion.Text = sdr_app_version;
+
                 int mercuryFWVersion = JanusAudio.getMercuryFWVersion();
                 int penelopeFWVersion = JanusAudio.getPenelopeFWVersion();
                 int ozyFWVersion = JanusAudio.getOzyFWVersion();
@@ -18137,7 +18158,15 @@ namespace PowerSDR
             //JanusAudio.GetMetisCodeVersion(ver_bytes);
             // lblMetisCodeVersion.Text = BitConverter.ToString(ver_bytes);
             //lblMetisCodeVersion.Text = ver_bytes[0].ToString("0\\.0");
-            lblMetisCodeVersion.Text = JanusAudio.MetisCodeVersion.ToString("0\\.0");
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (console.CurrentHPSDRModel != HPSDRModel.CHARLY25 && console.CurrentHPSDRModel != HPSDRModel.HAMLAB)
+            {
+                lblMetisCodeVersion.Text = JanusAudio.MetisCodeVersion.ToString("0\\.0");
+            }
+            // DG8MG
+
             // JanusAudio.GetMetisBoardID(id_bytes);
             // lblMetisBoardID.Text = BitConverter.ToString(id_bytes);
             lblMetisBoardID.Text = JanusAudio.MetisBoardID.ToString();
