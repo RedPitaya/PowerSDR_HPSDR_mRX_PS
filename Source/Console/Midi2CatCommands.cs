@@ -4626,6 +4626,31 @@ namespace PowerSDR
             }
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        public void MoveVFOADownByTuneStep(int msg, MidiDevice device)
+        {                   
+            if (msg == 127)
+            {
+                parser.nSet = 2;
+                parser.nGet = 0;
+                int step = StringToFreq(commands.ZZAC(""));
+                ChangeFreqVfoA(63, step, true, device);
+            }
+        }
+
+        public void MoveVFOAUpByTuneStep(int msg, MidiDevice device)
+        {
+            if (msg == 127)
+            {
+                parser.nSet = 2;
+                parser.nGet = 0;
+                int step = StringToFreq(commands.ZZAC(""));
+                ChangeFreqVfoA(65, step, true, device);
+            }
+        }
+        // DG8MG
+
         public CmdState APF_OnOff(int msg, MidiDevice device)
         {
             if (msg == 127)

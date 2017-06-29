@@ -435,7 +435,7 @@ namespace PowerSDR
                         {
                             foreach (KeyValuePair<IPAddress, PhysicalAddress> pair in allRedPitayaDevices)
                             {
-                                // Grep the first RedPitaya IP address from the IP address / MAC address dictionary and move on
+                                // Grep the first Red Pitaya IP address from the IP address / MAC address dictionary and move on
                                 Metis_IP_address = pair.Key.ToString();
                                 break;
                             }
@@ -446,7 +446,7 @@ namespace PowerSDR
                         {
                             // DG8MG
                             // More then one Charly 25 / HAMlab device was detected on the network
-                            // Choose the RedPitaya device you want to start up
+                            // Choose the Red Pitaya device you want to start up
                             Metis_IP_address = ChooseRPDevice(allRedPitayaDevices, c).ToString();
                             break;
                         }
@@ -469,7 +469,7 @@ namespace PowerSDR
                             c.sdr_app_running = result;
                         }
 
-                        // Try to discover the running SDR application on the RedPitaya via any available network interface
+                        // Try to discover the running SDR application on the Red Pitaya via any available network interface
                         foreach (IPAddress ipa in addrList)
                         {
                             if (DiscoverMetisOnPort(ref mhd, ipa, null))
@@ -1521,7 +1521,7 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        // Try to start up the SDR app on the RedPitaya device remotely
+        // Try to start up the SDR app on the Red Pitaya device remotely
         private static int StartupRPDeviceRemotely()
         {
             bool pingable = false;
@@ -1544,10 +1544,10 @@ namespace PowerSDR
                 // try to start up the SDR app via the new URL for the stemlab_sdr_transceiver_hpsdr
                 try
                 {
-                    System.Console.WriteLine(String.Format("Attempting to start STEMlab SDR application on RedPitaya IP {0}", Metis_IP_address));
+                    System.Console.WriteLine(String.Format("Attempting to start STEMlab SDR application on Red Pitaya IP {0}", Metis_IP_address));
                     var stemlab_webClient = new WebClient();
                     var stemlab_response = stemlab_webClient.DownloadString("http://" + Metis_IP_address + "/bazaar?start=stemlab_sdr_transceiver_hpsdr");
-                    System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", stemlab_response));
+                    System.Console.WriteLine(String.Format("Response from Red Pitaya: {0}", stemlab_response));
 
                     // if the attempt to start up the STEMlab SDR app was not successful
                     if (!stemlab_response.Contains("OK"))
@@ -1557,10 +1557,10 @@ namespace PowerSDR
                         // try via the old URL for sdr_transceiver_hpsdr
                         try
                         {
-                            System.Console.WriteLine(String.Format("Attempting to start SDR application on RedPitaya IP {0}", Metis_IP_address));
+                            System.Console.WriteLine(String.Format("Attempting to start SDR application on Red Pitaya IP {0}", Metis_IP_address));
                             var sdr_webClient = new WebClient();
                             var sdr_response = sdr_webClient.DownloadString("http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr");
-                            System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", sdr_response));
+                            System.Console.WriteLine(String.Format("Response from Red Pitaya: {0}", sdr_response));
 
                             // If the attempt to start up the SDR app was not successful
                             if (!sdr_response.Contains("OK"))
@@ -1599,7 +1599,7 @@ namespace PowerSDR
             }
         }
         
-        // Choose the RedPitaya device to start up
+        // Choose the Red Pitaya device to start up
         private static IPAddress ChooseRPDevice(Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices, Console c)
         {
             IPAddress rpIPAddress = new IPAddress(0);
@@ -1678,13 +1678,13 @@ namespace PowerSDR
         const int ERROR_INSUFFICIENT_BUFFER = 122;
 
         /// <summary>
-        /// Get the IP and MAC addresses of all known RedPitaya devices on the LAN
+        /// Get the IP and MAC addresses of all known Red Pitaya devices on the LAN
         /// </summary>
         /// <remarks>
         /// 1) This table is not updated often - it can take some human-scale time 
         ///    to notice that a device has dropped off the network, or a new device
         ///    has connected.
-        /// 2) This discards all non RedPitaya devices if they are found
+        /// 2) This discards all non Red Pitaya devices if they are found
         /// </remarks>
         /// <returns></returns>
         private static Dictionary<IPAddress, PhysicalAddress> GetAllRedPitayaDevicesOnLAN()
@@ -1727,7 +1727,7 @@ namespace PowerSDR
                     rows[index] = (MIB_IPNETROW)Marshal.PtrToStructure(new IntPtr(currentBuffer.ToInt64() + (index * Marshal.SizeOf(typeof(MIB_IPNETROW)))), typeof(MIB_IPNETROW));
                 }
                 
-                // Define the MA - L: IEEE MAC Address Large (24 - bit block size) for the RedPitaya devices
+                // Define the MA - L: IEEE MAC Address Large (24 - bit block size) for the Red Pitaya devices
                 String redpitaya_IEEE_MA_L = "002632";
 
                 foreach (MIB_IPNETROW row in rows)

@@ -3298,7 +3298,9 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         public void UpdateC25HardwareOptions()
         {
-            string sdr_app_version = "";
+            string sdr_app_version = "unknown";
+            lblMetisCodeVersion.Text = sdr_app_version;
+
             lblC25ABPresent.Visible = false;
             lblC25LCPresent.Enabled = false;  // Used for controlling the antenna switching button on the console 
             lblC25LCPresent.Visible = false;
@@ -3312,11 +3314,11 @@ namespace PowerSDR
                 try
                 {                    
                     RequestCachePolicy policy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-                    System.Console.WriteLine(String.Format("Attempting to read the SDR application version from the RedPitaya IP {0}", JanusAudio.Metis_IP_address));
+                    System.Console.WriteLine(String.Format("Attempting to read the SDR application version from the Red Pitaya IP {0}", JanusAudio.Metis_IP_address));
                     var sdr_version_webClient = new WebClient();
                     sdr_version_webClient.CachePolicy = policy;
                     sdr_app_version = sdr_version_webClient.DownloadString("http://" + JanusAudio.Metis_IP_address + "/stemlab_sdr_transceiver_hpsdr/sdr_app.version");
-                    System.Console.WriteLine(String.Format("Version number from RedPitaya: {0}", sdr_app_version));                    
+                    System.Console.WriteLine(String.Format("Version number from Red Pitaya: {0}", sdr_app_version));                    
                 }
                 catch
                 {
@@ -8549,8 +8551,8 @@ namespace PowerSDR
                 chkHermesStepAttenuator.Checked = false;  // Charly 25 doesn't need this functionality
                 grpHermesStepAttenuator.Visible = false;  // Charly 25 doesn't need this functionality
                 groupBoxRXOptions.Text = "Mercury Options";
-                radMetis.Text = "RedPitaya (Ethernet)";
-                grpMetisAddr.Text = "RedPitaya Address";
+                radMetis.Text = "Red Pitaya (Ethernet)";
+                grpMetisAddr.Text = "Red Pitaya Address";
                 chkAlexPresent_CheckedChanged(this, EventArgs.Empty);
                 chkAlexAntCtrl_CheckedChanged(this, EventArgs.Empty);
                 chkBypassANANPASettings.Visible = false;
@@ -8738,8 +8740,8 @@ namespace PowerSDR
                 chkHermesStepAttenuator.Checked = false;  // HAMlab doesn't need this functionality
                 grpHermesStepAttenuator.Visible = false;  // HAMlab doesn't need this functionality
                 groupBoxRXOptions.Text = "Mercury Options";
-                radMetis.Text = "RedPitaya (Ethernet)";
-                grpMetisAddr.Text = "RedPitaya Address";
+                radMetis.Text = "Red Pitaya (Ethernet)";
+                grpMetisAddr.Text = "Red Pitaya Address";
                 chkAlexPresent_CheckedChanged(this, EventArgs.Empty);
                 chkAlexAntCtrl_CheckedChanged(this, EventArgs.Empty);
                 chkBypassANANPASettings.Visible = false;

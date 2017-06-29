@@ -36179,10 +36179,10 @@ namespace PowerSDR
                             rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=stemlab_sdr_transceiver_hpsdr";
                         }
 
-                        System.Console.WriteLine(String.Format("Attempting to stop SDR application on RedPitaya: {0}", rp_app_string));
+                        System.Console.WriteLine(String.Format("Attempting to stop SDR application on Red Pitaya: {0}", rp_app_string));
                         var webClient = new WebClient();
                         var response = webClient.DownloadString(rp_app_string);
-                        System.Console.WriteLine(String.Format("Response from RedPitaya: {0}", response));
+                        System.Console.WriteLine(String.Format("Response from Red Pitaya: {0}", response));
                         sdr_app_running = 0;
                     }
                     catch

@@ -2484,7 +2484,7 @@ namespace PowerSDR
                 chkPenny.Checked = true;
                 radOzy.Visible = false;
                 radMetis.Visible = false;
-                //radMetis.Text = "RedPitaya";
+                //radMetis.Text = "Red Pitaya";
             }
             else
             {
@@ -2518,7 +2518,7 @@ namespace PowerSDR
                 chkPenny.Checked = true;
                 radOzy.Visible = false;
                 radMetis.Visible = false;
-                //radMetis.Text = "RedPitaya";
+                //radMetis.Text = "Red Pitaya";
             }
             else
             {

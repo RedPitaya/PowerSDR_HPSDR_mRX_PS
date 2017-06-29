@@ -287,6 +287,15 @@ namespace Midi2Cat.Data
         MoveVFOADown100Khz = 520,
         [CatCommandAttribute("Move VFOA Up 100Khz", ControlType.Button)]
         MoveVFOAUp100Khz = 521,
+        
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        [CatCommandAttribute("Move VFOA Down By TuneStep", ControlType.Button)]
+        MoveVFOADownByTuneStep = 522,
+        [CatCommandAttribute("Move VFOA Up By TuneStep", ControlType.Button)]
+        MoveVFOAUpByTuneStep = 523,
+        // DG8MG
+
         [CatCommandAttribute("Change Freq Vfo A", ControlType.Wheel)]
         ChangeFreqVfoA = 101,
         [CatCommandAttribute("Change Freq Vfo B", ControlType.Wheel)]
