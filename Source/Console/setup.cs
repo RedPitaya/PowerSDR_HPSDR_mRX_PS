@@ -13770,16 +13770,16 @@ namespace PowerSDR
             if (radGenModelCharly25.Checked || radGenModelHAMlab.Checked)
             {
                 udCHARLY25PAGain160.Value = 41.0M;
-                udCHARLY25PAGain80.Value = 43.5M;
-                udCHARLY25PAGain60.Value = 42.0M;
-                udCHARLY25PAGain40.Value = 44.5M;
-                udCHARLY25PAGain30.Value = 44.5M;
-                udCHARLY25PAGain20.Value = 46.0M;
-                udCHARLY25PAGain17.Value = 44.0M;
-                udCHARLY25PAGain15.Value = 45.5M;
-                udCHARLY25PAGain12.Value = 41.0M;
-                udCHARLY25PAGain10.Value = 44.5M;
-                udCHARLY25PAGain6.Value = 41.0M;
+                udCHARLY25PAGain80.Value = 44.5M;
+                udCHARLY25PAGain60.Value = 45.0M;
+                udCHARLY25PAGain40.Value = 45.5M;
+                udCHARLY25PAGain30.Value = 45.0M;
+                udCHARLY25PAGain20.Value = 46.5M;
+                udCHARLY25PAGain17.Value = 45.5M;
+                udCHARLY25PAGain15.Value = 46.0M;
+                udCHARLY25PAGain12.Value = 46.0M;
+                udCHARLY25PAGain10.Value = 45.0M;
+                udCHARLY25PAGain6.Value = 42.0M;
 
                 udCHARLY25PAGainVHF0.Value = 0.0M;
                 udCHARLY25PAGainVHF1.Value = 1.0M;

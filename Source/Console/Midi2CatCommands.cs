@@ -4636,6 +4636,7 @@ namespace PowerSDR
                 parser.nGet = 0;
                 int step = StringToFreq(commands.ZZAC(""));
                 ChangeFreqVfoA(63, step, true, device);
+                ChangeFreqVfoA(127, step, true, device);
             }
         }
 
@@ -4647,6 +4648,7 @@ namespace PowerSDR
                 parser.nGet = 0;
                 int step = StringToFreq(commands.ZZAC(""));
                 ChangeFreqVfoA(65, step, true, device);
+                ChangeFreqVfoA(1, step, true, device);
             }
         }
         // DG8MG
