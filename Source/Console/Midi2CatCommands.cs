@@ -4635,8 +4635,15 @@ namespace PowerSDR
                 parser.nSet = 2;
                 parser.nGet = 0;
                 int step = StringToFreq(commands.ZZAC(""));
-                ChangeFreqVfoA(63, step, true, device);
-                ChangeFreqVfoA(127, step, true, device);
+
+                if (device.GetDeviceName() == "CMD PL-1" || device.GetDeviceName() == "CMD Micro")
+                {
+                    ChangeFreqVfoA(63, step, true, device);
+                }
+                else
+                {
+                    ChangeFreqVfoA(127, step, true, device);
+                }
             }
         }
 
@@ -4647,8 +4654,15 @@ namespace PowerSDR
                 parser.nSet = 2;
                 parser.nGet = 0;
                 int step = StringToFreq(commands.ZZAC(""));
-                ChangeFreqVfoA(65, step, true, device);
-                ChangeFreqVfoA(1, step, true, device);
+
+                if (device.GetDeviceName() == "CMD PL-1" || device.GetDeviceName() == "CMD Micro")
+                {
+                    ChangeFreqVfoA(65, step, true, device);
+                }
+                else
+                {
+                    ChangeFreqVfoA(1, step, true, device);
+                }
             }
         }
         // DG8MG

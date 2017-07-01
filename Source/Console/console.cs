@@ -36170,16 +36170,22 @@ namespace PowerSDR
                     {
                         string rp_app_string = "";
 
-                        if (sdr_app_running == 1)
+                        switch (sdr_app_running)
                         {
-                            rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
-                        }
-                        else if (sdr_app_running == 2)
-                        {
-                            rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=stemlab_sdr_transceiver_hpsdr";
+                            case 1:
+                                rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
+                                break;
+
+                            case 2:
+                                rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=hamlab_sdr_transceiver_hpsdr";
+                                break;
+
+                            case 3:
+                                rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=stemlab_sdr_transceiver_hpsdr";
+                                break;
                         }
 
-                        System.Console.WriteLine(String.Format("Attempting to stop SDR application on Red Pitaya: {0}", rp_app_string));
+                        System.Console.WriteLine(String.Format("Attempting to stop SDR application via: {0}", rp_app_string));
                         var webClient = new WebClient();
                         var response = webClient.DownloadString(rp_app_string);
                         System.Console.WriteLine(String.Format("Response from Red Pitaya: {0}", response));

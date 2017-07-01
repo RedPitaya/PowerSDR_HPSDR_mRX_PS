@@ -1535,62 +1535,47 @@ namespace PowerSDR
             }
             catch (PingException)
             {
-                // Discard PingExceptions and return false;
+                // Discard PingExceptions
+                return -1;
             }
 
             // If it's pingable
             if (pingable)
             {
-                // try to start up the SDR app via the new URL for the stemlab_sdr_transceiver_hpsdr
-                try
+                int sdr_apps_index = 1;
+                string[] sdr_apps = { "sdr_transceiver_hpsdr", "hamlab_sdr_transceiver_hpsdr", "stemlab_sdr_transceiver_hpsdr" };
+
+                System.Console.WriteLine(String.Format("Attempting to start SDR application on Red Pitaya IP {0}", Metis_IP_address));
+                var webClient = new WebClient();
+
+                foreach (string sdr_app in sdr_apps)
                 {
-                    System.Console.WriteLine(String.Format("Attempting to start STEMlab SDR application on Red Pitaya IP {0}", Metis_IP_address));
-                    var stemlab_webClient = new WebClient();
-                    var stemlab_response = stemlab_webClient.DownloadString("http://" + Metis_IP_address + "/bazaar?start=stemlab_sdr_transceiver_hpsdr");
-                    System.Console.WriteLine(String.Format("Response from Red Pitaya: {0}", stemlab_response));
-
-                    // if the attempt to start up the STEMlab SDR app was not successful
-                    if (!stemlab_response.Contains("OK"))
+                    // Try to start up the SDR app via the URL
+                    try
                     {
-                        stemlab_webClient.Dispose();
+                        System.Console.WriteLine(String.Format("Attempting to start SDR application: {0}", sdr_app));
+                        string response = webClient.DownloadString("http://" + Metis_IP_address + "/bazaar?start=" + sdr_app);
+                        System.Console.WriteLine(String.Format("Response from Red Pitaya: {0}", response));
 
-                        // try via the old URL for sdr_transceiver_hpsdr
-                        try
+                        // if the attempt to start up the SDR app was successful
+                        if (response.Contains("OK"))
                         {
-                            System.Console.WriteLine(String.Format("Attempting to start SDR application on Red Pitaya IP {0}", Metis_IP_address));
-                            var sdr_webClient = new WebClient();
-                            var sdr_response = sdr_webClient.DownloadString("http://" + Metis_IP_address + "/bazaar?start=sdr_transceiver_hpsdr");
-                            System.Console.WriteLine(String.Format("Response from Red Pitaya: {0}", sdr_response));
-
-                            // If the attempt to start up the SDR app was not successful
-                            if (!sdr_response.Contains("OK"))
-                            {
-                                sdr_webClient.Dispose();
-                                return -1;
-                            }
-                            // The start up of the SDR app was successful
-                            else
-                            {
-                                return 1;
-                            }
+                            return sdr_apps_index;
                         }
-                        catch
+                        // if the attempt was not successful move on with the next SDR app
+                        else
                         {
-                            // Exception occurred during SDR application startup attempt
-                            return -1;
+                            sdr_apps_index++;
                         }
                     }
-                    // The start up of the STEMlab SDR app was successful
-                    else
+                    catch
                     {
-                        return 2;
+                        // Exception occurred during SDR application version read attempt
+                        return -1;
                     }
                 }
-                catch
-                {
-                    // Exception occurred during STEMlab SDR application startup attempt
-                    return -1;
-                }
+                // None of the SDR apps could be started up
+                return -1;
             }
             // Current Metis IP address is not pingable 
             else

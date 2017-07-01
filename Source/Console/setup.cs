@@ -3310,19 +3310,25 @@ namespace PowerSDR
 
             if (console.PowerOn)
             {
+                string[] sdr_app_directories = {"sdr_transceiver_hpsdr", "hamlab_sdr_transceiver_hpsdr", "stemlab_sdr_transceiver_hpsdr"};
+                
                 // Try to read the SDR application version from the Red Pitaya device
-                try
-                {                    
-                    RequestCachePolicy policy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-                    System.Console.WriteLine(String.Format("Attempting to read the SDR application version from the Red Pitaya IP {0}", JanusAudio.Metis_IP_address));
-                    var sdr_version_webClient = new WebClient();
-                    sdr_version_webClient.CachePolicy = policy;
-                    sdr_app_version = sdr_version_webClient.DownloadString("http://" + JanusAudio.Metis_IP_address + "/stemlab_sdr_transceiver_hpsdr/sdr_app.version");
-                    System.Console.WriteLine(String.Format("Version number from Red Pitaya: {0}", sdr_app_version));                    
-                }
-                catch
+                foreach (string sdr_app_directory in sdr_app_directories)
                 {
-                    // Exception occurred during SDR application version read attempt
+                    try
+                    {
+                        RequestCachePolicy policy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
+                        System.Console.WriteLine(String.Format("Attempting to read the SDR application version from the Red Pitaya IP {0}", JanusAudio.Metis_IP_address));
+                        var sdr_version_webClient = new WebClient();
+                        sdr_version_webClient.CachePolicy = policy;
+                        sdr_app_version = sdr_version_webClient.DownloadString("http://" + JanusAudio.Metis_IP_address + "/" + sdr_app_directory + "/sdr_app.version");
+                        System.Console.WriteLine(String.Format("Found SDR app: {0} with version: {1}", sdr_app_directory, sdr_app_version));
+                        break;
+                    }
+                    catch
+                    {
+                        // Exception occurred during SDR application version read attempt
+                    }
                 }
 
                 lblMetisCodeVersion.Text = sdr_app_version;
