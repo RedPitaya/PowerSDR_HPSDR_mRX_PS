@@ -1,5 +1,68 @@
 ## Release notes of PowerSDR Charly 25 / HAMlab / STEMlab Edition:
 
+#### commit 72538247258f6719a3317497819f72fef8796144
+Date:   Sat Jul 1 15:33:33 2017 +0200
+
+- Extended the remote start/stop routines and the version detection routine for the SDR applications on the Red Pitaya devices. They can now handle: sdr_transceiver_hpsdr, hamlab_sdr_transceiver_hpsdr and stemlab_sdr_transceiver_hpsdr.
+- Improved the VFO A frequency up/down by tune step routines to differentiate Behringer MIDI controllers from all others.
+ 
+
+#### commit f609fba0daecbdc9ebbc9e1ec6ace267fbf4c4f8
+Date:   Fri Jun 30 03:59:58 2017 +0200
+
+- Added new functionality "TX Frequency Sweep Test" at the "C25 Tests" setup page.
+
+
+#### commit c3794bc7418ff61cd1d3f8cf60626b3eee6c253f
+Date:   Thu Jun 29 17:01:45 2017 +0200
+
+- Added functionality to the MIDI interface: Move VFO A Up/Down by Tune Step via buttons.
+
+
+#### commit c05c91b23f22abb59f3648d5a8c9540badc2bed8
+Date:   Mon Jun 26 01:46:06 2017 +0200
+
+- Added support for the Red Pitaya SDR app version detection by PowerSDR.   
+
+
+#### commit b7956861a147864744654e7547b2aad389eea11a
+Date:   Sun Jun 25 00:37:57 2017 +0200
+
+- Upgraded the Charly 25 / HAMlab / STEMlab remote start up functionality to work with the new SDR app: "stemlab_sdr_transceiver_hpsdr".
+- Added a functionality which does a ping before trying to connect to the Red Pitaya device which should be started up remotely.
+
+
+#### commit 1bd85ad94a4f8b07e985eada4122a591ecfdb5fc
+Date:   Sat Jun 24 02:15:40 2017 +0200
+
+- Added PowerSDR software update functionality via the Red Pitaya download server.
+- Added support for the forward- and backward-power and swr sensing head.
+   
+
+#### commit 5a08e677d9fe5fe9e8ecce5d5d5ee91bc7840a80
+Date:   Fri Jun 16 01:43:35 2017 +0200
+   
+- Implemented a control mechanism to enable or disable the Antenna 1/2 button on the console (Charly 25LC board doesn't have a second antenna port).   
+
+
+#### commit 621c2f360c09da683d1b873a079aade0858eee0f
+Date:   Thu Jun 15 03:30:30 2017 +0200
+
+- Added support for Charly 25, HAMlab and STEMlab hardware detection.
+
+
+#### commit c18de29fa2550522cb2f09b56063aac551acb58b
+Date:   Tue Jun 6 02:43:46 2017 +0200
+
+- Merged in the features from OpenHPSDR-PowerSDR version 3.4.1.
+    
+
+#### commit c482f6651615fb4a02fcee5d21aaecac0537f509
+Date:   Wed May 24 01:39:20 2017 +0200
+
+- Changed the path variable for the settings from FlexRadio Systems to Red Pitaya to avoid incompatibility with parallel installations.
+
+
 #### commit d7055b92b9cdb7f0da0bdfb94362b325c02c23da
 Date:   Sun May 21 18:23:34 2017 +0200
 

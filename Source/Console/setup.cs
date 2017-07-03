@@ -21670,23 +21670,16 @@ namespace PowerSDR
             udC25RXAttPreTestFrequency.Enabled = true;
         }
 
-        bool C25TXPwrSwpTest_is_canceled = false;
-        bool tmC25TXPwrSwpTestTimer_is_elapsed = false;
+        bool C25TXFreqSwpTest_is_canceled = false;
+        bool C25TXFreqSwpTest_is_paused = false;
 
-        System.Timers.Timer tmC25TXPwrSwpTestTimer = new System.Timers.Timer();
-
-        void tmC25TXPwrSwpTestTimer_elapsed(object sender, EventArgs e)
-        {
-            tmC25TXPwrSwpTestTimer_is_elapsed = true;
-        }
-
-        private void btnC25TXPwrSwpTestStart_Click(object sender, EventArgs e)
+        private void btnC25TXFreqSwpTestStart_Click(object sender, EventArgs e)
         {
             int old_pwr = 0;
             double old_vfoa_frequency = 0;
 
-            btnC25TXPwrSwpTestPause.Enabled = false;
-            btnC25TXPwrSwpTestCancel.Enabled = false;
+            btnC25TXFreqSwpTestPause.Enabled = false;
+            btnC25TXFreqSwpTestCancel.Enabled = false;
 
             if (!console.PowerOn)
             {
@@ -21697,45 +21690,40 @@ namespace PowerSDR
                 return;
             }
 
-            tmC25TXPwrSwpTestTimer.Interval = 1000;
-            tmC25TXPwrSwpTestTimer.Elapsed += new ElapsedEventHandler(tmC25TXPwrSwpTestTimer_elapsed);
-
-            C25TXPwrSwpTest_is_canceled = false;
-            btnC25TXPwrSwpTestStart.Enabled = false;
-            btnC25TXPwrSwpTestPause.Enabled = true;
-            btnC25TXPwrSwpTestCancel.Enabled = true;
-            udC25TXPwrSwpTestStartFrequency.Enabled = false;
-            udC25TXPwrSwpTestStopFrequency.Enabled = false;
-            udC25TXPwrSwpTestRate.Enabled = false;
-            udC25TXPwrSwpTestDrivePower.Enabled = false;
+            C25TXFreqSwpTest_is_canceled = false;
+            C25TXFreqSwpTest_is_paused = false;
+            btnC25TXFreqSwpTestStart.Enabled = false;
+            btnC25TXFreqSwpTestPause.Enabled = true;
+            btnC25TXFreqSwpTestCancel.Enabled = true;
+            udC25TXFreqSwpTestStartFrequency.Enabled = false;
+            udC25TXFreqSwpTestStopFrequency.Enabled = false;
+            udC25TXFreqSwpTestInterval.Enabled = false;
+            udC25TXFreqSwpTestRate.Enabled = false;
+            udC25TXFreqSwpTestDrivePower.Enabled = false;
 
             // Save the current settings
             old_pwr = console.PWR;
             old_vfoa_frequency = console.VFOAFreq;
 
             // Set the new drive power for the test
-            console.PWR = (int)udC25TXPwrSwpTestDrivePower.Value;
+            console.PWR = (int)udC25TXFreqSwpTestDrivePower.Value;
 
             console.TUN = true;
 
-            tmC25TXPwrSwpTestTimer.Start();
-
-            for (console.VFOAFreq = ((double)udC25TXPwrSwpTestStartFrequency.Value / 1e6); console.VFOAFreq <= ((double)udC25TXPwrSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXPwrSwpTestRate.Value / 1e6))
+            for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq < ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestRate.Value / 1e6))
             {
-                tmC25TXPwrSwpTestTimer_is_elapsed = false;
-
-                while ((tmC25TXPwrSwpTestTimer_is_elapsed == false && C25TXPwrSwpTest_is_canceled == false) || (tmC25TXPwrSwpTestTimer.Enabled == false && C25TXPwrSwpTest_is_canceled == false))
-                {
-                    Application.DoEvents();
-                }
-
-                if (C25TXPwrSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
+                if (C25TXFreqSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
                 {
                     break;
                 }
-            }
 
-            tmC25TXPwrSwpTestTimer.Stop();
+                DateTime start = DateTime.Now;
+
+                while ((C25TXFreqSwpTest_is_canceled == false) && (C25TXFreqSwpTest_is_paused == true || ((DateTime.Now - start).TotalMilliseconds < (int)udC25TXFreqSwpTestInterval.Value)))
+                {
+                    Application.DoEvents();
+                }             
+            }
 
             console.TUN = false;
 
@@ -21743,32 +21731,34 @@ namespace PowerSDR
             console.PWR = old_pwr;
             console.VFOAFreq = old_vfoa_frequency;
 
-            btnC25TXPwrSwpTestStart.Enabled = true;
-            btnC25TXPwrSwpTestPause.Enabled = false;
-            btnC25TXPwrSwpTestCancel.Enabled = false;
-            udC25TXPwrSwpTestStartFrequency.Enabled = true;
-            udC25TXPwrSwpTestStopFrequency.Enabled = true;
-            udC25TXPwrSwpTestRate.Enabled = true;
-            udC25TXPwrSwpTestDrivePower.Enabled = true;
+            btnC25TXFreqSwpTestStart.Enabled = true;
+            btnC25TXFreqSwpTestPause.Enabled = false;
+            btnC25TXFreqSwpTestPause.Text = "Pause";
+            btnC25TXFreqSwpTestCancel.Enabled = false;
+            udC25TXFreqSwpTestStartFrequency.Enabled = true;
+            udC25TXFreqSwpTestStopFrequency.Enabled = true;
+            udC25TXFreqSwpTestInterval.Enabled = true;
+            udC25TXFreqSwpTestRate.Enabled = true;
+            udC25TXFreqSwpTestDrivePower.Enabled = true;
         }
 
-        private void btnC25TXPwrSwpTestPause_Click(object sender, EventArgs e)
+        private void btnC25TXFreqSwpTestPause_Click(object sender, EventArgs e)
         {
-            if (tmC25TXPwrSwpTestTimer.Enabled == true)
+            if (C25TXFreqSwpTest_is_paused == false)
             {
-                tmC25TXPwrSwpTestTimer.Stop();
-                btnC25TXPwrSwpTestPause.Text = "Continue";
+                C25TXFreqSwpTest_is_paused = true;
+                btnC25TXFreqSwpTestPause.Text = "Continue";
             }
             else
             {
-                tmC25TXPwrSwpTestTimer.Start();
-                btnC25TXPwrSwpTestPause.Text = "Pause";
+                C25TXFreqSwpTest_is_paused = false;
+                btnC25TXFreqSwpTestPause.Text = "Pause";
             }
         }
 
-        private void btnC25TXPwrSwpTestCancel_Click(object sender, EventArgs e)
+        private void btnC25TXFreqSwpTestCancel_Click(object sender, EventArgs e)
         {
-            C25TXPwrSwpTest_is_canceled = true;
+            C25TXFreqSwpTest_is_canceled = true;
         }
         // DG8MG
 
