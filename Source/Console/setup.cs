@@ -21555,6 +21555,39 @@ namespace PowerSDR
             C25TXLPFTest_is_canceled = true;
         }
 
+        bool C25TXPASwitch_is_on = false;
+        int C25TXPASwitch_old_power = 0;
+
+        private void btnC25TXPASwitch_Click(object sender, EventArgs e)
+        {
+            if (C25TXPASwitch_is_on)
+            {
+                C25TXPASwitch_is_on = false;
+                console.MOX = false;
+                console.PWR = C25TXPASwitch_old_power;
+                btnC25TXPASwitch.Text = "PA on";
+            }
+            else
+            {
+                if (!console.PowerOn)
+                {
+                    MessageBox.Show("Power must be on to run this test.",
+                        "Power is off",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
+
+                C25TXPASwitch_is_on = true;
+                C25TXPASwitch_old_power = console.PWR;
+                console.PWR = 0;
+                console.MOX = true;
+                btnC25TXPASwitch.Text = "PA off";
+            }
+        }
+
+        bool C25RXAttPreTest_is_canceled = false;
+
         private void btnC25RXAttPreTest_Click(object sender, EventArgs e)
         {
             int rxattpretest_first_mode = 0;
@@ -21575,8 +21608,11 @@ namespace PowerSDR
 
             btnC25RXAttTest.Enabled = false;
             btnC25RXPreTest.Enabled = false;
+            btnC25RXAttPreTestCancel.Enabled = true;
             udC25RXAttPreTestFrequency.Enabled = false;
             lblC25RXAttPreTestResult2.Text = "";
+            lbC25RXAttPreTestResults.Items.Clear();
+            C25RXAttPreTest_is_canceled = false;
 
             // Save the current settings
             double old_vfoa_frequency = console.VFOAFreq;
@@ -21587,14 +21623,13 @@ namespace PowerSDR
             console.VFOAFreq = (double)udC25RXAttPreTestFrequency.Value / 1e6;
             console.RX1DSPMode = DSPMode.AM;
             console.RX1Filter = Filter.F10;
-
             console.RX1PreampMode = PreampMode.C25_OFF;
-            lbC25RXAttPreTestResults.Items.Clear();
 
-            // Measure the reference level
-            Thread.Sleep(100);
+            Application.DoEvents();
+
+            // Measure the reference level            
             rxattpretest_reference_level = 0.0f;
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
 
             for (int i = 0; i < 50; i++)
             {
@@ -21621,11 +21656,17 @@ namespace PowerSDR
             for (int rxattpretest_mode = rxattpretest_first_mode; rxattpretest_mode <= rxattpretest_last_mode; rxattpretest_mode++)
             {
                 Application.DoEvents();
+
+                if (C25RXAttPreTest_is_canceled)
+                {
+                    break;
+                }
+                
                 // Set preamp to current rx1_preamp_mode
                 console.RX1PreampMode = (PreampMode)rxattpretest_mode;
-                Thread.Sleep(100);
+                
                 rxattpretest_switched_level = 0.0f;
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
 
                 for (int i = 0; i < 50; i++)
                 {
@@ -21646,18 +21687,24 @@ namespace PowerSDR
                 }
 
                 lbC25RXAttPreTestResults.Items.Add("Setting: " + console.rx1_preamp_offset[rxattpretest_mode] * (-1) + " dB - Target: " + (rxattpretest_reference_level - console.rx1_preamp_offset[rxattpretest_mode]) + " dB - Measured: " + rxattpretest_switched_level + "dB - " + rxattpretest_result);
-            }           
+            }
 
-            lblC25RXAttPreTestResult2.Text = "TEST ";
-            if (rxattpretest_failed)
+            // lblC25RXAttPreTestResult2.Text = "TEST ";
+
+            if (C25RXAttPreTest_is_canceled)
+            {
+                lblC25RXAttPreTestResult2.ForeColor = Color.DarkBlue;
+                lblC25RXAttPreTestResult2.Text = "CANCELED!";
+            }
+            else if (rxattpretest_failed)
             {
                 lblC25RXAttPreTestResult2.ForeColor = Color.DarkRed;
-                lblC25RXAttPreTestResult2.Text = "TEST FAILED!";
+                lblC25RXAttPreTestResult2.Text = "FAILED!";
             }
             else
             {
                 lblC25RXAttPreTestResult2.ForeColor = Color.DarkGreen;
-                lblC25RXAttPreTestResult2.Text = "TEST PASSED!";
+                lblC25RXAttPreTestResult2.Text = "PASSED!";
             }
 
             // Restore the old settings
@@ -21667,7 +21714,13 @@ namespace PowerSDR
             console.RX1PreampMode = old_preamp;
             btnC25RXAttTest.Enabled = true;
             btnC25RXPreTest.Enabled = true;
+            btnC25RXAttPreTestCancel.Enabled = false;
             udC25RXAttPreTestFrequency.Enabled = true;
+        }
+
+        private void btnC25RXAttPreTestCancel_Click(object sender, EventArgs e)
+        {
+            C25RXAttPreTest_is_canceled = true;
         }
 
         bool C25TXFreqSwpTest_is_canceled = false;
