@@ -47833,6 +47833,7 @@
             this.tpC25Tests.Size = new System.Drawing.Size(584, 364);
             this.tpC25Tests.TabIndex = 11;
             this.tpC25Tests.Text = "C25 Tests";
+            this.tpC25Tests.DoubleClick += new System.EventHandler(this.tpC25Tests_DoubleClick);
             // 
             // btnC25TXPASwitch
             // 

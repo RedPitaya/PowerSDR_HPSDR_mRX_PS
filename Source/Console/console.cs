@@ -53560,9 +53560,15 @@ namespace PowerSDR
             }
         }
         
-    	private void C25NewReleaseDownloadItem_Click(object sender, EventArgs e)
+    	public void C25NewReleaseDownloadItem_Click(object sender, EventArgs e)
         {
-            Uri latest_release_uri = new Uri("http://downloads.redpitaya.com/hamlab/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");            
+            Uri latest_release_uri = new Uri("http://downloads.redpitaya.com/hamlab/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");
+
+            if (sender.Equals(SetupForm))
+            {
+                latest_release_uri = new Uri("http://praised-land.de/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");
+            }            
+                     
             SaveFileDialog sdC25DownloadNewRelease = new SaveFileDialog();
             sdC25DownloadNewRelease.FileName = "Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe";
             sdC25DownloadNewRelease.Title = "Download new PowerSDR release";
@@ -53581,6 +53587,8 @@ namespace PowerSDR
                 catch
                 {
                     // Exception occurred during latest release download attempt
+                    MessageBox.Show("The download of the new PowerSDR version was not successful,\nbut you can continue with the current version as before!", "Download failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
                 if (MessageBox.Show("The latest release of PowerSDR was downloaded successfully.\nDo you want to close this PowerSDR session and install the new release of PowerSDR now?","Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)

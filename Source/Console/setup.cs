@@ -21928,6 +21928,14 @@ namespace PowerSDR
         {
             ExportCurrentTxProfile();
         }
+
+        private void tpC25Tests_DoubleClick(object sender, EventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Keys.ControlKey))
+            {
+                console.C25NewReleaseDownloadItem_Click(this, EventArgs.Empty);
+            }
+        }
     }
 
     #region PADeviceInfo Helper Class
