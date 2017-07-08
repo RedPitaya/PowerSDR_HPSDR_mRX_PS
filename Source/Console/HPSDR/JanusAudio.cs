@@ -1587,7 +1587,10 @@ namespace PowerSDR
         // Choose the Red Pitaya device to start up
         private static IPAddress ChooseRPDevice(Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices, Console c)
         {
-            IPAddress rpIPAddress = new IPAddress(0);
+            bool pingable = false;
+            Ping pinger = new Ping();
+
+            IPAddress rpIPAddress = new IPAddress(0);           
 
             if (c.rpdeviceForm == null || c.rpdeviceForm.IsDisposed)
                 c.rpdeviceForm = new RPDeviceForm();
@@ -1596,7 +1599,22 @@ namespace PowerSDR
 
             foreach (KeyValuePair<IPAddress, PhysicalAddress> pair in allRedPitayaDevices)
             {
-                c.rpdeviceForm.lbChooseDevice.Items.Add("IP Address: " + pair.Key + " - MAC Address: " + pair.Value + " - URL: http://rp-" + pair.Value.ToString().Remove(0, 6));
+                // Try to ping the current Red Pitaya device IP address
+                try
+                {
+                    PingReply reply = pinger.Send(pair.Key);
+                    pingable = reply.Status == IPStatus.Success;
+                }
+                catch (PingException)
+                {
+                    // Discard PingExceptions
+                    return rpIPAddress;
+                }
+
+                if (pingable)
+                {
+                    c.rpdeviceForm.lbChooseDevice.Items.Add("IP Address: " + pair.Key + " - MAC Address: " + pair.Value + " - URL: http://rp-" + pair.Value.ToString().Remove(0, 6));
+                }
             }
             
             if (c.rpdeviceForm.ShowDialog() == DialogResult.Cancel)

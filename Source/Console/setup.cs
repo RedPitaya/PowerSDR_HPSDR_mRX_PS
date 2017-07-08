@@ -3295,15 +3295,13 @@ namespace PowerSDR
         }
 
         // DG8MG
-        // Extension for Charly 25 and HAMlab hardware
+        // Extension for Charly 25 and HAMlab hardware       
         public void UpdateC25HardwareOptions()
         {
             string sdr_app_version = "unknown";
             lblMetisCodeVersion.Text = sdr_app_version;
 
-            lblC25ABPresent.Visible = false;
-            lblC25LCPresent.Enabled = false;  // Used for controlling the antenna switching button on the console 
-            lblC25LCPresent.Visible = false;
+            lblC25TRXPresent.Visible = false;
             lblC25AudioCodecPresent.Visible = false;
             lblC25RX1FbPresent.Visible = false;
             lblC25RX2FbPresent.Visible = false;
@@ -3340,12 +3338,29 @@ namespace PowerSDR
                 // Check which Charly 25 TRX board is present
                 if (penelopeFWVersion >= 128 && penelopeFWVersion <= 129)
                 {
-                    lblC25LCPresent.Enabled = true;
-                    lblC25LCPresent.Visible = true;
+                    lblC25TRXPresent.Visible = true;
+
+                    if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                    {
+                        lblC25TRXPresent.Text = "Charly 25LC";                        
+                    }
+                    else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                    {
+                        lblC25TRXPresent.Text = "HAMlab 80-10";
+                    }
                 }
                 else if (penelopeFWVersion == 130)
                 {
-                    lblC25ABPresent.Visible = true;
+                    lblC25TRXPresent.Visible = true;
+
+                    if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                    {
+                        lblC25TRXPresent.Text = "Charly 25AB";                        
+                    }
+                    else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                    {
+                        lblC25TRXPresent.Text = "HAMlab 160-6";                        
+                    }
                 }
 
                 // Check if an audio codec is present

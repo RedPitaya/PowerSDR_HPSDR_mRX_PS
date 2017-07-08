@@ -35919,7 +35919,7 @@ namespace PowerSDR
                 else
                 {
                     SetupForm.UpdateC25HardwareOptions();
-                    if (SetupForm.lblC25LCPresent.Enabled)
+                    if (SetupForm.lblC25TRXPresent.Text == "Charly 25LC" || SetupForm.lblC25TRXPresent.Text == "HAMlab 80-10")
                     {
                         chkC25ANT.Enabled = false;
                     }

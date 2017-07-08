@@ -197,9 +197,7 @@
             this.lblC25RX2FbPresent = new System.Windows.Forms.LabelTS();
             this.lblC25RX1FbPresent = new System.Windows.Forms.LabelTS();
             this.lblC25AudioCodecPresent = new System.Windows.Forms.LabelTS();
-            this.grpC25TRXBoard = new System.Windows.Forms.GroupBoxTS();
-            this.lblC25LCPresent = new System.Windows.Forms.LabelTS();
-            this.lblC25ABPresent = new System.Windows.Forms.LabelTS();
+            this.lblC25TRXPresent = new System.Windows.Forms.LabelTS();
             this.grpDisablePureSignal = new System.Windows.Forms.GroupBoxTS();
             this.chkDisablePureSignal = new System.Windows.Forms.CheckBoxTS();
             this.grpLimtRX = new System.Windows.Forms.GroupBoxTS();
@@ -2968,7 +2966,6 @@
             this.tcGeneral.SuspendLayout();
             this.tpGeneralHardware.SuspendLayout();
             this.grpC25HardwareOptions.SuspendLayout();
-            this.grpC25TRXBoard.SuspendLayout();
             this.grpDisablePureSignal.SuspendLayout();
             this.grpLimtRX.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udDDSIFFreq)).BeginInit();
@@ -6096,9 +6093,9 @@
             // grpC25HardwareOptions
             // 
             this.grpC25HardwareOptions.Controls.Add(this.lblC25RX2FbPresent);
+            this.grpC25HardwareOptions.Controls.Add(this.lblC25TRXPresent);
             this.grpC25HardwareOptions.Controls.Add(this.lblC25RX1FbPresent);
             this.grpC25HardwareOptions.Controls.Add(this.lblC25AudioCodecPresent);
-            this.grpC25HardwareOptions.Controls.Add(this.grpC25TRXBoard);
             this.grpC25HardwareOptions.Location = new System.Drawing.Point(160, 8);
             this.grpC25HardwareOptions.Name = "grpC25HardwareOptions";
             this.grpC25HardwareOptions.Size = new System.Drawing.Size(160, 171);
@@ -6110,7 +6107,7 @@
             // 
             this.lblC25RX2FbPresent.AutoSize = true;
             this.lblC25RX2FbPresent.Image = null;
-            this.lblC25RX2FbPresent.Location = new System.Drawing.Point(37, 140);
+            this.lblC25RX2FbPresent.Location = new System.Drawing.Point(37, 86);
             this.lblC25RX2FbPresent.Name = "lblC25RX2FbPresent";
             this.lblC25RX2FbPresent.Size = new System.Drawing.Size(80, 13);
             this.lblC25RX2FbPresent.TabIndex = 10;
@@ -6120,7 +6117,7 @@
             // 
             this.lblC25RX1FbPresent.AutoSize = true;
             this.lblC25RX1FbPresent.Image = null;
-            this.lblC25RX1FbPresent.Location = new System.Drawing.Point(37, 120);
+            this.lblC25RX1FbPresent.Location = new System.Drawing.Point(37, 66);
             this.lblC25RX1FbPresent.Name = "lblC25RX1FbPresent";
             this.lblC25RX1FbPresent.Size = new System.Drawing.Size(80, 13);
             this.lblC25RX1FbPresent.TabIndex = 9;
@@ -6130,42 +6127,21 @@
             // 
             this.lblC25AudioCodecPresent.AutoSize = true;
             this.lblC25AudioCodecPresent.Image = null;
-            this.lblC25AudioCodecPresent.Location = new System.Drawing.Point(37, 100);
+            this.lblC25AudioCodecPresent.Location = new System.Drawing.Point(37, 46);
             this.lblC25AudioCodecPresent.Name = "lblC25AudioCodecPresent";
             this.lblC25AudioCodecPresent.Size = new System.Drawing.Size(68, 13);
             this.lblC25AudioCodecPresent.TabIndex = 8;
             this.lblC25AudioCodecPresent.Text = "Audio Codec";
             // 
-            // grpC25TRXBoard
+            // lblC25TRXPresent
             // 
-            this.grpC25TRXBoard.Controls.Add(this.lblC25LCPresent);
-            this.grpC25TRXBoard.Controls.Add(this.lblC25ABPresent);
-            this.grpC25TRXBoard.Location = new System.Drawing.Point(7, 19);
-            this.grpC25TRXBoard.Name = "grpC25TRXBoard";
-            this.grpC25TRXBoard.Size = new System.Drawing.Size(147, 65);
-            this.grpC25TRXBoard.TabIndex = 7;
-            this.grpC25TRXBoard.TabStop = false;
-            this.grpC25TRXBoard.Text = "TRX Board";
-            // 
-            // lblC25LCPresent
-            // 
-            this.lblC25LCPresent.AutoSize = true;
-            this.lblC25LCPresent.Image = null;
-            this.lblC25LCPresent.Location = new System.Drawing.Point(30, 40);
-            this.lblC25LCPresent.Name = "lblC25LCPresent";
-            this.lblC25LCPresent.Size = new System.Drawing.Size(78, 13);
-            this.lblC25LCPresent.TabIndex = 3;
-            this.lblC25LCPresent.Text = "CHARLY 25LC";
-            // 
-            // lblC25ABPresent
-            // 
-            this.lblC25ABPresent.AutoSize = true;
-            this.lblC25ABPresent.Image = null;
-            this.lblC25ABPresent.Location = new System.Drawing.Point(30, 20);
-            this.lblC25ABPresent.Name = "lblC25ABPresent";
-            this.lblC25ABPresent.Size = new System.Drawing.Size(79, 13);
-            this.lblC25ABPresent.TabIndex = 2;
-            this.lblC25ABPresent.Text = "CHARLY 25AB";
+            this.lblC25TRXPresent.AutoSize = true;
+            this.lblC25TRXPresent.Image = null;
+            this.lblC25TRXPresent.Location = new System.Drawing.Point(37, 26);
+            this.lblC25TRXPresent.Name = "lblC25TRXPresent";
+            this.lblC25TRXPresent.Size = new System.Drawing.Size(79, 13);
+            this.lblC25TRXPresent.TabIndex = 2;
+            this.lblC25TRXPresent.Text = "CHARLY 25AB";
             // 
             // grpDisablePureSignal
             // 
@@ -49601,8 +49577,6 @@
             this.tpGeneralHardware.ResumeLayout(false);
             this.grpC25HardwareOptions.ResumeLayout(false);
             this.grpC25HardwareOptions.PerformLayout();
-            this.grpC25TRXBoard.ResumeLayout(false);
-            this.grpC25TRXBoard.PerformLayout();
             this.grpDisablePureSignal.ResumeLayout(false);
             this.grpLimtRX.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.udDDSIFFreq)).EndInit();
@@ -52132,12 +52106,10 @@
         private System.Windows.Forms.RadioButtonTS radTXDSB;
         private System.Windows.Forms.Button btnExportCurrentTXProfile;
         private System.Windows.Forms.GroupBoxTS grpC25HardwareOptions;
-        private System.Windows.Forms.GroupBoxTS grpC25TRXBoard;
         private System.Windows.Forms.LabelTS lblC25RX2FbPresent;
         private System.Windows.Forms.LabelTS lblC25RX1FbPresent;
         private System.Windows.Forms.LabelTS lblC25AudioCodecPresent;
-        public System.Windows.Forms.LabelTS lblC25LCPresent;
-        private System.Windows.Forms.LabelTS lblC25ABPresent;
+        public System.Windows.Forms.LabelTS lblC25TRXPresent;
         private System.Windows.Forms.GroupBoxTS grpC25TXFrequencySweepTest;
         private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestDrivePower;
         private System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestDrivePower;

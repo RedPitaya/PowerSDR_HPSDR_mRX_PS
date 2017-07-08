@@ -36,8 +36,10 @@
             // 
             // lbChooseDevice
             // 
+            this.lbChooseDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbChooseDevice.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbChooseDevice.FormattingEnabled = true;
             this.lbChooseDevice.ItemHeight = 14;
             this.lbChooseDevice.Location = new System.Drawing.Point(15, 66);
             this.lbChooseDevice.Name = "lbChooseDevice";
@@ -55,12 +57,13 @@
             this.lblChooseDevice.Name = "lblChooseDevice";
             this.lblChooseDevice.Size = new System.Drawing.Size(567, 54);
             this.lblChooseDevice.TabIndex = 1;
-            this.lblChooseDevice.Text = "There seems to be more than one Charly 25 / HAMlab / STEMlab SDR device active in your network " +
-    "environment!\r\nPlease choose the device you want to start up.\r\n";
+            this.lblChooseDevice.Text = "There seems to be more than one Charly 25 / HAMlab / STEMlab SDR device active in" +
+    " your network environment!\r\nPlease choose the device you want to start up.\r\n";
             this.lblChooseDevice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnChooseDeviceOK
             // 
+            this.btnChooseDeviceOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnChooseDeviceOK.Location = new System.Drawing.Point(15, 187);
             this.btnChooseDeviceOK.Name = "btnChooseDeviceOK";
             this.btnChooseDeviceOK.Size = new System.Drawing.Size(75, 23);
@@ -71,6 +74,7 @@
             // 
             // btnChooseDeviceCancel
             // 
+            this.btnChooseDeviceCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnChooseDeviceCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnChooseDeviceCancel.Location = new System.Drawing.Point(507, 187);
             this.btnChooseDeviceCancel.Name = "btnChooseDeviceCancel";
@@ -91,7 +95,6 @@
             this.Controls.Add(this.lblChooseDevice);
             this.Controls.Add(this.lbChooseDevice);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RPDeviceForm";
