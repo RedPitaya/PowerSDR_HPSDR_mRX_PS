@@ -1483,6 +1483,11 @@ namespace PowerSDR
         private CheckBoxTS chkDSPKeyerSidetone;
         private Midi2Cat.Midi2CatSetupForm ConfigMidi2Cat;
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        // public static C25SWRViewForm C25SWRView = null;
+        // DG8MG
+
         #endregion
 
         #region Constructor and Destructor
@@ -21720,8 +21725,6 @@ namespace PowerSDR
                 lbC25RXAttPreTestResults.Items.Add("Setting: " + console.rx1_preamp_offset[rxattpretest_mode] * (-1) + " dB - Target: " + (rxattpretest_reference_level - console.rx1_preamp_offset[rxattpretest_mode]) + " dB - Measured: " + rxattpretest_switched_level + "dB - " + rxattpretest_result);
             }
 
-            // lblC25RXAttPreTestResult2.Text = "TEST ";
-
             if (C25RXAttPreTest_is_canceled)
             {
                 lblC25RXAttPreTestResult2.ForeColor = Color.DarkBlue;
@@ -21756,6 +21759,8 @@ namespace PowerSDR
 
         bool C25TXFreqSwpTest_is_canceled = false;
         bool C25TXFreqSwpTest_is_paused = false;
+
+        public static C25SWRViewForm C25SWRView = null;        
 
         private void btnC25TXFreqSwpTestStart_Click(object sender, EventArgs e)
         {
@@ -21792,14 +21797,42 @@ namespace PowerSDR
             // Set the new drive power for the test
             console.PWR = (int)udC25TXFreqSwpTestDrivePower.Value;
 
+            if (C25SWRView == null)
+            {
+                C25SWRView = new C25SWRViewForm(this);
+            }
+
+            C25SWRView.c25SWRViewChartSetup(this);
+
             console.TUN = true;
 
-            for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq < ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestRate.Value / 1e6))
+            for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq <= ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestRate.Value / 1e6))
             {
                 if (C25TXFreqSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
                 {
                     break;
                 }
+
+                // Avoid total reflection in SWR calculation
+                if (console.alex_rev >= console.alex_fwd)
+                {
+                    console.alex_rev = console.alex_fwd - 0.001f;
+                }
+
+                // Calculate the current SWR value
+                float rho = (float)Math.Sqrt(console.alex_rev / console.alex_fwd);
+                float swr = 1.0f;
+
+                if (float.IsNaN(rho) || float.IsInfinity(rho))
+                {
+                    swr = 1.0f;
+                }
+                else
+                {
+                    swr = (1.0f + rho) / (1.0f - rho);
+                }
+
+                C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq * 1e6, swr);            
 
                 DateTime start = DateTime.Now;
 
@@ -21810,6 +21843,8 @@ namespace PowerSDR
             }
 
             console.TUN = false;
+
+            C25SWRView.Show();
 
             // Restore the old setting
             console.PWR = old_pwr;
@@ -21843,6 +21878,38 @@ namespace PowerSDR
         private void btnC25TXFreqSwpTestCancel_Click(object sender, EventArgs e)
         {
             C25TXFreqSwpTest_is_canceled = true;
+        }
+
+        private void udC25TXFreqSwpTestStartFrequency_ValueChanged(object sender, EventArgs e)
+        {
+            if (udC25TXFreqSwpTestStartFrequency.Value > udC25TXFreqSwpTestStopFrequency.Value)
+            {
+                udC25TXFreqSwpTestStartFrequency.Value = udC25TXFreqSwpTestStopFrequency.Value;
+            }
+        }
+
+        private void udC25TXFreqSwpTestStopFrequency_ValueChanged(object sender, EventArgs e)
+        {
+            if (udC25TXFreqSwpTestStopFrequency.Value < udC25TXFreqSwpTestStartFrequency.Value)
+            {
+                udC25TXFreqSwpTestStopFrequency.Value = udC25TXFreqSwpTestStartFrequency.Value;
+            }
+        }
+
+        private void udC25TXFreqSwpTestRate_ValueChanged(object sender, EventArgs e)
+        {
+            if (udC25TXFreqSwpTestRate.Value > udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value)
+            {
+                udC25TXFreqSwpTestRate.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value;
+            }
+        }
+
+        private void tpC25Tests_DoubleClick(object sender, EventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Keys.ControlKey))
+            {
+                console.C25NewReleaseDownloadItem_Click(this, EventArgs.Empty);
+            }
         }
         // DG8MG
 
@@ -21942,14 +22009,6 @@ namespace PowerSDR
         private void btnExportCurrentTXProfile_Click(object sender, EventArgs e)
         {
             ExportCurrentTxProfile();
-        }
-
-        private void tpC25Tests_DoubleClick(object sender, EventArgs e)
-        {
-            if (Keyboard.IsKeyDown(Keys.ControlKey))
-            {
-                console.C25NewReleaseDownloadItem_Click(this, EventArgs.Empty);
-            }
         }
     }
 

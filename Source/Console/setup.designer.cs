@@ -195,9 +195,9 @@
             this.tpGeneralHardware = new System.Windows.Forms.TabPage();
             this.grpC25HardwareOptions = new System.Windows.Forms.GroupBoxTS();
             this.lblC25RX2FbPresent = new System.Windows.Forms.LabelTS();
+            this.lblC25TRXPresent = new System.Windows.Forms.LabelTS();
             this.lblC25RX1FbPresent = new System.Windows.Forms.LabelTS();
             this.lblC25AudioCodecPresent = new System.Windows.Forms.LabelTS();
-            this.lblC25TRXPresent = new System.Windows.Forms.LabelTS();
             this.grpDisablePureSignal = new System.Windows.Forms.GroupBoxTS();
             this.chkDisablePureSignal = new System.Windows.Forms.CheckBoxTS();
             this.grpLimtRX = new System.Windows.Forms.GroupBoxTS();
@@ -6113,6 +6113,16 @@
             this.lblC25RX2FbPresent.TabIndex = 10;
             this.lblC25RX2FbPresent.Text = "RX2 Filterboard";
             // 
+            // lblC25TRXPresent
+            // 
+            this.lblC25TRXPresent.AutoSize = true;
+            this.lblC25TRXPresent.Image = null;
+            this.lblC25TRXPresent.Location = new System.Drawing.Point(37, 26);
+            this.lblC25TRXPresent.Name = "lblC25TRXPresent";
+            this.lblC25TRXPresent.Size = new System.Drawing.Size(79, 13);
+            this.lblC25TRXPresent.TabIndex = 2;
+            this.lblC25TRXPresent.Text = "CHARLY 25AB";
+            // 
             // lblC25RX1FbPresent
             // 
             this.lblC25RX1FbPresent.AutoSize = true;
@@ -6132,16 +6142,6 @@
             this.lblC25AudioCodecPresent.Size = new System.Drawing.Size(68, 13);
             this.lblC25AudioCodecPresent.TabIndex = 8;
             this.lblC25AudioCodecPresent.Text = "Audio Codec";
-            // 
-            // lblC25TRXPresent
-            // 
-            this.lblC25TRXPresent.AutoSize = true;
-            this.lblC25TRXPresent.Image = null;
-            this.lblC25TRXPresent.Location = new System.Drawing.Point(37, 26);
-            this.lblC25TRXPresent.Name = "lblC25TRXPresent";
-            this.lblC25TRXPresent.Size = new System.Drawing.Size(79, 13);
-            this.lblC25TRXPresent.TabIndex = 2;
-            this.lblC25TRXPresent.Text = "CHARLY 25AB";
             // 
             // grpDisablePureSignal
             // 
@@ -47921,6 +47921,7 @@
             0,
             0,
             0});
+            this.udC25TXFreqSwpTestRate.ValueChanged += new System.EventHandler(this.udC25TXFreqSwpTestRate_ValueChanged);
             // 
             // lblC25TXPwrSwpTestRate
             // 
@@ -48038,6 +48039,7 @@
             0,
             0,
             0});
+            this.udC25TXFreqSwpTestStartFrequency.ValueChanged += new System.EventHandler(this.udC25TXFreqSwpTestStartFrequency_ValueChanged);
             // 
             // udC25TXFreqSwpTestStopFrequency
             // 
@@ -48067,6 +48069,7 @@
             0,
             0,
             0});
+            this.udC25TXFreqSwpTestStopFrequency.ValueChanged += new System.EventHandler(this.udC25TXFreqSwpTestStopFrequency_ValueChanged);
             // 
             // grpC25RXAttPreTest
             // 
@@ -52116,12 +52119,12 @@
         private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestRate;
         private System.Windows.Forms.ButtonTS btnC25TXFreqSwpTestCancel;
         private System.Windows.Forms.ButtonTS btnC25TXFreqSwpTestPause;
-        private System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestRate;
+        public System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestRate;
         private System.Windows.Forms.ButtonTS btnC25TXFreqSwpTestStart;
         private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestStartFrequency;
         private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestStopFrequency;
-        private System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestStartFrequency;
-        private System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestStopFrequency;
+        public System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestStartFrequency;
+        public System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestStopFrequency;
         private System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestInterval;
         private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestInterval;
         private System.Windows.Forms.ButtonTS btnC25RXAttPreTestCancel;

@@ -176,6 +176,12 @@
     <Compile Include="AmpView.Designer.cs">
       <DependentUpon>AmpView.cs</DependentUpon>
     </Compile>
+    <Compile Include="C25SWRView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="C25SWRView.Designer.cs">
+      <DependentUpon>C25SWRView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Channel.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="CW\CWInput.cs" />
@@ -406,6 +412,9 @@
     </Compile>
     <Content Include="C25.ico" />
     <Content Include="redpitaya.ico" />
+    <EmbeddedResource Include="C25SWRView.resx">
+      <DependentUpon>C25SWRView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\digital7.ttf" />
     <None Include="ClassDiagram1.cd" />
     <None Include="Resources\grabbing.cur" />
