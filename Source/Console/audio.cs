@@ -27,6 +27,9 @@
 //    USA
 //=================================================================
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+//
 
 //#define VAC_DEBUG
 //#define MINMAX

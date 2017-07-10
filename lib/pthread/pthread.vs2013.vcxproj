@@ -100,6 +100,9 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)$(OutDir)pthreadVC.lib" "$(ProjectDir)$(OutDir)temp"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -155,6 +158,9 @@
       <ImportLibrary>$(IntDir)pthreadVC.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(ProjectDir)$(OutDir)pthreadVC.lib" "$(ProjectDir)$(OutDir)temp"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="pthread.c">

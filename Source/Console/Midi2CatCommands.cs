@@ -23,7 +23,11 @@ The author can be reached by email at:  midi2cat@cametrix.com
 Modifications to support the Behringer Midi controllers
 by Chris Codella, W2PA, April 2017.  Indicated by //-W2PA comment lines.
 
- */
+*/
+
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+//
 
 using Midi2Cat;
 using Midi2Cat.Data; 

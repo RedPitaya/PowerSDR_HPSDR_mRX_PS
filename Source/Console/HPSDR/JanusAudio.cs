@@ -18,6 +18,10 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+//
+
 namespace PowerSDR
 {
     using System;
@@ -1543,7 +1547,7 @@ namespace PowerSDR
             if (pingable)
             {
                 int sdr_apps_index = 1;
-                string[] sdr_apps = { "sdr_transceiver_hpsdr", "hamlab_sdr_transceiver_hpsdr", "stemlab_sdr_transceiver_hpsdr" };
+                string[] sdr_apps = { "stemlab_sdr_transceiver_hpsdr", "hamlab_sdr_transceiver_hpsdr", "sdr_transceiver_hpsdr" };
 
                 System.Console.WriteLine(String.Format("Attempting to start SDR application on Red Pitaya IP {0}", Metis_IP_address));
                 var webClient = new WebClient();

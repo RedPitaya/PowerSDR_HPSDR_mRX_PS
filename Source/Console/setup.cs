@@ -27,6 +27,10 @@
 //    USA
 //=================================================================
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+//
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -3313,7 +3317,7 @@ namespace PowerSDR
 
             if (console.PowerOn)
             {
-                string[] sdr_app_directories = {"sdr_transceiver_hpsdr", "hamlab_sdr_transceiver_hpsdr", "stemlab_sdr_transceiver_hpsdr"};
+                string[] sdr_app_directories = { "stemlab_sdr_transceiver_hpsdr", "hamlab_sdr_transceiver_hpsdr", "sdr_transceiver_hpsdr"};
                 
                 // Try to read the SDR application version from the Red Pitaya device
                 foreach (string sdr_app_directory in sdr_app_directories)
@@ -21832,7 +21836,7 @@ namespace PowerSDR
                     swr = (1.0f + rho) / (1.0f - rho);
                 }
 
-                C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq * 1e6, swr);            
+                C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq, swr);            
 
                 DateTime start = DateTime.Now;
 
@@ -21845,6 +21849,7 @@ namespace PowerSDR
             console.TUN = false;
 
             C25SWRView.Show();
+            C25SWRView.BringToFront();
 
             // Restore the old setting
             console.PWR = old_pwr;
@@ -21886,6 +21891,11 @@ namespace PowerSDR
             {
                 udC25TXFreqSwpTestStartFrequency.Value = udC25TXFreqSwpTestStopFrequency.Value;
             }
+
+            if (udC25TXFreqSwpTestRate.Value > udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value)
+            {
+                udC25TXFreqSwpTestRate.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value;
+            }
         }
 
         private void udC25TXFreqSwpTestStopFrequency_ValueChanged(object sender, EventArgs e)
@@ -21893,6 +21903,11 @@ namespace PowerSDR
             if (udC25TXFreqSwpTestStopFrequency.Value < udC25TXFreqSwpTestStartFrequency.Value)
             {
                 udC25TXFreqSwpTestStopFrequency.Value = udC25TXFreqSwpTestStartFrequency.Value;
+            }
+
+            if (udC25TXFreqSwpTestRate.Value > udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value)
+            {
+                udC25TXFreqSwpTestRate.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value;
             }
         }
 

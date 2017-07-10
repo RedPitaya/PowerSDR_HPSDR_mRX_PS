@@ -30,6 +30,10 @@
  *      59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+//
+
 #if !defined( PTHREAD_H )
 #define PTHREAD_H
 

@@ -24,6 +24,10 @@
 // access the FPGA based USB connected sound device
 //
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+//
+
 //#define KD5TFDVK6APHAUDIO_EXPORTS
 #include <stdio.h>
 #include "KD5TFD-VK6APH-Audio.h"

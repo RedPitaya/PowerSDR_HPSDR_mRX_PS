@@ -22294,7 +22294,7 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25 / HAMlab edition of PowerSDR, so the program starts with HAMlab / STEMlab as default hardware
+        // DG8MG: This is the Charly 25 / HAMlab / STEMlab edition of PowerSDR, so the program starts with HAMlab / STEMlab as default hardware
         private HPSDRModel current_hpsdr_model = HPSDRModel.HAMLAB;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG
@@ -36196,7 +36196,7 @@ namespace PowerSDR
                         switch (sdr_app_running)
                         {
                             case 1:
-                                rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
+                                rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=stemlab_sdr_transceiver_hpsdr";
                                 break;
 
                             case 2:
@@ -36204,7 +36204,7 @@ namespace PowerSDR
                                 break;
 
                             case 3:
-                                rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=stemlab_sdr_transceiver_hpsdr";
+                                rp_app_string = "http://" + JanusAudio.Metis_IP_address + "/bazaar?stop=sdr_transceiver_hpsdr";
                                 break;
                         }
 
