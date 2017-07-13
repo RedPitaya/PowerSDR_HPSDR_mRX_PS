@@ -137,6 +137,9 @@
       <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Microsoft.NET\Primary Interop Assemblies\adodb.dll</HintPath>
       <AssemblyFolderKey>hklm\primary interop assemblies</AssemblyFolderKey>
     </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.0.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.0.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Release\SlimDX.dll</HintPath>
@@ -417,6 +420,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\digital7.ttf" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
     <None Include="Resources\grabbing.cur" />
     <None Include="Resources\grab.cur" />
     <EmbeddedResource Include="alphawarnform.resx">

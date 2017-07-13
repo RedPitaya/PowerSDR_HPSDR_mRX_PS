@@ -52,9 +52,11 @@ namespace PowerSDR
     using Midi2Cat;
 
     // DG8MG
+    // Extension for Charly 25 and HAMlab hardware
     using System.Timers;
     using System.Net;
     using System.Net.Cache;
+    using Renci.SshNet;
     // DG8MG
 
     public partial class Setup : Form
@@ -21924,6 +21926,84 @@ namespace PowerSDR
             if (Keyboard.IsKeyDown(Keys.ControlKey))
             {
                 console.C25NewReleaseDownloadItem_Click(this, EventArgs.Empty);
+            }
+            else if (Keyboard.IsKeyDown(Keys.ShiftKey))
+            {
+                if (console.PowerOn)
+                {
+                    MessageBox.Show("Power must be off to run the SDR application software update.",
+                        "Power is on",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {                   
+                    OpenFileDialog odC25SDRAppUpdate = new OpenFileDialog();
+                    odC25SDRAppUpdate.Title = "Choose the new SDR application package";
+                    odC25SDRAppUpdate.FileName = "*.zip";
+
+                    if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                    {
+                        odC25SDRAppUpdate.FileName = "stemlab_sdr_transceiver_hpsdr-????-????.zip";
+                    }
+                    else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                    {
+                        odC25SDRAppUpdate.FileName = "hamlab_sdr_transceiver_hpsdr-????-????.zip";
+                    }
+
+                    if (odC25SDRAppUpdate.ShowDialog() == DialogResult.OK)
+                    {
+                        string sdrapp_path_name = odC25SDRAppUpdate.FileName;
+                        string sdrapp_name = Path.GetFileName(sdrapp_path_name);
+
+                        var connectionInfo = new ConnectionInfo(JanusAudio.Metis_IP_address, "root", new PasswordAuthenticationMethod("root", "root"));                        
+
+                        using (var sftpclient = new SftpClient(connectionInfo))
+                        {
+                            sftpclient.Connect();
+
+                            if (sftpclient.IsConnected)
+                            {
+                                using (var uplfileStream = System.IO.File.OpenRead(sdrapp_path_name))
+                                {
+                                    sftpclient.UploadFile(uplfileStream, "/tmp/" + sdrapp_name, true);
+                                }
+
+                                sftpclient.Disconnect();
+                            }
+
+                            
+                        }
+
+                        using (var sshclient = new SshClient(connectionInfo))
+                        {
+                            sshclient.Connect();
+
+                            if (sshclient.IsConnected)
+                            {
+                                using (var cmd = sshclient.CreateCommand("mount -o rw,remount /opt/redpitaya && unzip -o /tmp/" + sdrapp_name + " -d /opt/redpitaya/www/apps && mount -o ro,remount /opt/redpitaya"))
+                                {
+                                    cmd.Execute();
+                                    System.Console.WriteLine("SSH Command>" + cmd.CommandText);
+                                    System.Console.WriteLine("SSH Command Return Value = {0}", cmd.ExitStatus);
+                                    if (cmd.ExitStatus == 0)
+                                    {
+                                        MessageBox.Show("The update of the SDR application was successful.\nVersion: " + Path.GetFileNameWithoutExtension(sdrapp_name) + "\nis now running on the Red Pitaya device.", "Update successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    sshclient.Disconnect();
+                                }
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    // Exception occurred during SDR application update attempt
+                    MessageBox.Show("The update of the SDR application was not successful,\nbut you can continue with the current version as before!", "Update failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
         }
         // DG8MG
