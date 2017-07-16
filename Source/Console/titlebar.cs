@@ -53,6 +53,12 @@ namespace PowerSDR
         public const string BUILD_NAME = "mRX PS";
         public const string BUILD_EDITION = " - Charly 25 / HAMlab / STEMlab SDR Edition";
 
+#if TRACE
+        public const string TRACE = " with TRACE output";
+#else
+        public const string TRACE = "";
+#endif
+
         public static string GetString()
         {
             string s = "PowerSDR™ OpenHPSDR";
@@ -60,6 +66,7 @@ namespace PowerSDR
             s += " " + BUILD_EDITION + BUILD;
             s += Application.ProductVersion.Substring(2, 10);
             s += " - Commit: " + Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1);
+            s += TRACE;
 
             return s;
         }

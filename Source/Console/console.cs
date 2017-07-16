@@ -1979,10 +1979,12 @@ namespace PowerSDR
             this.Text = TitleBar.GetString();
 
             // DG8MG
+            System.Console.WriteLine(System.DateTime.Now);
             try
             {
                 var latest_release_string = "http://downloads.redpitaya.com/hamlab/powersdr/current_commit.txt";
                 var latest_release_url = string.Format(latest_release_string);
+
                 System.Console.WriteLine(String.Format("Attempting to get the latest commit from from this download server URL: {0}", latest_release_url));                
                 var webClient = new WebClient();
                 var response = webClient.DownloadString(latest_release_url);
@@ -2000,6 +2002,7 @@ namespace PowerSDR
             {               
                 System.Console.WriteLine(String.Format("Exception occurred during latest release commit string download attempt!"));
             }
+            System.Console.WriteLine(System.DateTime.Now);
             // DG8MG
 
             SetupForm.UpdateCustomTitle();
@@ -2151,9 +2154,9 @@ namespace PowerSDR
             }
         }
 
-        #endregion
+#endregion
 
-        #region Windows Form Designer generated code
+#region Windows Form Designer generated code
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -7781,9 +7784,9 @@ namespace PowerSDR
             this.PerformLayout();
 
         }
-        #endregion
+#endregion
 
-        #region Main
+#region Main
         // ======================================================
         // Main
         // ======================================================
@@ -7791,6 +7794,17 @@ namespace PowerSDR
         [STAThread]
         static void Main(string[] args)
         {
+            // DG8MG
+#if TRACE
+            FileStream trace_fs = new FileStream("TRACE.TXT", FileMode.Create);
+            TextWriter old_sw = System.Console.Out;
+            StreamWriter trace_sw = new StreamWriter(trace_fs);
+            System.Console.SetOut(trace_sw);
+            System.Console.WriteLine(">>> Standard console output was redirected to this file.    <<<");
+            System.Console.WriteLine(">>> Please forward this file to the developer if requested! <<<\n");
+#endif
+            // DG8MG
+
             string app_data_path = "";
             foreach (string s in args)
             {
@@ -7799,7 +7813,7 @@ namespace PowerSDR
                     string path = s.Trim().Substring(s.Trim().IndexOf(":") + 1);
                     if (path.EndsWith("\"")) path = path.Substring(0, path.Length - 1);
                     if (!path.EndsWith("\\")) path += "\\";
-#if(DEBUG)
+#if (DEBUG)
                     path += "Debug\\";
 #endif
                     if (Directory.Exists(path))
@@ -7836,7 +7850,7 @@ namespace PowerSDR
                     + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
                 // DG8MG
 
-#if(DEBUG)
+#if (DEBUG)
                 app_data_path += "Debug\\";
 #endif
             }
@@ -7919,11 +7933,18 @@ namespace PowerSDR
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+            // DG8MG
+#if TRACE
+            System.Console.WriteLine("\n>>> This is the end of the TRACE.TXT file! <<<\n");
+            System.Console.SetOut(old_sw);
+            trace_sw.Close();
+#endif
+            // DG8MG
         }
 
-        #endregion
+#endregion
 
-        #region Misc Routines
+#region Misc Routines
         // ======================================================
         // Misc Routines
         // ======================================================
@@ -8854,7 +8875,7 @@ namespace PowerSDR
                                 a.Add(c2.Name + "/" + ((TrackBarTS)c2).Value.ToString());
                             else if (c2.GetType() == typeof(PrettyTrackBar))
                                 a.Add(c2.Name + "/" + ((PrettyTrackBar)c2).Value.ToString());
-#if(DEBUG)
+#if (DEBUG)
                             else if (c2.GetType() == typeof(GroupBox) ||
                                 c2.GetType() == typeof(CheckBox) ||
                                 c2.GetType() == typeof(ComboBox) ||
@@ -8891,7 +8912,7 @@ namespace PowerSDR
                             a.Add(c.Name + "/" + ((TrackBarTS)c).Value.ToString());
                         else if (c.GetType() == typeof(PrettyTrackBar))
                             a.Add(c.Name + "/" + ((PrettyTrackBar)c).Value.ToString());
-#if(DEBUG)
+#if (DEBUG)
                         else if (c.GetType() == typeof(GroupBox) ||
                             c.GetType() == typeof(CheckBox) ||
                             c.GetType() == typeof(ComboBox) ||
@@ -16760,9 +16781,9 @@ namespace PowerSDR
             get { return tune_step_list[tune_step_index].StepHz * 1e-6; }
         }
 
-        #endregion
+#endregion
 
-        #region Test and Calibration Routines
+#region Test and Calibration Routines
 
         public static bool FreqCalibrationRunning = false;
         public bool CalibrateFreq(float freq)
@@ -18605,9 +18626,9 @@ namespace PowerSDR
             return true;
         }
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
         // ======================================================
         // Properties
         // ======================================================
@@ -23464,7 +23485,7 @@ namespace PowerSDR
             }
         }
 
-        #region CAT Properties
+#region CAT Properties
 
         // props for cat control 
 
@@ -24549,7 +24570,7 @@ namespace PowerSDR
         }
 
 
-        #endregion
+#endregion
 
         private bool tx_tune_power = true;
         public bool TXTunePower
@@ -24587,7 +24608,7 @@ namespace PowerSDR
             set { previous_pwr = value; }
         }
 
-        #region CAT Properties
+#region CAT Properties
 
         private Band rx1_band;
         public Band RX1Band
@@ -25008,7 +25029,7 @@ namespace PowerSDR
             set { kw_auto_information = value; }
         }
 
-        #endregion
+#endregion
 
         private int nreceivers = 2;
         public int NReceivers
@@ -28520,9 +28541,9 @@ namespace PowerSDR
             }
         }
 
-        #endregion
+#endregion
 
-        #region Display Routines
+#region Display Routines
 
         private void UpdateDisplay()
         {
@@ -29063,9 +29084,9 @@ namespace PowerSDR
             return (y - 16) * i * display_delay;
         }
 
-        #endregion
+#endregion
 
-        #region Paint Event Handlers
+#region Paint Event Handlers
         // ======================================================
         // Paint Event Handlers
         // ======================================================
@@ -29102,7 +29123,7 @@ namespace PowerSDR
             switch (current_meter_display_mode)
             {
                 case MultiMeterDisplayMode.Original:
-                    #region Original
+#region Original
 
                     if (meter_data_ready)
                     {
@@ -29797,10 +29818,10 @@ namespace PowerSDR
                         meter_data_ready = false;  //We do NOT want to do this before we have consumed it!!!! so do it here.
                     }
                     break;
-                    #endregion
+#endregion
 
                 case MultiMeterDisplayMode.Edge:
-                    #region Edge
+#region Edge
                     if (meter_data_ready)
                     {
                         current_meter_data = new_meter_data;
@@ -31224,11 +31245,11 @@ namespace PowerSDR
                     }
 
                     break;
-                    #endregion
+#endregion
                 case MultiMeterDisplayMode.Analog:
-                    #region Analog
+#region Analog
 
-                    #endregion
+#endregion
                     break;
             }
         }
@@ -31246,7 +31267,7 @@ namespace PowerSDR
             switch (current_meter_display_mode)
             {
                 case MultiMeterDisplayMode.Original:
-                    #region Original
+#region Original
 
                     if (rx2_meter_data_ready)
                     {
@@ -31488,9 +31509,9 @@ namespace PowerSDR
                         rx2_meter_data_ready = false;  //We do NOT want to do this before we have consumed it!!!! so do it here.
                     }
                     break;
-                    #endregion
+#endregion
                 case MultiMeterDisplayMode.Edge:
-                    #region Edge
+#region Edge
                     if (rx2_meter_data_ready)
                     {
                         rx2_meter_current_data = rx2_meter_new_data;
@@ -31707,11 +31728,11 @@ namespace PowerSDR
                     }
 
                     break;
-                    #endregion
+#endregion
                 case MultiMeterDisplayMode.Analog:
-                    #region Analog
+#region Analog
 
-                    #endregion
+#endregion
                     break;
             }
         }
@@ -32030,9 +32051,9 @@ namespace PowerSDR
             }
         }
 
-        #endregion
+#endregion
 
-        #region Thread and Timer Routines
+#region Thread and Timer Routines
         // ======================================================
         // Thread Routines
         // ======================================================
@@ -34743,9 +34764,9 @@ namespace PowerSDR
         // }
 
 
-        #endregion
+#endregion
 
-        #region Event Handlers
+#region Event Handlers
         // ======================================================
         // Event Handlers
         // ======================================================
@@ -39269,9 +39290,9 @@ namespace PowerSDR
             return ret_val;
         }
 
-        #endregion
+#endregion
 
-        #region VFO Events
+#region VFO Events
 
         private enum TuneLocation
         {
@@ -40975,9 +40996,9 @@ namespace PowerSDR
                 new MouseEventArgs(e.Button, e.Clicks, e.X+165, e.Y+25, e.Delta));*/
         }
 
-        #endregion
+#endregion
 
-        #region Display Events
+#region Display Events
 
         private bool rx1_low_filter_drag = false;
         private bool rx1_high_filter_drag = false;
@@ -43396,9 +43417,9 @@ namespace PowerSDR
             }
         }
 
-        #endregion
+#endregion
 
-        #region Band Button Events
+#region Band Button Events
         // ======================================================
         // Band Button Events
         // ======================================================
@@ -43992,9 +44013,9 @@ namespace PowerSDR
             UpdateDiversityValues();
         }
 
-        #endregion
+#endregion
 
-        #region Mode Button Events
+#region Mode Button Events
         // ======================================================
         // Mode Button Events
         // ======================================================
@@ -44702,9 +44723,9 @@ namespace PowerSDR
             dRMToolStripMenuItem.Checked = radModeDRM.Checked;
         }
 
-        #endregion
+#endregion
 
-        #region Filter Button Events
+#region Filter Button Events
         // ======================================================
         // Filter Button Events
         // ======================================================
@@ -45788,9 +45809,9 @@ namespace PowerSDR
             }
         }
 
-        #endregion
+#endregion
 
-        #region VFO Button Events
+#region VFO Button Events
         // ======================================================
         // VFO Button Events
         // ======================================================
@@ -46139,7 +46160,7 @@ namespace PowerSDR
                         CurrentClickTuneMode = ClickTuneMode.VFOA;
                 }
             }
-#if false 
+#if false
 			// wjtFIXME! 
 			// if we're doing soft rock stuff may need to update osc (tx mainly) when split is on
 			if ( current_model ==  Model.SOFTROCK40 )
@@ -46574,9 +46595,9 @@ namespace PowerSDR
             btnFilterShiftReset_Click(this, EventArgs.Empty);
         }
 
-        #endregion
+#endregion
 
-        #region DSP Button Events
+#region DSP Button Events
 
         private void chkNR_CheckedChanged(object sender, System.EventArgs e)
         {
@@ -46617,9 +46638,9 @@ namespace PowerSDR
             SNBtoolStripMenuItem1.Checked = chkRX2NB2.Checked;
         }
 
-        #endregion
+#endregion
 
-        #region Mode Specific Events
+#region Mode Specific Events
 
         private bool txosctrl = false;
         public bool TxOsctrl
@@ -46718,9 +46739,9 @@ namespace PowerSDR
             //if (ptbDX.Focused) btnHidden.Focus();
         }
 
-        #endregion
+#endregion
 
-        #region Memory Events
+#region Memory Events
         // ======================================================
         // Memory Events
         // ======================================================
@@ -46742,9 +46763,9 @@ namespace PowerSDR
             RX1Filter = quick_save_filter;
         }
 
-        #endregion
+#endregion
 
-        #region Menu Events
+#region Menu Events
 
         private void menu_setup_Click(object sender, System.EventArgs e)
         {
@@ -46858,9 +46879,9 @@ namespace PowerSDR
             ProfileForm.Focus();
         }
 
-        #endregion
+#endregion
 
-        #region Sub RX Events
+#region Sub RX Events
 
         private void ptbPanMainRX_Scroll(object sender, System.EventArgs e)
         {
@@ -47015,7 +47036,7 @@ namespace PowerSDR
             ptbRX1Gain.Focus();
         }
 
-        #endregion
+#endregion
 
         private bool full_duplex = false;
         public bool FullDuplex
@@ -50402,11 +50423,11 @@ namespace PowerSDR
                   if (del >= 0.1)
                   {
                       del *= -Math.Sign(r.Y) / 1000000.0;
-  #if false
+#if false
                       if(current_click_tune_mode == ClickTuneMode.VFOB && scroll_vfob_on_split)
                           VFOBFreq += del;
                       else 
-  #endif
+#endif
                       if (TDxCurrentVFO)
                           VFOBFreq += del;
                       else
@@ -51510,7 +51531,7 @@ namespace PowerSDR
             return true;
         }
 
-        #region Collapsible Display
+#region Collapsible Display
 
         // W1CEG:  Start
         ///////////////////////////////////////////////////////////////////////////////
@@ -52583,7 +52604,7 @@ namespace PowerSDR
             }
         }
         // W1CEG:  End
-        #endregion Collapsible Display
+#endregion Collapsible Display
 
         private void mnuFilter_Click(object sender, EventArgs e)
         {
