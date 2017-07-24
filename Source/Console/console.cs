@@ -606,6 +606,12 @@ namespace PowerSDR
         private Thread rx2_sql_update_thread;				// polls the RX2 signal strength
         private Thread vox_update_thread;					// polls the mic input
         private Thread noise_gate_update_thread;			// polls the mic input during TX
+
+        // DG8MG
+        // Thread to check if a new PowerSDR Charly 25 / HAMlab / STEMlab edition is available
+        private Thread check_commit_thread;
+        // DG8MG
+
         //  private Thread f3k_temp_thread;				        // polls the temp on the FLEX-3000 to turn fan on/off
         //  private Thread f3k_mic_function_thread;				// handles the FLEX-3000 mic inputs (Up, Down, Fast)
         // private Thread wbir_thread;
@@ -1979,30 +1985,15 @@ namespace PowerSDR
             this.Text = TitleBar.GetString();
 
             // DG8MG
-            System.Console.WriteLine(System.DateTime.Now);
-            try
+            // Thread to check if a new PowerSDR Charly 25 / HAMlab / STEMlab edition is available
+            if (check_commit_thread == null || !check_commit_thread.IsAlive)
             {
-                var latest_release_string = "http://downloads.redpitaya.com/hamlab/powersdr/current_commit.txt";
-                var latest_release_url = string.Format(latest_release_string);
-
-                System.Console.WriteLine(String.Format("Attempting to get the latest commit from from this download server URL: {0}", latest_release_url));                
-                var webClient = new WebClient();
-                var response = webClient.DownloadString(latest_release_url);
-                System.Console.WriteLine(String.Format("Response from download server: {0}", response));
-
-                if (response.Substring(0, 7) != TitleBar.GetCommitC25Edition())
-                {
-                    ToolStripMenuItem C25DownloadNewReleaseItem = new ToolStripMenuItem("DOWNLOAD NEW RELEASE", null, C25NewReleaseDownloadItem_Click);
-                    C25DownloadNewReleaseItem.ForeColor = Color.Red;
-                    this.menuStrip1.Items.Add(C25DownloadNewReleaseItem);
-                }
-                webClient.Dispose();
+                check_commit_thread = new Thread(new ThreadStart(CheckCommit));
+                check_commit_thread.Name = "Check Commit Thread";
+                check_commit_thread.Priority = ThreadPriority.Lowest;
+                check_commit_thread.IsBackground = true;
+                check_commit_thread.Start();
             }
-            catch
-            {               
-                System.Console.WriteLine(String.Format("Exception occurred during latest release commit string download attempt!"));
-            }
-            System.Console.WriteLine(System.DateTime.Now);
             // DG8MG
 
             SetupForm.UpdateCustomTitle();
@@ -5117,8 +5108,7 @@ namespace PowerSDR
             this.linearityToolStripMenuItem,
             this.RAtoolStripMenuItem});
             resources.ApplyResources(this.menuStrip1, "menuStrip1");
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
+            this.menuStrip1.Name = "menuStrip1";            
             // 
             // setupToolStripMenuItem
             // 
@@ -53555,11 +53545,6 @@ namespace PowerSDR
             }
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         private void C25_ANT_CheckedChanged(object sender, EventArgs e)
@@ -53581,6 +53566,37 @@ namespace PowerSDR
             }
         }
         
+		// Checks the current commit hash on the Red Pitaya download server and shows if a new PowerSDR version is available
+        private void CheckCommit()
+        {
+            System.Console.WriteLine(System.DateTime.Now);
+            try
+            {
+                var latest_release_string = "http://downloads.redpitaya.com/hamlab/powersdr/current_commit.txt";
+                var latest_release_url = string.Format(latest_release_string);
+
+                System.Console.WriteLine(String.Format("Attempting to get the latest commit from from this download server URL: {0}", latest_release_url));
+                var webClient = new WebClient();
+                var response = webClient.DownloadString(latest_release_url);
+                System.Console.WriteLine(String.Format("Response from download server: {0}", response));
+
+                if (response.Substring(0, 7) != TitleBar.GetCommitC25Edition())
+                {
+                    ToolStripMenuItem C25DownloadNewReleaseItem = new ToolStripMenuItem("DOWNLOAD NEW RELEASE", null, C25NewReleaseDownloadItem_Click);
+                    C25DownloadNewReleaseItem.ForeColor = Color.Red;
+                    this.menuStrip1.Items.Add(C25DownloadNewReleaseItem);
+                }
+                webClient.Dispose();
+            }
+            catch
+            {
+                System.Console.WriteLine(String.Format("Exception occurred during latest release commit string download attempt!"));
+            }
+
+            System.Console.WriteLine(System.DateTime.Now);
+            check_commit_thread.Abort();            
+        }
+
     	public void C25NewReleaseDownloadItem_Click(object sender, EventArgs e)
         {
             Uri latest_release_uri = new Uri("http://downloads.redpitaya.com/hamlab/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");
