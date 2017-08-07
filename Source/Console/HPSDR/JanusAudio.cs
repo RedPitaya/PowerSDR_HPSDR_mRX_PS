@@ -515,9 +515,9 @@ namespace PowerSDR
             MetisCodeVersion = mhd[chosenDevice].codeVersion;
             Metis_IP_address = mhd[chosenDevice].IPAddress;
             MetisMAC = mhd[chosenDevice].MACAddress;
-            EthernetHostIPAddress = mhd[chosenDevice].hostPortIPAddress.ToString();
+            EthernetHostIPAddress = mhd[chosenDevice].hostPortIPAddress.ToString();            
 
-            rc = nativeInitMetis(Metis_IP_address);
+            rc = nativeInitMetis(Metis_IP_address, c.SetupForm.chkC25useTCP.Checked ? 1 : 0);
             return -rc;
         }
 
@@ -863,10 +863,11 @@ namespace PowerSDR
                     return 1;
                 }
             }
+
+			// Extended by parameter 'protocol' to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
+            result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send, c.SetupForm.chkC25useTCP.Checked ? 1 : 0);      
             
-            result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send);
-            
-            // Charly 25 and HAMlab hardware must skip the firmware check
+			// Charly 25 and HAMlab hardware must skip the firmware check
             if (c.CurrentHPSDRModel == HPSDRModel.CHARLY25 || c.CurrentHPSDRModel == HPSDRModel.HAMLAB)
             {
                 fwVersionsChecked = true;

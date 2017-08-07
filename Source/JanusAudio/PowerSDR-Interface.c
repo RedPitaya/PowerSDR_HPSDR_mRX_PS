@@ -59,9 +59,12 @@ const int numInputBuffs = 12;
 // this is the 8 in 8 out (actually 5 in 4 out) version of start audio
 //
 
+// DG8MG
+// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
 KD5TFDVK6APHAUDIO_API int StartAudioNative(int sample_rate, int samples_per_block,
                       int (__stdcall *callbackp)(void *inp, void *outp, int framcount, void *timeinfop, int flags, void *userdata),
-                                           int sample_bits, int no_send)
+                      int sample_bits, int no_send, int protocol)
+// DG8MG
 {
         int rc;
         int myrc = 0;
@@ -90,6 +93,12 @@ KD5TFDVK6APHAUDIO_API int StartAudioNative(int sample_rate, int samples_per_bloc
         FPGAWriteBufp = NULL;
         SampleBits = sample_bits;
         ForceNoSend = no_send;
+
+		// DG8MG
+		// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
+		Protocol = protocol;
+		// DG8MG
+
         IQConversionDivisor = (float)8388607.0;  // (2**23)-1
         if ( SampleBits == 16 ) {
                 IQConversionDivisor = (float)32767.0;
@@ -218,7 +227,15 @@ KD5TFDVK6APHAUDIO_API int StartAudioNative(int sample_rate, int samples_per_bloc
 					// printf("Ozy openend!\n");											
 				}
 				else { // is Metis 					
-					MetisStartReadThread(); 
+					
+					// DG8MG: DEBUG ME!
+					myrc = MetisStartReadThread();
+
+					if (myrc != 0)
+					{
+						break;
+					}
+					// DG8MG
 				} 
 
                 // create FIFO for inbound samples
@@ -300,9 +317,14 @@ KD5TFDVK6APHAUDIO_API int StartAudioNative(int sample_rate, int samples_per_bloc
                         OzyH = NULL;
                 }
 #endif
-				if ( isMetis ) { 
+				// DG8MG
+				// If myrc == -3 then Metis is already stopped 
+				if (isMetis && myrc != -3)
+				{ 
 					MetisStopReadThread(); /* is a no op if not running */ 
 				}
+				// DG8MG
+
         }
         DotDashBits = 0;
         // printf("StartAudioNative - myrc: %d\n", myrc);

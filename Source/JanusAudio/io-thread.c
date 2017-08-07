@@ -931,9 +931,22 @@ void IOThreadMainLoop(void) {
 #ifndef TEST_READ
 			// numread = XyloBulkRead(XyloH, 4, read_buf, sizeof(read_buf));
 #ifdef OZY
-			if ( isMetis ) { 
-				//numread = MetisBulkRead(6, FPGAReadBufp, FPGAReadBufSize);
-				numread = MetisReadDirect(FPGAReadBufp, FPGAReadBufSize); 
+			if ( isMetis ) {
+
+				// DG8MG
+				// Check if TCP is used as transmission protocol between PowerSDR and the Red Pitaya device
+				if (Protocol == 1)
+				{
+					numread = C25MetisTCPReadDirect(FPGAReadBufp, FPGAReadBufSize);
+				}
+				// UDP protocol is used as transmission protocol between PowerSDR and the Red Pitaya device
+				else
+				{
+					//numread = MetisBulkRead(6, FPGAReadBufp, FPGAReadBufSize);
+					numread = MetisReadDirect(FPGAReadBufp, FPGAReadBufSize);
+				}
+				// DG8MG
+
 				if ( numread > 0 ) { 
 					zero_read_count = 0; 
 				} 

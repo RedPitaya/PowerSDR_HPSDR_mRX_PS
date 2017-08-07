@@ -18,6 +18,10 @@
  *
  */
 
+ //
+ // Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+ //
+
 // this header includes declarations for private functions -- that is stuff that should not be called from outside
 // the dll
 
@@ -72,7 +76,12 @@ extern const int numInputBuffs;
 
 // PowerSDR interface routines
 // extern KD5TFDVK6APHAUDIO_API int StartAudio(int block_size);
-extern KD5TFDVK6APHAUDIO_API int StartAudioNative(int sample_rate, int samples_per_block, int (__stdcall *callback)(void *inp, void *outp, int framcount, void *timeinfop, int flags, void *userdata), int sample_bits, int no_send);
+
+// DG8MG
+// Extended by parameter 'protocol' to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
+extern KD5TFDVK6APHAUDIO_API int StartAudioNative(int sample_rate, int samples_per_block, int (__stdcall *callback)(void *inp, void *outp, int framcount, void *timeinfop, int flags, void *userdata), int sample_bits, int no_send, int protocol);
+// DG8MG
+
 extern KD5TFDVK6APHAUDIO_API void StopAudio(void);
 extern KD5TFDVK6APHAUDIO_API int GetDotDashBits(void);
 extern KD5TFDVK6APHAUDIO_API void SetXmitBit(int xmitbit);  // bit xmitbit ==0, recv mode, != 0, xmit mode
@@ -134,6 +143,13 @@ extern int MetisBulkRead(int endpoint, char *bufp, int buflen);
 extern int MetisBulkWrite(int endpoint, char *bufp, int buflen);
 extern int MetisReadDirect(char *bufp, int buflen);
 extern void ForceCandCFrame(int);
+
+// DG8MG
+// Extension to use TCP as transmission protocol between PowerSDR and the Red Pitaya device
+extern SOCKET C25MetisTCPConnectionSetup(void);
+extern int C25MetisTCPReadDirect(char *bufp, int buflen);
+// DG8MG
+
 // all extern declarations need to be above this point
 
 // global variables for the DLL
@@ -418,6 +434,13 @@ extern int useoldbroadcastip;
 // extern SOCKET discoverySock;
 extern WSADATA WSAdata;
 extern int WSAinitialized;
+
+// DG8MG
+// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
+extern int Protocol;
+extern SOCKET c25TCPSocket;
+// DG8MG
+
 // extern int MetisReadThreadRunning;
 //#	define PGM_GNUC_MALLOC			__attribute__((__malloc__))
 //#	define PGM_GNUC_ALLOC_SIZE2(x,y)	__attribute__((__alloc_size__(x,y)))

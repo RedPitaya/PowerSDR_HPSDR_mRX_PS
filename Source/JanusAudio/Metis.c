@@ -45,11 +45,11 @@ void *MetisEP6RingBuf = NULL;
 pthread_t MetisReadThreadID;
 int MetisLastRecvSeq = 0;
 
-extern void Dump(FILE *ofile,                /* file handle to dump to - assumed to be      */
-	/* open.                                       */
-	unsigned char *buf,            /* pointer to data to dump                     */
-	unsigned int count,            /* number of bytes to dump                      */
-	unsigned char *comment);      /* comment put out at top of dump, may be NULL */
+extern void Dump(FILE *ofile,		/* file handle to dump to - assumed to be      */
+									/* open.                                       */
+	unsigned char *buf,				/* pointer to data to dump                     */
+	unsigned int count,				/* number of bytes to dump                     */
+	unsigned char *comment);		/* comment put out at top of dump, may be NULL */
 
 /* returns 0 on success, non zero on failure */
 int initWSA(void) {
@@ -95,6 +95,22 @@ struct sockaddr_in MetisSockAddr;
 int WSA_inited = 0;
 
 KD5TFDVK6APHAUDIO_API void DeInitMetisSockets(void) {
+
+	// DG8MG
+	// Extension to close the TCP connection between PowerSDR and the Red Pitaya device
+	// Check if the TCP connection to the Metis server on the Red Pitaya device is still established
+	if (c25TCPSocket != (SOCKET)0)
+	{
+		// Close the TCP connection
+		shutdown(c25TCPSocket, SD_BOTH);
+		closesocket(c25TCPSocket);
+		c25TCPSocket = (SOCKET)0;
+
+		printf("Closed TCP connection to server!\n");
+		fflush(stdout);
+	}
+	// DG8MG
+
 	if (listenSock != (SOCKET)0) {
 		shutdown(listenSock, SD_BOTH);
 		closesocket(listenSock);
@@ -103,7 +119,12 @@ KD5TFDVK6APHAUDIO_API void DeInitMetisSockets(void) {
 }
 
 /* returns 0 on success, != 0 otherwise */
-KD5TFDVK6APHAUDIO_API int nativeInitMetis(char *netaddr) {
+
+// DG8MG
+// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
+KD5TFDVK6APHAUDIO_API int nativeInitMetis(char *netaddr, int Protocol) {
+// DG8MG
+
 	DWORD dwRetVal;
 	IPAddr DestIp = 0;
 	IPAddr SrcIp = 0;       /* default for src ip */
@@ -156,6 +177,16 @@ KD5TFDVK6APHAUDIO_API int nativeInitMetis(char *netaddr) {
 		printf("CreateSockets Warning: setsockopt SO_RCVBUF failed!\n");
 	}
 
+	// DG8MG
+	// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
+	// Check if the TCP connection to the Metis server on the Red Pitaya device is already established
+	if (Protocol == 1 && c25TCPSocket == 0)
+	{
+		// Set up the TCP connection
+		c25TCPSocket = C25MetisTCPConnectionSetup();
+	}
+	// DG8MG
+
 	DestIp = inet_addr(netaddr);
 
 	if (DestIp != 0) {
@@ -184,20 +215,56 @@ int SendStartToMetis(void) 	 {
 	} inpacket;
 
 	int i;
-
+	
 	memset(outpacket.packetbuf, 0, sizeof(outpacket));
 
 	outpacket.packetbuf[0] = 0xef;
 	outpacket.packetbuf[1] = 0xfe;
 	outpacket.packetbuf[2] = 0x04;
-	outpacket.packetbuf[3] = 0x01;
 
+	// DG8MG
+	// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
+	if (Protocol == 1)
+	{
+		// TCP protocol is used
+		outpacket.packetbuf[3] = 0x11;
+	}
+	else
+	{
+		// UDP protocol is used
+		outpacket.packetbuf[3] = 0x01;
+	}
+	// DG8MG
+	
 	starting_seq = MetisLastRecvSeq;
 	for (i = 0; i < 5; i++) {
 		/* printf("start sent\n"); */
 		ForceCandCFrame(1);
 		sendto(listenSock, (char *)&outpacket, sizeof(outpacket), 0, (SOCKADDR *)&MetisSockAddr, sizeof(MetisSockAddr));
-		MetisReadDirect((char *)&inpacket, sizeof(inpacket));
+		
+		// DG8MG
+		// Check if TCP is used as transmission protocol between PowerSDR and the Red Pitaya device
+		if (Protocol == 1)
+		{
+			// Wait for the TCP client on the Red Pitaya device to be initialized
+			Sleep(100);
+
+			if (C25MetisTCPReadDirect((char *)&inpacket, sizeof(inpacket)))
+			{
+				return 0;
+			}
+			else
+			{
+				return -1;
+			}
+		}
+		// UDP protocol is used as transmission protocol between PowerSDR and the Red Pitaya device
+		else
+		{
+			MetisReadDirect((char *)&inpacket, sizeof(inpacket));
+		}		
+		// DG8MG
+
 		if (MetisLastRecvSeq != starting_seq) {
 			break;
 		}
@@ -238,6 +305,7 @@ int SendStopToMetis(void) 	 {
 	for (i = 0; i < 5; i++) {
 		sendto(listenSock, (char *)&outpacket, sizeof(outpacket), 0, (SOCKADDR *)&MetisSockAddr, sizeof(MetisSockAddr));
 		Sleep(10);
+
 		if (MetisLastRecvSeq == starting_seq) {
 			break;
 		}
@@ -264,6 +332,7 @@ int MetisReadDirect(char *bufp, int buflen) {
 
 	rc = recvfrom_withtimeout(listenSock, (char *)&inpacket, sizeof(inpacket), 0, (struct sockaddr *)&fromaddr, &fromlen, 0, 500000);
 	/* rc = recvfrom(listenSock, readbuf, sizeof(readbuf), 0, (struct sockaddr *)&fromaddr, &fromlen);  */
+	
 	if (rc < 0) {  /* failed */
 		printf("MRD: recvfrom on listSock failed w/ rc=%d!\n", rc);  fflush(stdout);
 		return rc;
@@ -321,7 +390,7 @@ void *MetisReadThreadMain(void *argp) {
 	MetisKeepRunning = 1;
 	MetisReadThreadRunning = 1;
 #ifndef LINUX
-	// SetThreadPriority(GetCurrentThread(), /* THREAD_PRIORITY_ABOVE_NORMAL */  THREAD_PRIORITY_TIME_CRITICAL /* THREAD_PRIORITY_HIGHEST  */ ); 
+	// SetThreadPriority(GetCurrentThread(), /* THREAD_PRIORITY_ABOVE_NORMAL */  /* THREAD_PRIORITY_TIME_CRITICAL */ THREAD_PRIORITY_HIGHEST   ); 
 #else
 	#warning message("info - LINUX code missing ... set priority!")
 #endif
@@ -430,7 +499,18 @@ int MetisWriteFrame(int endpoint, char *bufp, int buflen) {
 	++MetisOutBoundSeqNum;
 	memcpy(outpacket.framebuf + 8, bufp, buflen);
 
-	result = sendto(listenSock, (char *)&outpacket, 8 + buflen, 0, (SOCKADDR *)&MetisSockAddr, sizeof(MetisSockAddr));
+	// DG8MG
+	// Check if TCP is used as transmission protocol between PowerSDR and the Red Pitaya device
+	if (Protocol == 1)
+	{	
+		result = sendto(c25TCPSocket, (char *)&outpacket, 8 + buflen, 0, (SOCKADDR *)&MetisSockAddr, sizeof(MetisSockAddr));
+	}
+	else
+	{
+		result = sendto(listenSock, (char *)&outpacket, 8 + buflen, 0, (SOCKADDR *)&MetisSockAddr, sizeof(MetisSockAddr));
+	}
+	// DG8MG
+
 	result -= 8;
 	return result;
 }
@@ -458,3 +538,162 @@ int MetisBulkWrite(int endpoint, char *bufp, int buflen) {
 	return result;
 }
 
+// DG8MG
+// Extension to use TCP as transmission protocol between PowerSDR and the Red Pitaya device
+SOCKET C25MetisTCPConnectionSetup(void)
+{
+	SOCKET tcpSocket;
+	int rcv_timeo;
+	int rc;
+	int sndbufsize;
+	int rcvbufsize;
+
+	// Create TCP socket
+	tcpSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (tcpSocket < 0)
+	{
+		printf("Could not create TCP socket!\n");
+		fflush(stdout);
+		return 0;
+	}
+
+	rcv_timeo = 500;
+	rc = setsockopt(tcpSocket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&rcv_timeo, sizeof(int));
+	if (rc == SOCKET_ERROR)
+	{
+		printf("CreateSockets Warning: TCP setsockopt SO_RCVTIMEO failed!\n");
+	}
+
+	fflush(stdout);
+
+	sndbufsize = 0xffff;
+	rc = setsockopt(tcpSocket, SOL_SOCKET, SO_SNDBUF, (const char *)&sndbufsize, sizeof(int));
+	if (rc == SOCKET_ERROR)
+	{
+		printf("CreateSockets Warning: TCP setsockopt SO_SNDBUF failed!\n");
+	}
+
+	rcvbufsize = 0x1000;
+	rc = setsockopt(tcpSocket, SOL_SOCKET, SO_RCVBUF, (const char *)&rcvbufsize, sizeof(int));
+	if (rc == SOCKET_ERROR)
+	{
+		printf("CreateSockets Warning: TCP setsockopt SO_RCVBUF failed!\n");
+	}
+
+	// Connect to remote server
+	if (connect(tcpSocket, (struct sockaddr*) &MetisSockAddr, sizeof(MetisSockAddr)) < 0)
+	{
+		printf("Could not connect to server!\n");
+		fflush(stdout);
+		return 0;
+	}
+
+	return tcpSocket;
+}
+
+int C25MetisTCPReadDirect(char *bufp, int buflen)
+{
+	unsigned char readbuf[1032];
+	struct sockaddr_in fromaddr;
+	int fromlen;
+	int rb = 0;
+	int rc = 0;
+	unsigned int seqnum;
+	unsigned char *seqbytep = (unsigned char *)&seqnum;
+	char metis2pcep6seq[] = "\xef\xfe\x01\x06";
+	char *packetp;
+	
+	packetp = (char *)readbuf;
+	fromlen = sizeof(fromaddr);
+
+	rc = recvfrom_withtimeout(c25TCPSocket, (char *)readbuf, sizeof(readbuf), 0, (struct sockaddr *)&fromaddr, &fromlen, 0, 500000);
+
+	if (rc < 0)
+	/* failed */
+	{  
+		printf("MRD TCP: recvfrom on listSock failed w/ rc=%d!\n", rc);
+		fflush(stdout);
+		return rc;
+	}
+	else
+	{
+		while (rc < 1032)
+		{
+			rc += recvfrom_withtimeout(c25TCPSocket, (char *)(readbuf + rc), sizeof(readbuf) - rc, 0, (struct sockaddr *)&fromaddr, &fromlen, 0, 500000);			 
+		}
+	}
+	
+	// DG8MG: DEBUG
+	/*
+	FILE *fp;
+
+	fp = fopen("c:\\POWERSDR_STREAM1.BIN", "ab");
+	printf("MRD TCP: STREAM1: %u bytes written!\n", fwrite(packetp, 1, rc, fp));
+	fflush(stdout);
+	fclose(fp);
+	*/
+	// DG8MG
+	
+	if (rc == 1032)
+	{	
+		if (0 == memcmp(packetp, metis2pcep6seq, 4))
+		{
+			seqbytep[3] = packetp[4];
+			seqbytep[2] = packetp[5];
+			seqbytep[1] = packetp[6];
+			seqbytep[0] = packetp[7];
+
+			if (seqnum != (1 + MetisLastRecvSeq))
+			{
+				printf("MRD TCP: seq error this: %d last: %d\n", seqnum, MetisLastRecvSeq);
+			}
+
+			MetisLastRecvSeq = seqnum;
+
+			if ((packetp[8] == 0x7f) && (packetp[9] == 0x7f) && (packetp[10] == 0x7f))
+			{
+				HaveSync = 1;
+			}
+			else
+			{
+				HaveSync = 0;
+				printf("MRD TCP: sync error on frame %d\n", seqnum);
+			}
+
+			// DG8MG: DEBUG
+			/*
+			printf("MRD TCP: Read sequence nummber: %d\n", seqnum);
+			fflush(stdout);
+			*/
+			// DG8MG
+
+			memcpy(bufp, packetp + 8, 1024);
+
+			// DEBUG
+			/*
+			FILE *fp;
+
+			fp = fopen("c:\\POWERSDR_STREAM2.BIN", "ab");
+			printf("MRD TCP: STREAM2: %u bytes written!\n", fwrite(bufp, 1, 1024, fp));
+			fflush(stdout);
+			fclose(fp);
+			*/			
+
+			return 1024;
+		}
+		else
+		{
+			// DEBUG
+			// printf("MRD TCP: ignoring data with wrong header!\n");
+			// fflush(stdout);
+			return 0;
+		}
+	}
+	else
+	{
+		printf("MRD TCP: ignoring frame with wrong size: %d\n", rc);
+	}
+	return 0;
+}
+// DG8MG

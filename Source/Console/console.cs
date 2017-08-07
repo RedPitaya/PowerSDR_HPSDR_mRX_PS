@@ -53611,15 +53611,24 @@ namespace PowerSDR
             sdC25DownloadNewRelease.Title = "Download new PowerSDR release";
 
             if (sdC25DownloadNewRelease.ShowDialog() == DialogResult.OK)
-            {               
-                // MessageBox.Show("Downloading latest PowerSDR release now, please wait...");
-
+            {
                 try
                 {
+                    Cursor oldCursor = this.Cursor;
+                    this.Cursor = Cursors.WaitCursor;
+
                     System.Console.WriteLine(String.Format("Attempting to download the latest release from the download server"));
                     var webClient = new WebClient();
-                    webClient.DownloadFile(latest_release_uri, sdC25DownloadNewRelease.FileName);                    
+                    webClient.DownloadFile(latest_release_uri, sdC25DownloadNewRelease.FileName);
                     webClient.Dispose();
+
+                    this.Cursor = oldCursor;                    
+
+                    if (MessageBox.Show("The latest release of PowerSDR was downloaded successfully.\nDo you want to close this PowerSDR session and install the new release of PowerSDR now?", "Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        Process.Start(sdC25DownloadNewRelease.FileName);
+                        this.Close();
+                    }
                 }
                 catch
                 {
@@ -53628,11 +53637,7 @@ namespace PowerSDR
                     return;
                 }
 
-                if (MessageBox.Show("The latest release of PowerSDR was downloaded successfully.\nDo you want to close this PowerSDR session and install the new release of PowerSDR now?","Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    Process.Start(sdC25DownloadNewRelease.FileName);
-                    this.Close();
-                }
+
             }
         }   
         // DG8MG

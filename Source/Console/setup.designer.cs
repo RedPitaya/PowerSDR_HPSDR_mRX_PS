@@ -204,6 +204,7 @@
             this.chkLimitRX = new System.Windows.Forms.CheckBoxTS();
             this.udDDSIFFreq = new System.Windows.Forms.NumericUpDownTS();
             this.grpOzyType = new System.Windows.Forms.GroupBoxTS();
+            this.chkC25useTCP = new System.Windows.Forms.CheckBoxTS();
             this.panelTS7 = new System.Windows.Forms.PanelTS();
             this.udStaticIPmask4 = new System.Windows.Forms.NumericUpDownTS();
             this.udStaticIPmask3 = new System.Windows.Forms.NumericUpDownTS();
@@ -6222,6 +6223,7 @@
             // 
             // grpOzyType
             // 
+            this.grpOzyType.Controls.Add(this.chkC25useTCP);
             this.grpOzyType.Controls.Add(this.panelTS7);
             this.grpOzyType.Controls.Add(this.chkEnableStaticIP);
             this.grpOzyType.Controls.Add(this.chkFullDiscovery);
@@ -6234,6 +6236,16 @@
             this.grpOzyType.TabStop = false;
             this.grpOzyType.Text = "Connection Type";
             this.grpOzyType.Visible = false;
+            // 
+            // chkC25useTCP
+            // 
+            this.chkC25useTCP.Image = null;
+            this.chkC25useTCP.Location = new System.Drawing.Point(167, 41);
+            this.chkC25useTCP.Name = "chkC25useTCP";
+            this.chkC25useTCP.Size = new System.Drawing.Size(70, 16);
+            this.chkC25useTCP.TabIndex = 16;
+            this.chkC25useTCP.Text = "Use TCP";
+            this.toolTip1.SetToolTip(this.chkC25useTCP, "Use TCP as transmission protocol between PowerSDR and the Red Pitaya device");
             // 
             // panelTS7
             // 
@@ -51971,7 +51983,6 @@
         private System.Windows.Forms.NumericUpDownTS udCHARLY25PAGain80;
         private System.Windows.Forms.LabelTS lblCHARLY25PAGainByBand160;
         private System.Windows.Forms.NumericUpDownTS udCHARLY25PAGain160;
-        private System.Windows.Forms.NumericUpDownTS numericUpDownTS40;
         private System.Windows.Forms.TabPage tpC25Tests;
         private System.Windows.Forms.GroupBoxTS grpC25RXAttPreTest;
         private System.Windows.Forms.NumericUpDownTS udC25RXAttPreTestFrequency;
@@ -52129,5 +52140,6 @@
         private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestInterval;
         private System.Windows.Forms.ButtonTS btnC25RXAttPreTestCancel;
         private System.Windows.Forms.ButtonTS btnC25TXPASwitch;
+        public System.Windows.Forms.CheckBoxTS chkC25useTCP;
     }
 }

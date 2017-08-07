@@ -3309,8 +3309,7 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware       
         public void UpdateC25HardwareOptions()
         {
-            string sdr_app_version = "unknown";
-            lblMetisCodeVersion.Text = sdr_app_version;
+            string sdr_app_version = "0";           
 
             lblC25TRXPresent.Visible = false;
             lblC25AudioCodecPresent.Visible = false;
@@ -3339,8 +3338,26 @@ namespace PowerSDR
                         // Exception occurred during SDR application version read attempt
                     }
                 }
+                                
+                // Check if the SDR application software version on the Red Pitaya device is high enough to support TCP as transmission protocol between PowerSDR and the Red Pitaya device
+                if (Convert.ToInt32(sdr_app_version) < 20170723)
+                {
+                    chkC25useTCP.Checked = false;
+                    chkC25useTCP.Enabled = false;
+                }
+                else
+                {
+                    chkC25useTCP.Enabled = true;
+                }
 
-                lblMetisCodeVersion.Text = sdr_app_version;
+                if (sdr_app_version == "0")
+                {
+                    lblMetisCodeVersion.Text = "unknown";
+                }
+                else
+                {
+                    lblMetisCodeVersion.Text = sdr_app_version;
+                }
 
                 int mercuryFWVersion = JanusAudio.getMercuryFWVersion();
                 int penelopeFWVersion = JanusAudio.getPenelopeFWVersion();
@@ -8600,6 +8617,10 @@ namespace PowerSDR
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
                 radMetis.Checked = true;
+                // chkC25useTCP.Checked = false;
+                chkC25useTCP.Enabled = true;
+                chkC25useTCP.Visible = true;
+
                 console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // Charly 25 doesn't have this functionality
 
@@ -8629,6 +8650,7 @@ namespace PowerSDR
                 console.psform.AutoAttenuate = true;  // reset to default setting
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
                 grpC25HardwareOptions.Visible = false;  // reset to default setting
+                chkC25useTCP.Visible = false;  // reset to default setting
 
                 if (tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -8673,26 +8695,6 @@ namespace PowerSDR
                 grpGenCalRXImage.Enabled = false;
                 chkCalExpert.Enabled = false;
                 grpHPSDRFreqCalDbg.Visible = true;
-
-/*               {
-                    chkRxOutOnTx.Enabled = true;
-                    chkEXT1OutOnTx.Enabled = true;
-                    chkEXT2OutOnTx.Enabled = true;
-
-
-                    panelAlex1HPFControl.Visible = true;
-                    tpAlexFilterControl.Text = "HPF/LPF";
-                    panelAlexRXXVRTControl.Visible = true;
-                    labelAlexFilterActive.Location = new Point(275, 0);
-                }
-
-                {
-                    tpAlexControl.Text = "Alex";
-                    chkHFTRRelay.Checked = false;
-                    chkHFTRRelay.Enabled = false;
-                    chkHFTRRelay.Visible = false;
-                }
-*/
 
                 chkLimitRX.Enabled = true;
                 tpPennyCtrl.Text = "Penny Ctrl";
@@ -8788,7 +8790,11 @@ namespace PowerSDR
                 grpOzyType.Visible = true;
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
-                radMetis.Checked = true;             
+                radMetis.Checked = true;
+                chkC25useTCP.Checked = false;
+                chkC25useTCP.Enabled = true;
+                chkC25useTCP.Visible = true;
+
                 console.psform.AutoAttenuate = false;  // HAMlab doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // HAMlab doesn't have this functionality
 
@@ -8818,6 +8824,7 @@ namespace PowerSDR
                 console.psform.AutoAttenuate = true;  // reset to default setting
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
                 grpC25HardwareOptions.Visible = false;  // reset to default setting
+                chkC25useTCP.Visible = false;  // reset to default setting
 
                 if (tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -8862,26 +8869,6 @@ namespace PowerSDR
                 grpGenCalRXImage.Enabled = false;
                 chkCalExpert.Enabled = false;
                 grpHPSDRFreqCalDbg.Visible = true;
-
-                /*               {
-                                    chkRxOutOnTx.Enabled = true;
-                                    chkEXT1OutOnTx.Enabled = true;
-                                    chkEXT2OutOnTx.Enabled = true;
-
-
-                                    panelAlex1HPFControl.Visible = true;
-                                    tpAlexFilterControl.Text = "HPF/LPF";
-                                    panelAlexRXXVRTControl.Visible = true;
-                                    labelAlexFilterActive.Location = new Point(275, 0);
-                                }
-
-                                {
-                                    tpAlexControl.Text = "Alex";
-                                    chkHFTRRelay.Checked = false;
-                                    chkHFTRRelay.Enabled = false;
-                                    chkHFTRRelay.Visible = false;
-                                }
-                */
 
                 chkLimitRX.Enabled = true;
                 tpPennyCtrl.Text = "Penny Ctrl";
@@ -9248,6 +9235,32 @@ namespace PowerSDR
                         Common.TabControlInsert(tcGeneral, tpHPSDR, 1);
                     }
                 }
+
+                if (!tcGeneral.TabPages.Contains(tpPennyCtrl))
+                {
+                    Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
+                }
+                else
+                {
+                    if (tcGeneral.TabPages.IndexOf(tpPennyCtrl) != 5)
+                    {
+                        tcGeneral.TabPages.Remove(tpPennyCtrl);
+                        Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
+                    }
+                }
+
+                if (!tcGeneral.TabPages.Contains(tpAlexControl))
+                {
+                    Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
+                }
+                else
+                {
+                    if (tcGeneral.TabPages.IndexOf(tpAlexControl) != 6)
+                    {
+                        tcGeneral.TabPages.Remove(tpAlexControl);
+                        Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
+                    }
+                }
             }
             else
             {
@@ -9284,31 +9297,7 @@ namespace PowerSDR
                 }
             }
 
-            if (!tcGeneral.TabPages.Contains(tpPennyCtrl))
-            {
-                Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
-            }
-            else
-            {
-                if (tcGeneral.TabPages.IndexOf(tpPennyCtrl) != 5)
-                {
-                    tcGeneral.TabPages.Remove(tpPennyCtrl);
-                    Common.TabControlInsert(tcGeneral, tpPennyCtrl, 5);
-                }
-            }
 
-            if (!tcGeneral.TabPages.Contains(tpAlexControl))
-            {
-                Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
-            }
-            else
-            {
-                if (tcGeneral.TabPages.IndexOf(tpAlexControl) != 6)
-                {
-                    tcGeneral.TabPages.Remove(tpAlexControl);
-                    Common.TabControlInsert(tcGeneral, tpAlexControl, 6);
-                }
-            }
 
             if (radGenModelANAN200D.Checked || radGenModelHermes.Checked || radGenModelANAN100D.Checked)
             {
@@ -21921,6 +21910,8 @@ namespace PowerSDR
             }
         }
 
+        public static C25SSHTerminalForm C25SSHTerminal = null;
+
         private void tpC25Tests_DoubleClick(object sender, EventArgs e)
         {
             if (Keyboard.IsKeyDown(Keys.ControlKey))
@@ -22004,6 +21995,16 @@ namespace PowerSDR
                     MessageBox.Show("The update of the SDR application was not successful,\nbut you can continue with the current version as before!", "Update failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+            }
+            else if (Keyboard.IsKeyDown(Keys.Escape))
+            {
+                if (C25SSHTerminal == null)
+                {
+                    C25SSHTerminal = new C25SSHTerminalForm(this);
+                }
+
+                C25SSHTerminal.Show();
+                C25SSHTerminal.BringToFront();
             }
         }
         // DG8MG

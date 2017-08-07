@@ -7,9 +7,12 @@ namespace PowerSDR
     {
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void DeInitMetisSockets();
-        
+
+        // DG8MG
+        // Extended by parameter 'protocol' to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
         [DllImport("JanusAudio.dll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int nativeInitMetis(String netaddr);
+        public static extern int nativeInitMetis(String netaddr, int protocol);
+        // DG8MG
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int SetXVTREnable(int enable);
@@ -65,8 +68,11 @@ namespace PowerSDR
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetFPGATestMode(int i);
 
+        // DG8MG
+        // Extended by parameter 'protocol' to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int StartAudioNative(int sample_rate, int samples_per_block, PA19.PaStreamCallback cb, int sample_bits, int no_send);
+        public static extern int StartAudioNative(int sample_rate, int samples_per_block, PA19.PaStreamCallback cb, int sample_bits, int no_send, int protocol);
+        // DG8MG
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int StopAudio();

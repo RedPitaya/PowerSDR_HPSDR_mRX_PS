@@ -105,7 +105,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NEW_KEYER</DefineConstants>
+    <DefineConstants>DEBUG;NEW_KEYER</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <FileAlignment>4096</FileAlignment>
@@ -189,6 +189,12 @@
     <Compile Include="Channel.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="CW\CWInput.cs" />
+    <Compile Include="C25SSHTerminal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="C25SSHTerminal.Designer.cs">
+      <DependentUpon>C25SSHTerminal.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalMouseHandler.cs" />
     <Compile Include="HPSDR\Alex.cs" />
     <Compile Include="alphawarnform.cs">
@@ -418,6 +424,9 @@
     <Content Include="redpitaya.ico" />
     <EmbeddedResource Include="C25SWRView.resx">
       <DependentUpon>C25SWRView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="C25SSHTerminal.resx">
+      <DependentUpon>C25SSHTerminal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\digital7.ttf" />
     <None Include="ClassDiagram1.cd" />
