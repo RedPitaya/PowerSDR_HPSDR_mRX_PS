@@ -21801,16 +21801,21 @@ namespace PowerSDR
 
             console.TUN = true;
 
+            // Wait for the transmitter to get stable
+            Thread.Sleep(1000);
+
             for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq <= ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestRate.Value / 1e6))
             {
                 if (C25TXFreqSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
                 {
                     break;
-                }
+                }               
 
+                System.Console.WriteLine("Frequency: " + console.VFOAFreq + " MHz. Forward power: " + console.alex_fwd + ", reflected power: " + console.alex_rev);
+                
                 // Avoid total reflection in SWR calculation
                 if (console.alex_rev >= console.alex_fwd)
-                {
+                {                    
                     console.alex_rev = console.alex_fwd - 0.001f;
                 }
 
@@ -21827,6 +21832,8 @@ namespace PowerSDR
                     swr = (1.0f + rho) / (1.0f - rho);
                 }
 
+                System.Console.WriteLine("SWR: " + swr);
+
                 C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq, swr);            
 
                 DateTime start = DateTime.Now;
@@ -21837,11 +21844,14 @@ namespace PowerSDR
                 }             
             }
 
+            if (C25TXFreqSwpTest_is_canceled != true && console.MOX != false && console.TUN != false)
+            {
+                C25SWRView.Show();
+                C25SWRView.BringToFront();
+            }
+
             console.TUN = false;
-
-            C25SWRView.Show();
-            C25SWRView.BringToFront();
-
+            
             // Restore the old setting
             console.PWR = old_pwr;
             console.VFOAFreq = old_vfoa_frequency;
@@ -21880,12 +21890,7 @@ namespace PowerSDR
         {
             if (udC25TXFreqSwpTestStartFrequency.Value > udC25TXFreqSwpTestStopFrequency.Value)
             {
-                udC25TXFreqSwpTestStartFrequency.Value = udC25TXFreqSwpTestStopFrequency.Value;
-            }
-
-            if (udC25TXFreqSwpTestRate.Value > udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value)
-            {
-                udC25TXFreqSwpTestRate.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value;
+                udC25TXFreqSwpTestStartFrequency.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestRate.Value;
             }
         }
 
@@ -21893,12 +21898,7 @@ namespace PowerSDR
         {
             if (udC25TXFreqSwpTestStopFrequency.Value < udC25TXFreqSwpTestStartFrequency.Value)
             {
-                udC25TXFreqSwpTestStopFrequency.Value = udC25TXFreqSwpTestStartFrequency.Value;
-            }
-
-            if (udC25TXFreqSwpTestRate.Value > udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value)
-            {
-                udC25TXFreqSwpTestRate.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value;
+                udC25TXFreqSwpTestStopFrequency.Value = udC25TXFreqSwpTestStartFrequency.Value + udC25TXFreqSwpTestRate.Value;
             }
         }
 
@@ -21963,9 +21963,7 @@ namespace PowerSDR
                                 }
 
                                 sftpclient.Disconnect();
-                            }
-
-                            
+                            }                           
                         }
 
                         using (var sshclient = new SshClient(connectionInfo))

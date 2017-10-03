@@ -1860,7 +1860,7 @@ namespace PowerSDR
 
             CmdLineArgs = args;
 
-            Splash.ShowSplashScreen();							// Start splash screen
+            Splash.ShowSplashScreen();                          // Start splash screen
 
             Splash.SetStatus("Initializing Components");		// Set progress point
             booting = true;
@@ -1905,7 +1905,7 @@ namespace PowerSDR
             MinimumSize = this.Size;
 
             Splash.SetStatus("Initializing Database");			// Set progress point
-            DB.Init(this);											// Initialize the database
+            DB.Init(this);                                          // Initialize the database
 
             InitCTCSS();
             Splash.SetStatus("Initializing Hardware");			// Set progress point
@@ -1957,8 +1957,8 @@ namespace PowerSDR
             Display.specready = true;
 
             Splash.SetStatus("Initializing PortAudio");			// Set progress point
-            PA19.PA_Initialize();								// Initialize the audio interface
-            //  if (fwc_init) Thread.Sleep(500);
+            PA19.PA_Initialize();                               // Initialize the audio interface
+                                                                //  if (fwc_init) Thread.Sleep(500);
 
             Splash.SetStatus("Loading Main Form");				// Set progress point
             Splash.SplashForm.Owner = this;						// So that main form will show/focus when splash disappears
@@ -1968,7 +1968,7 @@ namespace PowerSDR
 
             Init60mChannels();
             LoadLEDFont();
-            InitConsole();										// Initialize all forms and main variables
+            InitConsole();                                      // Initialize all forms and main variables
 
             Splash.SetStatus("Finished");						// Set progress point
             // Activates double buffering
@@ -2117,6 +2117,10 @@ namespace PowerSDR
         public bool reset_db = false;
         protected override void Dispose(bool disposing)
         {
+            // DG8MG: Debug for Windows 10 testing
+            System.Console.WriteLine(String.Format("Called: Dispose(bool disposing)"));
+            // DG8MG
+
             if (Midi2Cat != null) Midi2Cat.CloseMidi2Cat();
             USB.Exit();
             if (disposing)
@@ -2127,6 +2131,11 @@ namespace PowerSDR
                 }
             }
             base.Dispose(disposing);
+
+            // DG8MG: Debug for Windows 10 testing
+            System.Console.WriteLine(String.Format("Calling: ExitConsole()"));
+            // DG8MG
+
             ExitConsole();
             if (reset_db)
             {
@@ -7877,6 +7886,7 @@ namespace PowerSDR
                   } */
 
                 int rc = 0;
+               
                 SpecHPSDRDLL.XCreateAnalyzer(0, ref rc, 262144, 1, 3, app_data_path + "specWisdom");
                 SpecHPSDRDLL.XCreateAnalyzer(1, ref rc, 262144, 1, 1, app_data_path + "specWisdom");
 
@@ -8814,8 +8824,23 @@ namespace PowerSDR
             pause_DisplayThread = false;
 
             //Parallel.ExitPortTalk();	// close parallel port driver
-            PA19.PA_Terminate();		// terminate audio interface
-            DB.Exit();					// close and save database
+
+            // DG8MG: Debug for Windows 10 testing
+            System.Console.WriteLine(String.Format("Calling: PA19.PA_Terminate()"));
+            // DG8MG
+
+            PA19.PA_Terminate();        // terminate audio interface
+
+            // DG8MG: Debug for Windows 10 testing
+            System.Console.WriteLine(String.Format("Calling: DB.Exit()"));
+            // DG8MG
+
+            DB.Exit();                  // close and save database
+
+            // DG8MG: Debug for Windows 10 testing
+            System.Console.WriteLine(String.Format("Called: DB.Exit()"));
+            // DG8MG
+
             //Mixer.RestoreState();		// restore initial mixer state
             //DttSP.Exit();				// deallocate DSP variables
             wdsp.CloseChannel(wdsp.id(1, 0));
@@ -36079,7 +36104,11 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (CurrentHPSDRModel != HPSDRModel.CHARLY25 && CurrentHPSDRModel != HPSDRModel.HAMLAB)
+                if (CurrentHPSDRModel == HPSDRModel.CHARLY25 || CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                {
+                    chkCWSidetone_CheckedChanged(this, EventArgs.Empty);                    
+                }
+                else
                 {
                     Alex.init_update = true;
                     AlexAntCtrlEnabled = alex_ant_ctrl_enabled;
@@ -37368,7 +37397,7 @@ namespace PowerSDR
                 }
                 JanusAudio.SetDelayXmit(1, TxDelayLoops);
 
-                // DG8MG: Test me! -> Sidetone generator needed!
+                // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
                 if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
                 {
@@ -39011,6 +39040,24 @@ namespace PowerSDR
         private void chkCWSidetone_CheckedChanged(object sender, System.EventArgs e)
         {
             if (SetupForm != null) SetupForm.CWDisableMonitor = chkCWSidetone.Checked;
+
+            // DG8MG: Test me!
+            // Extension for Charly 25 and HAMlab hardware
+            if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+            {
+                if (!initializing)
+                {
+                    if (chkCWSidetone.Checked)
+                    {
+                        JanusAudio.SetCWSidetoneVolume((int)(ptbAF.Value * 1.27));
+                    }
+                    else
+                    { 
+                        JanusAudio.SetCWSidetoneVolume(0);                   
+                    }
+                }
+            }
+            // DG8MG
         }
 
         private void udCWPitch_ValueChanged(object sender, System.EventArgs e)

@@ -47866,7 +47866,7 @@
             0});
             this.udC25TXFreqSwpTestInterval.Location = new System.Drawing.Point(171, 75);
             this.udC25TXFreqSwpTestInterval.Maximum = new decimal(new int[] {
-            1000000,
+            100000,
             0,
             0,
             0});
@@ -47919,7 +47919,7 @@
             0,
             0});
             this.udC25TXFreqSwpTestRate.Minimum = new decimal(new int[] {
-            0,
+            1,
             0,
             0,
             0});
@@ -48037,7 +48037,7 @@
             0,
             0});
             this.udC25TXFreqSwpTestStartFrequency.Minimum = new decimal(new int[] {
-            0,
+            1,
             0,
             0,
             0});
@@ -48067,7 +48067,7 @@
             0,
             0});
             this.udC25TXFreqSwpTestStopFrequency.Minimum = new decimal(new int[] {
-            0,
+            1,
             0,
             0,
             0});
