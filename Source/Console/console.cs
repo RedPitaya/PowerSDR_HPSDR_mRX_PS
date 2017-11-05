@@ -67,6 +67,11 @@ namespace PowerSDR
     using System.Xml.Linq;
     using System.Timers;
 
+    // DG8MG
+    // Extension for Charly 25 / HAMlab / STEMlab hardware
+    using Tmds.MDns;
+    // DG8MG
+
     #region Enums
 
     public enum FocusMasterMode
@@ -610,6 +615,9 @@ namespace PowerSDR
         // DG8MG
         // Thread to check if a new PowerSDR Charly 25 / HAMlab / STEMlab edition is available
         private Thread check_commit_thread;
+
+        // Thread to browse the network for Red Pitaya devices
+        private Thread browse_rp_devices_thread;
         // DG8MG
 
         //  private Thread f3k_temp_thread;				        // polls the temp on the FLEX-3000 to turn fan on/off
@@ -1595,10 +1603,11 @@ namespace PowerSDR
         private LabelTS lblCWAPFGain;
         private LabelTS lblRX1APF;
         private LabelTS lblRX2APF;
-        public CheckBoxTS chkC25ANT;
-		// DG8MG
-        public ImageList ilC25ImageList;
-		// DG8MG
+        // DG8MG
+        public CheckBoxTS chkC25ANT;	
+        public CheckBoxTS chkC25Diversity;
+        public ImageList ilC25ImageList;		
+        // DG8MG
         private ToolStripMenuItem NR2ToolStripMenuItem1;
         private ToolStripMenuItem NR2StripMenuItem2;
         private ToolStripMenuItem SNBtoolStripMenuItem;
@@ -1606,7 +1615,7 @@ namespace PowerSDR
         private TextBoxTS txtDisplayOrionMKIIPAVolts;
         private TextBoxTS txtDisplayOrionMKIIPAAmps;
         private TextBoxTS txtDisplayOrionMKIIBlank;
-        private CheckBox chkSyncIT;
+        private CheckBox chkSyncIT;       
         public PictureBox picWaterfall;
 
         #endregion
@@ -1994,6 +2003,16 @@ namespace PowerSDR
                 check_commit_thread.IsBackground = true;
                 check_commit_thread.Start();
             }
+
+            // Thread to browse the network for new Red Pitaya devices
+            if (browse_rp_devices_thread == null || !browse_rp_devices_thread.IsAlive)
+            {
+                browse_rp_devices_thread = new Thread(new ThreadStart(Browse_RedPitaya_Devices));
+                browse_rp_devices_thread.Name = "Browse Red Pitaya devices Thread";
+                browse_rp_devices_thread.Priority = ThreadPriority.Lowest;
+                browse_rp_devices_thread.IsBackground = true;
+                browse_rp_devices_thread.Start();
+            }
             // DG8MG
 
             SetupForm.UpdateCustomTitle();
@@ -2357,6 +2376,7 @@ namespace PowerSDR
             this.grpSemiBreakIn = new System.Windows.Forms.GroupBoxTS();
             this.lblCWBreakInDelay = new System.Windows.Forms.LabelTS();
             this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
+            this.chkC25Diversity = new System.Windows.Forms.CheckBoxTS();
             this.picSquelch = new System.Windows.Forms.PictureBox();
             this.timer_clock = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStripFilterRX1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -4992,6 +5012,15 @@ namespace PowerSDR
             this.chkC25ANT.UseVisualStyleBackColor = false;
             this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
             // 
+            // chkC25Diversity
+            // 
+            resources.ApplyResources(this.chkC25Diversity, "chkC25Diversity");
+            this.chkC25Diversity.FlatAppearance.BorderSize = 0;
+            this.chkC25Diversity.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkC25Diversity.Name = "chkC25Diversity";
+            this.toolTip1.SetToolTip(this.chkC25Diversity, resources.GetString("chkC25Diversity.ToolTip"));
+            this.chkC25Diversity.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chkC25Diversity_MouseClick);
+            // 
             // picSquelch
             // 
             this.picSquelch.BackColor = System.Drawing.SystemColors.ControlText;
@@ -5117,7 +5146,7 @@ namespace PowerSDR
             this.linearityToolStripMenuItem,
             this.RAtoolStripMenuItem});
             resources.ApplyResources(this.menuStrip1, "menuStrip1");
-            this.menuStrip1.Name = "menuStrip1";            
+            this.menuStrip1.Name = "menuStrip1";
             // 
             // setupToolStripMenuItem
             // 
@@ -6414,6 +6443,7 @@ namespace PowerSDR
             // 
             resources.ApplyResources(this.panelDisplay2, "panelDisplay2");
             this.panelDisplay2.BackColor = System.Drawing.Color.Transparent;
+            this.panelDisplay2.Controls.Add(this.chkC25Diversity);
             this.panelDisplay2.Controls.Add(this.chkDisplayPeak);
             this.panelDisplay2.Controls.Add(this.comboDisplayMode);
             this.panelDisplay2.Controls.Add(this.chkDisplayAVG);
@@ -32529,19 +32559,19 @@ namespace PowerSDR
                                 break;
                         }
 
-                    if (pa_values)
-                    {
-                        SetupForm.textDriveFwdADCValue.Text = average_drvadc.ToString("f0");
-                        SetupForm.textFwdADCValue.Text = average_fwdadc.ToString("f0");
-                        SetupForm.textRevADCValue.Text = average_revadc.ToString("f0");
-                        //SetupForm.textFwdVoltage.Text = fwd_volts.ToString("f2") + " V";
-                        //SetupForm.textRevVoltage.Text = rev_volts.ToString("f2") + " V";
-                        SetupForm.textDrivePower.Text = average_drivepwr.ToString("f0") + " mW";
-                        SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
-                        SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
-                        SetupForm.textCaldFwdPower.Text = calfwdpower.ToString("f1") + " W";
-                        SetupForm.textSWR.Text = alex_swr.ToString("f2") + ":1";
-                    }
+                        if (pa_values)
+                        {
+                            SetupForm.textDriveFwdADCValue.Text = average_drvadc.ToString("f0");
+                            SetupForm.textFwdADCValue.Text = average_fwdadc.ToString("f0");
+                            SetupForm.textRevADCValue.Text = average_revadc.ToString("f0");
+                            //SetupForm.textFwdVoltage.Text = fwd_volts.ToString("f2") + " V";
+                            //SetupForm.textRevVoltage.Text = rev_volts.ToString("f2") + " V";
+                            SetupForm.textDrivePower.Text = average_drivepwr.ToString("f0") + " mW";
+                            SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
+                            SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
+                            SetupForm.textCaldFwdPower.Text = calfwdpower.ToString("f1") + " W";
+                            SetupForm.textSWR.Text = alex_swr.ToString("f2") + ":1";
+                        }
 
                     }
                     meter_data_ready = true;
@@ -53686,9 +53716,126 @@ namespace PowerSDR
 
 
             }
-        }   
-        // DG8MG
+        }
 
+        // Parts taken from: https://www.codeproject.com/tips/358946/retrieving-ip-and-mac-addresses-for-a-lan
+        /// <summary>
+        /// MIB_IPNETROW structure returned by GetIpNetTable
+        /// DO NOT MODIFY THIS STRUCTURE.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        struct MIB_IPNETROW
+        {
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwIndex;
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwPhysAddrLen;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac0;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac1;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac2;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac3;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac4;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac5;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac6;
+            [MarshalAs(UnmanagedType.U1)]
+            public byte mac7;
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwAddr;
+            [MarshalAs(UnmanagedType.U4)]
+            public int dwType;
+        }
+
+        [DllImport("IpHlpApi.dll")]
+        [return: MarshalAs(UnmanagedType.U4)]
+        static extern int CreateIpNetEntry(IntPtr pArpEntry);
+                          
+        private object rp_browse_lock = new object();
+
+        private void Browse_RedPitaya_Devices()
+        {
+            int result = 0;
+            string serviceType = "_http._tcp";
+            
+            ServiceBrowser rpserviceBrowser = new ServiceBrowser();
+            rpserviceBrowser.ServiceAdded += onServiceAdded;
+            rpserviceBrowser.ServiceRemoved += onServiceRemoved;
+            rpserviceBrowser.ServiceChanged += onServiceChanged;
+
+            System.Console.WriteLine("Browsing for Red Pitaya devices with service type: {0}", serviceType);
+            rpserviceBrowser.StartBrowse(serviceType);
+
+            void onServiceChanged(object sender, ServiceAnnouncementEventArgs e)
+            {
+                processService('~', e.Announcement);
+            }
+
+            void onServiceRemoved(object sender, ServiceAnnouncementEventArgs e)
+            {
+                processService('-', e.Announcement);
+            }
+
+            void onServiceAdded(object sender, ServiceAnnouncementEventArgs e)
+            {
+                processService('+', e.Announcement);
+            }
+
+            void processService(char startChar, ServiceAnnouncement service)
+            {
+                lock (rp_browse_lock)
+                {
+                    System.Console.WriteLine("{0} '{1}' on {2}", startChar, service.Instance, service.NetworkInterface.Name);
+                    System.Console.WriteLine("\tIP Address: {0}", service.Addresses[0]);
+                    System.Console.WriteLine("\tHost: {0} ({1})", service.Hostname, string.Join(", ", service.Addresses));
+                    System.Console.WriteLine("\tPort: {0}", service.Port);
+                    System.Console.WriteLine("\tTxt : [{0}]", string.Join(", ", service.Txt));
+
+                    if (service.Hostname.ToString().StartsWith("rp-"))
+                    {
+                        MIB_IPNETROW arpEntry;
+
+                        arpEntry.dwIndex = service.NetworkInterface.GetIPProperties().GetIPv4Properties().Index;
+                        arpEntry.dwPhysAddrLen = 6;
+                        arpEntry.mac0 = 0x00;  // manufacturer id of Red Pitaya
+                        arpEntry.mac1 = 0x26;  // manufacturer id of Red Pitaya
+                        arpEntry.mac2 = 0x32;  // manufacturer id of Red Pitaya
+                        arpEntry.mac3 = (byte)(Convert.ToInt32(service.Hostname.Substring(3, 2), 16));
+                        arpEntry.mac4 = (byte)(Convert.ToInt32(service.Hostname.Substring(5, 2), 16));
+                        arpEntry.mac5 = (byte)(Convert.ToInt32(service.Hostname.Substring(7, 2), 16));
+                        arpEntry.mac6 = 0x0;  // unused 
+                        arpEntry.mac7 = 0x0;  // unused
+                        arpEntry.dwAddr = BitConverter.ToInt32(IPAddress.Parse(service.Addresses[0].ToString()).GetAddressBytes(), 0);
+                        arpEntry.dwType = 3;  // dynamic ARP entry
+
+                        IntPtr parpEntry = Marshal.AllocHGlobal(Marshal.SizeOf(arpEntry));
+                        Marshal.StructureToPtr(arpEntry, parpEntry, true);
+                        System.Console.WriteLine("CreateIpNetEntry returned: {0}", CreateIpNetEntry(parpEntry));
+                        Marshal.FreeHGlobal(parpEntry);                        
+                    }
+                }
+            }
+        }
+
+        private void chkC25Diversity_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (chkC25Diversity.Checked)
+            {
+                eSCToolStripMenuItem_Click(this, EventArgs.Empty);
+                diversityForm.chkAutoDiversity.Checked = true;
+                UpdateDiversityValues();
+            }
+            else
+            {
+                diversityForm.Close();
+            }
+        }
+        // DG8MG
     }
 
     public class DigiMode

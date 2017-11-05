@@ -3387,7 +3387,7 @@ namespace PowerSDR
                     }
                     else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
                     {
-                        lblC25TRXPresent.Text = "HAMlab 160-6";                        
+                        lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6";
                     }
                 }
 
@@ -8585,6 +8585,8 @@ namespace PowerSDR
                 console.chkSR.Visible = false;  // Charly 25 doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25 visible
+                console.chkC25Diversity.Enabled = true;  // Charly 25 has an additional button for the Auto-Diversity functionality
+                console.chkC25Diversity.Visible = true;  // Charly 25 has an additional button for the Auto-Diversity functionality
                 groupBoxHPSDRHW.Visible = false;  // Charly 25 doesn't have this hardware options
                 grpC25HardwareOptions.Visible = true;  // Charly 25 has its own hardware options
                 chkPennyPresent.Checked = true;  
@@ -8616,11 +8618,9 @@ namespace PowerSDR
                 grpOzyType.Visible = true;
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
-                radMetis.Checked = true;
-                // chkC25useTCP.Checked = false;
+                radMetis.Checked = true;               
                 chkC25useTCP.Enabled = true;
                 chkC25useTCP.Visible = true;
-
                 console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // Charly 25 doesn't have this functionality
 
@@ -8644,7 +8644,8 @@ namespace PowerSDR
                 console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon
                 this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
                 console.chkSR.Visible = true;  // reset to default setting
-                console.chkC25ANT.Visible = false;  // reset to default setting
+                console.chkC25ANT.Visible = false;  // reset to default setting               
+                console.chkC25Diversity.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
@@ -8759,6 +8760,8 @@ namespace PowerSDR
                 console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
+                console.chkC25Diversity.Enabled = true;  // HAMlab has an additional button for the Auto-Diversity functionality
+                console.chkC25Diversity.Visible = true;  // HAMlab has an additional button for the Auto-Diversity functionality
                 groupBoxHPSDRHW.Visible = false;  // HAMlab doesn't have this hardware options
                 grpC25HardwareOptions.Visible = true;  // HAMlab has its own hardware options
                 chkPennyPresent.Checked = true;
@@ -8819,6 +8822,7 @@ namespace PowerSDR
                 this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
+                console.chkC25Diversity.Visible = false;  // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
@@ -21933,16 +21937,7 @@ namespace PowerSDR
                 {                   
                     OpenFileDialog odC25SDRAppUpdate = new OpenFileDialog();
                     odC25SDRAppUpdate.Title = "Choose the new SDR application package";
-                    odC25SDRAppUpdate.FileName = "*.zip";
-
-                    if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
-                    {
-                        odC25SDRAppUpdate.FileName = "stemlab_sdr_transceiver_hpsdr-????-????.zip";
-                    }
-                    else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
-                    {
-                        odC25SDRAppUpdate.FileName = "hamlab_sdr_transceiver_hpsdr-????-????.zip";
-                    }
+                    odC25SDRAppUpdate.FileName = "*sdr_transceiver_hpsdr-????-????*.zip";
 
                     if (odC25SDRAppUpdate.ShowDialog() == DialogResult.OK)
                     {

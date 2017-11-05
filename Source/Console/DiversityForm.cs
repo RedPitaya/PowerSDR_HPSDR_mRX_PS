@@ -35,6 +35,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
+// DG8MG
+using System.Threading;
+// DG8MG
+
 namespace PowerSDR
 {
     /// <summary>
@@ -108,6 +112,7 @@ namespace PowerSDR
         private CheckBoxTS chkLockR;
         private CheckBoxTS chkLockAngle;
         private CheckBoxTS chkEnableDiversity;
+        public CheckBoxTS chkAutoDiversity;
 
         /// <summary>
         /// Required designer variable.
@@ -176,6 +181,7 @@ namespace PowerSDR
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.picRadar = new System.Windows.Forms.PictureBox();
             this.panelDivControls = new System.Windows.Forms.GroupBoxTS();
+            this.chkAutoDiversity = new System.Windows.Forms.CheckBoxTS();
             this.chkEnableDiversity = new System.Windows.Forms.CheckBoxTS();
             this.grpRxSource = new System.Windows.Forms.GroupBoxTS();
             this.radRxSourceRx1Rx2 = new System.Windows.Forms.RadioButtonTS();
@@ -287,6 +293,7 @@ namespace PowerSDR
             // panelDivControls
             // 
             this.panelDivControls.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panelDivControls.Controls.Add(this.chkAutoDiversity);
             this.panelDivControls.Controls.Add(this.chkEnableDiversity);
             this.panelDivControls.Controls.Add(this.grpRxSource);
             this.panelDivControls.Controls.Add(this.groupBoxTS1);
@@ -308,6 +315,21 @@ namespace PowerSDR
             this.panelDivControls.TabStop = false;
             this.panelDivControls.Enter += new System.EventHandler(this.panelDivControls_Enter);
             // 
+            // chkAutoDiversity
+            // 
+            this.chkAutoDiversity.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkAutoDiversity.BackColor = System.Drawing.SystemColors.Control;
+            this.chkAutoDiversity.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkAutoDiversity.Image = null;
+            this.chkAutoDiversity.Location = new System.Drawing.Point(381, 79);
+            this.chkAutoDiversity.Name = "chkAutoDiversity";
+            this.chkAutoDiversity.Size = new System.Drawing.Size(66, 23);
+            this.chkAutoDiversity.TabIndex = 102;
+            this.chkAutoDiversity.Text = "Auto";
+            this.chkAutoDiversity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkAutoDiversity.UseVisualStyleBackColor = false;
+            this.chkAutoDiversity.CheckedChanged += new System.EventHandler(this.chkAutoDiversity_CheckedChanged);
+            // 
             // chkEnableDiversity
             // 
             this.chkEnableDiversity.Appearance = System.Windows.Forms.Appearance.Button;
@@ -316,7 +338,7 @@ namespace PowerSDR
             this.chkEnableDiversity.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkEnableDiversity.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkEnableDiversity.Image = null;
-            this.chkEnableDiversity.Location = new System.Drawing.Point(381, 53);
+            this.chkEnableDiversity.Location = new System.Drawing.Point(381, 35);
             this.chkEnableDiversity.Name = "chkEnableDiversity";
             this.chkEnableDiversity.Size = new System.Drawing.Size(66, 23);
             this.chkEnableDiversity.TabIndex = 101;
@@ -1240,6 +1262,10 @@ namespace PowerSDR
         private void DiversityForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Common.SaveForm(this, "DiversityForm");
+
+            // DG8MG
+            console.chkC25Diversity.Checked = false;
+            // DG8MG
         }
 
         private void btnShiftUp45_Click(object sender, EventArgs e) //shifts -45 degrees wrt the compass angle
@@ -1758,12 +1784,129 @@ namespace PowerSDR
             {
                 chkEnableDiversity.BackColor = Color.LimeGreen;
                 chkEnableDiversity.Text = "Enabled";
+
+                // DG8MG
+                console.chkC25Diversity.Checked = true;
+                // DG8MG
             }
             else
             {
                 chkEnableDiversity.BackColor = Color.Red;
                 chkEnableDiversity.Text = "Disabled";
+
+                // DG8MG
+                console.chkC25Diversity.Checked = false;
+                // DG8MG
             }
         }
+
+        // DG8MG
+        public void chkAutoDiversity_CheckedChanged(object sender, EventArgs e)
+        {
+                if (chkAutoDiversity.Checked)               
+                {
+                    chkEnableDiversity.Checked = true;
+                    chkAutoDiversity.BackColor = Color.Yellow;
+                    chkAutoDiversity.Text = "Running";
+
+                    radRxSourceRx1Rx2.Checked = true;
+                    chkLockAngle.Checked = false;
+                    chkLockR.Checked = false;
+
+                    if (radioButtonMerc1.Checked)
+                    {
+                        DiversityR2Gain = 1;                       
+                    }
+                    else
+                    {
+                        DiversityGain = 1;
+                    }
+
+                    decimal best_gain = 0;
+                    decimal current_gain = 0;
+                    double best_phase_angle = 0;
+                    double current_phase_angle = 0;
+                    float current_signal_strength = 0;
+                    float minimum_received_signal_strength = 0;
+                    // int turn = 0;
+
+                    for (current_phase_angle = 0; current_phase_angle <= 180; current_phase_angle += 0.5)
+                    {
+                        DiversityPhase = (decimal)current_phase_angle;
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_phase_angle = current_phase_angle;
+                        }
+
+                        this.Update();
+                    }
+                    
+                    Thread.Sleep(100);
+
+                    for (current_phase_angle = 0; current_phase_angle >= -180; current_phase_angle -= 0.5)
+                    {
+                        DiversityPhase = (decimal)current_phase_angle;
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_phase_angle = current_phase_angle;
+                        }
+
+                        this.Update();
+                    }
+
+                    minimum_received_signal_strength = 0;
+                    DiversityPhase = (decimal)best_phase_angle;
+                    Thread.Sleep(100);                    
+
+                    for (current_gain = 0; current_gain <= 1; current_gain += (decimal)0.01)
+                    {                       
+                        udR.Value = current_gain;
+
+                        // for (turn = 0; turn < 10; turn++)
+                        // {
+                            Thread.Sleep(5);
+                            current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);                          
+
+                            if (current_signal_strength < minimum_received_signal_strength)
+                            {
+                                minimum_received_signal_strength = current_signal_strength;
+                                best_gain = current_gain;
+                            }
+
+                            System.Console.WriteLine(String.Format("Auto Diversity: Minimum signal strength: {0} / Phase angle: {1} / Current gain: {2} / Best gain: {3}", current_signal_strength, best_phase_angle, current_gain, best_gain));
+                        // }
+
+                        this.Update();
+                    }
+
+                    System.Console.WriteLine(String.Format("Minimum signal strength: {0} / Phase angle: {1} / Gain: {2}", minimum_received_signal_strength, best_phase_angle, best_gain));
+
+                    if (radioButtonMerc1.Checked)
+                    {
+                        DiversityR2Gain = best_gain;
+                    }
+                    else
+                    {
+                        DiversityGain = best_gain;
+                    }
+
+                    chkAutoDiversity.Checked = false;
+                    this.Update();
+                }
+                else
+                {
+                    chkAutoDiversity.BackColor = Control.DefaultBackColor;
+                    chkAutoDiversity.Text = "Auto";
+                }            
+        }
+        // DG8MG
     }
 }

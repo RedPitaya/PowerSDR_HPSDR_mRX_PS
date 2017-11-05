@@ -46,6 +46,7 @@
             this.lbChooseDevice.Size = new System.Drawing.Size(567, 88);
             this.lbChooseDevice.Sorted = true;
             this.lbChooseDevice.TabIndex = 0;
+            this.lbChooseDevice.SelectedIndexChanged += new System.EventHandler(this.lbChooseDevice_SelectedIndexChanged);
             this.lbChooseDevice.DoubleClick += new System.EventHandler(this.btnChooseDeviceOK_Click);
             // 
             // lblChooseDevice
@@ -110,7 +111,7 @@
 
         public System.Windows.Forms.ListBox lbChooseDevice;
         private System.Windows.Forms.Label lblChooseDevice;
-        private System.Windows.Forms.Button btnChooseDeviceOK;
+        public System.Windows.Forms.Button btnChooseDeviceOK;
         private System.Windows.Forms.Button btnChooseDeviceCancel;
     }
 }

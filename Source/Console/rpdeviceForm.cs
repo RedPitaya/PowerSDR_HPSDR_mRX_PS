@@ -17,7 +17,7 @@ namespace PowerSDR
     {
         public RPDeviceForm()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
 
         private void btnChooseDeviceOK_Click(object sender, EventArgs e)
@@ -33,6 +33,18 @@ namespace PowerSDR
         {
             DialogResult = DialogResult.Cancel;
             Close();           
+        }
+
+        private void lbChooseDevice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbChooseDevice.SelectedIndex > -1)
+            {
+                btnChooseDeviceOK.Enabled = true;
+            }
+            else
+            {
+                btnChooseDeviceOK.Enabled = false;
+            }
         }
     }
 }

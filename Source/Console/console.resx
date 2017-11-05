@@ -1069,7 +1069,7 @@
     <value>panelDisplay2</value>
   </data>
   <data name="&gt;&gt;chkFWCATU.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="comboRX2Band.ItemHeight" type="System.Int32, mscorlib">
     <value>13</value>
@@ -2398,7 +2398,7 @@
     <value>panelDisplay2</value>
   </data>
   <data name="&gt;&gt;chkDisplayPeak.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="comboDisplayMode.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -2431,7 +2431,7 @@
     <value>panelDisplay2</value>
   </data>
   <data name="&gt;&gt;comboDisplayMode.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="chkDisplayAVG.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
     <value>Button</value>
@@ -2473,7 +2473,7 @@
     <value>panelDisplay2</value>
   </data>
   <data name="&gt;&gt;chkDisplayAVG.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="chkNR.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
     <value>Button</value>
@@ -7718,6 +7718,51 @@
   </data>
   <data name="&gt;&gt;chkC25ANT.ZOrder" xml:space="preserve">
     <value>9</value>
+  </data>
+  <data name="chkC25Diversity.Appearance" type="System.Windows.Forms.Appearance, System.Windows.Forms">
+    <value>Button</value>
+  </data>
+  <data name="chkC25Diversity.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="chkC25Diversity.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="chkC25Diversity.Image" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="chkC25Diversity.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>Off</value>
+  </data>
+  <data name="chkC25Diversity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>52, 53</value>
+  </data>
+  <data name="chkC25Diversity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>50, 23</value>
+  </data>
+  <data name="chkC25Diversity.TabIndex" type="System.Int32, mscorlib">
+    <value>104</value>
+  </data>
+  <data name="chkC25Diversity.Text" xml:space="preserve">
+    <value>DIV</value>
+  </data>
+  <data name="chkC25Diversity.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="chkC25Diversity.ToolTip" xml:space="preserve">
+    <value>Turn Diversitiy mode on or off</value>
+  </data>
+  <data name="&gt;&gt;chkC25Diversity.Name" xml:space="preserve">
+    <value>chkC25Diversity</value>
+  </data>
+  <data name="&gt;&gt;chkC25Diversity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBoxTS, PowerSDR, Version=1.2017.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;chkC25Diversity.Parent" xml:space="preserve">
+    <value>panelDisplay2</value>
+  </data>
+  <data name="&gt;&gt;chkC25Diversity.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="picSquelch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>Off</value>
@@ -14342,7 +14387,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABM
-        EgAAAk1TRnQBSQFMAgEBAwEAAUgBAAFIAQABIAEAASABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        EgAAAk1TRnQBSQFMAgEBAwEAAYABAAGAAQABIAEAASABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABgAMAASADAAEBAQABCAYAARAYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA

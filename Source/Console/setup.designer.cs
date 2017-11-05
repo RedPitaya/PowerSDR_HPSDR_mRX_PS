@@ -6106,43 +6106,43 @@
             // 
             // lblC25RX2FbPresent
             // 
-            this.lblC25RX2FbPresent.AutoSize = true;
             this.lblC25RX2FbPresent.Image = null;
-            this.lblC25RX2FbPresent.Location = new System.Drawing.Point(37, 86);
+            this.lblC25RX2FbPresent.Location = new System.Drawing.Point(2, 86);
             this.lblC25RX2FbPresent.Name = "lblC25RX2FbPresent";
-            this.lblC25RX2FbPresent.Size = new System.Drawing.Size(80, 13);
+            this.lblC25RX2FbPresent.Size = new System.Drawing.Size(156, 13);
             this.lblC25RX2FbPresent.TabIndex = 10;
             this.lblC25RX2FbPresent.Text = "RX2 Filterboard";
+            this.lblC25RX2FbPresent.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblC25TRXPresent
             // 
-            this.lblC25TRXPresent.AutoSize = true;
             this.lblC25TRXPresent.Image = null;
-            this.lblC25TRXPresent.Location = new System.Drawing.Point(37, 26);
+            this.lblC25TRXPresent.Location = new System.Drawing.Point(2, 24);
             this.lblC25TRXPresent.Name = "lblC25TRXPresent";
-            this.lblC25TRXPresent.Size = new System.Drawing.Size(79, 13);
+            this.lblC25TRXPresent.Size = new System.Drawing.Size(156, 13);
             this.lblC25TRXPresent.TabIndex = 2;
-            this.lblC25TRXPresent.Text = "CHARLY 25AB";
+            this.lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6";
+            this.lblC25TRXPresent.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblC25RX1FbPresent
             // 
-            this.lblC25RX1FbPresent.AutoSize = true;
             this.lblC25RX1FbPresent.Image = null;
-            this.lblC25RX1FbPresent.Location = new System.Drawing.Point(37, 66);
+            this.lblC25RX1FbPresent.Location = new System.Drawing.Point(2, 66);
             this.lblC25RX1FbPresent.Name = "lblC25RX1FbPresent";
-            this.lblC25RX1FbPresent.Size = new System.Drawing.Size(80, 13);
+            this.lblC25RX1FbPresent.Size = new System.Drawing.Size(156, 13);
             this.lblC25RX1FbPresent.TabIndex = 9;
             this.lblC25RX1FbPresent.Text = "RX1 Filterboard";
+            this.lblC25RX1FbPresent.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblC25AudioCodecPresent
             // 
-            this.lblC25AudioCodecPresent.AutoSize = true;
             this.lblC25AudioCodecPresent.Image = null;
-            this.lblC25AudioCodecPresent.Location = new System.Drawing.Point(37, 46);
+            this.lblC25AudioCodecPresent.Location = new System.Drawing.Point(2, 46);
             this.lblC25AudioCodecPresent.Name = "lblC25AudioCodecPresent";
-            this.lblC25AudioCodecPresent.Size = new System.Drawing.Size(68, 13);
+            this.lblC25AudioCodecPresent.Size = new System.Drawing.Size(156, 13);
             this.lblC25AudioCodecPresent.TabIndex = 8;
             this.lblC25AudioCodecPresent.Text = "Audio Codec";
+            this.lblC25AudioCodecPresent.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // grpDisablePureSignal
             // 
@@ -49591,7 +49591,6 @@
             this.tcGeneral.ResumeLayout(false);
             this.tpGeneralHardware.ResumeLayout(false);
             this.grpC25HardwareOptions.ResumeLayout(false);
-            this.grpC25HardwareOptions.PerformLayout();
             this.grpDisablePureSignal.ResumeLayout(false);
             this.grpLimtRX.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.udDDSIFFreq)).EndInit();

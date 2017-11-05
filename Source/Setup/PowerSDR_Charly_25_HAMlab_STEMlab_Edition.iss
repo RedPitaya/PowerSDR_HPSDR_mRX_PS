@@ -65,7 +65,10 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\..\bin\Release\PowerSDR.exe"; DestDir: "{app}"; Flags: ignoreversion
 
+; DG8MG: Test me!
 Source: "..\..\bin\Runtime Libraries\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"; DestDir: "{tmp}"
+; DG8MG
+
 Source: "..\..\bin\Runtime Libraries\vc_redist.x86.exe"; DestDir: "{tmp}"
 Source: "..\..\bin\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -78,7 +81,10 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
+; DG8MG: Test me!
 Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"""; Check: not SlimDXinstalled
+; DG8MG
+
 Filename: "{tmp}\vc_redist.x86.exe"; StatusMsg: "{#VCmsg}"; Check: not VCinstalled
 Filename: "{app}\{#MyAppExeName}"; Flags: nowait postinstall skipifsilent runascurrentuser runmaximized; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"
 
@@ -117,7 +123,8 @@ function VCinstalled: Boolean;
    end;
  end;
 
- function SlimDXinstalled: Boolean;
+// DG8MG: Test me!
+function SlimDXinstalled: Boolean;
  // By Markus Grundner / DG8MG
  // Function for Inno Setup Compiler
  // 12 November 2016
@@ -147,3 +154,4 @@ function VCinstalled: Boolean;
      end;
    end;
  end;
+// DG8MG

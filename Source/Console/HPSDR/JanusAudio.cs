@@ -416,7 +416,6 @@ namespace PowerSDR
 
             if (!foundMetis)
             {
-
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
                 if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
@@ -1588,19 +1587,20 @@ namespace PowerSDR
                 return -1;
             }
         }
-        
+
         // Choose the Red Pitaya device to start up
         private static IPAddress ChooseRPDevice(Dictionary<IPAddress, PhysicalAddress> allRedPitayaDevices, Console c)
         {
             bool pingable = false;
             Ping pinger = new Ping();
 
-            IPAddress rpIPAddress = new IPAddress(0);           
+            IPAddress rpIPAddress = new IPAddress(0);
 
             if (c.rpdeviceForm == null || c.rpdeviceForm.IsDisposed)
                 c.rpdeviceForm = new RPDeviceForm();
 
             c.rpdeviceForm.lbChooseDevice.Items.Clear();
+            c.rpdeviceForm.btnChooseDeviceOK.Enabled = false;
 
             foreach (KeyValuePair<IPAddress, PhysicalAddress> pair in allRedPitayaDevices)
             {
@@ -1621,16 +1621,23 @@ namespace PowerSDR
                     c.rpdeviceForm.lbChooseDevice.Items.Add("IP Address: " + pair.Key + " - MAC Address: " + pair.Value + " - URL: http://rp-" + pair.Value.ToString().Remove(0, 6));
                 }
             }
-            
-            if (c.rpdeviceForm.ShowDialog() == DialogResult.Cancel)
+
+            if (c.rpdeviceForm.lbChooseDevice.Items.Count > 1)
             {
-                return rpIPAddress;
+                if (c.rpdeviceForm.ShowDialog() == DialogResult.Cancel)
+                {
+                    return rpIPAddress;
+                }
             }
-            
+            else
+            {
+                c.rpdeviceForm.lbChooseDevice.SelectedIndex = 0;
+            }
+
             String ChosenDevice = c.rpdeviceForm.lbChooseDevice.SelectedItem.ToString().Remove(0, 12);
             ChosenDevice = ChosenDevice.Remove(ChosenDevice.IndexOf(' '));
 
-            rpIPAddress = IPAddress.Parse(ChosenDevice);                      
+            rpIPAddress = IPAddress.Parse(ChosenDevice);
             return rpIPAddress;
         }
         
