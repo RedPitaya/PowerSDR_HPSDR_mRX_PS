@@ -101,7 +101,7 @@ function VCinstalled: Boolean;
   dName, key, year: String;
  begin
   // Year of redistributable to find; leave null to find installation for any year.
-  year := '2015';
+  year := '2017';
   Result := False;
   key := 'Software\Microsoft\Windows\CurrentVersion\Uninstall';
   // Get an array of all of the uninstall subkey names.
