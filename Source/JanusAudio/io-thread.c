@@ -910,7 +910,8 @@ void IOThreadMainLoop(void) {
 		refMerc = 1;  //set default to Mercury 1 for reference stream
 	}
 	ForceCandCFrame(3); // send 3 C&C frames to make sure ozy knows the clock settings 
-	// printf("iot: main loop starting\n"); fflush(stdout);
+	 printf("iot: main loop starting\n"); fflush(stdout);
+
 	// main loop - read a buffer, processe it and then write a buffer if we have one to write
 	while ( io_keep_running != 0 ) {
 		// should we read - or just skip to writing

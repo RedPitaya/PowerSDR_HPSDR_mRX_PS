@@ -215,12 +215,13 @@ int SendStartToMetis(void) 	 {
 	} inpacket;
 
 	int i;
-	
+
 	memset(outpacket.packetbuf, 0, sizeof(outpacket));
 
 	outpacket.packetbuf[0] = 0xef;
 	outpacket.packetbuf[1] = 0xfe;
 	outpacket.packetbuf[2] = 0x04;
+	outpacket.packetbuf[3] = 0x01;
 
 	// DG8MG
 	// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
@@ -330,9 +331,8 @@ int MetisReadDirect(char *bufp, int buflen) {
 
 	fromlen = sizeof(fromaddr);
 
-	rc = recvfrom_withtimeout(listenSock, (char *)&inpacket, sizeof(inpacket), 0, (struct sockaddr *)&fromaddr, &fromlen, 0, 500000);
-	/* rc = recvfrom(listenSock, readbuf, sizeof(readbuf), 0, (struct sockaddr *)&fromaddr, &fromlen);  */
-	
+	//rc = recvfrom_withtimeout(listenSock, (char *)&inpacket, sizeof(inpacket), 0, (struct sockaddr *)&fromaddr, &fromlen, 0, 500000);
+	rc = recvfrom(listenSock, (char *)&inpacket, sizeof(inpacket), 0, (struct sockaddr *)&fromaddr, &fromlen);
 	if (rc < 0) {  /* failed */
 		printf("MRD: recvfrom on listSock failed w/ rc=%d!\n", rc);  fflush(stdout);
 		return rc;
@@ -347,6 +347,7 @@ int MetisReadDirect(char *bufp, int buflen) {
 			seqbytep[0] = inpacket.readbuf[7];
 			if (seqnum != (1 + MetisLastRecvSeq))  {
 				printf("MRD: seq error this: %d last: %d\n", seqnum, MetisLastRecvSeq);
+				fflush(stdout);
 			}
 			MetisLastRecvSeq = seqnum;
 
@@ -360,6 +361,7 @@ int MetisReadDirect(char *bufp, int buflen) {
 					// return 0;
 				}
 				memcpy(bufp, inpacket.readbuf + 8, 1024);
+				xpro (prop, seqnum, bufp); // resequence out of order packets
 				return 1024;
 			}
 			else {
@@ -390,7 +392,7 @@ void *MetisReadThreadMain(void *argp) {
 	MetisKeepRunning = 1;
 	MetisReadThreadRunning = 1;
 #ifndef LINUX
-	// SetThreadPriority(GetCurrentThread(), /* THREAD_PRIORITY_ABOVE_NORMAL */  /* THREAD_PRIORITY_TIME_CRITICAL */ THREAD_PRIORITY_HIGHEST   ); 
+	// SetThreadPriority(GetCurrentThread(), /* THREAD_PRIORITY_ABOVE_NORMAL */  THREAD_PRIORITY_TIME_CRITICAL /* THREAD_PRIORITY_HIGHEST  */ ); 
 #else
 	#warning message("info - LINUX code missing ... set priority!")
 #endif

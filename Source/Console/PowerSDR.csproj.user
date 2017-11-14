@@ -19,6 +19,8 @@
     <StartWorkingDirectory>
     </StartWorkingDirectory>
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <StartArguments>
+    </StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>

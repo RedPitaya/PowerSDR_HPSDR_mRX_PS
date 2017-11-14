@@ -1,4 +1,4 @@
-# PowerSDR_mRX_PS 3.4.1.0 June 01, 2017
+# PowerSDR_mRX_PS 3.4.3.0 November 11, 2017
 
 
 # 3.2.22 (2015-1-24) 
@@ -87,7 +87,7 @@ Several changes to the RAForm were made to this release.
 - increased the maximum number of data points limit to 2,000,000 for each of the time, RX1, and RX2 data arrays
 - increased the maximum selectable value for x-axis display range to 100,000 seconds
 - the above two new limits permit more than 27 hours of continuous data recording                         
-- added control value updates on file read/write for the "numericUpDown_mSec_between_measurements" control and the "numericUpDown_measurements_per_point” control
+- added control value updates on file read/write for the "numericUpDown_mSec_between_measurements" control and the "numericUpDown_measurements_per_point" control
 - added display of Date/Time and Comment information on file READ
 
 Other additions and fix that were added are:
@@ -257,6 +257,78 @@ Other Fixes, Changes, and Enhancements
 * The locations of XIT and RIT have been interchanged on the console.
 * There is a change in labeling of the CW Break-in checkbox.  This change was made so that the label more accurately reflects the actual function of the box.  This should eliminate some questions and confusion.  The checkbox was previously labeled "Enabled" which would imply either ON or OFF for Break-in.  Instead, what this box actually does is to allow you to select either FULL Break-in or SEMI Break-in.
 
+# 3.4.2 (2017-7-5)
+# CTUN operation:
+CTUN has been modified to make mode changes behave in similar ways, whether CTUN is on or off, and are identical to the way they always worked with CTUN off in previous versions.  Behavior when tuning has also changed.  As the VFO approachs the edge of the display, instead of disappearing off the edge or stopping, the display re-centers itself so tuning is continuous, even in CTUN mode. The re-centering occurs as the edge of the passband hits the edge of the display, in order to keep any signals of interest visible even as it approaches the edge.  In addition, zooming in while in CTUN mode automatically centers the VFO in the spectrum display so that a signal of interest (i.e. the one you are tuned to) gets zoomed in on, as is usually the intent.  When zooming out, re-centering does not occur, since that would not cause the VFO to disappear off the edge of the display.
+ 
+# Band Stacks - import and size: 
+This modification adds the capability to import BandStack information from an older database, especially useful on starting up a new version, or simply importing while already  running on a current version database.  In 3.4.1 this was not yet handled.  In addition, the bandstacks have been increased to be 5-deep instead of 3.
 
+# CW Filter controls and setup:
+This modification fixes the problem of CW filters not getting saved, and worse, being lost whenever band changes or mode changes are made. It also makes the actions of the width/shift/hi/lo/CWpitch controls all act more consistently and intuitively, specifically for CW operation.  See details section below.
+
+# CW Filter operation details:
+There are several adjustments that affect the receiver filter settings in CW modes.  They are: Filter buttons, Width, Shift, High, Low, and CWPitch, and they are somewhat interdependent.
+
+Filter Buttons
+The filter selection buttons choose pre-defined receiver bandpass filters. They are customizable by right clicking on each button and then choosing its width, or low and high limits.  For CW it is recommended that you initially choose a passband centered on the CW Pitch frequency, since CW filters will automatically be centered whenever the CW Pitch is changed.
+
+Width
+Sliding the Width control automatically switches to the Var1 filter so that your pre-defined Filter buttons aren't changed from the width you set them up for and labeled them as.  Moving the slider left decreases the passband width while sliding right increases it.  As you increase width, one of the passband edges (the upper edge in the "Lower" modes such as CWL, or the lower edge in the "Upper" modes, like CWU) approaches the limit where opposite sideband images appear (i.e. a value of zero (0) in High or Low).  When this happens, the width continues to increase but only in one direction - downward in a "Lower" mode, and upward in an "Upper" mode - so as to keep from hearing these images.  If you subsequently move the passband across the sideband (image) boundary, enforcement of the boundary ceases and you can change the width centered on wherever you've moved the passband with Shift. When you move the passband back across this boundary, the width control again obeys this limit. Clicking on a filter button other than Var1 resets the receiver to the filter settings assigned to that button, but Var1 remains as you set it, until you change it again, either by clicking on Var1 or having it be automatically selected by using one of the adjustments.
+
+Shift
+Sliding the Shift control automatically switches to the Var1 filter so that your Filter buttons aren't changed from how you set them up.  Moving the slider left shifts the passband down in frequency while moving it right shifts the passband upward. The passband shift is not restricted the way the Width control is and can freely slide up and down from one sideband to the other (and affects how the Width control operates as described above).  The "Reset" button returns only the Shift slider to its original position.  Clicking on another filter button resets the receiver to the filter settings assigned to that button, but Var1 remains as you set it, until you change it again.
+
+High/Low
+The High control shifts only the high frequency edge of the passband.  It is inactive when a pre-defined Filter button is selected, but becomes active when Var1 or Var2 is selected.  It is also possible to control it using the CAT interface or a MIDI controller.  When you do that while a pre-set filter button is selected, Var1 is automatically selected, just as with the Width and Shift sliders.  The Low control works the same way, but affects the low frequency edge of the passband. Mapping a MIDI controller knob to these functions gives you a control that operates just like the Low Cut and High Cut adjustments some transceivers provide.
+
+CW Pitch
+The CW Pitch control determines how far (in Hz) a CW signal is offset so that it produces an audible tone when the VFO is tuned to indicate the signal's actual frequency.  Without this offset, tuning a CW signal to zero-beat would be at the actual zero-beat point where no audible tone would be present because its frequency is zero.  Thus, when you tune the VFO to a point where you hear a station's tone exactly match the CW Pitch setting, you are tuned to transmit at that station's exact frequency. 
+
+Changing the CW Pitch control has several effects, and its interaction with the filter buttons can get a little complicated.  First, this tone at "zero-beat" changes, and so does the sidetone as an aid to tuning in a station to match the CW Pitch (and offset).  Second, the CW filters are all adjusted to keep themselves at your originally set bandwidths and centered on the CW Pitch (offset) frequency. That way, whenever a CW signal is tuned to its exact frequency, it's positioned in the center of the passband.  
+
+The CW Pitch isn't usually adjusted as part of tuning in a station and tweaking filters to reduce interference. And normally, when you customize your CW Filter button settings, you configure all of them while keeping the CW Pitch setting constant, using the Width (or Low and High) setting for each button, centered around the CW Pitch frequency.  Once set that way, they will always return to these settings whenever you choose that particular CW Pitch.  When you vary the pitch from that value, the CW filters change themselves to track the CW Pitch as described above (but, of course, they retain their width as originally set to match their button's label).  Note, however, if you customize a CW filter button in a way that is not centered on the CW Pitch frequency, the next time you change CW Pitch that filter will center itself.  Bandwidth takes priority over Low/High setting values for the filter selection buttons, so that their labels always match their bandwidths.  There is one exception: If you lower the CW Pitch below the point where the passband edge hits the sideband (image) limit, the passband stops moving while you can continue to lower the pitch - but it will no longer be centered in the passband.
+
+# 3.4.3 (2017-11-11)
+# Improved CTUN mode operation:
+A "CTUN Scroll" check box has been added to the Setup-General-Options tab.
+When this box is checked:
+- The display scrolls when the VFO gets near the display edges allowing tuning to continue. The VFO cursor stays near the scrolling edge.
+- Frequency changes greater than 500kHz cause a re-centering (e.g. when recalling a memory from a far removed frequency)
+When this box is unchecked:
+- CTUN behaves as before these CTUN enhancements - VFO tuning stops at the receiver bandwidth edges (e.g. 192kHz edges)
+
+Forcing CTUN to turn OFF when selecting Split or MultiRX has been eliminated.
+
+# MIDI controller support 
+MIDI controller mapping now supports the Behringer CMD Studio 2a.  In fact, it may work with all the Behringer controllers now, barring unforseen additional behavior of specific controllers that differs from the currently supported ones (the CMD PL-1, CMD Micro, and now CMD Studio 2a).
+
+Fixed MIDI/CAT VFO manipulations (A>B, B>A, A<>B) so they behave exactly like the corresponding buttons on the console. Previously the CAT versions of these commands only changed frequency and nothing else associated with the VFO (e.g. mode).
+
+Added handling of variable codes coming from wheels in the Hercules Compact controller; it was resulting in digital "backlash."
+
+# MIDI VFO sensitivity control:
+VFO knob sensitivity (speed) can now be adjusted. In the past, as you turned a MIDI knob (usually one of the big jog wheels), you got one tune step per MIDI wheel or knob MIDI message output. Now you can change the wheel sensitivity by specifying the number of MIDI updates required to produce one frequency step.  
+
+Two new up/down controls have been added to the Setup/CAT Control tab next to the "Configure MIDI" button, labeled as ""MIDI Wheel updates/step.  These controls set the minimum and maximum number of MIDI wheel updates per frequency step (i.e. maximum and minimum wheel sensitivity, respectively).  These two values can then be alternated between using a new MIDI command and mapping as below.
+
+# The following three functions and mappings are new:
+1) "Increase wheel rotation per VFO tune step" - increments the number of wheel updates per tuning step, mappable to a button, staring at 1 and increasing by factors of 2 up to a maximum of 32.
+2) "Decrease wheel rotation per VFO tune step" - decreases the number of wheel updates per tuning step, mappable to a button, starting at the current setting and decreasing by a factor of 2 down to a minimum of 1.
+3) "VFO Wheel Sensitivity High/Low Toggle" - toggles between the high and low values set in MIDI setup, mappable to a button
+
+The typical use for "Toggle" would be as a high/low tuning sensitivity (speed) control. You can zip across a band at high speed, then switch to low speed as you get close to a signal of interest. 
+
+All of these settings, combined with the existing Tune Step MIDI settings, should allow a much greater range of tuning "feel" and control than before.  Note that the Behringer controllers' jog wheels that enable variable tuning rates continue to work as before and now can be further tailored using these settings.
+ 
+Disabled audio processing in digital modes
+CFC is now disabled automatically when switching to DIGL or DIGU.  This operates in the same way the disabling of other processing functions, such as TX EQ, operates now, in that it simply disables the function in the currently selected transmit profile to ensure that CFC isn't used in digital modes.  Note: A better way to handle this, as some are already doing, is to create a transmit profile for digital modes and switch to it before selecting a digital mode. 
+
+# Miscellaneous
+Modified VHF band stacks to be 5-deep like the others.
+Eliminated most display scale shifting when going between transmit and receive.
+Fixed a bug causing a crash when zoomed in past the point where the passband fits in the display. 
+Fixed bugs in split VFO operation when RX2 is on.
+Fixed a bug resulting in incorrect vertical display scale in transmit under certain circumstances.
 
 

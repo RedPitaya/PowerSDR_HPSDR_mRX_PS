@@ -766,6 +766,7 @@ namespace PowerSDR
                     txRCVR = 5;
                     break;
                 case HPSDRModel.ORIONMKII:
+                case HPSDRModel.ANAN7000D:
                 case HPSDRModel.ANAN8000D:
                     rxRCVR = 4;
                     txRCVR = 5;
@@ -812,6 +813,7 @@ namespace PowerSDR
                     newnr = Math.Max(5, nr);
                     break;
                 case HPSDRModel.ORIONMKII:
+                case HPSDRModel.ANAN7000D:
                 case HPSDRModel.ANAN8000D:
                     newnr = Math.Max(5, nr);
                     break;
@@ -885,6 +887,7 @@ namespace PowerSDR
                         SetRXFreq(txRCVR, txfreq, false);
                         break;
                     case HPSDRModel.ORIONMKII:
+                    case HPSDRModel.ANAN7000D:
                     case HPSDRModel.ANAN8000D:
                         SetRXFreq(rxRCVR, txfreq, false);
                         SetRXFreq(txRCVR, txfreq, false);

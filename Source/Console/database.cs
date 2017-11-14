@@ -7504,7 +7504,10 @@ namespace PowerSDR
                 if (vals.Length <= 1) // skip it as no data was provided
                     continue;
 
-                DataRow[] rows = ds.Tables[tableName].Select("Key = '" + vals[0] + "'");
+                string selector = "Key = '" + vals[0] + "'";
+
+                DataRow[] rows = ds.Tables[tableName].Select(selector);
+
                 if (rows.Length == 0)	// name is not in list
                 {
                     DataRow newRow = ds.Tables[tableName].NewRow();

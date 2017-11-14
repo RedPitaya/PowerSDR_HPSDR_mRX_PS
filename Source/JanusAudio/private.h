@@ -73,7 +73,9 @@ extern DttSP_EXP void destroy_resampleFV (/*ResSt*/ void * resst);
 //#include <semaphore.h>
 
 extern const int numInputBuffs;
-
+#include "pro.h"
+PRO prop;
+extern int LPacks;
 // PowerSDR interface routines
 // extern KD5TFDVK6APHAUDIO_API int StartAudio(int block_size);
 
