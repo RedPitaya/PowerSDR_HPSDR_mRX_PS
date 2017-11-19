@@ -4832,7 +4832,7 @@ namespace PowerSDR
                 parser.nGet = 0;
                 int step = StringToFreq(commands.ZZAC(""));
 
-                if (device.GetDeviceName() == "CMD PL-1" || device.GetDeviceName() == "CMD Micro")
+                if (IsBehringerCMD(device))
                 {
                     ChangeFreqVfoA(63, step, true, device);
                 }
@@ -4850,8 +4850,8 @@ namespace PowerSDR
                 parser.nSet = 2;
                 parser.nGet = 0;
                 int step = StringToFreq(commands.ZZAC(""));
-
-                if (device.GetDeviceName() == "CMD PL-1" || device.GetDeviceName() == "CMD Micro")
+        
+                if (IsBehringerCMD(device))
                 {
                     ChangeFreqVfoA(65, step, true, device);
                 }

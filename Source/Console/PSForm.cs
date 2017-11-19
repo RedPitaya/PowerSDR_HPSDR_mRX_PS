@@ -29,7 +29,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25 || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            if (console.HPSDRModelIsCharly25orHAMlab())
             {
                 this.chkPSAutoAttenuate.Checked = false;
                 this.chkPSAutoAttenuate.Visible = false;

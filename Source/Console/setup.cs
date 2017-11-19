@@ -9976,7 +9976,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             bool done = false;
-            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25 || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            if (console.HPSDRModelIsCharly25orHAMlab())
             {
                 done = console.CalibrateRX2Level_Charly25(
                 (float)udGeneralCalRX2Level.Value,
@@ -18950,7 +18950,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (console.CurrentHPSDRModel != HPSDRModel.CHARLY25 && console.CurrentHPSDRModel != HPSDRModel.HAMLAB)
+            if (!console.HPSDRModelIsCharly25orHAMlab())
             {
                 lblMetisCodeVersion.Text = JanusAudio.MetisCodeVersion.ToString("0\\.0");
             }
@@ -19970,7 +19970,7 @@ namespace PowerSDR
             
             // DG8MG
             // Extension for Charly 25 / HAMlab edition
-            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25 || console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            if (console.HPSDRModelIsCharly25orHAMlab())
             {
                 panelRX2LevelCal.Visible = true;
             }

@@ -5818,7 +5818,7 @@ namespace PowerSDR
                 System.Console.WriteLine("JanusAudio.StartAudio failed w/ rc: " + rc);
 
                 // Check if the Cancel button on the ChooseDevice form had been pressed
-                if ((rc == -2) && (console.CurrentHPSDRModel == HPSDRModel.CHARLY25 || console.CurrentHPSDRModel == HPSDRModel.HAMLAB))
+                if ((rc == -2) && console.HPSDRModelIsCharly25orHAMlab())
                 {
                     return false;
                 }               

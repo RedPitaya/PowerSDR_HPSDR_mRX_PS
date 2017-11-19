@@ -298,7 +298,7 @@ namespace PowerSDR
                 {
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    if (c.HPSDRModelIsCharly25orHAMlab())
                     {
                         int result = StartupRPDeviceRemotely();
 
@@ -361,7 +361,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+                    if (c.HPSDRModelIsCharly25orHAMlab())
                     {
                         int result = StartupRPDeviceRemotely();
 
@@ -418,7 +418,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+                if (c.HPSDRModelIsCharly25orHAMlab())
                 {
                     Metis_IP_address = "";
 
@@ -684,7 +684,7 @@ namespace PowerSDR
 
                     // DG8MG: Implement me!
                     // Extension for Charly 25 and HAMlab hardware
-                    if (mercury2_ver < 32 || mercury2_ver == 127 || c.CurrentHPSDRModel == HPSDRModel.CHARLY25 || c.CurrentHPSDRModel == HPSDRModel.HAMLAB) // Check if physical RX2 preamp is present
+                    if (mercury2_ver < 32 || mercury2_ver == 127 || c.HPSDRModelIsCharly25orHAMlab()) // Check if physical RX2 preamp is present
                     // DG8MG
 
                         c.RX2PreampPresent = false;
@@ -867,7 +867,7 @@ namespace PowerSDR
             result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send, c.SetupForm.chkC25useTCP.Checked ? 1 : 0);      
             
 			// Charly 25 and HAMlab hardware must skip the firmware check
-            if (c.CurrentHPSDRModel == HPSDRModel.CHARLY25 || c.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+            if (c.HPSDRModelIsCharly25orHAMlab())
             {
                 fwVersionsChecked = true;
             }
