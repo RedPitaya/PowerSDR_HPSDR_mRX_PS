@@ -2279,6 +2279,19 @@ namespace PowerSDR
             out_l4 = out_l_ptr4; // 6 CallbackOutL3bufp VAC/RX1 L 
             out_r4 = out_r_ptr4; // 7 CallbackOutR3bufp VAC/RX1 R
 
+            // DG8MG: Test me!
+            bool c25_receiver_diversity = false;
+
+            if (console.C25ReceiverDiversity)
+            {
+                c25_receiver_diversity = true;
+            }
+            else
+            {
+                c25_receiver_diversity = false;
+            }
+            // DG8MG
+
             // scale output for VAC -- use chan 4 as spare buffer
             if (vac_enabled && !vac_output_iq &&
                 rb_vacIN_l != null && rb_vacIN_r != null &&
@@ -2306,6 +2319,14 @@ namespace PowerSDR
                     {
                         Win32.EnterCriticalSection(cs_vac);
                         rb_vacOUT_l.WritePtr(out_l4, out_count);
+
+                        // DG8MG
+                        if (c25_receiver_diversity)
+                        {
+                            ClearBuffer(out_r4, out_count);
+                        }
+                        // DG8MG
+
                         rb_vacOUT_r.WritePtr(out_r4, out_count);
                         Win32.LeaveCriticalSection(cs_vac);
                     }
@@ -2329,6 +2350,14 @@ namespace PowerSDR
                             {
                                 Win32.EnterCriticalSection(cs_vac);
                                 rb_vacOUT_l.WritePtr(res_outl_ptr, outsamps);
+
+                                // DG8MG
+                                if (c25_receiver_diversity)
+                                {
+                                    ClearBuffer(res_outr_ptr, out_count);
+                                }
+                                // DG8MG
+
                                 rb_vacOUT_r.WritePtr(res_outr_ptr, outsamps);
                                 Win32.LeaveCriticalSection(cs_vac);
                             }
@@ -2349,6 +2378,14 @@ namespace PowerSDR
                             {
                                 Win32.EnterCriticalSection(cs_vac);
                                 rb_vacOUT_l.WritePtr(res_outl_ptr, outsamps);
+
+                                // DG8MG
+                                if (c25_receiver_diversity)
+                                {
+                                    ClearBuffer(res_outl_ptr, out_count);
+                                }
+                                // DG8MG
+
                                 rb_vacOUT_r.WritePtr(res_outl_ptr, outsamps);
                                 Win32.LeaveCriticalSection(cs_vac);
                             }
@@ -2396,6 +2433,14 @@ namespace PowerSDR
                     if ((rb_vac2OUT_l.WriteSpace() >= out_count) && (rb_vac2OUT_r.WriteSpace() >= out_count))
                     {
                         Win32.EnterCriticalSection(cs_vac2);
+
+                        // DG8MG
+                        if (c25_receiver_diversity)
+                        {
+                            ClearBuffer(out_l4, out_count);
+                        }
+                        // DG8MG
+
                         rb_vac2OUT_l.WritePtr(out_l4, out_count);
                         rb_vac2OUT_r.WritePtr(out_r4, out_count);
                         Win32.LeaveCriticalSection(cs_vac2);
@@ -2419,6 +2464,14 @@ namespace PowerSDR
                             if ((rb_vac2OUT_l.WriteSpace() >= outsamps) && (rb_vac2OUT_r.WriteSpace() >= outsamps))
                             {
                                 Win32.EnterCriticalSection(cs_vac2);
+
+                                // DG8MG
+                                if (c25_receiver_diversity)
+                                {
+                                    ClearBuffer(res_outl_ptr, out_count);
+                                }
+                                // DG8MG
+
                                 rb_vac2OUT_l.WritePtr(res_outl_ptr, outsamps);
                                 rb_vac2OUT_r.WritePtr(res_outr_ptr, outsamps);
                                 Win32.LeaveCriticalSection(cs_vac2);
@@ -2439,8 +2492,21 @@ namespace PowerSDR
                             if ((rb_vac2OUT_l.WriteSpace() >= outsamps) && (rb_vac2OUT_r.WriteSpace() >= outsamps))
                             {
                                 Win32.EnterCriticalSection(cs_vac2);
-                                rb_vac2OUT_l.WritePtr(res_outl_ptr, outsamps);
-                                rb_vac2OUT_r.WritePtr(res_outl_ptr, outsamps);
+
+                                // DG8MG
+                                if (c25_receiver_diversity)
+                                {
+                                    rb_vac2OUT_r.WritePtr(res_outl_ptr, outsamps);
+                                    ClearBuffer(res_outl_ptr, out_count);
+                                    rb_vac2OUT_l.WritePtr(res_outl_ptr, outsamps);
+                                }
+                                else
+                                {
+                                    rb_vac2OUT_l.WritePtr(res_outl_ptr, outsamps);
+                                    rb_vac2OUT_r.WritePtr(res_outl_ptr, outsamps);
+                                }
+                                // DG8MG
+
                                 Win32.LeaveCriticalSection(cs_vac2);
                             }
                             else

@@ -8919,6 +8919,7 @@ namespace PowerSDR
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25 visible
                 console.chkC25Diversity.Enabled = true;  // Charly 25 has an additional button for the Auto-Diversity functionality
                 console.chkC25Diversity.Visible = true;  // Charly 25 has an additional button for the Auto-Diversity functionality
+                console.chkDX.ThreeState = true; // Charly 25 has a thrid state here for listening to different receivers on left and right audio channel
                 groupBoxHPSDRHW.Visible = false;  // Charly 25 doesn't have this hardware options
                 grpC25HardwareOptions.Visible = true;  // Charly 25 has its own hardware options
                 chkPennyPresent.Checked = true;  
@@ -8978,6 +8979,7 @@ namespace PowerSDR
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting               
                 console.chkC25Diversity.Visible = false;  // reset to default setting
+                console.chkDX.ThreeState = false; // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting
@@ -9094,6 +9096,7 @@ namespace PowerSDR
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
                 console.chkC25Diversity.Enabled = true;  // HAMlab has an additional button for the Auto-Diversity functionality
                 console.chkC25Diversity.Visible = true;  // HAMlab has an additional button for the Auto-Diversity functionality
+                console.chkDX.ThreeState = true; // HAMlab has a thrid state here for listening to different receivers on left and right audio channel
                 groupBoxHPSDRHW.Visible = false;  // HAMlab doesn't have this hardware options
                 grpC25HardwareOptions.Visible = true;  // HAMlab has its own hardware options
                 chkPennyPresent.Checked = true;
@@ -9155,6 +9158,7 @@ namespace PowerSDR
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 console.chkC25Diversity.Visible = false;  // reset to default setting
+                console.chkDX.ThreeState = false; // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
                 grpHermesStepAttenuator.Visible = true;  // reset to default setting
                 console.psform.AutoAttenuate = true;  // reset to default setting

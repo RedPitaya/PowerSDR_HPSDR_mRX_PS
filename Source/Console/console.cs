@@ -1270,7 +1270,12 @@ namespace PowerSDR
         private System.Windows.Forms.LabelTS lblDisplayModeTop;
         private System.Windows.Forms.LabelTS lblDisplayModeBottom;
         private System.Windows.Forms.CheckBoxTS chkCPDR;
-        private System.Windows.Forms.CheckBoxTS chkDX;
+
+        // DG8MG
+        // Changed from private to public for Charly 25 and HAMlab hardware
+        public System.Windows.Forms.CheckBoxTS chkDX;
+        // DG8MG
+
         private System.Windows.Forms.CheckBoxTS ckQuickPlay;
         private System.Windows.Forms.CheckBoxTS ckQuickRec;
         private System.Windows.Forms.GroupBoxTS grpDisplaySplit;
@@ -2203,9 +2208,6 @@ namespace PowerSDR
             this.chkRX2ANF = new System.Windows.Forms.CheckBoxTS();
             this.comboRX2AGC = new System.Windows.Forms.ComboBoxTS();
             this.chkRX2BIN = new System.Windows.Forms.CheckBoxTS();
-            this.ilC25ImageList = new System.Windows.Forms.ImageList(this.components);
-            this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
-            this.chkC25Diversity = new System.Windows.Forms.CheckBoxTS();
             this.ckQuickPlay = new System.Windows.Forms.CheckBoxTS();
             this.ckQuickRec = new System.Windows.Forms.CheckBoxTS();
             this.chkSR = new System.Windows.Forms.CheckBoxTS();
@@ -2385,6 +2387,9 @@ namespace PowerSDR
             this.lblCWBreakInDelay = new System.Windows.Forms.LabelTS();
             this.comboAMTXProfile = new System.Windows.Forms.ComboBoxTS();
             this.btnTNFAdd = new System.Windows.Forms.CheckBoxTS();
+            this.chkC25ANT = new System.Windows.Forms.CheckBoxTS();
+            this.chkC25Diversity = new System.Windows.Forms.CheckBoxTS();
+            this.ilC25ImageList = new System.Windows.Forms.ImageList(this.components);
             this.picSquelch = new System.Windows.Forms.PictureBox();
             this.timer_clock = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStripFilterRX1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -3749,6 +3754,7 @@ namespace PowerSDR
             this.chkDX.Name = "chkDX";
             this.toolTip1.SetToolTip(this.chkDX, resources.GetString("chkDX.ToolTip"));
             this.chkDX.CheckedChanged += new System.EventHandler(this.chkDX_CheckedChanged);
+            this.chkDX.CheckStateChanged += new System.EventHandler(this.chkDX_CheckStateChanged);
             // 
             // chkTXEQ
             // 
@@ -5026,6 +5032,34 @@ namespace PowerSDR
             this.btnTNFAdd.Name = "btnTNFAdd";
             this.toolTip1.SetToolTip(this.btnTNFAdd, resources.GetString("btnTNFAdd.ToolTip"));
             this.btnTNFAdd.CheckedChanged += new System.EventHandler(this.btnTNFAdd_CheckedChanged);
+            // 
+            // chkC25ANT
+            // 
+            resources.ApplyResources(this.chkC25ANT, "chkC25ANT");
+            this.chkC25ANT.BackColor = System.Drawing.Color.Transparent;
+            this.chkC25ANT.FlatAppearance.BorderSize = 0;
+            this.chkC25ANT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkC25ANT.Name = "chkC25ANT";
+            this.toolTip1.SetToolTip(this.chkC25ANT, resources.GetString("chkC25ANT.ToolTip"));
+            this.chkC25ANT.UseVisualStyleBackColor = false;
+            this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
+            // 
+            // chkC25Diversity
+            // 
+            resources.ApplyResources(this.chkC25Diversity, "chkC25Diversity");
+            this.chkC25Diversity.FlatAppearance.BorderSize = 0;
+            this.chkC25Diversity.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.chkC25Diversity.Name = "chkC25Diversity";
+            this.toolTip1.SetToolTip(this.chkC25Diversity, resources.GetString("chkC25Diversity.ToolTip"));
+            this.chkC25Diversity.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chkC25Diversity_MouseClick);
+            // 
+            // ilC25ImageList
+            // 
+            this.ilC25ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilC25ImageList.ImageStream")));
+            this.ilC25ImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilC25ImageList.Images.SetKeyName(0, "C25.ico");
+            this.ilC25ImageList.Images.SetKeyName(1, "redpitaya.ico");
+            this.ilC25ImageList.Images.SetKeyName(2, "hpsdr5-32.ico");
             // 
             // picSquelch
             // 
@@ -7802,34 +7836,7 @@ namespace PowerSDR
             ((System.ComponentModel.ISupportInitialize)(this.ptbFMMic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-            // 
-            // ilC25ImageList
-            // 
-            this.ilC25ImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilC25ImageList.ImageStream")));
-            this.ilC25ImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilC25ImageList.Images.SetKeyName(0, "C25.ico");
-            this.ilC25ImageList.Images.SetKeyName(1, "redpitaya.ico");
-            this.ilC25ImageList.Images.SetKeyName(2, "hpsdr5-32.ico");
-            // 
-            // chkC25ANT
-            // 
-            resources.ApplyResources(this.chkC25ANT, "chkC25ANT");
-            this.chkC25ANT.BackColor = System.Drawing.Color.Transparent;
-            this.chkC25ANT.FlatAppearance.BorderSize = 0;
-            this.chkC25ANT.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkC25ANT.Name = "chkC25ANT";
-            this.toolTip1.SetToolTip(this.chkC25ANT, resources.GetString("chkC25ANT.ToolTip"));
-            this.chkC25ANT.UseVisualStyleBackColor = false;
-            this.chkC25ANT.CheckedChanged += new System.EventHandler(this.C25_ANT_CheckedChanged);
-            // 
-            // chkC25Diversity
-            // 
-            resources.ApplyResources(this.chkC25Diversity, "chkC25Diversity");
-            this.chkC25Diversity.FlatAppearance.BorderSize = 0;
-            this.chkC25Diversity.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.chkC25Diversity.Name = "chkC25Diversity";
-            this.toolTip1.SetToolTip(this.chkC25Diversity, resources.GetString("chkC25Diversity.ToolTip"));
-            this.chkC25Diversity.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chkC25Diversity_MouseClick);
+
         }
         #endregion
 
@@ -19074,6 +19081,32 @@ namespace PowerSDR
             }
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        private bool c25_receiver_diversity = false;
+        public bool C25ReceiverDiversity
+        {
+            get { return c25_receiver_diversity; }
+            set
+            {
+                c25_receiver_diversity = value;
+
+                if (!initializing && RX2Enabled)
+                {
+                    if (value)
+                    {
+                        VACEnabled = true;
+                        VAC2Enabled = true;
+                        // VACSoundCardStereo = true;
+                        // VAC2SoundCardStereo = true;
+                        VACStereo = true;
+                        VAC2Stereo = true;
+                    }
+                }
+            }
+        }
+        // DG8MG
+
         private string apf_btn = "APF";
         public string APFbtn
         {
@@ -22592,10 +22625,9 @@ namespace PowerSDR
                 {
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    case HPSDRModel.CHARLY25:  // Behave like a HPSDR
-                    case HPSDRModel.HAMLAB:  // Behave like a HPSDR
-                        chkDX.Checked = false;
-                        chkDX.Visible = false;
+                    case HPSDRModel.CHARLY25:
+                    case HPSDRModel.HAMLAB:
+                        chkDX.Visible = true;
 
                         if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
                             comboMeterTXMode.Items.Insert(1, "Ref Pwr");
@@ -47329,6 +47361,36 @@ namespace PowerSDR
             //    radio.GetDSPTX(0).TXCompandOn = true;
             //else radio.GetDSPTX(0).TXCompandOn = false;
         }
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        private void chkDX_CheckStateChanged(object sender, System.EventArgs e)
+        {          
+            if (HPSDRModelIsCharly25orHAMlab())
+            {
+                switch (chkDX.CheckState)
+                {
+                    case CheckState.Checked: // SD
+                        // StereoDiversity = chkDX.Checked;
+                        C25ReceiverDiversity = false;
+                        chkDX.Text = "SD";
+                        break;
+
+                    case CheckState.Indeterminate: // SD2
+                        StereoDiversity = false;
+                        C25ReceiverDiversity = true;
+                        chkDX.Text = "SD2";
+                        break;
+
+                    case CheckState.Unchecked: // all off
+                        // StereoDiversity = chkDX.Checked;
+                        C25ReceiverDiversity = false;
+                        chkDX.Text = "SD";
+                        break;
+                }
+            }
+        }
+        // DG8MG
 
         private void ptbDX_Scroll(object sender, System.EventArgs e)
         {
