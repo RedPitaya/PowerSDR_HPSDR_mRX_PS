@@ -19095,12 +19095,24 @@ namespace PowerSDR
                 {
                     if (value)
                     {
-                        VACEnabled = true;
-                        VAC2Enabled = true;
+                        if (PowerOn)
+                        {
+                            PowerOn = false;
+                            VACStereo = true;
+                            VAC2Stereo = true;
+                            VACEnabled = true;
+                            VAC2Enabled = true;
+                            PowerOn = true;
+                        }
+                        else
+                        {
+                            VACStereo = true;
+                            VAC2Stereo = true;
+                            VACEnabled = true;
+                            VAC2Enabled = true;
+                        }
                         // VACSoundCardStereo = true;
                         // VAC2SoundCardStereo = true;
-                        VACStereo = true;
-                        VAC2Stereo = true;
                     }
                 }
             }
@@ -23825,15 +23837,15 @@ namespace PowerSDR
         //   i.e. not just copy frequency alone
         public void CATVFOAtoB()
         {
-            btnVFOAtoB.PerformClick();
+            btnVFOAtoB_Click(this, EventArgs.Empty);
         }
         public void CATVFOBtoA()
         {
-            btnVFOBtoA.PerformClick();
+            btnVFOBtoA_Click(this, EventArgs.Empty);
         }
         public void CATVFOABSwap()
         {
-            btnVFOSwap.PerformClick();
+            btnVFOSwap_Click(this, EventArgs.Empty);
         }
 
 
@@ -32511,7 +32523,7 @@ namespace PowerSDR
                         {
                             case DisplayMode.WATERFALL:
                             case DisplayMode.PANAFALL:
-                                if (mox && !display_duplex && (NReceivers <= 2))
+                                if (mox && ((!display_duplex  /*&& (StitchedReceivers == 1)) || (!SetupForm.DisablePureSignal && !display_duplex*/)))
                                 {
                                     if (chkVFOATX.Checked || !chkRX2.Checked)
                                     {
@@ -47330,7 +47342,13 @@ namespace PowerSDR
 
         private void chkDX_CheckedChanged(object sender, System.EventArgs e)
         {
-            StereoDiversity = chkDX.Checked;
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (!HPSDRModelIsCharly25orHAMlab())
+            {
+                StereoDiversity = chkDX.Checked;
+            }
+            // DG8MG
 
             //if (!initializing && RX2Enabled && chkDX.Checked)
             //{
@@ -47371,7 +47389,7 @@ namespace PowerSDR
                 switch (chkDX.CheckState)
                 {
                     case CheckState.Checked: // SD
-                        // StereoDiversity = chkDX.Checked;
+                        StereoDiversity = chkDX.Checked;
                         C25ReceiverDiversity = false;
                         chkDX.Text = "SD";
                         break;
@@ -47383,7 +47401,7 @@ namespace PowerSDR
                         break;
 
                     case CheckState.Unchecked: // all off
-                        // StereoDiversity = chkDX.Checked;
+                        StereoDiversity = chkDX.Checked;
                         C25ReceiverDiversity = false;
                         chkDX.Text = "SD";
                         break;

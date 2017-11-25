@@ -386,6 +386,7 @@ KD5TFDVK6APHAUDIO_API void StopAudio() {
 
 		DotDashBits = 0;
 
+		if (prop != NULL)
 		destroy_pro (prop);
 
         return;
