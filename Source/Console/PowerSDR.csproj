@@ -420,7 +420,6 @@
       <DependentUpon>C25SWRView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\digital7.ttf" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Resources\grabbing.cur" />
     <None Include="Resources\grab.cur" />
@@ -542,9 +541,7 @@
     <EmbeddedResource Include="images\flex-3000.jpg" />
     <Content Include="hpsdr5-64.ico" />
     <Content Include="images\hpsdr.jpg" />
-    <Content Include="images\hpsdr5.png" />
     <Content Include="images\openhpsdr4_splash.png" />
-    <Content Include="images\openhpsdr_splash.png" />
     <Content Include="images\PowerSDR.ico" />
   </ItemGroup>
   <ItemGroup>

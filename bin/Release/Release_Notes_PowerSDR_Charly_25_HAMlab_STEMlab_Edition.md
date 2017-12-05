@@ -1,5 +1,37 @@
 ## Release notes of PowerSDR Charly 25 / HAMlab / STEMlab Edition:
 
+
+#### commit 7989e517ffbff2ea6b1afb1cd64f52096c38d264
+Date:   Thu Jul 20 16:34:10 2017 +0200
+
+- Commit of the new master build for customer release with the new HAMlab 160-6.
+    
+
+#### commit 32b1f34e202a1cf9f887a5cfe9a6e96c772831ae
+Date:   Tue Jul 11 01:54:44 2017 +0200
+
+- Implemented improvements in the TX Frequency Sweep Test functionality.
+
+
+#### commit 038b076a04e329e6be8031eba301e9c0de328c38
+Date:   Mon Jul 10 02:21:42 2017 +0200
+
+- Added SWR measuring routine and SWR view to the C25 TX Frequency Sweep Test.
+- Added frequency border checks to the C25 TX Frequency Sweep Test.
+    
+
+#### commit 80bf55e6fb15a7de6d0a0093199b42e2f1c79644
+Date:   Fri Jul 7 02:17:58 2017 +0200
+
+- Improved the PowerSDR software update functionality.
+
+
+#### commit 1405c725238410b816b37a9d52ac331c6c8dc9e5
+Date:   Fri Jul 7 00:05:50 2017 +0200
+
+- Merged in the features of TAPR/OpenHPSDR-PowerSDR version 3.4.2 manually.
+    
+
 #### commit 72538247258f6719a3317497819f72fef8796144
 Date:   Sat Jul 1 15:33:33 2017 +0200
 
