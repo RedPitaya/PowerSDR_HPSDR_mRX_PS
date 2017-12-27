@@ -48418,6 +48418,14 @@ namespace PowerSDR
             }
             update_rx2_display = true;
 
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (!chkRX2.Checked && HPSDRModelIsCharly25orHAMlab())
+            {
+                StereoDiversity = false;
+            }
+            // DG8MG
+
         }
 
         private void chkRX2SR_CheckedChanged(object sender, System.EventArgs e)
