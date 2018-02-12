@@ -15418,9 +15418,16 @@ namespace PowerSDR
 
         public void SetAlexLPF(double freq)
         {
-            if (chkPower.Checked && alexpresent && SetupForm.radAlexManualCntl.Checked)
+			if (!mox && lpf_bypass)
+			{
+				JanusAudio.SetAlexLPFBits(0x10); // 6m LPF
+				SetupForm.rad6LPFled.Checked = true;
+				return;
+			}
+            
+			if (chkPower.Checked && alexpresent && SetupForm.radAlexManualCntl.Checked)
             {
-                if ((decimal)freq >= SetupForm.udAlex20mLPFStart.Value && // 30/20m LPF
+				if ((decimal)freq >= SetupForm.udAlex20mLPFStart.Value && // 30/20m LPF
                           (decimal)freq <= SetupForm.udAlex20mLPFEnd.Value)
                 {
                     JanusAudio.SetAlexLPFBits(0x01);
@@ -23117,6 +23124,7 @@ namespace PowerSDR
                 vfo_lock = value;
                 bool enabled = !value;
                 txtVFOAFreq.Enabled = enabled;
+				txtVFOBFreq.Enabled = enabled;
                 radBand160.Enabled = enabled;
                 radBand80.Enabled = enabled;
                 radBand60.Enabled = enabled;
@@ -26048,6 +26056,7 @@ namespace PowerSDR
             }
             set
             {
+				if (vfo_lock || SetupForm == null) return;
                 value = Math.Max(0, value);
                 txtVFOBFreq.Text = value.ToString("f6");
                 txtVFOBFreq_LostFocus(this, EventArgs.Empty);
@@ -26501,6 +26510,24 @@ namespace PowerSDR
                 {
                     double freq = Double.Parse(txtVFOAFreq.Text);
                     SetAlexHPF(freq);
+                }
+            }
+        }
+
+        private bool lpf_bypass = false;
+        public bool LPFBypass
+        {
+            get { return lpf_bypass; }
+            set
+            {
+                lpf_bypass = value;
+                if (chkPower.Checked)
+                {
+                    double freq = Double.Parse(txtVFOAFreq.Text);
+                    if (mox) freq = tx_dds_freq_mhz;
+                    SetAlexLPF(freq);
+                    if (!initializing)
+                        txtVFOAFreq_LostFocus(this, EventArgs.Empty);
                 }
             }
         }
