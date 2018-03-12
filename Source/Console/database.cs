@@ -27,7 +27,7 @@
 //=================================================================
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 // Modifications to the database import function to allow using files created with earlier versions.
 // by Chris Codella, W2PA, May 2017.  Indicated by //-W2PA comment lines. 
@@ -2563,8 +2563,14 @@ namespace PowerSDR
             DataTable t = ds.Tables["BandStack"];
 
             object[] data = {
-								"160M", "CWL", "F1", 1.805000, false, 150, 0.0,
+                                // DG8MG: Changed parts of the 160m bandstack entries, old entries below                                
                                 "160M", "CWL", "F1", 1.810000, false, 150, 0.0,
+                                "160M", "CWL", "F1", 1.815000, false, 150, 0.0,
+                                
+                                // "160M", "CWL", "F1", 1.805000, false, 150, 0.0,
+                                // "160M", "CWL", "F1", 1.810000, false, 150, 0.0,
+                                // DG8MG
+
                                 "160M", "DIGU", "F1", 1.838000, false, 150, 0.0,
 								"160M", "LSB", "F6", 1.843000, false, 150, 0.0,
                                 "160M", "LSB", "F6", 1.850000, false, 150, 0.0,
@@ -2572,10 +2578,25 @@ namespace PowerSDR
                                 "80M", "CWL", "F1", 3.510000, false, 150, 0.0,
                                 "80M", "DIGU", "F1", 3.590000, false, 150, 0.0,
 								"80M", "LSB", "F6", 3.750000, false, 150, 0.0,
-                                "80M", "LSB", "F6", 3.900000, false, 150, 0.0,
-                                "60M", "USB", "F6", 5.250000, false, 150, 0.0,
-								"60M", "USB", "F6", 5.325000, false, 150, 0.0,
-								"60M", "USB", "F6", 5.400000, false, 150, 0.0,
+
+                                // DG8MG: Changed parts of the 80m bandstack entries, old entries below
+                                "80M", "LSB", "F6", 3.775000, false, 150, 0.0,
+                                
+                                // "80M", "LSB", "F6", 3.900000, false, 150, 0.0,
+                                // DG8MG
+
+                                // DG8MG: Changed and extended the 60m bandstack entries, old entries below
+                                "60M", "CWU", "F1", 5.351500, false, 150, 0.0,
+								"60M", "CWU", "F1", 5.352000, false, 150, 0.0,
+								"60M", "CWU", "F1", 5.353000, false, 150, 0.0,
+                                "60M", "USB", "F6", 5.354000, false, 150, 0.0,
+                                "60M", "DIGU", "F1", 5.366000, false, 150, 0.0,
+
+                                // "60M", "USB", "F6", 5.250000, false, 150, 0.0,
+                                // "60M", "USB", "F6", 5.325000, false, 150, 0.0,
+                                // "60M", "USB", "F6", 5.400000, false, 150, 0.0,
+                                // DG8MG
+
                                 "40M", "CWL", "F1", 7.005000, false, 150, 0.0,
                                 "40M", "CWL", "F1", 7.010000, false, 150, 0.0,
                                 "40M", "DIGU", "F1", 7.045000, false, 150, 0.0,
