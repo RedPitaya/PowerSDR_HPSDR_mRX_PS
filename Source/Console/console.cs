@@ -9016,6 +9016,7 @@ namespace PowerSDR
             a.Add("chkNB_checkstate/" + chkNB.CheckState.ToString());
             a.Add("chkRX2NB_checkstate/" + chkRX2NB.CheckState.ToString());
             a.Add("chkSyncIT_checkstate/" + chkSyncIT.CheckState.ToString());  //-W2PA Checkbox for synched RIT/XIT
+            a.Add("chkDX_checkstate/" + chkDX.CheckState.ToString());  // DG8MG: Tristate Checkbox for SD2 functionality
 
             a.Add("current_datetime_mode/" + (int)current_datetime_mode);
             a.Add("rx1_display_cal_offset/" + rx1_display_cal_offset.ToString("f3"));
@@ -10120,6 +10121,9 @@ namespace PowerSDR
                         break;
                     case "chkSyncIT_checkstate":  //-W2PA Checkbox for synched RIT/XIT
                         chkSyncIT.CheckState = (CheckState)(Enum.Parse(typeof(CheckState), val));
+                        break;
+                    case "chkDX_checkstate":  // DG8MG: Tristate Checkbox for SD2 functionality
+                        chkDX.CheckState = (CheckState)(Enum.Parse(typeof(CheckState), val));
                         break;
                     case "band_160m_index":
                         band_160m_index = Int32.Parse(val);
