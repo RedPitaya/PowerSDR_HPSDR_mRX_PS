@@ -28,7 +28,7 @@
 //=================================================================
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 
 using System.Collections.Generic;
@@ -3368,31 +3368,50 @@ namespace PowerSDR
                 int ozyFWVersion = JanusAudio.getOzyFWVersion();
 
                 // Check which Charly 25 TRX board is present
-                if (penelopeFWVersion >= 128 && penelopeFWVersion <= 129)
+                switch (penelopeFWVersion)
                 {
-                    lblC25TRXPresent.Visible = true;
+                    case 128:
+                    case 129:
+                        lblC25TRXPresent.Visible = true;
 
-                    if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
-                    {
-                        lblC25TRXPresent.Text = "Charly 25LC";                        
-                    }
-                    else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
-                    {
-                        lblC25TRXPresent.Text = "HAMlab 80-10";
-                    }
-                }
-                else if (penelopeFWVersion == 130)
-                {
-                    lblC25TRXPresent.Visible = true;
+                        if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                        {
+                            lblC25TRXPresent.Text = "Charly 25LC";                        
+                        }
+                        else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                        {
+                            lblC25TRXPresent.Text = "HAMlab 80-10";
+                        }
+                        break;
 
-                    if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
-                    {
-                        lblC25TRXPresent.Text = "Charly 25AB";                        
-                    }
-                    else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
-                    {
-                        lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6";
-                    }
+                    case 130:
+                        lblC25TRXPresent.Visible = true;
+
+                        if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                        {
+                            lblC25TRXPresent.Text = "Charly 25AB";                        
+                        }
+                        else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                        {
+                            lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6";
+                        }
+                        break;
+
+                    case 131:
+                        lblC25TRXPresent.Visible = true;
+
+                        if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                        {
+                            lblC25TRXPresent.Text = "Charly 25PP";
+                        }
+                        else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                        {
+                            lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6 PP";
+                        }
+                        break;
+
+                    default:
+                        break;
                 }
 
                 // Check if an audio codec is present
