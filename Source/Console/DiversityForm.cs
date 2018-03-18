@@ -1828,28 +1828,95 @@ namespace PowerSDR
                     DiversityGain = 1;
                 }
 
-                if (Keyboard.IsKeyDown(Keys.ShiftKey))
+                /*
+                if (Keyboard.IsKeyDown(Keys.ControlKey))
                 {
-                    for (current_phase_angle = 0; current_phase_angle <= 180; current_phase_angle += 0.5)
+                    for (current_gain = 0; current_gain <= 1; current_gain += (decimal)0.05)
                     {
-                        DiversityPhase = (decimal)current_phase_angle;
+                        udR.Value = current_gain;
 
-                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-
-                        if (current_signal_strength < minimum_received_signal_strength)
+                        for (current_phase_angle = 0; current_phase_angle < 180; current_phase_angle += 1)
                         {
-                            minimum_received_signal_strength = current_signal_strength;
-                            best_phase_angle = current_phase_angle;
-                        }
+                            DiversityPhase = (decimal)current_phase_angle;
 
-                        this.Update();
+                            Thread.Sleep(50);
+
+                            current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                            if (current_signal_strength < minimum_received_signal_strength)
+                            {
+                                minimum_received_signal_strength = current_signal_strength;
+                                best_phase_angle = current_phase_angle;
+                                best_gain = current_gain;
+                                Update();
+                            }                                                        
+                        }                        
+
+                        for (current_phase_angle = -180; current_phase_angle < 0; current_phase_angle += 1)
+                        {
+                            DiversityPhase = (decimal)current_phase_angle;
+
+                            Thread.Sleep(50);
+
+                            current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                            if (current_signal_strength < minimum_received_signal_strength)
+                            {
+                                minimum_received_signal_strength = current_signal_strength;
+                                best_phase_angle = current_phase_angle;
+                                best_gain = current_gain;
+                                Update();
+                            }
+                        }
                     }
 
-                    Thread.Sleep(100);
+                    if (radioButtonMerc1.Checked)
+                    {
+                        DiversityR2Gain = best_gain;
+                    }
+                    else
+                    {
+                        DiversityGain = best_gain;
+                    }
+                    
+                    DiversityPhase = (decimal)best_phase_angle;
+                }
+                else if (Keyboard.IsKeyDown(Keys.ShiftKey))
+                {
+                    DiversityPhase = 0;
 
-                    for (current_phase_angle = 0; current_phase_angle >= -180; current_phase_angle -= 0.5)
+                    for (current_gain = 0; current_gain <= 1; current_gain += (decimal)0.01)
+                    {
+                        udR.Value = current_gain;
+
+                        Thread.Sleep(5);
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_gain = current_gain;
+                            Update();
+                        }
+                    }
+
+                    if (radioButtonMerc1.Checked)
+                    {
+                        DiversityR2Gain = best_gain;
+                    }
+                    else
+                    {
+                        DiversityGain = best_gain;
+                    }
+
+                    // minimum_received_signal_strength = 0;                    
+
+                    for (current_phase_angle = 0; current_phase_angle < 180; current_phase_angle += 1)
                     {
                         DiversityPhase = (decimal)current_phase_angle;
+
+                        Thread.Sleep(50);
 
                         current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
 
@@ -1857,9 +1924,65 @@ namespace PowerSDR
                         {
                             minimum_received_signal_strength = current_signal_strength;
                             best_phase_angle = current_phase_angle;
+                            Update();
+                        }
+                    }
+
+                    for (current_phase_angle = -180; current_phase_angle < 0; current_phase_angle += 1)
+                    {
+                        DiversityPhase = (decimal)current_phase_angle;
+
+                        Thread.Sleep(50);
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_phase_angle = current_phase_angle;
+                            Update();
+                        }
+                    }
+
+                    DiversityPhase = (decimal)best_phase_angle;
+                }
+                else
+                */
+                {
+                    for (current_phase_angle = 0; current_phase_angle < 180; current_phase_angle += 1)
+                    {
+                        DiversityPhase = (decimal)current_phase_angle;
+
+                        Thread.Sleep(40);
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_phase_angle = current_phase_angle;
+                            
                         }
 
-                        this.Update();
+                        Update();
+                    }
+
+                    for (current_phase_angle = -180; current_phase_angle <= 0; current_phase_angle += 1)
+                    {
+                        DiversityPhase = (decimal)current_phase_angle;
+
+                        Thread.Sleep(40);
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_phase_angle = current_phase_angle;
+                            
+                        }
+
+                        Update();
                     }
 
                     minimum_received_signal_strength = 0;
@@ -1871,16 +1994,19 @@ namespace PowerSDR
                         udR.Value = current_gain;
 
                         Thread.Sleep(5);
+
                         current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
 
                         if (current_signal_strength < minimum_received_signal_strength)
                         {
                             minimum_received_signal_strength = current_signal_strength;
                             best_gain = current_gain;
+                            
                         }
+
+                        Update();
 
                         // System.Console.WriteLine(String.Format("Auto Diversity: Minimum signal strength: {0} / Phase angle: {1} / Current gain: {2} / Best gain: {3}", current_signal_strength, best_phase_angle, current_gain, best_gain));
-                        this.Update();
                     }
 
                     if (radioButtonMerc1.Checked)
@@ -1891,78 +2017,12 @@ namespace PowerSDR
                     {
                         DiversityGain = best_gain;
                     }
-                }
-                else
-                {
-                    DiversityPhase = 0;
-
-                    for (current_gain = 0; current_gain <= 1; current_gain += (decimal)0.01)
-                    {
-                        udR.Value = current_gain;
-
-                        Thread.Sleep(5);
-                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-
-                        if (current_signal_strength < minimum_received_signal_strength)
-                        {
-                            minimum_received_signal_strength = current_signal_strength;
-                            best_gain = current_gain;
-                        }
-                        
-                        this.Update();
-                    }
-
-                    if (radioButtonMerc1.Checked)
-                    {
-                        DiversityR2Gain = best_gain;
-                    }
-                    else
-                    {
-                        DiversityGain = best_gain;
-                    }
-
-                    Thread.Sleep(100);
-                    minimum_received_signal_strength = 0;                    
-
-                    for (current_phase_angle = 0; current_phase_angle <= 180; current_phase_angle += 0.5)
-                    {
-                        DiversityPhase = (decimal)current_phase_angle;
-
-                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-
-                        if (current_signal_strength < minimum_received_signal_strength)
-                        {
-                            minimum_received_signal_strength = current_signal_strength;
-                            best_phase_angle = current_phase_angle;
-                        }
-
-                        this.Update();
-                    }
-
-                    Thread.Sleep(100);
-
-                    for (current_phase_angle = 0; current_phase_angle >= -180; current_phase_angle -= 0.5)
-                    {
-                        DiversityPhase = (decimal)current_phase_angle;
-
-                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-
-                        if (current_signal_strength < minimum_received_signal_strength)
-                        {
-                            minimum_received_signal_strength = current_signal_strength;
-                            best_phase_angle = current_phase_angle;
-                        }
-
-                        this.Update();
-                    }
-
-                    DiversityPhase = (decimal)best_phase_angle;                    
                 }
 
                 System.Console.WriteLine(String.Format("Minimum signal strength: {0} / Phase angle: {1} / Gain: {2}", minimum_received_signal_strength, best_phase_angle, best_gain));
 
                 chkAutoDiversity.Checked = false;
-                this.Update();
+                Update();
             }
             else
             {
