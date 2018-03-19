@@ -25,6 +25,10 @@ by Chris Codella, W2PA, Feb 2017.  Indicated by //-W2PA comment lines.
 
 */
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
+//
+
 using System;
 using System.Threading;
 using System.Collections.Generic; 
@@ -135,6 +139,80 @@ namespace Midi2Cat
 
             return;
         }
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        // Used to get the index of Charly 25 frontpanel
+        public int Charly25FrontpanelIndex()
+        {
+            if (bindings.Count == 0) return -1;
+            int index = -1;
+
+            foreach (var binding in bindings.Values)
+            {
+                if (binding.DeviceName == "Arduino Micro")
+                {
+                    index = binding.DeviceIndex;
+                    break;
+                }
+            }
+            return index;
+        }
+
+        public bool Charly25SendUpdateToMidi(CatCmd cmd, int state)
+		{
+            int index = -1;
+            List<ControllerMapping> mappings = null;
+
+            // Get the MIDI controller index of the Charly 25 frontpanel
+            index = Charly25FrontpanelIndex();
+
+            // If no Charly 25 frontpanel is present, tell the caller that no frontpanel is connected
+            if (index < 0) return false;
+
+            MidiDevice device = bindings[index].Device;
+
+            // Get all button mappings of the Charly 25 frontpanel
+            mappings = DB.Charly25FrontpanelGetButtonMappings();
+
+            // If no mappings are given, return and tell the caller that a frontpanel is connected
+            if (mappings != null)
+            {
+                int midiCtlID = -1;
+
+                // There's a CAT command given which must be updated, so find the related button
+                foreach(ControllerMapping mapping in mappings)
+                {
+                    if (mapping.CatCmd.CatCommandId.ToString() == cmd.ToString())
+                    {
+                        midiCtlID = mapping.MidiControlId;
+                        break;
+                    }
+                }
+
+                // If a mapped button was found continue
+                if (midiCtlID != -1)
+                {
+                    // Check if the button is located on the virtual second level of the frontpanel
+                    if (midiCtlID > 15)
+                    {
+                        midiCtlID -= 16;
+
+                        // Check if the lower LED (virtual second level) must be switched on
+                        if (state > 0)
+                        {
+                            state = 2;
+                        }
+                    }
+
+                    // Update the LEDs of the related button to the new state
+                    device.Charly25FrontpanelUpdateButtonLED(state, midiCtlID);
+                    System.Console.WriteLine("Charly25SendUpdateToMidi was called by CAT command: {0} to set new state: {1} on midiCtlID: {2}", cmd, state, midiCtlID);
+                }
+            }
+            return true;
+        }
+		// DG8MG
 
         public void PL1InitialButtonLights(MidiDevice device)
         {

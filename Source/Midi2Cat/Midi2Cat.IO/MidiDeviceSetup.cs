@@ -172,6 +172,10 @@ namespace Midi2Cat.IO
 
         #endregion
 
+        // DG8MG
+        // Extension for Charly 25 hardware
+        static int savedControlId = 0;
+        // DG8MG
 
         void OnMidiInput(MidiDevice Device, int DeviceIdx, int ControlId, int Data, int Status, int Event, int Channel)
         {
@@ -204,11 +208,28 @@ namespace Midi2Cat.IO
                         CatCmdToUse = (CatCmd)row.Cells[cmdIdx].Value;
                         int ctIdx = mappedCommandsGridView.Columns["controlTypeDataGridViewTextBoxColumn"].Index;
                         ControlTypeToUse = (ControlType)row.Cells[ctIdx].Value;
+
+                        // DG8MG
+                        // Extension for Charly 25 hardware
+                        if (DeviceName == "Arduino Micro")
+                        {
+                            savedControlId = ControlId;
+                        }
+                        // DG8MG
                     }
                 }
 
                 if (tabControl.SelectedTab == mappedControlsTab)
                 {
+                    // DG8MG: Implement me!
+                    // Extension for Charly 25 hardware
+                    // The current action should not be disturbed by another (accidental) hit of a different control
+                    //if (mapInCtrl2CmdPanel.Visible && ControlId != savedControlId)
+                    //{
+                        //return;
+                    //}
+                    // DG8MG
+
                     ControllerMapping mapping = DB.GetMapping(DeviceName, ControlId);
                     if (AddingControl && AddingControlId != ControlId)
                     {

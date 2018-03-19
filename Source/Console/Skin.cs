@@ -27,6 +27,10 @@
 //    USA
 //=================================================================
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
+//
+
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -871,6 +875,16 @@ namespace PowerSDR
             }
 
             SetCheckBoxImageState(ctrl, state);
+
+            // DG8MG
+            // Extension for Charly 25 hardware
+            Console c = Console.getConsole();
+
+            if (c != null && c.HPSDRModelIsCharly25orHAMlab() && c.Charly25FrontpanelPresent && ctrl.ThreeState == false)
+            {
+                c.C25FrontpanelLEDUpdateHandler(ctrl.Name, (ctrl.Checked ? 1 : 0));
+            }
+            // DG8MG
         }
 
         private static void CheckBox_MouseEnter(object sender, EventArgs e)
@@ -891,8 +905,7 @@ namespace PowerSDR
             if (index < 0) return;
             ctrl.BackgroundImage = ctrl.ImageList.Images[index];
         }
-
-#endregion
+        #endregion
 
         #region ComboBox
 
@@ -1278,7 +1291,6 @@ namespace PowerSDR
             if (index < 0) return;
             ctrl.BackgroundImage = ctrl.ImageList.Images[index];
         }
-
         #endregion
 
         #region TextBox

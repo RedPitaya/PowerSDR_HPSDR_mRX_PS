@@ -25,6 +25,10 @@ by Chris Codella, W2PA, Feb 2017.  Indicated by //-W2PA comment lines.
 
 */
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
+//
+
 using Midi2Cat.Data;
 using Midi2Cat.IO;
 using System;
@@ -35,6 +39,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+
+// DG8MG
+// Extension for Charly 25 hardware
+// Also added a reference to the System.Management assembly in project properties of the Midi2Cat project
+using System.Management;
+// DG8MG
 
 namespace Midi2Cat.IO
 {
@@ -609,6 +619,11 @@ namespace Midi2Cat.IO
             {
                 try
                 {
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    Charly25SpecificMidiHandling(ControlId, Data, Event, Channel);
+                    // DG8MG
+
                     ControlId = FixBehringerCtlID(ControlId, Status); //-W2PA Disambiguate messages from Behringer controllers
 
                     onMidiInput(this, DeviceIndex, ControlId, Data, Status, Event, Channel);
@@ -800,6 +815,51 @@ namespace Midi2Cat.IO
             Thread.Sleep(1); //-W2PA This is necessary for the PL-1 slider, which can cause a deluge of messages while also receiving them.
             return;
         }
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        public void Charly25FrontpanelUpdateButtonLED(int n, int inCtlID)  // 0 = off, 1 = upper LED on, 2 = lower LED on, on button whose ID = inCtlID
+        {
+            string cID = inCtlID.ToString("X2");
+            string led;
+            if (n == 0 || n == 1 || n == 2) led = n.ToString("X2"); else led = "00";
+            string knobCmd = "B0" + cID + led;
+            SendMsg(0x01, 0x01, 0xB0, inCtlID, knobCmd);
+            return;
+        }
+
+        public void Charly25SpecificMidiHandling(int ControlID, int Data, int Event, int Channel)
+        {
+            // inDevice_ChannelMessageReceived(int ControlId, int Data, int Status, int Event, int Channel)
+
+            // Checked if the special MIDI message for shuting down the Charly 25 frontend computer system was sent
+            if (DeviceName == "Arduino Micro" && ControlID == 120 && Data == 0 && Event == 11 && Channel == 15)
+            {
+                Debug.WriteLine("### Special MIDI message for shuting down the Charly 25 frontend computer system was sent! ###");
+
+                ManagementBaseObject mboShutdown = null;
+                ManagementClass mcWin32 = new ManagementClass("Win32_OperatingSystem");
+                mcWin32.Get();
+
+                // You can't shutdown without security privileges
+                mcWin32.Scope.Options.EnablePrivileges = true;
+                ManagementBaseObject mboShutdownParams = mcWin32.GetMethodParameters("Win32Shutdown");
+
+                // Flag 1 means we want to shut down the system. Use "2" to reboot.
+                mboShutdownParams["Flags"] = "1";
+                mboShutdownParams["Reserved"] = "0";
+                foreach (ManagementObject manObj in mcWin32.GetInstances())
+                {
+                    mboShutdown = manObj.InvokeMethod("Win32Shutdown", mboShutdownParams, null);
+                }
+            }
+            else
+            {
+                // Do nothing, just return
+                return;
+            }
+        }
+        // DG8MG
 
 
     }

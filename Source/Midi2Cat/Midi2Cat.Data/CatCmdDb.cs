@@ -26,7 +26,7 @@ by Chris Codella, W2PA, Feb 2017.  Indicated by //-W2PA comment lines.
 */
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 
 using Midi2Cat.Helpers;

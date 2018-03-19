@@ -30,7 +30,7 @@
 //
 // SoftRock and HPSDR Modifications Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011 Bill Tracey (kd5tfd)
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 //#define INTERLEAVED
 //#define SPLIT_INTERLEAVED
@@ -39,7 +39,6 @@
 // Modifications to support the Behringer Midi controllers
 // by Chris Codella, W2PA, May 2017.  Indicated by //-W2PA comment lines. 
 // Modifications for using the new database import function.  W2PA, 29 May 2017
-
 
 using Midi2Cat.Data; //-W2PA Necessary for Behringer MIDI changes
 
@@ -649,8 +648,8 @@ namespace PowerSDR
         public DiversityForm diversityForm;
         public RAForm raForm;
 
-      //  public RadioInfo radio_info;
-      //  public ContactInfo contact_info;
+        //  public RadioInfo radio_info;
+        //  public ContactInfo contact_info;
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
@@ -1114,6 +1113,8 @@ namespace PowerSDR
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         public int sdr_app_running = 0;
+        public bool Charly25FrontpanelPresent = false;
+        public bool Charly25FrontpanelTristateButtons = true;
         // DG8MG
 
         #endregion
@@ -1985,7 +1986,14 @@ namespace PowerSDR
 
             Init60mChannels();
             LoadLEDFont();
-            InitConsole();										// Initialize all forms and main variables
+
+            // DG8MG
+            // Extension for Charly 25 hardware
+            // Check if a Charly 25 frontpanel is present
+            Charly25FrontpanelPresent = Midi2Cat.Charly25SendUpdateToMidi(CatCmd.None, 0);
+            // DG8MG
+
+            InitConsole();                                      // Initialize all forms and main variables
 
             Splash.SetStatus("Finished");						// Set progress point
             // Activates double buffering
@@ -10932,7 +10940,16 @@ namespace PowerSDR
                         CheckBoxTS c = (CheckBoxTS)checkbox_list[i];
                         if (c.Name.Equals(name))		// name found
                         {
-                            c.Checked = bool.Parse(val);	// restore value
+                            c.Checked = bool.Parse(val);    // restore value
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent && c.ThreeState == false)
+                            {
+                                C25FrontpanelLEDUpdateHandler(c.Name, (c.Checked ? 1 : 0));
+                            }
+                            // DG8MG
+
                             i = checkbox_list.Count + 1;
                         }
                         if (i == checkbox_list.Count)
@@ -24122,6 +24139,21 @@ namespace PowerSDR
                 midi_messages_per_tune_step = max_midi_messages_per_tune_step;
             else
                 midi_messages_per_tune_step = min_midi_messages_per_tune_step;
+
+            // DG8MG
+			// Extension for Charly 25 hardware
+            if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            {
+                if (midi_messages_per_tune_step == min_midi_messages_per_tune_step)
+                {
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MidiMessagesPerTuneStepToggle, 1);
+                }
+                else
+                {
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MidiMessagesPerTuneStepToggle, 0);
+                }
+            }
+            // DG8MG
         }
 
 
@@ -24167,10 +24199,29 @@ namespace PowerSDR
             get { return cat_nr_status; }
             set
             {
-                if (value == 0)
-                    chkNR.CheckState = CheckState.Unchecked;
-                else if (value == 1)
-                    chkNR.CheckState = CheckState.Checked;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkNR.CheckState == CheckState.Indeterminate)
+                    {
+                        chkNR.CheckState = CheckState.Unchecked;
+                    }
+                    else
+                    {
+                        chkNR.CheckState++;
+                    }
+                }
+                else
+                {
+                    if (value == 0)
+                        chkNR.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkNR.CheckState = CheckState.Checked;
+                }
+                //DG8MG
             }
         }
 
@@ -24180,10 +24231,29 @@ namespace PowerSDR
             get { return cat_nr2_status; }
             set
             {
-                if (value == 0)
-                    chkNR.CheckState = CheckState.Unchecked;
-                else if (value == 1)
-                    chkNR.CheckState = CheckState.Indeterminate;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkNR.CheckState == CheckState.Unchecked)
+                    {
+                        chkNR.CheckState = CheckState.Indeterminate;
+                    }
+                    else
+                    {
+                        chkNR.CheckState--;
+                    }
+                }
+                else
+                {
+                    if (value == 0)
+                        chkNR.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkNR.CheckState = CheckState.Indeterminate;
+                }
+                // DG8MG
             }
         }
 
@@ -24193,10 +24263,29 @@ namespace PowerSDR
             get { return cat_rx2_nr_status; }
             set
             {
-                if (value == 0)
-                    chkRX2NR.CheckState = CheckState.Unchecked;
-                else if (value == 1)
-                    chkRX2NR.CheckState = CheckState.Checked;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkRX2NR.CheckState == CheckState.Indeterminate)
+                    {
+                        chkRX2NR.CheckState = CheckState.Unchecked;
+                    }
+                    else
+                    {
+                        chkRX2NR.CheckState++;
+                    }
+                }
+                else
+                {
+                    if (value == 0)
+                        chkRX2NR.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkRX2NR.CheckState = CheckState.Checked;
+                }
+                // DG8MG
             }
         }
 
@@ -24206,10 +24295,29 @@ namespace PowerSDR
             get { return cat_rx2_nr2_status; }
             set
             {
-                if (value == 0)
-                    chkRX2NR.CheckState = CheckState.Unchecked;
-                else if (value == 1)
-                    chkRX2NR.CheckState = CheckState.Indeterminate;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkRX2NR.CheckState == CheckState.Unchecked)
+                    {
+                        chkRX2NR.CheckState = CheckState.Indeterminate;
+                    }
+                    else
+                    {
+                        chkRX2NR.CheckState--;
+                    }
+                }
+                else
+                {
+                    if (value == 0)
+                        chkRX2NR.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkRX2NR.CheckState = CheckState.Indeterminate;
+                }
+                // DG8MG
             }
         }
 
@@ -24234,14 +24342,33 @@ namespace PowerSDR
             get { return cat_nb1_status; }
             set
             {
-                //if (value == 0)
-                //    chkNB.Checked = false;
-                //else if (value == 1)
-                //    chkNB.Checked = true;
-                if (value == 0)
-                    chkNB.CheckState = CheckState.Unchecked;
-                else if (value == 1)
-                    chkNB.CheckState = CheckState.Checked;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkNB.CheckState == CheckState.Indeterminate)
+                    {
+                        chkNB.CheckState = CheckState.Unchecked;
+                    }
+                    else
+                    {
+                        chkNB.CheckState++;
+                    }
+                }
+                else
+                {
+                    //if (value == 0)
+                    //    chkNB.Checked = false;
+                    //else if (value == 1)
+                    //    chkNB.Checked = true;
+                    if (value == 0)
+                        chkNB.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkNB.CheckState = CheckState.Checked;
+                }
+                // DG8MG
             }
         }
 
@@ -24252,14 +24379,33 @@ namespace PowerSDR
             get { return cat_nb2_status; }
             set
             {
-                //if (value == 0)
-                //    chkDSPNB2.Checked = false;
-                //else if (value == 1)
-                //    chkDSPNB2.Checked = true;
-                if (value == 0)
-                    chkNB.CheckState = CheckState.Unchecked;
-                else if (value == 1)
-                    chkNB.CheckState = CheckState.Indeterminate;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkNB.CheckState == CheckState.Unchecked)
+                    {
+                        chkNB.CheckState = CheckState.Indeterminate;
+                    }
+                    else
+                    {
+                        chkNB.CheckState--;
+                    }
+                }
+                else
+                {
+                    //if (value == 0)
+                    //    chkDSPNB2.Checked = false;
+                    //else if (value == 1)
+                    //    chkDSPNB2.Checked = true;
+                    if (value == 0)
+                        chkNB.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkNB.CheckState = CheckState.Indeterminate;
+                }
+                // DG8MG
             }
         }
 
@@ -24273,14 +24419,33 @@ namespace PowerSDR
             }
             set
             {
-                //if (value == 0)
-                //    chkRX2NB.Checked = false;
-                //else
-                //    chkRX2NB.Checked = true;
-                if (value == 0)
-                    chkRX2NB.CheckState = CheckState.Unchecked;
-                else if (value == 1)
-                    chkRX2NB.CheckState = CheckState.Checked;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkRX2NB.CheckState == CheckState.Indeterminate)
+                    {
+                        chkRX2NB.CheckState = CheckState.Unchecked;
+                    }
+                    else
+                    {
+                        chkRX2NB.CheckState++;
+                    }
+                }
+                else
+                {
+                    //if (value == 0)
+                    //    chkRX2NB.Checked = false;
+                    //else
+                    //    chkRX2NB.Checked = true;
+                    if (value == 0)
+                        chkRX2NB.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkRX2NB.CheckState = CheckState.Checked;
+                }
+                // DG8MG
             }
         }
 
@@ -24460,10 +24625,36 @@ namespace PowerSDR
             }
             set
             {
-                if (value == 0)
-                    chkRX2NB2.Checked = false;
+                // DG8MG: Test me!
+                // Extension for the Charly 25 hardware
+                // Check if the tristate button flag for the Charly 25 frontpanel is set
+                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                {
+                    // Perform a round robin shift of the button state
+                    if (chkRX2NB.CheckState == CheckState.Unchecked)
+                    {
+                        chkRX2NB.CheckState = CheckState.Indeterminate;
+                    }
+                    else
+                    {
+                        chkRX2NB.CheckState--;
+                    }
+                }
                 else
-                    chkRX2NB2.Checked = true;
+                {
+                    // DG8MG: Corrected mapping, old incorrect version below
+                    if (value == 0)
+                        chkRX2NB.CheckState = CheckState.Unchecked;
+                    else if (value == 1)
+                        chkRX2NB.CheckState = CheckState.Indeterminate;
+	                /*
+                    if (value == 0)
+                        chkRX2NB2.Checked = false;
+                    else
+                        chkRX2NB2.Checked = true;
+                    */
+                }
+                // DG8MG
             }
         }
 
@@ -45322,6 +45513,15 @@ namespace PowerSDR
             if (sender == null) return;
             if (sender.GetType() != typeof(RadioButtonTS)) return;
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
+
+            // DG8MG
+            // Extension for Charly 25 hardware
+            if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            {
+                C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
+            }
+            // DG8MG
+
             if (!radioBtnTS.Checked) return;
 
             // DG8MG
@@ -49104,6 +49304,15 @@ namespace PowerSDR
             if (sender == null) return;
             if (sender.GetType() != typeof(RadioButtonTS)) return;
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
+
+            // DG8MG
+            // Extension for Charly 25 hardware
+            if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            {
+                C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
+            }
+            // DG8MG
+
             if (!radioBtnTS.Checked) return;
             string radiobut = ((RadioButtonTS)sender).Text;
 
@@ -50557,6 +50766,19 @@ namespace PowerSDR
 
                 if (b)
                 {
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        // Turn off the LED on the old band button
+                        char[] charsToTrim = { 'B', 'M' };
+                        C25FrontpanelLEDUpdateHandler(RX2Band.ToString().Trim(charsToTrim) + "m", 0);
+
+                        // Turn on the LED on the new band button
+                        C25FrontpanelLEDUpdateHandler(comboRX2Band.Text, 1);
+                    }
+                    // DG8MG
+
                     VFOBFreq = freq;
                     RX2DSPMode = (DSPMode)Enum.Parse(typeof(DSPMode), mode);
                     VFOBFreq = freq;
@@ -53762,6 +53984,15 @@ namespace PowerSDR
             if (sender == null) return;
             if (sender.GetType() != typeof(RadioButtonTS)) return;
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
+            
+            // DG8MG
+            // Extension for Charly 25 hardware
+            if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            {
+                C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
+            }
+            // DG8MG
+
             if (!radioBtnTS.Checked) return;
 
             bandtoolStripMenuItem1.Checked = radBand160.Checked;
@@ -54107,7 +54338,17 @@ namespace PowerSDR
                     cat_nr2_status = 0;
                     cat_nr_status = 1;
                     chkNR.Text = "NR";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware                   
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Indeterminate: // NR2
                     radio.GetDSPRX(0, 0).NoiseReduction = false;
                     radio.GetDSPRX(0, 1).NoiseReduction = false;
@@ -54118,7 +54359,17 @@ namespace PowerSDR
                     cat_nr_status = 0;
                     cat_nr2_status = 1;
                     chkNR.Text = "NR2";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Unchecked: // all off
                     radio.GetDSPRX(0, 0).NoiseReduction = false;
                     radio.GetDSPRX(0, 1).NoiseReduction = false;
@@ -54129,8 +54380,16 @@ namespace PowerSDR
                     cat_nr_status = 0;
                     cat_nr2_status = 0;
                     chkNR.Text = "NR";
-                    break;
 
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
+                    }
+                    // DG8MG
+                    break;
             }
         }
 
@@ -54148,7 +54407,17 @@ namespace PowerSDR
                     cat_rx2_nr2_status = 0;
                     cat_rx2_nr_status = 1;
                     chkRX2NR.Text = "NR";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Indeterminate: // NR2
                     radio.GetDSPRX(1, 0).RXANR2Run = 1;
                     radio.GetDSPRX(1, 1).RXANR2Run = 1;
@@ -54159,7 +54428,17 @@ namespace PowerSDR
                     cat_rx2_nr_status = 0;
                     cat_rx2_nr2_status = 1;
                     chkRX2NR.Text = "NR2";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Unchecked: // all off
                     radio.GetDSPRX(1, 0).NoiseReduction = false;
                     radio.GetDSPRX(1, 1).NoiseReduction = false;
@@ -54170,8 +54449,16 @@ namespace PowerSDR
                     cat_rx2_nr_status = 0;
                     cat_rx2_nr2_status = 0;
                     chkRX2NR.Text = "NR";
-                    break;
 
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
+                    }
+                    // DG8MG
+                    break;
             }
         }
 
@@ -54187,7 +54474,17 @@ namespace PowerSDR
                     cat_nb1_status = 1;
                     cat_nb2_status = 0;
                     chkNB.Text = "NB";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Indeterminate: // NB2
                     specRX.GetSpecRX(0).NBOn = false;
                     specRX.GetSpecRX(0).NB2On = true;
@@ -54196,7 +54493,17 @@ namespace PowerSDR
                     cat_nb1_status = 0;
                     cat_nb2_status = 1;
                     chkNB.Text = "NB2";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Unchecked: // all off                    
                     specRX.GetSpecRX(0).NBOn = false;
                     specRX.GetSpecRX(0).NB2On = false;
@@ -54205,10 +54512,17 @@ namespace PowerSDR
                     cat_nb1_status = 0;
                     cat_nb2_status = 0;
                     chkNB.Text = "NB";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
+                    }
+                    // DG8MG
                     break;
-
             }
-
         }
 
         private void chkRX2NB_CheckStateChanged(object sender, EventArgs e)
@@ -54223,7 +54537,17 @@ namespace PowerSDR
                     cat_rx2nb1_status = 1;
                     cat_rx2nb2_status = 0;
                     chkRX2NB.Text = "NB";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Indeterminate: // NB2
                     specRX.GetSpecRX(1).NBOn = false;
                     specRX.GetSpecRX(1).NB2On = true;
@@ -54232,7 +54556,17 @@ namespace PowerSDR
                     cat_rx2nb1_status = 0;
                     cat_rx2nb2_status = 1;
                     chkRX2NB.Text = "NB2";
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
+                    }
+                    // DG8MG
                     break;
+
                 case CheckState.Unchecked: // all off                    
                     specRX.GetSpecRX(1).NBOn = false;
                     specRX.GetSpecRX(1).NB2On = false;
@@ -54241,8 +54575,16 @@ namespace PowerSDR
                     cat_rx2nb1_status = 0;
                     cat_rx2nb2_status = 0;
                     chkRX2NB.Text = "NB";
-                    break;
 
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    {
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
+                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
+                    }
+                    // DG8MG
+                    break;
             }
         }
 
@@ -54525,6 +54867,350 @@ namespace PowerSDR
             else
             {
                 diversityForm.Close();
+            }
+        }
+
+        // Handler to check the current state of a button on the PowerSDR console and update the corresponding LED on the Charly 25 frontpanel accordingly
+        public void C25FrontpanelLEDUpdateHandler(string senderName, int state)
+        {
+            // DEBUG
+            System.Console.WriteLine("Charly 25 frontpanel handler was called by sender: {0} to set new state: {1}", senderName, state);
+
+            // Branch based on the coresponding sender
+            switch (senderName)
+            {
+                // Radio buttons for the different bands of RX1 start here
+                case "radBand160":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band160m, state);
+                    break;
+
+                case "radBand80":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band80m, state);
+                    break;
+
+                case "radBand60":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band60m, state);
+                    break;
+
+                case "radBand40":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band40m, state);
+                    break;
+
+                case "radBand30":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band30m, state);
+                    break;
+
+                case "radBand20":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band20m, state);
+                    break;
+
+                case "radBand17":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band17m, state);
+                    break;
+
+                case "radBand15":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band15m, state);
+                    break;
+
+                case "radBand12":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band12m, state);
+                    break;
+
+                case "radBand10":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band10m, state);
+                    break;
+
+                case "radBand6":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band6m, state);
+                    break;
+
+                case "radBand2":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band2m, state);
+                    break;
+
+
+                // ComboBox items for the different bands of RX2 start here
+                case "160m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band160mRX2, state);
+                    break;
+
+                case "80m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band80mRX2, state);
+                    break;
+
+                case "60m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band60mRX2, state);
+                    break;
+
+                case "40m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band40mRX2, state);
+                    break;
+
+                case "30m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band30mRX2, state);
+                    break;
+
+                case "20m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band20mRX2, state);
+                    break;
+
+                case "17m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band17mRX2, state);
+                    break;
+
+                case "15m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band15mRX2, state);
+                    break;
+
+                case "12m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band12mRX2, state);
+                    break;
+
+                case "10m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band10mRX2, state);
+                    break;
+
+                case "6m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band6mRX2, state);
+                    break;
+
+                case "2m":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band2mRX2, state);
+                    break;
+
+
+                // Radio buttons for the different modes of RX1 start here
+                case "radModeLSB":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeLSB, state);
+                    break;
+
+                case "radModeUSB":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeUSB, state);
+                    break;
+
+                case "radModeDSB":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDSB, state);
+                    break;
+
+                case "radModeCWL":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWL, state);
+                    break;
+
+                case "radModeCWU":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWU, state);
+                    break;
+
+                case "radModeFMN":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeFM, state);
+                    break;
+
+                case "radModeAM":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeAM, state);
+                    break;
+
+                case "radModeSAM":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSAM, state);
+                    break;
+
+                case "radModeSPEC":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSPEC, state);
+                    break;
+
+                case "radModeDIGL":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGL, state);
+                    break;
+
+                case "radModeDIGU":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGU, state);
+                    break;
+
+                case "radModeDRM":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDRM, state);
+                    break;
+
+
+                // Radio buttons for the different modes of RX2 start here
+                // Not implemented yet due to missing CAT commands
+                /*
+                case "radRX2ModeLSB":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeLSB, state);
+                    break;
+
+                case "radRX2ModeUSB":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeUSB, state);
+                    break;
+
+                case "radRX2ModeDSB":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDSB, state);
+                    break;
+
+                case "radRX2ModeCWL":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWL, state);
+                    break;
+
+                case "radRX2ModeCWU":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWU, state);
+                    break;
+
+                case "radRX2ModeFMN":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeFM, state);
+                    break;
+
+                case "radRX2ModeAM":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeAM, state);
+                    break;
+
+                case "radRX2ModeSAM":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSAM, state);
+                    break;
+
+                case "radRX2ModeSPEC":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSPEC, state);
+                    break;
+
+                case "radRX2ModeDIGL":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGL, state);
+                    break;
+
+                case "radRX2ModeDIGU":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGU, state);
+                    break;
+
+                case "radRX2ModeDRM":
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDRM, state);
+                    break;
+                */
+
+
+                // Checkboxes for the different functions start here
+                case "chkVFOSplit":  // Split
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SplitOnOff, state);
+                    break;
+
+                case "chkRIT":  // RIT
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.RitOnOff, state);
+                    break;
+
+                case "chkXIT":  // XIT
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.XitOnOff, state);
+                    break;
+
+                case "chkEnableMultiRX":  // MultiRx
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MultiRxOnOff, state);
+                    break;
+
+                case "chkVFOSync":  // VFO Sync
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VfoSyncOnOff, state);
+                    break;
+
+                case "chkVFOLock":  // VFO Lock
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.LockVFOOnOff, state);
+                    break;
+
+                case "chkMOX":  // MOX
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MOXOnOff, state);
+                    break;
+
+                case "chkVOX":  // VOX
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VOXOnOff, state);
+                    break;
+
+                case "chkMUT":  // Mute
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MuteOnOff, state);
+                    break;
+
+                case "chkANF":  // ANF
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.AutoNotchOnOff, state);
+                    break;
+
+                case "chkBIN":  // BIN
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.BinauralOnOff, state);
+                    break;
+
+                case "chkPower":  // Power
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.StartOnOff, state);
+                    break;
+
+                case "chkTUN":  // TUN
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.TunerOnOff, state);
+                    break;
+
+                case "chkCPDR":  // COMP
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.CompanderOnOff, state);
+                    break;
+
+                case "chkDX":  // Phone DX On/Off
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DXLevel, state);
+                    // TODO: TriState Button!!!
+                    break;
+
+                case "chkNoiseGate":  // DEXP
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DEXPOnOff, state);
+                    break;
+
+                case "chkRX2":  // RX2 On/Off
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.RX2OnOff, state);
+                    break;
+
+                case "chkRXEQ":  // Enable Rx EQ
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.RXEQOnOff, state);
+                    break;
+
+                case "chkTXEQ":  // Enable Tx EQ
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.TXEQOnOff, state);
+                    break;
+
+                case "chkSquelch":  // Squelch
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SquelchOnOff, state);
+                    break;
+
+                case "chkDSPNB2":  // Spectral NB
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SpectralNoiseBlankerOnOff, state);
+                    break;
+
+                case "chkRX2NB2":  // RX2 Spectral NB
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SpectralNoiseBlankerRx2OnOff, state);
+                    break;
+
+                case "chkDisplayAVG":  // AVG
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DisplayAverage, state);
+                    break;
+
+                case "chkDisplayPeak":  // Peak
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DisplayPeak, state);
+                    break;
+
+                case "chkShowTXFilter":  // Show TX Filter
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DisplayTxFilter, state);
+                    break;
+
+                case "chkMON":  // MON
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MONOnOff, state);
+                    break;
+
+                case "chkVAC1":  // VAC On/Off
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VACOnOff, state);
+                    break;
+
+                case "chkVAC2":  // VAC2 On/Off
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VAC2OnOff, state);
+                    break;
+
+                case "chkFWCATU":  // Click Tune On/Off
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.CTunOnOff, state);
+                    break;
+
+                case "chkRX2Mute":  // Mute RX2
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MuteRX2OnOff, state);
+                    break;
+
+                case "chkCWAPFEnabled":  // Audio Peek Filter On/Off
+                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.APF_OnOff, state);
+                    break;
+
+                default:  // Handle all other checkboxes
+                    System.Console.WriteLine("Charly 25 frontpanel handler was called by unhandled sender: {0}", senderName);
+                    break;
             }
         }
         // DG8MG

@@ -25,6 +25,10 @@ by Chris Codella, W2PA, Feb 2017.  Indicated by //-W2PA comment lines.
 
 */
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
+//
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -236,6 +240,26 @@ namespace Midi2Cat.Data
             }
             return mappings;
         }
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        public List<ControllerMapping> Charly25FrontpanelGetButtonMappings()
+        {
+            string midiDeviceName = "Arduino Micro";
+            List<ControllerMapping> mappings = new List<ControllerMapping>();
+            DataTable t = GetTable(midiDeviceName);
+            for (int i = 0; i < t.Rows.Count; i++)
+            {
+                ControllerMapping mapping = GetRow(midiDeviceName, i);
+                mapping.CatCmd = CatCmdDb.Get(mapping.CatCmd.CatCommandId);
+                if ((mapping.CatCmd.ControlType == ControlType.Button) && (mapping.CatCmd.CatCommandId != CatCmd.None) && (mapping.MidiControlId < 120))
+                {
+                    mappings.Add(mapping);
+                }
+            }
+            return mappings;
+        }
+        // DG8MG
 
         public ControllerMapping GetMapping(string MidiDeviceName, int MidiControlId)
         {

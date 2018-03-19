@@ -26,7 +26,7 @@ by Chris Codella, W2PA, April 2017.  Indicated by //-W2PA comment lines.
 */
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 
 using Midi2Cat;
@@ -87,6 +87,14 @@ namespace PowerSDR
             return;
         }
 
+        // DG8MG
+        // Extension for Charly 25 hardware
+        // Use the MidiMessageManager to send an update to the LEDs on the Charly 25 frontpanel
+        public bool Charly25SendUpdateToMidi(CatCmd cmd, int state)
+        {
+            return midiManager.Charly25SendUpdateToMidi(cmd, state);
+        }
+        // DG8MG
         #endregion
 
         #region Execute Command
@@ -1699,7 +1707,10 @@ namespace PowerSDR
                 parser.nGet = 0;
                 parser.nSet = 1;
 
-                int NRState = Convert.ToInt16(commands.ZZNS(""));
+                // DG8MG: Correction of the NRState query, replaced ZZNS by ZZNV. Old incorrect version below.
+                int NRState = Convert.ToInt16(commands.ZZNV(""));
+                // int NRState = Convert.ToInt16(commands.ZZNS(""));
+                // DG8MG
 
                 if (NRState == 0)
                 {
@@ -1722,7 +1733,10 @@ namespace PowerSDR
                 parser.nGet = 0;
                 parser.nSet = 1;
 
-                int NRState = Convert.ToInt16(commands.ZZNS(""));
+                // DG8MG: Correction of the NRState query, replaced ZZNS by ZZNW. Old incorrect version below.
+                int NRState = Convert.ToInt16(commands.ZZNW(""));
+                // int NRState = Convert.ToInt16(commands.ZZNS(""));
+                // DG8MG
 
                 if (NRState == 0)
                 {
@@ -4897,6 +4911,11 @@ namespace PowerSDR
             {
                 MidiDevice.VFOSelect = 2;
                 device.SetPL1ButtonLight(0);
+
+                // DG8MG: Extension for Charly 25 hardware
+                Charly25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 1);
+                // DG8MG
+
                 return;
             }
             else if (MidiDevice.VFOSelect == 2)
@@ -4908,6 +4927,10 @@ namespace PowerSDR
             {
                 MidiDevice.VFOSelect = 0;
                 device.SetPL1ButtonLight(1);
+
+                // DG8MG: Extension for Charly 25 hardware
+                Charly25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 0);
+                // DG8MG
             }
             return;
         }
