@@ -27,7 +27,7 @@
 //=================================================================
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 
 using System;
@@ -51,7 +51,7 @@ namespace PowerSDR
         public const string BUILD = " - Release Version: ";
 #endif
         public const string BUILD_NAME = "mRX PS";
-        public const string BUILD_EDITION = " - Charly 25 / HAMlab / STEMlab SDR Edition";
+        public const string BUILD_EDITION = " - Charly 25 / HAMlab / STEMlab SDR Edition based on OpenHPSDR-PowerSDR v3.4.9";
 
 #if TRACE
         public const string TRACE = " with TRACE output";

@@ -1,4 +1,4 @@
-# PowerSDR_mRX_PS 3.4.7.0 December 22, 2017
+# PowerSDR_mRX_PS 3.4.9 March 19, 2018
 
 
 # 3.2.22 (2015-1-24) 
@@ -346,3 +346,72 @@ Fixed a bug resulting in incorrect vertical display scale in transmit under cert
 - Control added to force the LPF to the 6m/ByPass posistion during receive. Filters must be under manual control to use. (Setup=>General=>Ant/Filters=>LPF, HPF/LPF, BPF1)
 - VFO Lock correctly locks VFOA and VFOB.
 - TX Amplitude scaling added to waterfall display. (Setup=>Display=>TX)
+
+# 3.4.8 (2018-3-17)
+- Creates new wisdom file for each folder when using the -datapath command
+- Bug fix for Behringer mini-wheels mapping issue when mapping AGC gain
+- Added support for mapping drive level to a Behringer mini-wheel
+- Added Panafall display for RX2
+- Corrected a resizing problem when enabling RX2
+- NB/NB2 is turned OFF while transmitting when DUP is enabled
+- Added 2kHz Tune Step
+- Changed ANF behavior so that it is disabled when in CW mode
+- Removed the 750Hz CW filter and added a 150Hz CW filter (requires database reset to update)
+- Added an Audio Adaptive Variable Resampler with monitor tools
+- Increased display buffer to support larger than 4k displays
+- Added separate VFO Lock controls for VFOA and VFOB. New VFO Lock button will require additional skin files to operate correctly. Skins packaged with OpenHPSDR/PowerSDR will contain the required files. You may need to create them for other skin packages.
+- Added a dropped packet ("OOOPs") counter that measures the number of dropped receive packets from radio to PC. This may be useful in identifying problems with network setup.
+- fixed bug in CAT Command ZZPT## to change TXProfiles in different modes
+- Updated CAT Commands documentation. Found in the Documentation/Radio folder
+
+MIDI interface:
+Bug fix for Behringer mini-wheels when mapping to AGC gain.
+Added support for mapping drive level to a Behringer mini-wheel.
+Added individual button mappings for VFOA and VFOB.
+Changed previous VFO Lock function to a round-robin toggle: Unlocked, VFOA locked, VFOA&B locked, Unlocked.
+
+CAT interface:
+Added two functions to individually lock the two VFOs:
+- ZZUX and ZZUY locks/unlocks VFOA and VFOB, respectively. 1=lock, 0=unlock
+- ZZVL now implements a round-robin toggle for VFO locks: Unlocked, VFOA locked, VFOA&B locked, Unlocked.
+
+Added the following new functions:
+- ZZUS initiates a PureSignal single cal function
+- ZZUT turns a two-tone test on or off (1 or 0)
+- ZZGU sets RX2 AGC speed
+- ZZAF,ZZAE sets VFOA N tune steps up,down respectively
+- ZZBF,ZZBE sets VFOB N tune steps up,down respectively
+- ZZXH sets VOX delay
+- ZZCN/CO sets VFO A/B CTUN state
+- ZZNU sets RX2 ANF state
+- ZZXN gets combined RX1 status
+- ZZXO gets combined RX2 status
+- ZZXV gets combined VFO status
+
+# Adaptive Variable Resampler:
+
+This release of PowerSDR mRX introduces an optional Adaptive Variable Resampler option for VAC audio. The implementation is a true resampler and not just a data "smoother".
+
+Since both the radio and the PC use different clocks to obtain their nominal 48KHz audio sampling rate, the rate in the radio will not exactly match the rate in the PC. This sample rate mismatch leads inevitably to audio buffer under- and over-runs that often result in audible glitches in the VAC audio streams, both transmit and receive. The resampler acts to transform audio data across the radio clock domain and the PC clock domain, thereby substantially eliminating these glitches. The resampler also works for those who are using the VAC IQ data output at all IQ sample rates, and spur levels will be extremely low even at 192KHz.
+ 
+To use the resampler, first be sure to have achieved a reasonably stable and well performing VAC configuration without the resampler active. Then check the "Resampler" checkbox in Setup > Audio > VAC1 (and/or VAC2 if using VAC2). You will probably see the under- and -over-flow counters start counting. It then takes a few seconds for the resampler algorithm to begin making estimates of the sample rate mismatch. Once the initial estimate of sample rate mismatch is obtained, the Var Ratio display will begin to show the measured ratio between the PC and radio audio sample rates. This will update in a continuous fashion and usually does not remain static, as the sample clocks do drift over time, over temperature, etc.
+ 
+At this point you should use the mouse to hover over the various displays and controls, read the tool-tips that pop up over each one, and thereby become more familiar with them. The "Force" controls can be left alone, they are only there for diagnostic purposes..
+ 
+After the resampler has become stable, which should occur in about ten seconds or so, you can click on the various counters to reset them to zero. This will allow you to more easily monitor resampler performance. Resampler performance depends quite heavily on the performance of your particular PC and your particular VAC configuration. Some people obtain zero under- and over-runs in both the transmit and receive directions for many hours, others see a steady but slow trickle that racks up to a few tens of them per hour.
+ 
+A measure of latency can also be obtained by noting the size of the ringbuffer shown in the diagnostic display. Smaller buffer size equates to less latency. The size of the ringbuffer is determined by an algorithm that considers primary buffer size, VAC buffer size, VAC sample rate, and VAC Buffer Latency settings. The smallest possible ringbuffer on the receive side is 512, the smallest on the transmit side is 1024.
+ 
+By using the monitoring features in the resampler you can work to optimize your primary and VAC buffer settings to achieve the fewest under- and over-runs, as well as the lowest latency. A general procedure is suggested as follows, although this is by no means the only method. This is also a useful procedure if you are having problems getting the resampler to converge, i.e. you are experiencing out of control under- and over-runs.
+ 
+1. Start with a large primary buffer size.
+2. Start with Buffer Latency set to 0mS & "Manual".
+3. Start with VAC buffer size set to match your audio interface buffer size (if you know it, otherwise start with a large value).
+ 
+If you get poor audio quality, try un-checking and checking the Buffer Latency Manual button a few times.
+ 
+4. If you absolutely can't get it to run, let Buffer Latency go back to automatic. If that works, you can then try various values for manual buffer latency until you find the smallest one that works for you.
+5. Once things seem stable, you can experiment with reducing the primary buffer size in order to obtain smaller ringbuffer sizes while still maintaining good audio quality.
+
+# 3.4.9 (2018-3-19)
+- Bug fix for manually entering frequency

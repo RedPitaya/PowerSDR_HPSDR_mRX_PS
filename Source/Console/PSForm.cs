@@ -1,5 +1,5 @@
 ﻿//
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 
 using System;
@@ -380,6 +380,11 @@ namespace PowerSDR
             // if (!console.initializing) console.PSAutoCal = autoON;
         }
 
+        //-W2PA Adds capability for CAT control via console
+        public void SingleCalrun()
+        {
+            btnPSCalibrate.PerformClick();
+        }
         private void btnPSReset_Click(object sender, EventArgs e)
         {
             ResetPureSignal();

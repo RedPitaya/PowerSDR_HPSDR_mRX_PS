@@ -28,7 +28,7 @@
 //=================================================================
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016, 2017 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
 //
 
 namespace PowerSDR
@@ -93,17 +93,10 @@ namespace PowerSDR
 
 		public static void CreateDSP()
 		{
-            String app_data_path = "";
-
-            // DG8MG
-            // Changed path to avoid incompatibility with other PowerSDR versions
-            // app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            // + "\\FlexRadio Systems\\PowerSDR mRX\\wisdom";
-            // + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
-            app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
-            // DG8MG
-
+            //String app_data_path = "";
+            //app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            //    //+ "\\FlexRadio Systems\\PowerSDR mRX\\wisdom";
+            //    + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
             wdsp.WDSPwisdom(app_data_path);
             wdsp.OpenChannel(wdsp.id(0, 0), 1024, 4096, 192000, 48000, 48000, 0, 0, 0.010, 0.025, 0.000, 0.010, 0);
             wdsp.OpenChannel(wdsp.id(0, 1), 1024, 4096, 192000, 48000, 48000, 0, 0, 0.010, 0.025, 0.000, 0.010, 0);
@@ -177,6 +170,11 @@ namespace PowerSDR
                 wdsp.SetEERSamplerate(0, 48000);
 			}		
 		}
+        private static string app_data_path = "";
+        public static string AppDataPath
+        {
+            set { app_data_path = value; }
+        }
 
 		//public static void SetThreadNumber(uint num)
 		//{
