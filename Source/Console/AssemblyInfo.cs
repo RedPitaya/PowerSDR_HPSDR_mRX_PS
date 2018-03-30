@@ -67,10 +67,10 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("3.4.9.0")]
+[assembly: AssemblyVersion("3.4.9")]
 
 // DG8MG
-[assembly: AssemblyInformationalVersion("1.{c:ymd-}_{chash:7}")]
+[assembly: AssemblyInformationalVersion("{c:ymd.}_{chash:7}")]
 // DG8MG
 
 //
@@ -101,5 +101,3 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersion("3.4.9.0")]
-

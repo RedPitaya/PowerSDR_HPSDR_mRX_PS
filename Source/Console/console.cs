@@ -1774,26 +1774,26 @@ namespace PowerSDR
                     }
                     else
                     {
-                    string DBVersion = "";
-                    string version = getVersion();
-                    ArrayList a = DB.GetVars("State");
-                    a.Sort();
-                    foreach (string s in a)
-                    {
-                        string[] vals = s.Split('/');
-                        string name = vals[0];
-                        string val = vals[1];
-
-                        switch (name)
+                        string DBVersion = "";
+                        string version = getVersion();
+                        ArrayList a = DB.GetVars("State");
+                        a.Sort();
+                        foreach (string s in a)
                         {
-                            case "VersionNumber":
-                                DBVersion = val;
-                                break;
+                            string[] vals = s.Split('/');
+                            string name = vals[0];
+                            string val = vals[1];
+
+                            switch (name)
+                            {
+                                case "VersionNumber":
+                                    DBVersion = val;
+                                    break;
+                            }
                         }
-                    }
 
                         if (DBVersion != "" && DBVersion != version || File.Exists(autoMergeFileName)) // Back-level DB detected
-                    {
+                        {
                             //-W2PA Automatically reset, shut down, and import the old database file if possible
 
                             if (File.Exists(autoMergeFileName)) // We have already reset and are ready for trying a merge
@@ -1822,16 +1822,16 @@ namespace PowerSDR
                                 resetForAutoMerge = false;
                             }
                             else  // Not yet ready for trying an automatic merge - get set up for it
-                        {
+                            {
                                 // Archive the old database file and reset database
-                            string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                            string datetime = DateTime.Now.ToShortDateString().Replace("/", "-") + "_" +
+                                string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                                string datetime = DateTime.Now.ToShortDateString().Replace("/", "-") + "_" +
                                 DateTime.Now.ToShortTimeString().Replace(":", ".");
 
-                            string file = db_file_name.Substring(db_file_name.LastIndexOf("\\") + 1);
-                            file = file.Substring(0, file.Length - 4);
-                            if (!Directory.Exists(AppDataPath + "\\DB_Archive\\"))
-                                Directory.CreateDirectory(AppDataPath + "\\DB_Archive\\");
+                                string file = db_file_name.Substring(db_file_name.LastIndexOf("\\") + 1);
+                                file = file.Substring(0, file.Length - 4);
+                                if (!Directory.Exists(AppDataPath + "\\DB_Archive\\"))
+                                    Directory.CreateDirectory(AppDataPath + "\\DB_Archive\\");
                                 File.Copy(db_file_name, AppDataPath + "\\DB_Archive\\PowerSDR_" + file + "_" + datetime + ".xml", true);
                                 File.Copy(db_file_name, autoMergeFileName, true); // After reset and restart, this will be a flag to attempt to merge
                                 File.Delete(db_file_name);
