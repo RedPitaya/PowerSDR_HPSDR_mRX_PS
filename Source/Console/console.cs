@@ -695,7 +695,7 @@ namespace PowerSDR
         public Boolean resetForAutoMerge = false;
 
         private bool run_setup_wizard;						// Used to run the wizard the first time the software comes up
-        private bool show_alpha_warning = false;
+        private bool show_alpha_warning = true;
         //   private bool show_mobile_warning = false;
 
         private int band_160m_index;						// These band indexes are used to keep track of which
@@ -10945,6 +10945,13 @@ namespace PowerSDR
                     case "EthernetHostIPAddress":
                         JanusAudio.EthernetHostIPAddress = val;
                         break;
+
+                    // DG8MG
+                    // Extension for Charly 25 and HAMlab hardware
+                    case "show_alpha_warning":
+                        show_alpha_warning = bool.Parse(val);
+                        break;
+                    // DG8MG
                 }
             }
 
@@ -52743,6 +52750,14 @@ namespace PowerSDR
 
         private void ExpandDisplay()
         {
+            // DG8MG
+            // Extension for Charly 25 standalone transceiver
+            if (HPSDRModelIsCharly25orHAMlab())
+            {
+                FormBorderStyle = FormBorderStyle.Sizable;
+            }
+            // DG8MG
+
             this.collapseToolStripMenuItem.Text = "Collapse";
             this.collapsedDisplay = false;
             rX2ToolStripMenuItem.Visible = false;
@@ -53074,6 +53089,15 @@ namespace PowerSDR
             // Save expanded display size
             if (!this.collapsedDisplay)
                 this.expandedSize = this.Size;
+
+            // DG8MG
+            // Extension for Charly 25 standalone transceiver
+            if (HPSDRModelIsCharly25orHAMlab())
+            {
+                FormBorderStyle = FormBorderStyle.None;
+                WindowState = FormWindowState.Maximized;
+            }
+            // DG8MG
 
             this.collapseToolStripMenuItem.Text = "Expand";
             this.collapsedDisplay = true;
