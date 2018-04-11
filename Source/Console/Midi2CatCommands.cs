@@ -4944,39 +4944,57 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         public void MoveVFOADownByTuneStep(int msg, MidiDevice device)
         {                   
-            if (msg == 127)
-            {
-                parser.nSet = 2;
-                parser.nGet = 0;
-                int step = StringToFreq(commands.ZZAC(""));
+            parser.nSet = 2;
+            parser.nGet = 0;
+            int step = StringToFreq(commands.ZZAC(""));
 
-                if (IsBehringerCMD(device))
-                {
-                    ChangeFreqVfoA(63, step, true, device);
-                }
-                else
-                {
-                    ChangeFreqVfoA(127, step, true, device);
-                }
+            if (IsBehringerCMD(device))
+            {
+                ChangeFreqVfoA(63, step, true, device);
+            }
+            else
+            {
+                long freq = 0;
+
+                freq = Convert.ToInt64(commands.ZZFA(""));
+                msg = msg * msg;
+                commands.isMidi = true;
+                parser.nSet = 11;
+                commands.ZZFA((freq - msg * step).ToString("D11"));
+                commands.isMidi = false;
+
+                //  for (tune_steps = 0; tune_steps < msg; tune_steps++)
+                //  {
+                //      ChangeFreqVfoA(127, step, true, device);
+                //  }
             }
         }
 
         public void MoveVFOAUpByTuneStep(int msg, MidiDevice device)
         {
-            if (msg == 127)
+            parser.nSet = 2;
+            parser.nGet = 0;
+            int step = StringToFreq(commands.ZZAC(""));
+
+            if (IsBehringerCMD(device))
             {
-                parser.nSet = 2;
-                parser.nGet = 0;
-                int step = StringToFreq(commands.ZZAC(""));
-        
-                if (IsBehringerCMD(device))
-                {
-                    ChangeFreqVfoA(65, step, true, device);
-                }
-                else
-                {
-                    ChangeFreqVfoA(1, step, true, device);
-                }
+                ChangeFreqVfoA(65, step, true, device);
+            }
+            else
+            {
+                long freq = 0;
+
+                freq = Convert.ToInt64(commands.ZZFA(""));
+                msg = msg * msg;
+                commands.isMidi = true;
+                parser.nSet = 11;
+                commands.ZZFA((freq + msg * step).ToString("D11"));
+                commands.isMidi = false;
+
+                //  for (tune_steps = 0; tune_steps < msg; tune_steps++)
+                //  {
+                //      ChangeFreqVfoA(1, step, true, device);
+                //  }
             }
         }
         // DG8MG
