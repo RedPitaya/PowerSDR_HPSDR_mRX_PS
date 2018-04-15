@@ -72,11 +72,11 @@ namespace Midi2Cat.IO
 
 
         private WinMM.MidiInCallback callback;
-        private int midi_in_handle=0;
-        private int midi_out_handle=0;
+        private int midi_in_handle = 0;
+        private int midi_out_handle = 0;
         private object in_lock_obj = new Object();
         private object out_lock_obj = new Object();
-        
+
         public const int CALLBACK_FUNCTION = 0x30000;
         public const int MIM_OPEN = 0x3C1; //961
         public const int MIM_CLOSE = 0x3C2; //962
@@ -95,7 +95,7 @@ namespace Midi2Cat.IO
             return DeviceName;
         }
 
-        public bool OpenMidiIn(int deviceIndex,string deviceName)
+        public bool OpenMidiIn(int deviceIndex, string deviceName)
         {
             DeviceIndex = deviceIndex;
             this.DeviceName = deviceName;
@@ -157,7 +157,7 @@ namespace Midi2Cat.IO
             }
             if (outDeviceID == -1)
             {
-                DebugMsg(Direction.Out, Status.Error, "MidiOutOpen Error: Unable to find "+DeviceName+" output device.");
+                DebugMsg(Direction.Out, Status.Error, "MidiOutOpen Error: Unable to find " + DeviceName + " output device.");
                 return false;
             }
             else
@@ -343,14 +343,14 @@ namespace Midi2Cat.IO
                         byte controlId = (byte)(dwParam1 >> 8);
                         byte data = (byte)(dwParam1 >> 16);
                         byte status = (byte)(dwParam1 & 0xFF);
-                        byte Event = (byte)((status & 0xF0)>>4);
+                        byte Event = (byte)((status & 0xF0) >> 4);
                         byte channel = (byte)(status & 0x0F);
 
                         // if Note off make sure the data is set to 0, its most likely set to 7F;
                         if (Event == (int)MidiEvent.Note_Off)
                             data = 0x00;
 
-                       // Debug.WriteLine("wMsg=MIM_DATA, dwInstance={0}, dwParam1={1}, dwParam2={2}", dwInstance, dwParam1.ToString("X8"), dwParam2.ToString("X8"));
+                        // Debug.WriteLine("wMsg=MIM_DATA, dwInstance={0}, dwParam1={1}, dwParam2={2}", dwInstance, dwParam1.ToString("X8"), dwParam2.ToString("X8"));
                         Debug.WriteLine("ControlId={0}, byte2={1}, status={2}, Event={3}, channel={4}", controlId.ToString("X2"), data.ToString("X2"), status.ToString("X2"), Event.ToString("X2"), channel.ToString("X2"));
 
                         inDevice_ChannelMessageReceived(controlId, data, status, Event, channel);
@@ -562,7 +562,7 @@ namespace Midi2Cat.IO
 
             return SendLongMessage(handle, bytes);
         }
-        
+
         public static int SendLongMessage(int handle, byte[] data)
         {
             /*Debug.Write("Midi Out: ");
@@ -615,13 +615,13 @@ namespace Midi2Cat.IO
 
         public void inDevice_ChannelMessageReceived(int ControlId, int Data, int Status, int Event, int Channel)
         {
-            if (onMidiInput != null) 
+            if (onMidiInput != null)
             {
                 try
                 {
                     // DG8MG
-                    // Extension for Charly 25 hardware
-                    Charly25SpecificMidiHandling(ControlId, Data, Event, Channel);
+                    // Extension for Charly 25 frontpanel hardware
+                    ControlId = Charly25SpecificMidiHandling(ControlId, Data, Event, Channel);
                     // DG8MG
 
                     ControlId = FixBehringerCtlID(ControlId, Status); //-W2PA Disambiguate messages from Behringer controllers
@@ -633,7 +633,7 @@ namespace Midi2Cat.IO
         }
 
         private int FixBehringerCtlID(int ControlId, int Status) //-W2PA Test for DeviceName is a Behringer type, and disambiguate the messages if necessary
-        {            
+        {
             if (DeviceName == "CMD PL-1")
             {
                 if (Status == 0xE0) //-W2PA Trap Status E0 from Behringer PL-1 slider, change the ID to something that doesn't conflict with other controls
@@ -677,12 +677,12 @@ namespace Midi2Cat.IO
             }
         }
 
-        public void SendMsg(int Event, int Channel,int Data1, int Data2 )
+        public void SendMsg(int Event, int Channel, int Data1, int Data2)
         {
             if (midi_out_handle == 0)
             {
-                OpenMidiOut();            
-    
+                OpenMidiOut();
+
             }
             byte status = (byte)(Event << 4);
             status |= (byte)Channel;
@@ -691,7 +691,7 @@ namespace Midi2Cat.IO
             bytes[1] = (byte)Data1;
             bytes[2] = (byte)Data2;
             bytes[3] = 0;
-            uint msg = BitConverter.ToUInt32(bytes,0);
+            uint msg = BitConverter.ToUInt32(bytes, 0);
             if (midi_out_handle != 0)
             {
                 int Rc = WinMM.MidiOutShortMessage(midi_out_handle, msg);
@@ -702,61 +702,90 @@ namespace Midi2Cat.IO
         {
             string msg = inMsg;
             ParsedMidiMessage Rc = new ParsedMidiMessage();
-            if (msg.Length != 6)
+
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            if (GetDeviceName() == "Arduino Micro")
             {
-                Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "Must be 6 characters long.");
+                if (msg.StartsWith("BT") && msg.Length == 4)
+                {
+                    int fpButtonNumber = -1;
+                    if (int.TryParse(msg.Substring(2), out fpButtonNumber) && fpButtonNumber >= 0 && fpButtonNumber < 31)
+                    {
+                        Rc.Valid = true;
+                        return Rc;
+                    }
+                    else
+                    {
+                        Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "button number must be between 00 and 30.");
+                        return Rc;
+                    }
+                }
+                else
+                {
+                    Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "must be 4 characters long.");
+                    return Rc;
+                }
+            }
+            else
+            {
+                if (msg.Length != 6)
+                {
+                    Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "Must be 6 characters long.");
+                    return Rc;
+                }
+                if (msg.Contains("SS"))
+                {
+                    if (msg.Substring(0, 2) != "SS")
+                    {
+                        Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "SS must be the 1st and 2nd characters.");
+                        return Rc;
+                    }
+                    msg = msg.Replace("SS", inStatus.ToString("X2"));
+                }
+                if (msg.Contains("YY"))
+                {
+                    if (msg.Substring(2, 2) != "YY")
+                    {
+                        Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "YY must be the 3rd & 4th characters.");
+                        return Rc;
+                    }
+                    msg = msg.Replace("YY", inControl.ToString("X2"));
+                }
+                if (msg.Contains("VV"))
+                {
+                    if (msg.Substring(4, 2) != "VV")
+                    {
+                        Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "VV must be the 5th & 6th characters.");
+                        return Rc;
+                    }
+                    msg = msg.Replace("VV", inValue.ToString("X2"));
+                }
+                msg = msg.Replace("X", inChannel.ToString());
+                string sEvent = msg.Substring(0, 1);
+                string sChannel = msg.Substring(1, 1);
+                string sData1 = msg.Substring(2, 2);
+                string sData2 = msg.Substring(4, 2);
+                try
+                {
+                    Rc.Event = Int32.Parse(sEvent, System.Globalization.NumberStyles.HexNumber);
+                    Rc.Channel = Int32.Parse(sChannel, System.Globalization.NumberStyles.HexNumber);
+                    Rc.Data1 = Int32.Parse(sData1, System.Globalization.NumberStyles.HexNumber);
+                    Rc.Data2 = Int32.Parse(sData2, System.Globalization.NumberStyles.HexNumber);
+                    Rc.Valid = true;
+                }
+                catch
+                {
+                    Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "contains invalid hexideciaml characters.");
+                }
                 return Rc;
             }
-            if (msg.Contains("SS"))
-            {
-                if (msg.Substring(0, 2) != "SS")
-                {
-                    Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "SS must be the 1st and 2nd characters.");
-                    return Rc;
-                }
-                 msg = msg.Replace("SS", inStatus.ToString("X2"));
-            }
-            if (msg.Contains("YY"))
-            {
-                if (msg.Substring(2, 2) != "YY")
-                {
-                    Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "YY must be the 3rd & 4th characters.");
-                    return Rc;
-                }
-                msg = msg.Replace("YY", inControl.ToString("X2"));
-            }
-            if (msg.Contains("VV"))
-            {
-                if (msg.Substring(4, 2) != "VV")
-                {
-                    Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "VV must be the 5th & 6th characters.");
-                    return Rc;
-                }
-                msg = msg.Replace("VV", inValue.ToString("X2"));
-            }
-            msg = msg.Replace("X", inChannel.ToString());
-            string sEvent = msg.Substring(0, 1);
-            string sChannel = msg.Substring(1, 1);
-            string sData1 = msg.Substring(2, 2);
-            string sData2 = msg.Substring(4, 2);
-            try
-            {
-                Rc.Event = Int32.Parse(sEvent, System.Globalization.NumberStyles.HexNumber);
-                Rc.Channel = Int32.Parse(sChannel, System.Globalization.NumberStyles.HexNumber);
-                Rc.Data1 = Int32.Parse(sData1, System.Globalization.NumberStyles.HexNumber);
-                Rc.Data2 = Int32.Parse(sData2, System.Globalization.NumberStyles.HexNumber);
-                Rc.Valid = true;
-            }
-            catch 
-            {
-                Rc.ErrMsg = string.Format("Msg:{0} {1}", inMsg, "contains invalid hexideciaml characters.");
-            }
-            return Rc;
+            // DG8MG
         }
 
         public void SendMsg(int inChannel, int inValue, int inStatus, int inControl, string inMessages)
         {
-            char[] parms= {' ', ',', ';', ':'};
+            char[] parms = { ' ', ',', ';', ':' };
             string[] messages = inMessages.Split(parms, StringSplitOptions.RemoveEmptyEntries);
             foreach (string msg in messages)
             {
@@ -770,8 +799,8 @@ namespace Midi2Cat.IO
 
         public string[] ValidateMidiMessages(string inMessages)
         {
-            List<string> Errors=new List<string>(); 
-            char[] parms= {' ', ',', ';', ':'};
+            List<string> Errors = new List<string>();
+            char[] parms = { ' ', ',', ';', ':' };
             string[] messages = inMessages.Split(parms, StringSplitOptions.RemoveEmptyEntries);
             foreach (string msg in messages)
             {
@@ -817,7 +846,7 @@ namespace Midi2Cat.IO
         }
 
         // DG8MG
-        // Extension for Charly 25 hardware
+        // Extension for Charly 25 frontpanel hardware
         public void Charly25FrontpanelUpdateButtonLED(int n, int inCtlID)  // 0 = off, 1 = upper LED on, 2 = lower LED on, on button whose ID = inCtlID
         {
             string cID = inCtlID.ToString("X2");
@@ -828,10 +857,8 @@ namespace Midi2Cat.IO
             return;
         }
 
-        public void Charly25SpecificMidiHandling(int ControlID, int Data, int Event, int Channel)
+        public int Charly25SpecificMidiHandling(int ControlID, int Data, int Event, int Channel)
         {
-            // inDevice_ChannelMessageReceived(int ControlId, int Data, int Status, int Event, int Channel)
-
             // Checked if the special MIDI message for shuting down the Charly 25 frontend computer system was sent
             if (DeviceName == "Arduino Micro" && ControlID == 120 && Data == 0 && Event == 11 && Channel == 15)
             {
@@ -853,14 +880,9 @@ namespace Midi2Cat.IO
                     mboShutdown = manObj.InvokeMethod("Win32Shutdown", mboShutdownParams, null);
                 }
             }
-            else
-            {
-                // Do nothing, just return
-                return;
-            }
+
+            return ControlID;
         }
         // DG8MG
-
-
     }
 }

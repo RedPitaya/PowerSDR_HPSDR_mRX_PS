@@ -24329,7 +24329,7 @@ namespace PowerSDR
                 midi_messages_per_tune_step = min_midi_messages_per_tune_step;
 
             // DG8MG
-			// Extension for Charly 25 hardware
+			// Extension for Charly 25 frontpanel hardware
             if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 if (midi_messages_per_tune_step == min_midi_messages_per_tune_step)
@@ -54575,7 +54575,7 @@ namespace PowerSDR
                     chkNR.Text = "NR";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware                   
+                    // Extension for Charly 25 frontpanel hardware                   
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
@@ -54596,7 +54596,7 @@ namespace PowerSDR
                     chkNR.Text = "NR2";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
@@ -54617,7 +54617,7 @@ namespace PowerSDR
                     chkNR.Text = "NR";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
@@ -54644,7 +54644,7 @@ namespace PowerSDR
                     chkRX2NR.Text = "NR";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
@@ -54665,7 +54665,7 @@ namespace PowerSDR
                     chkRX2NR.Text = "NR2";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
@@ -54686,7 +54686,7 @@ namespace PowerSDR
                     chkRX2NR.Text = "NR";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
@@ -54711,7 +54711,7 @@ namespace PowerSDR
                     chkNB.Text = "NB";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
@@ -54730,7 +54730,7 @@ namespace PowerSDR
                     chkNB.Text = "NB2";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
@@ -54749,7 +54749,7 @@ namespace PowerSDR
                     chkNB.Text = "NB";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
@@ -54774,7 +54774,7 @@ namespace PowerSDR
                     chkRX2NB.Text = "NB";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
@@ -54793,7 +54793,7 @@ namespace PowerSDR
                     chkRX2NB.Text = "NB2";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
@@ -54812,7 +54812,7 @@ namespace PowerSDR
                     chkRX2NB.Text = "NB";
 
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);

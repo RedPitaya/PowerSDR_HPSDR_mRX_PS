@@ -82,6 +82,14 @@ namespace Midi2Cat
         {
             foreach( var binding in bindings.Values)
             {
+                // DG8MG
+                // Extension for Charly 25 frontpanel hardware
+                if (binding.DeviceName == "Arduino Micro")
+                {
+                    DB.SaveChanges(binding.DeviceName);
+                }
+                // DG8MG
+
                 binding.Device.CloseMidiIn();
                 binding.Device.CloseMidiOut();
             }
@@ -355,11 +363,71 @@ namespace Midi2Cat
                             {
                                 if (handlers.CmdHandler != null)
                                 {
+                                    // DG8MG
+                                    // Extension for Charly 25 frontpanel hardware
+                                    if (ControlId < 32 && Data != 0)
+                                    {
+                                        int controlIdState = -1;
+                                        int newControlId = -1;
+                                        string deviceName = "";
+                                        ControllerMapping mapping;
+
+                                        deviceName = Device.GetDeviceName();
+                                        mapping = DB.GetMapping(deviceName, ControlId);
+
+                                        if (mapping.MidiOutCmdUp.Length == 4)
+                                        {
+                                            int.TryParse(mapping.MidiOutCmdUp.Substring(2), out newControlId);
+
+                                            if (newControlId >= 0)
+                                            {
+                                                if (mapping.MidiOutCmdSetValue.Length == 4)
+                                                {
+                                                    int.TryParse(mapping.MidiOutCmdSetValue.Substring(2), out controlIdState);
+                                                }
+                                                else
+                                                {
+                                                    controlIdState = 0;
+                                                }
+
+                                                System.Diagnostics.Debug.WriteLine("Charly 25 frontpanel tristate button modified ControlId from: {0} ", ControlId);
+
+                                                switch (controlIdState)
+                                                {
+                                                    case 0:
+                                                        mapping.MidiOutCmdSetValue = "BS01";
+                                                        break;
+
+                                                    case 1:
+                                                        mapping.MidiOutCmdSetValue = "BS02";
+                                                        ControlId = newControlId;
+                                                        break;
+
+                                                    case 2:
+                                                        mapping.MidiOutCmdSetValue = "BS01";
+                                                        break;
+                                                }
+
+                                                System.Diagnostics.Debug.WriteLine("to ControlId: {0} and new button state: {1} due to controlIdState: {2}.", ControlId, mapping.MidiOutCmdSetValue, controlIdState);
+
+                                                DB.UpdateOrAdd(deviceName, mapping);
+                                                ctrlBinding.CmdBindings.TryGetValue(ControlId, out handlers);
+                                            }
+                                        }
+                                    }
+                                    // DG8MG
+
                                     handlers.CmdHandler(Data, Device);
                                     if (Data <= 0)
                                         state = CmdState.Off;
                                     else
                                         state = CmdState.On;
+
+                                    // DG8MG
+                                    // Extension for Charly 25 frontpanel hardware
+                                    System.Diagnostics.Debug.WriteLine("CAT command handler: {0}, with the parameters Data: {1} and Device: {2} was called.", handlers.CmdHandler.Method, Data, Device.GetDeviceName());
+                                    // DG8MG
+
                                 }
                                 else if (handlers.ToggleCmdHandler != null)
                                 {
