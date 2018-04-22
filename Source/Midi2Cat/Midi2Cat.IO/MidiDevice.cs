@@ -707,24 +707,59 @@ namespace Midi2Cat.IO
             // Extension for Charly 25 frontpanel hardware
             if (GetDeviceName() == "Arduino Micro")
             {
-                if (msg.StartsWith("BT") && msg.Length == 4)
+                switch (msg.Length)
                 {
-                    int fpButtonNumber = -1;
-                    if (int.TryParse(msg.Substring(2), out fpButtonNumber) && fpButtonNumber >= 0 && fpButtonNumber < 31)
-                    {
-                        Rc.Valid = true;
+                    case 4:
+                        if (msg.StartsWith("BS"))
+                        {
+                            Rc.ErrMsg = "";
+                            Rc.Valid = true;
+                            return Rc;
+                        }
+
+                        if (msg.StartsWith("BT"))
+                        {
+                            int fpButtonNumber = -1;
+
+                            if (int.TryParse(msg.Substring(2), out fpButtonNumber) && fpButtonNumber >= 0 && fpButtonNumber < 31)
+                            {
+                                Rc.Valid = true;
+                                return Rc;
+                            }
+                            else
+                            {
+                                Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "button number must be between 00 and 30.");
+                                return Rc;
+                            }
+                        }
+                        else
+                        {
+                            Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "must start with BT followed by 2 characters for the new button number.");
+                            return Rc;
+                        }                     
+
+                    case 6:
+                        string sEvent = msg.Substring(0, 1);
+                        string sChannel = msg.Substring(1, 1);
+                        string sData1 = msg.Substring(2, 2);
+                        string sData2 = msg.Substring(4, 2);
+                        try
+                        {
+                            Rc.Event = Int32.Parse(sEvent, System.Globalization.NumberStyles.HexNumber);
+                            Rc.Channel = Int32.Parse(sChannel, System.Globalization.NumberStyles.HexNumber);
+                            Rc.Data1 = Int32.Parse(sData1, System.Globalization.NumberStyles.HexNumber);
+                            Rc.Data2 = Int32.Parse(sData2, System.Globalization.NumberStyles.HexNumber);
+                            Rc.Valid = true;
+                        }
+                        catch
+                        {
+                            Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "contains invalid hexideciaml characters.");
+                        }
                         return Rc;
-                    }
-                    else
-                    {
-                        Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "button number must be between 00 and 30.");
+
+                    default:
+                        Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "must be four characters long.");
                         return Rc;
-                    }
-                }
-                else
-                {
-                    Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "must be 4 characters long.");
-                    return Rc;
                 }
             }
             else

@@ -180,6 +180,14 @@ namespace Midi2Cat
 
             MidiDevice device = bindings[index].Device;
 
+            // Check if the special command to reset the Charly 25 frontpanel was sent
+            if (cmd == CatCmd.ResetC25Frontpanel && state == 1)
+            {
+                device.SendMsg(11, 0, 121, 0);
+                System.Diagnostics.Debug.WriteLine("### Sent special MIDI command to reset the Charly 25 frontpanel! ###");
+                return true;
+            }
+
             // Get all button mappings of the Charly 25 frontpanel
             mappings = DB.Charly25FrontpanelGetButtonMappings();
 

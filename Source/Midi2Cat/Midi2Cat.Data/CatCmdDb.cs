@@ -298,6 +298,10 @@ namespace Midi2Cat.Data
         MoveVFOADownByTuneStep = 522,
         [CatCommandAttribute("Move VFOA Up By TuneStep", ControlType.Button)]
         MoveVFOAUpByTuneStep = 523,
+
+        // Extension for Charly 25 frontpanel hardware
+        [CatCommandAttribute("Reset Charly 25 Frontpanel ", ControlType.Button)]
+        ResetC25Frontpanel = 999,
         // DG8MG
 
         [CatCommandAttribute("Change Freq Vfo A", ControlType.Wheel)]

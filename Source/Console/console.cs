@@ -2160,6 +2160,14 @@ namespace PowerSDR
             System.Console.WriteLine(String.Format("Called: Dispose(bool disposing)"));
             // DG8MG
 
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            if (Charly25FrontpanelPresent)
+            {
+                Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ResetC25Frontpanel, 1);
+            }
+            // DG8MG
+
             if (Midi2Cat != null) Midi2Cat.CloseMidi2Cat();
             USB.Exit();
             if (disposing)
