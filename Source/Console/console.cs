@@ -34509,15 +34509,6 @@ namespace PowerSDR
                 if ((dotdashptt & 0x02) != (last_bmp & 0x02))
                 {
                     FWDash = state;
-
-                    // DG8MG
-                    // Extension for Charly 25 and HAMlab hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && !manual_mox)
-                    {
-                        SetConsoleMox(state);
-                    }
-                    // DG8MG
-
                     // SetConsoleMox(state);
                 }
 
@@ -34525,16 +34516,7 @@ namespace PowerSDR
                 if ((dotdashptt & 0x04) != (last_bmp & 0x04))
                 {
                     FWDot = state;
-                    
-                    // DG8MG
-                    // Extension for Charly 25 and HAMlab hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && !manual_mox)
-                    {
-                        SetConsoleMox(state);
-                    }
-                    // DG8MG
-
-                    //SetConsoleMox(state);
+                    // SetConsoleMox(state);
                 }
 
                 last_bmp = dotdashptt;
