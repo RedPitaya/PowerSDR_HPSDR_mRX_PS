@@ -69,6 +69,7 @@ namespace PowerSDR
     // DG8MG
     // Extension for Charly 25 / HAMlab / STEMlab hardware
     using Tmds.MDns;
+    using Devices;
     // DG8MG
 
     #region Enums
@@ -787,8 +788,8 @@ namespace PowerSDR
         private int meter_peak_value;						// Value for peak hold on multimeter
         private float[] meter_text_history;					// Array used to output the peak power over a period of time
         private int meter_text_history_index;				// index used with above variable to do peak power
-        private float new_swrmeter_data;						// new data for the multimeter from the DSP
-        private float current_swrmeter_data;					// current data for the multimeter
+        private float new_swrmeter_data;				    // new data for the multimeter from the DSP
+        private float current_swrmeter_data;				// current data for the multimeter
 
         private bool rx2_meter_data_ready;					// used to synchronize the new DSP data with the multimeter
         private float rx2_meter_new_data;					// new data for the multimeter from the DSP
@@ -796,27 +797,27 @@ namespace PowerSDR
         private int rx2_meter_peak_count;					// Counter for peak hold on multimeter
         private int rx2_meter_peak_value;					// Value for peak hold on multimeter
 
-        //  public float[][] power_table;						// table used to store power in new power cal routine
+        //  public float[][] power_table;					// table used to store power in new power cal routine
         public int pa_fwd_power;							// forward power as read by the ADC on the PA
         public int pa_rev_power;							// reverse power as read by the ADC on the PA
         // public double alex_fwd_power;
         // public double alex_rev_power;
-        private bool tuning;								// true when the TUN button is active
-        // public bool atu_tuning;		    					// true while the atu is tuning
-        // private Band tuned_band;							// last band that the atu was tuned on
+        private bool tuning;                                // true when the TUN button is active
+        // public bool atu_tuning;                          // true while the atu is tuning
+        // private Band tuned_band;                         // last band that the atu was tuned on
         // public float[][][] pa_gain_by_radio;
 
         //public float[] rx1_image_gain_table;				// table used to store image cal info
         //public float[] rx1_image_phase_table;				// table used to store image cal info
         //public float[] rx2_image_gain_table;				// table used to store image cal info
         //public float[] rx2_image_phase_table;				// table used to store image cal info
-        //public float[] tx_image_gain_table;					// table used to store image cal info
+        //public float[] tx_image_gain_table;				// table used to store image cal info
         //public float[] tx_image_phase_table;				// table used to store image cal info
         //public int[][] tx_carrier_table;					// table used to store tx carrier cal info
         //public int[][] pa_bias_table;						// table used to store PA Bias settings
-       // public float[][] rx1_level_table;					// table used to store RX1 Level cal settings
-       // public float[][] rx2_level_table;					// table used to store RX2 Level cal settings
-        // public float[][] pa_bridge_table;					// table used to store PA Bridge cal settings
+        // public float[][] rx1_level_table;				// table used to store RX1 Level cal settings
+        // public float[][] rx2_level_table;				// table used to store RX2 Level cal settings
+        // public float[][] pa_bridge_table;				// table used to store PA Bridge cal settings
         //public float[] swr_table;							// table used to calibrate SWR
         //public float[] atu_swr_table;						// table used to cal SWR at ATU power
         //public float rx2_res_offset;
@@ -888,11 +889,11 @@ namespace PowerSDR
 
         public string[] CmdLineArgs;
 
-        private double rx1_avg_last_ddsfreq = 0;				// Used to move the display average when tuning
+        private double rx1_avg_last_ddsfreq = 0;			// Used to move the display average when tuning
         private double rx1_avg_last_dttsp_osc = 0;
         private double rx1_last_bin_shift_leftover = 0;
 
-        private double rx2_avg_last_ddsfreq = 0;				// Used to move the display average when tuning
+        private double rx2_avg_last_ddsfreq = 0;			// Used to move the display average when tuning
         private double rx2_avg_last_dttsp_osc = 0;
         private double rx2_last_bin_shift_leftover = 0;
 
@@ -1611,9 +1612,9 @@ namespace PowerSDR
         private LabelTS lblRX1APF;
         private LabelTS lblRX2APF;
         // DG8MG
-        public CheckBoxTS chkC25ANT;	
+        public CheckBoxTS chkC25ANT;
         public CheckBoxTS chkC25Diversity;
-        public ImageList ilC25ImageList;		
+        public ImageList ilC25ImageList;
         // DG8MG
         private ToolStripMenuItem NR2ToolStripMenuItem1;
         private ToolStripMenuItem NR2StripMenuItem2;
@@ -1755,7 +1756,7 @@ namespace PowerSDR
                 if (File.Exists(db_file_name))
                 {
                     if (!DB.Init(this)) // Init throws an exception on reading XML files that are too corrupted for DataSet.ReadXml to handle.
-                    {  
+                    {
                         string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                         string datetime = DateTime.Now.ToShortDateString().Replace("/", "-") + "_" +
                             DateTime.Now.ToShortTimeString().Replace(":", ".");
@@ -1797,7 +1798,7 @@ namespace PowerSDR
                             //-W2PA Automatically reset, shut down, and import the old database file if possible
 
                             if (File.Exists(autoMergeFileName)) // We have already reset and are ready for trying a merge
-                            {                               
+                            {
                                 //-W2PA Import carefully, allowing use of DB files created by previous versions so as to retain settings and options   
                                 if (DB.ImportAndMergeDatabase(autoMergeFileName, AppDataPath))
                                 {
@@ -1817,7 +1818,7 @@ namespace PowerSDR
                                     MessageBox.Show("A previous version database file could not be imported. It has been copied to the DB_Archive folder\n\n. "
                                         + "The current database has been reset and initialized.\n"
                                         + "You can try importing another working database file using Setup - Import Database.", "Database Import Failure",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);                                                                        
+                                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                 }
                                 resetForAutoMerge = false;
                             }
@@ -1838,10 +1839,10 @@ namespace PowerSDR
                                 resetForAutoMerge = true;  // a flag to main()
 
                                 MessageBox.Show("Your database file is from a previous version.\nMerging it into a new reset database will now be attempted.\n\n"
-                                    +"First your old database will be saved in DB_Archive folder,\nand a database reset will happen.\n\n"
-                                    +"Please RE-START when the reset finishes.", "Note", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            }                            
-                            
+                                    + "First your old database will be saved in DB_Archive folder,\nand a database reset will happen.\n\n"
+                                    + "Please RE-START when the reset finishes.", "Note", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            }
+
                             //-W2PA Old start-up code for when a back-level database is detected
                             //DialogResult dr = MessageBox.Show(
                             //    "The database was created by a different version of OpenSDR-PowerSDR.\n" +
@@ -1873,7 +1874,7 @@ namespace PowerSDR
                             //}
                         }
                     }
-                    
+
                 }
 
             }
@@ -1984,13 +1985,23 @@ namespace PowerSDR
             Splash.SplashForm.Owner = this;						// So that main form will show/focus when splash disappears
             break_in_timer = new HiPerfTimer();
 
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            // Reset all Charly 25 frontpanel USB devices
+            var usbDevices = USBDeviceInfo.C25GetFrontpanelUSBDevices();
+                foreach (var device in usbDevices)
+                {
+                    PortHelper.TryResetPortByName(device.DeviceID);
+                }            
+            // DG8MG
+
             Midi2Cat = new Midi2CatCommands(this);
 
             Init60mChannels();
             LoadLEDFont();
 
             // DG8MG
-            // Extension for Charly 25 hardware
+            // Extension for Charly 25 frontpanel hardware
             // Check if a Charly 25 frontpanel is present
             Charly25FrontpanelPresent = Midi2Cat.Charly25SendUpdateToMidi(CatCmd.None, 0);
             // DG8MG
@@ -2140,9 +2151,9 @@ namespace PowerSDR
 
             if (resetForAutoMerge)
             {
-                MessageBox.Show("Please RE-START now.", "Note", MessageBoxButtons.OK, MessageBoxIcon.Information); 
+                MessageBox.Show("Please RE-START now.", "Note", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            
+
         }
 
 
@@ -2158,14 +2169,6 @@ namespace PowerSDR
         {
             // DG8MG: Debug for Windows 10 testing
             System.Console.WriteLine(String.Format("Called: Dispose(bool disposing)"));
-            // DG8MG
-
-            // DG8MG
-            // Extension for Charly 25 frontpanel hardware
-            if (Charly25FrontpanelPresent)
-            {
-                Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ResetC25Frontpanel, 1);
-            }
             // DG8MG
 
             if (Midi2Cat != null) Midi2Cat.CloseMidi2Cat();
@@ -8175,8 +8178,8 @@ namespace PowerSDR
                     case HPSDRModel.ANAN7000D:
                     case HPSDRModel.ANAN8000D:
                     case HPSDRModel.ORIONMKII:
-                        rx_meter_cal_offset_by_radio[i] = 0.9449f; 
-                        rx_display_cal_offset_by_radio[i] = 0.9468f; 
+                        rx_meter_cal_offset_by_radio[i] = 0.9449f;
+                        rx_display_cal_offset_by_radio[i] = 0.9468f;
                         break;
                     default:
                         rx_meter_cal_offset_by_radio[i] = 0.98f;
@@ -8738,7 +8741,7 @@ namespace PowerSDR
                                 this.Text = this.Text + " " + title_text;
                             }
                             break;
-                        
+
                         // DG8MG
                         // Extension for Charly 25 standalone transceiver
                         case "--collapsed":
@@ -8906,7 +8909,7 @@ namespace PowerSDR
         public bool NoJanusSend = false;
         public void ExitConsole()
         {
-           
+
             if (n1mm_udp_client != null)
                 n1mm_udp_client.Close();
 
@@ -9755,7 +9758,7 @@ namespace PowerSDR
 
                 if (name.Contains("by_radio"))
                 {
-                    int iii=1;
+                    int iii = 1;
                     iii = 3;
                 }
 
@@ -10067,12 +10070,12 @@ namespace PowerSDR
                     int numVals = list.Length;
                     if (numVals == (int)HPSDRModel.LAST)  //-W2PA  The number of rig types in the imported DB matches the number in this version
                     {
-                    for (int i = 0; i < (int)HPSDRModel.LAST; i++)
+                        for (int i = 0; i < (int)HPSDRModel.LAST; i++)
                         {
-                        rx_meter_cal_offset_by_radio[i] = float.Parse(list[i]);
-                }
+                            rx_meter_cal_offset_by_radio[i] = float.Parse(list[i]);
+                        }
                     }  //-W2PA  else the number has changed so don't import, leave the defaults alone
-                    ;                                         
+                    ;
                 }
                 else if (name.StartsWith("rx_display_cal_offset_by_radio"))
                 {
@@ -10080,10 +10083,10 @@ namespace PowerSDR
                     int numVals = list.Length;
                     if (numVals == (int)HPSDRModel.LAST)  //-W2PA  The number of rig types in the imported DB matches the number in this version
                     {
-                    for (int i = 0; i < (int)HPSDRModel.LAST; i++)
+                        for (int i = 0; i < (int)HPSDRModel.LAST; i++)
                         {
-                        rx_display_cal_offset_by_radio[i] = float.Parse(list[i]);
-                }
+                            rx_display_cal_offset_by_radio[i] = float.Parse(list[i]);
+                        }
                     }  //-W2PA  else the number has changed so don't import, leave the defaults alone
                     ;
                 }
@@ -11099,17 +11102,17 @@ namespace PowerSDR
             Common.ForceFormOnScreen(SetupForm);
             //Common.ForceFormOnScreen(MemForm);
         }
-/*
-        public float GetRX1Level(Band b, int index)
-        {
-            return rx1_level_table[(int)b][index];
-        }
+        /*
+                public float GetRX1Level(Band b, int index)
+                {
+                    return rx1_level_table[(int)b][index];
+                }
 
-        public float GetRX2Level(Band b, int index)
-        {
-            return rx2_level_table[(int)b][index];
-        }
-        */
+                public float GetRX2Level(Band b, int index)
+                {
+                    return rx2_level_table[(int)b][index];
+                }
+                */
         /* public void ResetMemForm()
         {
             MemForm = null;
@@ -16475,7 +16478,7 @@ namespace PowerSDR
             comboFMTXProfile.Items.AddRange(s);
             comboAMTXProfile.Items.AddRange(s);
 
-           // if (name != "") comboTXProfile.Text = name;
+            // if (name != "") comboTXProfile.Text = name;
 
             switch (rx1_dsp_mode)
             {
@@ -17412,7 +17415,7 @@ namespace PowerSDR
 
                     avg2 = num2 / 50.0f;
                     current_offset = avg2 - avg;
-                    
+
                     C25_RX1_level_table[(int)band, (int)rx1_preamp_mode, 1] = -current_offset;
 
                     // calculate the difference between the current value and the correct multimeter value
@@ -17446,113 +17449,113 @@ namespace PowerSDR
                 rx2_preamp_offset[(int)PreampMode.HPSDR_OFF] = -off_offset;
                 rx2_preamp_offset[(int)PreampMode.HPSDR_ON] = 0.0f;
 
-            	if (alexpresent && !ANAN10Present && !ANAN10EPresent && !ANAN7000DPresent && !ANAN8000DPresent)                if (alexpresent && !ANAN10Present && !ANAN10EPresent /* && !ANAN100BPresent*/)
-                {
-                    RX1PreampMode = PreampMode.HPSDR_MINUS10; //-10dB
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
+                if (alexpresent && !ANAN10Present && !ANAN10EPresent && !ANAN7000DPresent && !ANAN8000DPresent) if (alexpresent && !ANAN10Present && !ANAN10EPresent /* && !ANAN100BPresent*/)
                     {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
+                        RX1PreampMode = PreampMode.HPSDR_MINUS10; //-10dB
+                        Thread.Sleep(100);
+
+                        // get the value of the signal strength meter
+                        num2 = 0.0f;
+                        Thread.Sleep(1000);
+                        for (int i = 0; i < 50; i++)
+                        {
+                            num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                            Thread.Sleep(50);
+                            if (!progress.Visible)
+                                goto end;
+                            else progress.SetPercent((float)((float)++counter / progress_divisor));
+                        }
+                        avg2 = num2 / 50.0f;
+
+                        float minus10_offset = avg2 - avg;
+                        rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS10] = -minus10_offset;
+
+
+                        RX1PreampMode = PreampMode.HPSDR_MINUS20; //-20dB
+                        Thread.Sleep(100);
+
+                        // get the value of the signal strength meter
+                        num2 = 0.0f;
+                        Thread.Sleep(1000);
+                        for (int i = 0; i < 50; i++)
+                        {
+                            num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                            Thread.Sleep(50);
+                            if (!progress.Visible)
+                                goto end;
+                            else progress.SetPercent((float)((float)++counter / progress_divisor));
+                        }
+                        avg2 = num2 / 50.0f;
+
+                        float minus20_offset = avg2 - avg;
+                        rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS20] = -minus20_offset;
+
+
+                        RX1PreampMode = PreampMode.HPSDR_MINUS30; //-30dB
+                        Thread.Sleep(100);
+
+                        // get the value of the signal strength meter
+                        num2 = 0.0f; avg2 = 0.0f;
+                        Thread.Sleep(1000);
+                        for (int i = 0; i < 50; i++)
+                        {
+                            num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                            Thread.Sleep(50);
+                            if (!progress.Visible)
+                                goto end;
+                            else progress.SetPercent((float)((float)++counter / progress_divisor));
+                        }
+                        avg2 = num2 / 50.0f;
+
+                        float minus30_offset = avg2 - avg;
+                        rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS30] = -minus30_offset;
+
+                        RX1PreampMode = PreampMode.HPSDR_MINUS40; //-40dB
+
+                        Thread.Sleep(100);
+
+                        // get the value of the signal strength meter
+                        num2 = 0.0f;
+                        Thread.Sleep(1000);
+                        for (int i = 0; i < 50; i++)
+                        {
+                            num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                            Thread.Sleep(50);
+                            if (!progress.Visible)
+                                goto end;
+                            else progress.SetPercent((float)((float)++counter / progress_divisor));
+                        }
+                        avg2 = num2 / 50.0f;
+
+                        float minus40_offset = avg2 - avg;
+                        rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS40] = -minus40_offset;
+
+                        RX1PreampMode = PreampMode.HPSDR_MINUS50;
+
+                        Thread.Sleep(100);
+
+                        // get the value of the signal strength meter
+                        num2 = 0.0f;
+                        Thread.Sleep(1000);
+                        for (int i = 0; i < 50; i++)
+                        {
+                            num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                            Thread.Sleep(50);
+                            if (!progress.Visible)
+                                goto end;
+                            else progress.SetPercent((float)((float)++counter / progress_divisor));
+                        }
+                        avg2 = num2 / 50.0f;
+
+                        float minus50_offset = avg2 - avg;
+                        rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS50] = -minus50_offset;
+
+                        System.Console.WriteLine("minus10_offset: " + minus10_offset);
+                        System.Console.WriteLine("minus20_offset: " + minus20_offset);
+                        System.Console.WriteLine("minus30_offset: " + minus30_offset);
+                        System.Console.WriteLine("minus40_offset: " + minus40_offset);
+                        System.Console.WriteLine("minus50_offset: " + minus50_offset);
                     }
-                    avg2 = num2 / 50.0f;
-
-                    float minus10_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS10] = -minus10_offset;
-
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS20; //-20dB
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus20_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS20] = -minus20_offset;
-
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS30; //-30dB
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f; avg2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus30_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS30] = -minus30_offset;
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS40; //-40dB
-
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus40_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS40] = -minus40_offset;
-
-                    RX1PreampMode = PreampMode.HPSDR_MINUS50;
-
-                    Thread.Sleep(100);
-
-                    // get the value of the signal strength meter
-                    num2 = 0.0f;
-                    Thread.Sleep(1000);
-                    for (int i = 0; i < 50; i++)
-                    {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
-                        Thread.Sleep(50);
-                        if (!progress.Visible)
-                            goto end;
-                        else progress.SetPercent((float)((float)++counter / progress_divisor));
-                    }
-                    avg2 = num2 / 50.0f;
-
-                    float minus50_offset = avg2 - avg;
-                    rx1_preamp_offset[(int)PreampMode.HPSDR_MINUS50] = -minus50_offset;
-
-                    System.Console.WriteLine("minus10_offset: " + minus10_offset);
-                    System.Console.WriteLine("minus20_offset: " + minus20_offset);
-                    System.Console.WriteLine("minus30_offset: " + minus30_offset);
-                    System.Console.WriteLine("minus40_offset: " + minus40_offset);
-                    System.Console.WriteLine("minus50_offset: " + minus50_offset);
-                }
                 System.Console.WriteLine("off_offset: " + off_offset);
                 System.Console.WriteLine("Counter @ end: " + counter);
                 RX1PreampMode = PreampMode.HPSDR_ON;
@@ -17635,7 +17638,7 @@ namespace PowerSDR
 
             ret_val = true;
 
-        end:
+            end:
             if (!progress.Visible) progress.Text = "";
             progress.Hide();
             //  EnableAllFilters();
@@ -18165,7 +18168,7 @@ namespace PowerSDR
             // RX2DisplayCalOffset += diff;
             ret_val = true;
 
-        end2:
+            end2:
             if (!progress.Visible) progress.Text = "";
             progress.Hide();
             EnableAllFilters();
@@ -18473,7 +18476,7 @@ namespace PowerSDR
 
             ret_val = true;
 
-        end:
+            end:
             if (!progress.Visible) progress.Text = "";
             progress.Hide();
 
@@ -18504,7 +18507,7 @@ namespace PowerSDR
             //MessageBox.Show(t1.Duration.ToString());
             return ret_val;
 
-        error:
+            error:
             MessageBox.Show("Calculated gain is invalid.  Please double check connections and try again.\n"/* +
                 "If this problem persists, contact support@flex-radio.com for support."*/,
                 "Invalid Gain Found",
@@ -18867,7 +18870,7 @@ namespace PowerSDR
 
             ret_val = true;
 
-        end:
+            end:
             progress.Hide();
             chkMOX.Checked = false;
             Audio.TXInputSignal = Audio.SignalSource.RADIO;
@@ -19801,7 +19804,7 @@ namespace PowerSDR
                 }
                 else
                     if (diversityForm != null)
-                        this.Invoke(new MethodInvoker(diversityForm.Close));
+                    this.Invoke(new MethodInvoker(diversityForm.Close));
             }
         }
 
@@ -19822,7 +19825,7 @@ namespace PowerSDR
                 }
                 else
                     if (CWXForm != null)
-                        this.Invoke(new MethodInvoker(CWXForm.Close));
+                    this.Invoke(new MethodInvoker(CWXForm.Close));
             }
         }
 
@@ -20253,13 +20256,13 @@ namespace PowerSDR
                 {
                     Display.RX1PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
 
-                	 if (current_hpsdr_model != HPSDRModel.ANAN100D &&
-                     current_hpsdr_model != HPSDRModel.ANAN200D &&
-                     current_hpsdr_model != HPSDRModel.ORIONMKII &&
-                     current_hpsdr_model != HPSDRModel.ANAN7000D &&
-                     current_hpsdr_model != HPSDRModel.ANAN8000D &&
-                     !rx2_preamp_present)
-                    Display.RX2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
+                    if (current_hpsdr_model != HPSDRModel.ANAN100D &&
+                    current_hpsdr_model != HPSDRModel.ANAN200D &&
+                    current_hpsdr_model != HPSDRModel.ORIONMKII &&
+                    current_hpsdr_model != HPSDRModel.ANAN7000D &&
+                    current_hpsdr_model != HPSDRModel.ANAN8000D &&
+                    !rx2_preamp_present)
+                        Display.RX2PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
                 }
                 // DG8MG
             }
@@ -20407,8 +20410,8 @@ namespace PowerSDR
             }
             set
             {
-               // if (comboTXProfile != null) comboTXProfile.Text = value;
-               // if (comboDigTXProfile != null) comboDigTXProfile.Text = value;
+                // if (comboTXProfile != null) comboTXProfile.Text = value;
+                // if (comboDigTXProfile != null) comboDigTXProfile.Text = value;
 
                 switch (rx1_dsp_mode)
                 {
@@ -23060,24 +23063,24 @@ namespace PowerSDR
 
         private void UpdateTRXAnt()
         {
-                if (btnTNFAdd.Checked)
+            if (btnTNFAdd.Checked)
+            {
+                if (!Alex.trx_ant_not_same)
                 {
-                    if (!Alex.trx_ant_not_same)
-                    {
-                        btnTNFAdd.Checked = false;
-                        return;
-                    }
-                    Alex.TRxAnt = true;
-                    btnTNFAdd.Text = "Tx Ant";
-                    btnTNFAdd.ForeColor = Color.Yellow;
+                    btnTNFAdd.Checked = false;
+                    return;
                 }
-                else
-                {
-                    Alex.TRxAnt = false;
-                    btnTNFAdd.Text = "Rx Ant";
-                    if (Alex.trx_ant_not_same) btnTNFAdd.ForeColor = Color.SpringGreen;
-                    else btnTNFAdd.ForeColor = SystemColors.ControlLightLight;
-                }
+                Alex.TRxAnt = true;
+                btnTNFAdd.Text = "Tx Ant";
+                btnTNFAdd.ForeColor = Color.Yellow;
+            }
+            else
+            {
+                Alex.TRxAnt = false;
+                btnTNFAdd.Text = "Rx Ant";
+                if (Alex.trx_ant_not_same) btnTNFAdd.ForeColor = Color.SpringGreen;
+                else btnTNFAdd.ForeColor = SystemColors.ControlLightLight;
+            }
 
         }
 
@@ -23338,23 +23341,23 @@ namespace PowerSDR
                         break;
                 }
 
-             comboRX2Band.Enabled = enabled;
-             btnVFOAtoB.Enabled = enabled;
-             chkVFOSync.Enabled = enabled;
-             radRX2ModeLSB.Enabled = enabled;
-             radRX2ModeUSB.Enabled = enabled;
-             radRX2ModeDSB.Enabled = enabled;
-             radRX2ModeCWL.Enabled = enabled;
-             radRX2ModeCWU.Enabled = enabled;
-             radRX2ModeFMN.Enabled = enabled;
-             radRX2ModeAM.Enabled = enabled;
-             radRX2ModeSAM.Enabled = enabled;
-             radRX2ModeSPEC.Enabled = enabled;
-             radRX2ModeDIGL.Enabled = enabled;
-             radRX2ModeDIGU.Enabled = enabled;
-             radRX2ModeDRM.Enabled = enabled;
+                comboRX2Band.Enabled = enabled;
+                btnVFOAtoB.Enabled = enabled;
+                chkVFOSync.Enabled = enabled;
+                radRX2ModeLSB.Enabled = enabled;
+                radRX2ModeUSB.Enabled = enabled;
+                radRX2ModeDSB.Enabled = enabled;
+                radRX2ModeCWL.Enabled = enabled;
+                radRX2ModeCWU.Enabled = enabled;
+                radRX2ModeFMN.Enabled = enabled;
+                radRX2ModeAM.Enabled = enabled;
+                radRX2ModeSAM.Enabled = enabled;
+                radRX2ModeSPEC.Enabled = enabled;
+                radRX2ModeDIGL.Enabled = enabled;
+                radRX2ModeDIGU.Enabled = enabled;
+                radRX2ModeDRM.Enabled = enabled;
 
-           }
+            }
 
         }
 
@@ -24070,7 +24073,7 @@ namespace PowerSDR
                     default:
                         return comboTXProfile.SelectedIndex;
                 }
-               
+
             }
             set
             {
@@ -24090,7 +24093,7 @@ namespace PowerSDR
                         comboTXProfile.SelectedIndex = value;
                         break;
                 }
-                
+
             }
         }
 
@@ -24277,7 +24280,7 @@ namespace PowerSDR
         {
             get
             {
-                return midi_messages_per_tune_step;                
+                return midi_messages_per_tune_step;
             }
             set
             {
@@ -24285,7 +24288,7 @@ namespace PowerSDR
                     midi_messages_per_tune_step = value;
             }
         }
-        
+
         private int max_midi_messages_per_tune_step = 64;  // Upper limit 
         public int MaxMIDIMessagesPerTuneStep
         {
@@ -24324,7 +24327,7 @@ namespace PowerSDR
             int oldM = MidiMessagesPerTuneStep;
             MidiMessagesPerTuneStep = oldM * 2;  // Increment by 2x
         }
-        public void CATMidiMessagesPerTuneStepDown() 
+        public void CATMidiMessagesPerTuneStepDown()
         {
             int oldM = MidiMessagesPerTuneStep;
             MidiMessagesPerTuneStep = oldM / 2;  // Decrement by half
@@ -24337,7 +24340,7 @@ namespace PowerSDR
                 midi_messages_per_tune_step = min_midi_messages_per_tune_step;
 
             // DG8MG
-			// Extension for Charly 25 frontpanel hardware
+            // Extension for Charly 25 frontpanel hardware
             if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 if (midi_messages_per_tune_step == min_midi_messages_per_tune_step)
@@ -24409,14 +24412,14 @@ namespace PowerSDR
                     SetupForm.TTgenrun = true;
                     cat_TTT_status = 1;
                 }
-                    
+
             }
         }
 
         //-W2PA Added to enable CAT control of PS Single Cal
         public void CATSingleCal()
         {
-            psform.SingleCalrun();           
+            psform.SingleCalrun();
         }
 
 
@@ -24889,7 +24892,7 @@ namespace PowerSDR
                         chkRX2NB.CheckState = CheckState.Unchecked;
                     else if (value == 1)
                         chkRX2NB.CheckState = CheckState.Indeterminate;
-	                /*
+                    /*
                     if (value == 0)
                         chkRX2NB2.Checked = false;
                     else
@@ -25741,7 +25744,7 @@ namespace PowerSDR
                 if (rx1_step_att_present) rx1PreampOffset = (float)rx1_attenuator_data;
                 else rx1PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
             }
-            
+
             num = num +
                 // rx1_preamp_offset[(int)rx1_preamp_mode] +
                 rx1PreampOffset +
@@ -25764,7 +25767,7 @@ namespace PowerSDR
             {
                 num = num +
                     MultiMeterCalOffset +
-                    PreampOffset +              
+                    PreampOffset +
                     rx1_path_offset +
                     rx1_xvtr_gain_offset;
             }
@@ -26437,7 +26440,7 @@ namespace PowerSDR
             }
             set
             {
-                if ((vfo_lock != CheckState.Unchecked) || vfoA_lock == true ||  SetupForm == null) return;
+                if ((vfo_lock != CheckState.Unchecked) || vfoA_lock == true || SetupForm == null) return;
                 if (!this.InvokeRequired)
                 {
                     // UpdateVFOAFreq(value.ToString("f6"));
@@ -26915,7 +26918,7 @@ namespace PowerSDR
                     double freq = Double.Parse(txtVFOAFreq.Text);
                     double freq2 = Double.Parse(txtVFOBFreq.Text);
                     SetAlexHPF(freq);
-                    if (!initializing && (anan7000dpresent || anan8000dpresent)) 
+                    if (!initializing && (anan7000dpresent || anan8000dpresent))
                     {
                         SetAlex2HPF(freq2);
                         txtVFOBFreq_LostFocus(this, EventArgs.Empty);
@@ -29157,7 +29160,7 @@ namespace PowerSDR
                 }
                 else
                 {
-                    return rx1_meter_cal_offset; 
+                    return rx1_meter_cal_offset;
                 }
             }
             // DG8MG
@@ -29453,10 +29456,10 @@ namespace PowerSDR
                     specRX.GetSpecRX(1).Pixels = picDisplay.Width;
                     picDisplay.Invalidate();
                     break;
-                /*case DisplayEngine.DIRECT_X:
-                    Display.RenderDirectX();
-                    break;
-                    */
+                    /*case DisplayEngine.DIRECT_X:
+                        Display.RenderDirectX();
+                        break;
+                        */
             }
         }
         private bool old_psdisabled = true;
@@ -30280,7 +30283,7 @@ namespace PowerSDR
                                                 else
                                                     pixel_x = (int)(256 + (num - 50) / 50 * 32);
                                             }
-                                            else if (anan8000dpresent &&  tx_xvtr_index < 0)
+                                            else if (anan8000dpresent && tx_xvtr_index < 0)
                                             {
                                                 if (num <= 1.0f)
                                                     pixel_x = (int)(0 + num * 16);
@@ -30730,7 +30733,7 @@ namespace PowerSDR
                         meter_data_ready = false;  //We do NOT want to do this before we have consumed it!!!! so do it here.
                     }
                     break;
-                    #endregion
+                #endregion
 
                 case MultiMeterDisplayMode.Edge:
                     #region Edge
@@ -30910,7 +30913,7 @@ namespace PowerSDR
                             case MeterTXMode.REVERSE_POWER:
                                 if (alexpresent || apollopresent) num = Math.Round(num);
 
-                                if (alexpresent && ((orionmkiipresent || anan8000dpresent) && tx_xvtr_index < 0) )
+                                if (alexpresent && ((orionmkiipresent || anan8000dpresent) && tx_xvtr_index < 0))
                                 {
                                     g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
                                     g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 10, 2);
@@ -32157,7 +32160,7 @@ namespace PowerSDR
                     }
 
                     break;
-                    #endregion
+                #endregion
                 case MultiMeterDisplayMode.Analog:
                     #region Analog
 
@@ -32421,7 +32424,7 @@ namespace PowerSDR
                         rx2_meter_data_ready = false;  //We do NOT want to do this before we have consumed it!!!! so do it here.
                     }
                     break;
-                    #endregion
+                #endregion
                 case MultiMeterDisplayMode.Edge:
                     #region Edge
                     if (rx2_meter_data_ready)
@@ -32640,7 +32643,7 @@ namespace PowerSDR
                     }
 
                     break;
-                    #endregion
+                #endregion
                 case MultiMeterDisplayMode.Analog:
                     #region Analog
 
@@ -33260,7 +33263,7 @@ namespace PowerSDR
                             if (rx1_step_att_present) rx1PreampOffset = (float)rx1_attenuator_data;
                             else rx1PreampOffset = rx1_preamp_offset[(int)rx1_preamp_mode];
                         }
-                        
+
                         switch (mode)
                         {
                             case MeterRXMode.SIGNAL_STRENGTH:
@@ -33397,12 +33400,12 @@ namespace PowerSDR
                                         else
                                         {
                                             new_meter_data = calfwdpower;
-                                           // if (pa_values)
-                                           // {
-                                                // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
-                                              //  SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
-                                              //  SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
-                                          //  }
+                                            // if (pa_values)
+                                            // {
+                                            // SetupForm.textDriveFwdADCValue.Text = new_meter_data.ToString("f1") + " W";
+                                            //  SetupForm.textPAFwdPower.Text = alex_fwd.ToString("f1") + " W";
+                                            //  SetupForm.textPARevPower.Text = alex_rev.ToString("f1") + " W";
+                                            //  }
                                         }
                                     }
                                     else
@@ -33420,7 +33423,7 @@ namespace PowerSDR
                                     new_meter_data = drivepwr;
 
                                 if (current_meter_tx_mode == MeterTXMode.SWR_POWER) new_swrmeter_data = alex_swr;
-                              //  if (pa_values) SetupForm.textDrivePower.Text = average_drivepwr.ToString("f2") + " mW";
+                                //  if (pa_values) SetupForm.textDrivePower.Text = average_drivepwr.ToString("f2") + " mW";
                                 break;
                             case MeterTXMode.REVERSE_POWER:
 
@@ -33560,9 +33563,9 @@ namespace PowerSDR
                             }
                             else
                             {
-                            // DG8MG
-                            	num = num +
-                              	  rx1_meter_cal_offset +
+                                // DG8MG
+                                num = num +
+                                    rx1_meter_cal_offset +
                                   rx2PreampOffset +
                                   rx2_xvtr_gain_offset;
                                 if (anan7000dpresent || anan8000dpresent) num += rx2_6m_gain_offset;
@@ -33695,7 +33698,7 @@ namespace PowerSDR
             float fwdvolts = ((float)adc * 5000.0f) / 4095.0f;
             if (fwdvolts < 0) fwdvolts = 0.0f;
             float amps = ((fwdvolts - voff) / sens);
-          //  float amps = (0.01f * adc - 2.91f);
+            //  float amps = (0.01f * adc - 2.91f);
             if (amps < 0) amps = 0.0f;
             MKIIPAAmps = amps;
 
@@ -33707,31 +33710,31 @@ namespace PowerSDR
             float adc = 0;
             const float alpha = 0.90f;
 
-            float bridge_volt = 0; 
+            float bridge_volt = 0;
             float refvoltage = 0;
             int adc_cal_offset = 0;
 
-            switch(current_hpsdr_model)
+            switch (current_hpsdr_model)
             {
                 case HPSDRModel.ANAN100:
                 case HPSDRModel.ANAN100B:
                     bridge_volt = 0.095f;
-                    if (tx_band == Band.B6M) 
+                    if (tx_band == Band.B6M)
                         bridge_volt = 0.5f;
                     refvoltage = 3.3f;
                     adc_cal_offset = 3;
                     break;
                 case HPSDRModel.ANAN100D:
                     bridge_volt = 0.095f;
-                    if (tx_band == Band.B6M) 
+                    if (tx_band == Band.B6M)
                         bridge_volt = 0.5f;
                     refvoltage = 3.3f;
                     adc_cal_offset = 3;
-                   break;
+                    break;
                 case HPSDRModel.ANAN200D:
                     bridge_volt = 0.108f;
-                    if (tx_band == Band.B6M) 
-                       bridge_volt = 0.5f;
+                    if (tx_band == Band.B6M)
+                        bridge_volt = 0.5f;
                     refvoltage = 5.0f;
                     adc_cal_offset = 2;
                     break;
@@ -33745,15 +33748,15 @@ namespace PowerSDR
                 case HPSDRModel.ORIONMKII:
                 case HPSDRModel.ANAN8000D:
                     bridge_volt = 0.08f;
-                    if (tx_band == Band.B6M) 
-                       bridge_volt = 0.08f;
+                    if (tx_band == Band.B6M)
+                        bridge_volt = 0.08f;
                     refvoltage = 5.0f;
                     adc_cal_offset = 16;
                     break;
                 default:
                     bridge_volt = 0.09f;
-                    if (tx_band == Band.B6M) 
-                       bridge_volt = 0.09f;
+                    if (tx_band == Band.B6M)
+                        bridge_volt = 0.09f;
                     refvoltage = 3.3f;
                     adc_cal_offset = 3;
                     break;
@@ -33766,7 +33769,7 @@ namespace PowerSDR
             //    Thread.Sleep(1);
             //}
             //adc = addadc / 50;
-                adc = JanusAudio.getRefPower();
+            adc = JanusAudio.getRefPower();
 
             if (adc < 0) adc = 0;
 
@@ -33778,7 +33781,7 @@ namespace PowerSDR
             if (PAValues)
             {
                 average_revadc = alpha * average_revadc + (1.0f - alpha) * adc;
-               // SetupForm.textRevADCValue.Text = adc.ToString();
+                // SetupForm.textRevADCValue.Text = adc.ToString();
                 SetupForm.textRevVoltage.Text = volts.ToString("f2") + " V";
             }
 
@@ -33837,7 +33840,7 @@ namespace PowerSDR
             //    Thread.Sleep(1);
             //}
             //adc = addadc / 50;
-                adc = JanusAudio.getAlexFwdPower();
+            adc = JanusAudio.getAlexFwdPower();
 
             if (adc < 0) adc = 0;
 
@@ -33855,107 +33858,107 @@ namespace PowerSDR
             if (watts < 0) watts = 0;
             return watts;
         }
-/*
-        public void computeFwdRevPower(out float fwdpwr, out float revpwr)
-        {
-            int fwd_adc = 0;
-            int rev_adc = 0;
-            int addfwdadc = 0;
-            int addrevadc = 0;
-            float fwd_bridge_volt = 0;
-            float rev_bridge_volt = 0;
-            float refvoltage = 0;
-            int fwd_adc_cal_offset = 0;
-            int rev_adc_cal_offset = 0;
+        /*
+                public void computeFwdRevPower(out float fwdpwr, out float revpwr)
+                {
+                    int fwd_adc = 0;
+                    int rev_adc = 0;
+                    int addfwdadc = 0;
+                    int addrevadc = 0;
+                    float fwd_bridge_volt = 0;
+                    float rev_bridge_volt = 0;
+                    float refvoltage = 0;
+                    int fwd_adc_cal_offset = 0;
+                    int rev_adc_cal_offset = 0;
 
-            switch (current_hpsdr_model)
-            {
-                case HPSDRModel.ANAN100:
-                case HPSDRModel.ANAN100B:
-                    fwd_bridge_volt = 0.095f;
-                    rev_bridge_volt = 0.095f;
-                    if (tx_band == Band.B6M)
-                        rev_bridge_volt = 0.5f;
-                    refvoltage = 3.3f;
-                    fwd_adc_cal_offset = 6;
-                    rev_adc_cal_offset = 3;
-                    break;
-                case HPSDRModel.ANAN100D:
-                    fwd_bridge_volt = 0.095f;
-                    rev_bridge_volt = 0.095f;
-                    if (tx_band == Band.B6M)
-                       rev_bridge_volt = 0.5f;
-                    refvoltage = 3.3f;
-                    fwd_adc_cal_offset = 6;
-                    rev_adc_cal_offset = 3;
-                    break;
-                case HPSDRModel.ANAN200D:
-                    fwd_bridge_volt = 0.108f;
-                    rev_bridge_volt = 0.108f;
-                    if (tx_band == Band.B6M)
-                       rev_bridge_volt = 0.5f;
-                    refvoltage = 5.0f;
-                    fwd_adc_cal_offset = 4;
-                    rev_adc_cal_offset = 2;
-                    break;
-                case HPSDRModel.ORIONMKII:
-                case HPSDRModel.ANAN8000D:
-                    fwd_bridge_volt = 0.08f;
-                    rev_bridge_volt = 0.08f;
-                    if (tx_band == Band.B6M)
-                       rev_bridge_volt = 0.08f;
-                    refvoltage = 5.0f;
-                    fwd_adc_cal_offset = 18;
-                    rev_adc_cal_offset = 16;
-                    break;
-                default:
-                    fwd_bridge_volt = 0.09f;
-                    rev_bridge_volt = 0.09f;
-                    if (tx_band == Band.B6M) 
-                       rev_bridge_volt = 0.09f;
-                    refvoltage = 3.3f;
-                    fwd_adc_cal_offset = 6;
-                    rev_adc_cal_offset = 3;
-                    break;
-            }
+                    switch (current_hpsdr_model)
+                    {
+                        case HPSDRModel.ANAN100:
+                        case HPSDRModel.ANAN100B:
+                            fwd_bridge_volt = 0.095f;
+                            rev_bridge_volt = 0.095f;
+                            if (tx_band == Band.B6M)
+                                rev_bridge_volt = 0.5f;
+                            refvoltage = 3.3f;
+                            fwd_adc_cal_offset = 6;
+                            rev_adc_cal_offset = 3;
+                            break;
+                        case HPSDRModel.ANAN100D:
+                            fwd_bridge_volt = 0.095f;
+                            rev_bridge_volt = 0.095f;
+                            if (tx_band == Band.B6M)
+                               rev_bridge_volt = 0.5f;
+                            refvoltage = 3.3f;
+                            fwd_adc_cal_offset = 6;
+                            rev_adc_cal_offset = 3;
+                            break;
+                        case HPSDRModel.ANAN200D:
+                            fwd_bridge_volt = 0.108f;
+                            rev_bridge_volt = 0.108f;
+                            if (tx_band == Band.B6M)
+                               rev_bridge_volt = 0.5f;
+                            refvoltage = 5.0f;
+                            fwd_adc_cal_offset = 4;
+                            rev_adc_cal_offset = 2;
+                            break;
+                        case HPSDRModel.ORIONMKII:
+                        case HPSDRModel.ANAN8000D:
+                            fwd_bridge_volt = 0.08f;
+                            rev_bridge_volt = 0.08f;
+                            if (tx_band == Band.B6M)
+                               rev_bridge_volt = 0.08f;
+                            refvoltage = 5.0f;
+                            fwd_adc_cal_offset = 18;
+                            rev_adc_cal_offset = 16;
+                            break;
+                        default:
+                            fwd_bridge_volt = 0.09f;
+                            rev_bridge_volt = 0.09f;
+                            if (tx_band == Band.B6M) 
+                               rev_bridge_volt = 0.09f;
+                            refvoltage = 3.3f;
+                            fwd_adc_cal_offset = 6;
+                            rev_adc_cal_offset = 3;
+                            break;
+                    }
 
-            for (int count = 0; count < 100; count++)
-            {
-                fwd_adc = JanusAudio.getAlexFwdPower();
-                addfwdadc += fwd_adc;
-                rev_adc = JanusAudio.getRefPower();
-                addrevadc += rev_adc;
-                Thread.Sleep(1);
-           }
+                    for (int count = 0; count < 100; count++)
+                    {
+                        fwd_adc = JanusAudio.getAlexFwdPower();
+                        addfwdadc += fwd_adc;
+                        rev_adc = JanusAudio.getRefPower();
+                        addrevadc += rev_adc;
+                        Thread.Sleep(1);
+                   }
 
-            fwd_adc = addfwdadc / 100;
-            if (fwd_adc < 0) fwd_adc = 0;
-            float fwdvolts = ((fwd_adc - fwd_adc_cal_offset) / 4095.0f * refvoltage);
-            if (fwdvolts < 0) fwdvolts = 0;
-            float fwdwatts = ((float)Math.Pow(fwdvolts, 2) / fwd_bridge_volt);
-            if (fwdwatts < 0 || float.IsNaN(fwdwatts) || float.IsInfinity(fwdwatts)) fwdwatts = 0;
-            fwdpwr = fwdwatts;
+                    fwd_adc = addfwdadc / 100;
+                    if (fwd_adc < 0) fwd_adc = 0;
+                    float fwdvolts = ((fwd_adc - fwd_adc_cal_offset) / 4095.0f * refvoltage);
+                    if (fwdvolts < 0) fwdvolts = 0;
+                    float fwdwatts = ((float)Math.Pow(fwdvolts, 2) / fwd_bridge_volt);
+                    if (fwdwatts < 0 || float.IsNaN(fwdwatts) || float.IsInfinity(fwdwatts)) fwdwatts = 0;
+                    fwdpwr = fwdwatts;
 
-            rev_adc = addrevadc / 100;
-            if (rev_adc < 0) rev_adc = 0;
-            float revvolts = ((rev_adc - rev_adc_cal_offset) / 4095.0f * refvoltage);
-            if (revvolts < 0) revvolts = 0;
-            float revwatts = ((float)Math.Pow(revvolts, 2) / rev_bridge_volt);
-            if (revwatts < 0 || float.IsNaN(revwatts) || float.IsInfinity(revwatts)) revwatts = 0;
-            revpwr = revwatts;
-     
-            if (PAValues)
-            {
-                SetupForm.textFwdADCValue.Text = fwd_adc.ToString();
-                SetupForm.textFwdVoltage.Text = fwdvolts.ToString("f2") + " V";
-                SetupForm.textRevADCValue.Text = rev_adc.ToString();
-                SetupForm.textRevVoltage.Text = revvolts.ToString("f2") + " V";
-                SetupForm.textPAFwdPower.Text = fwdwatts.ToString("f1") + " W";
-                SetupForm.textPARevPower.Text = revwatts.ToString("f1") + " W";
-            }
+                    rev_adc = addrevadc / 100;
+                    if (rev_adc < 0) rev_adc = 0;
+                    float revvolts = ((rev_adc - rev_adc_cal_offset) / 4095.0f * refvoltage);
+                    if (revvolts < 0) revvolts = 0;
+                    float revwatts = ((float)Math.Pow(revvolts, 2) / rev_bridge_volt);
+                    if (revwatts < 0 || float.IsNaN(revwatts) || float.IsInfinity(revwatts)) revwatts = 0;
+                    revpwr = revwatts;
 
-       }
-*/
+                    if (PAValues)
+                    {
+                        SetupForm.textFwdADCValue.Text = fwd_adc.ToString();
+                        SetupForm.textFwdVoltage.Text = fwdvolts.ToString("f2") + " V";
+                        SetupForm.textRevADCValue.Text = rev_adc.ToString();
+                        SetupForm.textRevVoltage.Text = revvolts.ToString("f2") + " V";
+                        SetupForm.textPAFwdPower.Text = fwdwatts.ToString("f1") + " W";
+                        SetupForm.textPARevPower.Text = revwatts.ToString("f1") + " W";
+                    }
+
+               }
+        */
         public float computeFwdPower()
         {
             const float alpha = 0.90f;
@@ -33965,7 +33968,7 @@ namespace PowerSDR
 
             if (PAValues)
             {
-               // SetupForm.textDriveFwdADCValue.Text = power_int.ToString();
+                // SetupForm.textDriveFwdADCValue.Text = power_int.ToString();
                 average_drvadc = alpha * average_drvadc + (1.0f - alpha) * power_int;
             }
 
@@ -34086,7 +34089,7 @@ namespace PowerSDR
 
             if (PAValues)
             {
-               // SetupForm.textDriveFwdADCValue.Text = power_int.ToString();
+                // SetupForm.textDriveFwdADCValue.Text = power_int.ToString();
                 average_drvadc = alpha * average_drvadc + (1.0f - alpha) * power_int;
             }
 
@@ -34136,77 +34139,77 @@ namespace PowerSDR
 
             return (float)result;
         }
-/*
-        public float computeANANFwdPower()
-        {
-            int power_int = JanusAudio.getAlexFwdPower();
-            double power_f = (double)power_int;
-            double result = 0.0;
-
-            // if (PAValues)
-            // {
-            //     SetupForm.textDriveFwdADCValue.Text = power_int.ToString();
-            // }
-            if (power_int <= 2551)
-            {
-                if (power_int <= 1253)
+        /*
+                public float computeANANFwdPower()
                 {
-                    if (power_int <= 68)
-                    {
-                        result = 0.0;
-                    }
-                    else  // > 68 
-                    {
-                        result = (power_f - 68.0) * 0.008439;
-                    }
-                }
+                    int power_int = JanusAudio.getAlexFwdPower();
+                    double power_f = (double)power_int;
+                    double result = 0.0;
 
-                else  // > 1253
-                {
-                    if (power_int <= 1856)
+                    // if (PAValues)
+                    // {
+                    //     SetupForm.textDriveFwdADCValue.Text = power_int.ToString();
+                    // }
+                    if (power_int <= 2551)
                     {
-                        result = 10.0 + ((power_f - 1253.0) * 0.024876);
-                    }
-                    else  // > 1856
-                    {
-                        result = 25.0 + ((power_f - 1856.0) * 0.035971);
-                    }
-                }
-            }
+                        if (power_int <= 1253)
+                        {
+                            if (power_int <= 68)
+                            {
+                                result = 0.0;
+                            }
+                            else  // > 68 
+                            {
+                                result = (power_f - 68.0) * 0.008439;
+                            }
+                        }
 
-            else  // > 2551
-            {
-                if (power_int <= 3628)
-                {
-                    if (power_int <= 3101)
-                    {
-                        result = 50.0 + ((power_f - 2551.0) * 0.045454);
+                        else  // > 1253
+                        {
+                            if (power_int <= 1856)
+                            {
+                                result = 10.0 + ((power_f - 1253.0) * 0.024876);
+                            }
+                            else  // > 1856
+                            {
+                                result = 25.0 + ((power_f - 1856.0) * 0.035971);
+                            }
+                        }
                     }
-                    else  // > 3101, <3628 
+
+                    else  // > 2551
                     {
-                        result = 75.0 + ((power_f - 3101.0) * 0.370370);
+                        if (power_int <= 3628)
+                        {
+                            if (power_int <= 3101)
+                            {
+                                result = 50.0 + ((power_f - 2551.0) * 0.045454);
+                            }
+                            else  // > 3101, <3628 
+                            {
+                                result = 75.0 + ((power_f - 3101.0) * 0.370370);
+                            }
+                        }
+                        else  // > 3628
+                        {
+                            result = 100.0 + ((power_f - 3628.0) * 0.064935);
+                        }
                     }
-                }
-                else  // > 3628
-                {
-                    result = 100.0 + ((power_f - 3628.0) * 0.064935);
-                }
-            }
 
-            if (PAValues)
-            {
-                SetupForm.textFwdADCValue.Text = power_int.ToString();
-                // SetupForm.textFwdVoltage.Text = fwdvolts.ToString("f2") + " V";
-            }
+                    if (PAValues)
+                    {
+                        SetupForm.textFwdADCValue.Text = power_int.ToString();
+                        // SetupForm.textFwdVoltage.Text = fwdvolts.ToString("f2") + " V";
+                    }
 
-            return (float)result;
-        }
-*/
+                    return (float)result;
+                }
+        */
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         public float computeCharly25Power(float adc_value)
-        {           
+        {
             double power_f_dbm = 0;
             double power_f_mW = 0;
             double result = 0.0;
@@ -34420,7 +34423,7 @@ namespace PowerSDR
                             tx_mode == DSPMode.DIGU ||
                             tx_mode == DSPMode.DIGL ||
                             tx_mode == DSPMode.FM //||
-                           /* all_mode_mic_ptt */) &&
+                                                  /* all_mode_mic_ptt */) &&
                             mic_ptt)
                         {
                             current_ptt_mode = PTTMode.MIC;
@@ -34655,9 +34658,9 @@ namespace PowerSDR
                 if (tx_inhibit_enabled && current_hpsdr_model != HPSDRModel.HPSDR)
                 {
                     if (anan7000dpresent || anan8000dpresent)
-                    inhibit_input = JanusAudio.getUserI02();
+                        inhibit_input = JanusAudio.getUserI02();
                     else
-                    inhibit_input = JanusAudio.getUserI01();
+                        inhibit_input = JanusAudio.getUserI01();
 
                     if (tx_inhibit_sense)
                     {
@@ -34678,8 +34681,8 @@ namespace PowerSDR
         private UdpClient n1mm_udp_client;
         private void PollN1MMPacket()
         {
-           // radio_info = new RadioInfo();
-           // contact_info = new ContactInfo();
+            // radio_info = new RadioInfo();
+            // contact_info = new ContactInfo();
 
             if (n1mm_udp_client != null) n1mm_udp_client.Close();
             IPEndPoint udp_ep = new IPEndPoint(IPAddress.Any, focus_master_udp_port);
@@ -34746,301 +34749,301 @@ namespace PowerSDR
                     Win32.SetForegroundWindow(n1mm_handle);
             }
         }
-/*
-        public struct RadioInfo
-        {
-            public string StationName;
-            public string RadioNr;
-            public string Freq;
-            public string TXFreq;
-            public string Mode;
-            public string OpCall;
-            public string IsRunning;
-            public string FocusEntry;
-            public string Antenna;
-            public string Rotors;
-            public string FocusRadioNr;
-            public string IsStereo;
-            public string ActiveRadioNr;
-        }
-        
-        public struct ContactInfo
-        {
-            public string contestname;
-            public string contestnr;
-            public string timestamp;
-            public string mycall;
-            public string band;
-            public string rxfreq;
-            public string txfreq;
-            public string oprerator;
-            public string mode;
-            public string call;
-            public string countryprefix;
-            public string wpxprefix;
-            public string stationprefix;
-            public string continent;
-            public string snt;
-            public string sntnr;
-            public string rcv;
-            public string rcvnr;
-            public string gridsquare;
-            public string exchange1;
-            public string section;
-            public string comment;
-            public string qth;
-            public string name;
-            public string power;
-            public string misctext;
-            public string zone;
-            public string prec;
-            public string ck;
-            public string ismultiplier1;
-            public string ismultiplier2;
-            public string ismultiplier3;
-            public string points;
-            public string radionr;
-            public string RoverLocation;
-            public string RadioInterfaced;
-            public string NetworkedCompNr;
-            public string IsOriginal;
-            public string NetBiosName;
-            public string IsRunQSO;
-            public string Run1Run2;
-            public string ContactType;
-            public string StationName;
-        }
-        */
-        void HandleXml(string str)
-        {
-           // int textCount = 0;
-           // bool valid_data = true;
-          //  string element = "";
-            StringReader stream = new StringReader(str);
-          //  XmlTextReader tr = new XmlTextReader(stream);
-
-            var elem = XElement.Parse(str);
-            if(elem.Name == "RadioInfo")
-               n1mm_handle = (IntPtr) Int32.Parse(elem.Element("FocusEntry").Value);
-/*
-            while (tr.Read() && valid_data)
-            {
-                switch (tr.NodeType)
+        /*
+                public struct RadioInfo
                 {
-                    case XmlNodeType.XmlDeclaration:
-                    case XmlNodeType.EndElement:
-                    case XmlNodeType.Whitespace:
-                        break;
-                    case XmlNodeType.Element:
-                        switch (tr.Name)
-                        {
-                            case "appinfo":
-                            case "N1MMRotor":
-                                valid_data = false;
-                                break;
-                            case "contactinfo":
-                                //element = "contactinfo";
-                                valid_data = false;
-                                break;
-                            case "RadioInfo":
-                                element = "RadioInfo";
-                                //focus_entry = elem.Element("FocusEntry").Value;
-                                break;
-                        }
-                        break;
-                    case XmlNodeType.Text:
-                        switch (element)
-                        {
-                            case "RadioInfo":
-                                switch (++textCount)
-                                {
-                                    case 1:
-                                        radio_info.StationName = tr.Value;
-                                        break;
-                                    case 2:
-                                        radio_info.RadioNr = tr.Value;
-                                        break;
-                                    case 3:
-                                        radio_info.Freq = tr.Value;
-                                        break;
-                                    case 4:
-                                        radio_info.TXFreq = tr.Value;
-                                        break;
-                                    case 5:
-                                        radio_info.Mode = tr.Value;
-                                        break;
-                                    case 6:
-                                        radio_info.OpCall = tr.Value;
-                                        break;
-                                    case 7:
-                                        radio_info.IsRunning = tr.Value;
-                                        break;
-                                    case 8:
-                                        radio_info.FocusEntry = tr.Value;
-                                        break;
-                                    case 9:
-                                        radio_info.Antenna = tr.Value;
-                                        break;
-                                    case 10:
-                                        radio_info.Rotors = tr.Value;
-                                        break;
-                                    case 11:
-                                        radio_info.FocusRadioNr = tr.Value;
-                                        break;
-                                    case 12:
-                                        radio_info.IsStereo = tr.Value;
-                                        break;
-                                    case 13:
-                                        radio_info.ActiveRadioNr = tr.Value;
-                                        break;
-                                }
-                                break;
-                            case "contactinfo":
-                                switch (++textCount)
-                                {
-                                    case 1:
-                                        contact_info.contestname = tr.Value;
-                                        break;
-                                    case 2:
-                                        contact_info.contestnr = tr.Value;
-                                        break;
-                                    case 3:
-                                        contact_info.timestamp = tr.Value;
-                                        break;
-                                    case 4:
-                                        contact_info.mycall = tr.Value;
-                                        break;
-                                    case 5:
-                                        contact_info.band = tr.Value;
-                                        break;
-                                    case 6:
-                                        contact_info.rxfreq = tr.Value;
-                                        break;
-                                    case 7:
-                                        contact_info.txfreq = tr.Value;
-                                        break;
-                                    case 8:
-                                        contact_info.oprerator = tr.Value;
-                                        break;
-                                    case 9:
-                                        contact_info.mode = tr.Value;
-                                        break;
-                                    case 10:
-                                        contact_info.call = tr.Value;
-                                        break;
-                                    case 11:
-                                        contact_info.countryprefix = tr.Value;
-                                        break;
-                                    case 12:
-                                        contact_info.wpxprefix = tr.Value;
-                                        break;
-                                    case 13:
-                                        contact_info.stationprefix = tr.Value;
-                                        break;
-                                    case 14:
-                                        contact_info.continent = tr.Value;
-                                        break;
-                                    case 15:
-                                        contact_info.snt = tr.Value;
-                                        break;
-                                    case 16:
-                                        contact_info.sntnr = tr.Value;
-                                        break;
-                                    case 17:
-                                        contact_info.rcv = tr.Value;
-                                        break;
-                                    case 18:
-                                        contact_info.rcvnr = tr.Value;
-                                        break;
-                                    case 19:
-                                        contact_info.gridsquare = tr.Value;
-                                        break;
-                                    case 20:
-                                        contact_info.exchange1 = tr.Value;
-                                        break;
-                                    case 21:
-                                        contact_info.section = tr.Value;
-                                        break;
-                                    case 22:
-                                        contact_info.comment = tr.Value;
-                                        break;
-                                    case 23:
-                                        contact_info.qth = tr.Value;
-                                        break;
-                                    case 24:
-                                        contact_info.name = tr.Value;
-                                        break;
-                                    case 25:
-                                        contact_info.power = tr.Value;
-                                        break;
-                                    case 26:
-                                        contact_info.misctext = tr.Value;
-                                        break;
-                                    case 27:
-                                        contact_info.zone = tr.Value;
-                                        break;
-                                    case 28:
-                                        contact_info.prec = tr.Value;
-                                        break;
-                                    case 29:
-                                        contact_info.ck = tr.Value;
-                                        break;
-                                    case 30:
-                                        contact_info.ismultiplier1 = tr.Value;
-                                        break;
-                                    case 31:
-                                        contact_info.ismultiplier2 = tr.Value;
-                                        break;
-                                    case 32:
-                                        contact_info.ismultiplier3 = tr.Value;
-                                        break;
-                                    case 33:
-                                        contact_info.points = tr.Value;
-                                        break;
-                                    case 34:
-                                        contact_info.radionr = tr.Value;
-                                        break;
-                                    case 35:
-                                        contact_info.RoverLocation = tr.Value;
-                                        break;
-                                    case 36:
-                                        contact_info.RadioInterfaced = tr.Value;
-                                        break;
-                                    case 38:
-                                        contact_info.NetworkedCompNr = tr.Value;
-                                        break;
-                                    case 39:
-                                        contact_info.IsOriginal = tr.Value;
-                                        break;
-                                    case 40:
-                                        contact_info.NetBiosName = tr.Value;
-                                        break;
-                                    case 41:
-                                        contact_info.IsRunQSO = tr.Value;
-                                        break;
-                                    case 42:
-                                        contact_info.Run1Run2 = tr.Value;
-                                        break;
-                                    case 43:
-                                        contact_info.ContactType = tr.Value;
-                                        break;
-                                    case 44:
-                                        contact_info.StationName = tr.Value;
-                                        break;
-                                }
-                                break;
-                        }
-                        break;
+                    public string StationName;
+                    public string RadioNr;
+                    public string Freq;
+                    public string TXFreq;
+                    public string Mode;
+                    public string OpCall;
+                    public string IsRunning;
+                    public string FocusEntry;
+                    public string Antenna;
+                    public string Rotors;
+                    public string FocusRadioNr;
+                    public string IsStereo;
+                    public string ActiveRadioNr;
                 }
 
-            }
+                public struct ContactInfo
+                {
+                    public string contestname;
+                    public string contestnr;
+                    public string timestamp;
+                    public string mycall;
+                    public string band;
+                    public string rxfreq;
+                    public string txfreq;
+                    public string oprerator;
+                    public string mode;
+                    public string call;
+                    public string countryprefix;
+                    public string wpxprefix;
+                    public string stationprefix;
+                    public string continent;
+                    public string snt;
+                    public string sntnr;
+                    public string rcv;
+                    public string rcvnr;
+                    public string gridsquare;
+                    public string exchange1;
+                    public string section;
+                    public string comment;
+                    public string qth;
+                    public string name;
+                    public string power;
+                    public string misctext;
+                    public string zone;
+                    public string prec;
+                    public string ck;
+                    public string ismultiplier1;
+                    public string ismultiplier2;
+                    public string ismultiplier3;
+                    public string points;
+                    public string radionr;
+                    public string RoverLocation;
+                    public string RadioInterfaced;
+                    public string NetworkedCompNr;
+                    public string IsOriginal;
+                    public string NetBiosName;
+                    public string IsRunQSO;
+                    public string Run1Run2;
+                    public string ContactType;
+                    public string StationName;
+                }
+                */
+        void HandleXml(string str)
+        {
+            // int textCount = 0;
+            // bool valid_data = true;
+            //  string element = "";
+            StringReader stream = new StringReader(str);
+            //  XmlTextReader tr = new XmlTextReader(stream);
 
-            if (element == "RadioInfo")
-            {
-                int handle = Int32.Parse(radio_info.FocusEntry);
-                n1mm_handle = (IntPtr)handle;
-            }
-            */
+            var elem = XElement.Parse(str);
+            if (elem.Name == "RadioInfo")
+                n1mm_handle = (IntPtr)Int32.Parse(elem.Element("FocusEntry").Value);
+            /*
+                        while (tr.Read() && valid_data)
+                        {
+                            switch (tr.NodeType)
+                            {
+                                case XmlNodeType.XmlDeclaration:
+                                case XmlNodeType.EndElement:
+                                case XmlNodeType.Whitespace:
+                                    break;
+                                case XmlNodeType.Element:
+                                    switch (tr.Name)
+                                    {
+                                        case "appinfo":
+                                        case "N1MMRotor":
+                                            valid_data = false;
+                                            break;
+                                        case "contactinfo":
+                                            //element = "contactinfo";
+                                            valid_data = false;
+                                            break;
+                                        case "RadioInfo":
+                                            element = "RadioInfo";
+                                            //focus_entry = elem.Element("FocusEntry").Value;
+                                            break;
+                                    }
+                                    break;
+                                case XmlNodeType.Text:
+                                    switch (element)
+                                    {
+                                        case "RadioInfo":
+                                            switch (++textCount)
+                                            {
+                                                case 1:
+                                                    radio_info.StationName = tr.Value;
+                                                    break;
+                                                case 2:
+                                                    radio_info.RadioNr = tr.Value;
+                                                    break;
+                                                case 3:
+                                                    radio_info.Freq = tr.Value;
+                                                    break;
+                                                case 4:
+                                                    radio_info.TXFreq = tr.Value;
+                                                    break;
+                                                case 5:
+                                                    radio_info.Mode = tr.Value;
+                                                    break;
+                                                case 6:
+                                                    radio_info.OpCall = tr.Value;
+                                                    break;
+                                                case 7:
+                                                    radio_info.IsRunning = tr.Value;
+                                                    break;
+                                                case 8:
+                                                    radio_info.FocusEntry = tr.Value;
+                                                    break;
+                                                case 9:
+                                                    radio_info.Antenna = tr.Value;
+                                                    break;
+                                                case 10:
+                                                    radio_info.Rotors = tr.Value;
+                                                    break;
+                                                case 11:
+                                                    radio_info.FocusRadioNr = tr.Value;
+                                                    break;
+                                                case 12:
+                                                    radio_info.IsStereo = tr.Value;
+                                                    break;
+                                                case 13:
+                                                    radio_info.ActiveRadioNr = tr.Value;
+                                                    break;
+                                            }
+                                            break;
+                                        case "contactinfo":
+                                            switch (++textCount)
+                                            {
+                                                case 1:
+                                                    contact_info.contestname = tr.Value;
+                                                    break;
+                                                case 2:
+                                                    contact_info.contestnr = tr.Value;
+                                                    break;
+                                                case 3:
+                                                    contact_info.timestamp = tr.Value;
+                                                    break;
+                                                case 4:
+                                                    contact_info.mycall = tr.Value;
+                                                    break;
+                                                case 5:
+                                                    contact_info.band = tr.Value;
+                                                    break;
+                                                case 6:
+                                                    contact_info.rxfreq = tr.Value;
+                                                    break;
+                                                case 7:
+                                                    contact_info.txfreq = tr.Value;
+                                                    break;
+                                                case 8:
+                                                    contact_info.oprerator = tr.Value;
+                                                    break;
+                                                case 9:
+                                                    contact_info.mode = tr.Value;
+                                                    break;
+                                                case 10:
+                                                    contact_info.call = tr.Value;
+                                                    break;
+                                                case 11:
+                                                    contact_info.countryprefix = tr.Value;
+                                                    break;
+                                                case 12:
+                                                    contact_info.wpxprefix = tr.Value;
+                                                    break;
+                                                case 13:
+                                                    contact_info.stationprefix = tr.Value;
+                                                    break;
+                                                case 14:
+                                                    contact_info.continent = tr.Value;
+                                                    break;
+                                                case 15:
+                                                    contact_info.snt = tr.Value;
+                                                    break;
+                                                case 16:
+                                                    contact_info.sntnr = tr.Value;
+                                                    break;
+                                                case 17:
+                                                    contact_info.rcv = tr.Value;
+                                                    break;
+                                                case 18:
+                                                    contact_info.rcvnr = tr.Value;
+                                                    break;
+                                                case 19:
+                                                    contact_info.gridsquare = tr.Value;
+                                                    break;
+                                                case 20:
+                                                    contact_info.exchange1 = tr.Value;
+                                                    break;
+                                                case 21:
+                                                    contact_info.section = tr.Value;
+                                                    break;
+                                                case 22:
+                                                    contact_info.comment = tr.Value;
+                                                    break;
+                                                case 23:
+                                                    contact_info.qth = tr.Value;
+                                                    break;
+                                                case 24:
+                                                    contact_info.name = tr.Value;
+                                                    break;
+                                                case 25:
+                                                    contact_info.power = tr.Value;
+                                                    break;
+                                                case 26:
+                                                    contact_info.misctext = tr.Value;
+                                                    break;
+                                                case 27:
+                                                    contact_info.zone = tr.Value;
+                                                    break;
+                                                case 28:
+                                                    contact_info.prec = tr.Value;
+                                                    break;
+                                                case 29:
+                                                    contact_info.ck = tr.Value;
+                                                    break;
+                                                case 30:
+                                                    contact_info.ismultiplier1 = tr.Value;
+                                                    break;
+                                                case 31:
+                                                    contact_info.ismultiplier2 = tr.Value;
+                                                    break;
+                                                case 32:
+                                                    contact_info.ismultiplier3 = tr.Value;
+                                                    break;
+                                                case 33:
+                                                    contact_info.points = tr.Value;
+                                                    break;
+                                                case 34:
+                                                    contact_info.radionr = tr.Value;
+                                                    break;
+                                                case 35:
+                                                    contact_info.RoverLocation = tr.Value;
+                                                    break;
+                                                case 36:
+                                                    contact_info.RadioInterfaced = tr.Value;
+                                                    break;
+                                                case 38:
+                                                    contact_info.NetworkedCompNr = tr.Value;
+                                                    break;
+                                                case 39:
+                                                    contact_info.IsOriginal = tr.Value;
+                                                    break;
+                                                case 40:
+                                                    contact_info.NetBiosName = tr.Value;
+                                                    break;
+                                                case 41:
+                                                    contact_info.IsRunQSO = tr.Value;
+                                                    break;
+                                                case 42:
+                                                    contact_info.Run1Run2 = tr.Value;
+                                                    break;
+                                                case 43:
+                                                    contact_info.ContactType = tr.Value;
+                                                    break;
+                                                case 44:
+                                                    contact_info.StationName = tr.Value;
+                                                    break;
+                                            }
+                                            break;
+                                    }
+                                    break;
+                            }
+
+                        }
+
+                        if (element == "RadioInfo")
+                        {
+                            int handle = Int32.Parse(radio_info.FocusEntry);
+                            n1mm_handle = (IntPtr)handle;
+                        }
+                        */
         }
 
         private void ToggleFocusMasterTimer()
@@ -35352,7 +35355,7 @@ namespace PowerSDR
                     txtCPUMeter.Text = String.Format("{0:#0.0}V {1:#0.0}A", MKIIPAVolts, MKIIPAAmps);
                 }
                 else
-                txtCPUMeter.Text = String.Format("CPU%  {0:##0}", cpu_usage.NextValue());
+                    txtCPUMeter.Text = String.Format("CPU%  {0:##0}", cpu_usage.NextValue());
             }
         }
 
@@ -35762,15 +35765,15 @@ namespace PowerSDR
                         break;
                     case Keys.T:
                         break;
-                    /*  case Keys.V:
-                          if (fwc_init && current_model == Model.FLEX5000 && FWCEEPROM.VUOK)
-                          {
-                              if (flex5000VUCalForm == null || flex5000VUCalForm.IsDisposed)
-                                  flex5000VUCalForm = new FLEX5000VUCalForm(this);
-                              flex5000VUCalForm.Show();
-                              flex5000VUCalForm.Focus();
-                          }
-                          break;*/
+                        /*  case Keys.V:
+                              if (fwc_init && current_model == Model.FLEX5000 && FWCEEPROM.VUOK)
+                              {
+                                  if (flex5000VUCalForm == null || flex5000VUCalForm.IsDisposed)
+                                      flex5000VUCalForm = new FLEX5000VUCalForm(this);
+                                  flex5000VUCalForm.Show();
+                                  flex5000VUCalForm.Focus();
+                              }
+                              break;*/
                 }
                 shift_down = false;
             }
@@ -36083,7 +36086,7 @@ namespace PowerSDR
                         e.SuppressKeyPress = true;
                     }
                     else
-                      return;
+                        return;
                 }
 
                 switch (e.KeyCode)
@@ -37046,7 +37049,7 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 if (HPSDRModelIsCharly25orHAMlab())
                 {
-                    chkCWSidetone_CheckedChanged(this, EventArgs.Empty);                    
+                    chkCWSidetone_CheckedChanged(this, EventArgs.Empty);
                 }
                 else
                 {
@@ -37198,7 +37201,7 @@ namespace PowerSDR
                     {
                         // Exception occurred during SDR application stop attempt
                     }
-                }          
+                }
                 // DG8MG
 
             }
@@ -38350,10 +38353,10 @@ namespace PowerSDR
 
                     if (alex_ant_ctrl_enabled)
                     {
-                       // if(anan8000dpresent)
-                       //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
-                       // else
-                            Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                        // if(anan8000dpresent)
+                        //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
+                        // else
+                        Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
                     }
                 }
                 else
@@ -38386,7 +38389,7 @@ namespace PowerSDR
 
                 if (serialPTT != null) serialPTT.setDTR(true);
 
-                
+
             }
             else // rx
             {
@@ -38416,9 +38419,9 @@ namespace PowerSDR
                     txtVFOBFreq_LostFocus(this, EventArgs.Empty);
                 else
                     if (click_tune_display)
-                    {
-                        txtVFOAFreq_LostFocus(this, EventArgs.Empty);
-                    }
+                {
+                    txtVFOAFreq_LostFocus(this, EventArgs.Empty);
+                }
                 if (click_tune_rx2_display)
                 {
                     txtVFOBFreq_LostFocus(this, EventArgs.Empty);
@@ -38448,10 +38451,10 @@ namespace PowerSDR
 
                     if (alex_ant_ctrl_enabled)
                     {
-                      //  if (anan8000dpresent)
-                       //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
-                      //  else
-                            Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                        //  if (anan8000dpresent)
+                        //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
+                        //  else
+                        Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
                     }
                 }
                 else
@@ -38646,7 +38649,7 @@ namespace PowerSDR
                                     MessageBoxIcon.Error);
                                 chkMOX.Checked = false;
                                 return;
-                            // break;
+                                // break;
                         }
                     }
 
@@ -38668,12 +38671,12 @@ namespace PowerSDR
                                 case DSPMode.CWL:
                                 case DSPMode.CWU:
                                     MessageBox.Show("The frequency " + freq.ToString("f6") + "MHz is not within the\n" +
-                                        
+
                                         // DG8MG
                                         // Corrected string output of the current region
                                         "Band specifications for your region (" + current_region.ToString() + ").",
                                         // DG8MG
-                                        
+
                                         "Transmit Error: Out Of Band",
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Error);
@@ -38681,7 +38684,7 @@ namespace PowerSDR
                                 default:
                                     MessageBox.Show("The frequency " + freq.ToString("f6") + "MHz in combination with your TX filter\n" +
                                         "settings [" + Display.TXFilterLow.ToString() + ", " + Display.TXFilterHigh.ToString() + "] are not within the " +
-                                        
+
                                         // DG8MG
                                         // Corrected string output of the current region
                                         "Band specifications for your region (" + current_region.ToString() + ").",
@@ -38772,55 +38775,55 @@ namespace PowerSDR
                     switch (current_hpsdr_model)
                     {
                         case HPSDRModel.CHARLY25:
-                        {
-                            temp_mode = RX1PreampMode;
-                            SetupForm.HermesEnableAttenuator = false;
-                            RX1PreampMode = PreampMode.C25_OFF;
-                            break;
-                        }
+                            {
+                                temp_mode = RX1PreampMode;
+                                SetupForm.HermesEnableAttenuator = false;
+                                RX1PreampMode = PreampMode.C25_OFF;
+                                break;
+                            }
 
                         case HPSDRModel.HAMLAB:
-                        {
-                            temp_mode = RX1PreampMode;
-                            SetupForm.HermesEnableAttenuator = false;
-                            RX1PreampMode = PreampMode.C25_OFF;
-                            break;
-                        }
-
-                        case HPSDRModel.HPSDR:                                               
-                        {
-                            temp_mode = RX1PreampMode;
-                            SetupForm.HermesEnableAttenuator = false;
-                            RX1PreampMode = PreampMode.HPSDR_OFF;           // set to -20dB
-                            if (rx2_preamp_present)
                             {
-                                temp_mode2 = RX2PreampMode;
-                                RX2PreampMode = PreampMode.HPSDR_OFF;
+                                temp_mode = RX1PreampMode;
+                                SetupForm.HermesEnableAttenuator = false;
+                                RX1PreampMode = PreampMode.C25_OFF;
+                                break;
                             }
-                            break;
-                        }
+
+                        case HPSDRModel.HPSDR:
+                            {
+                                temp_mode = RX1PreampMode;
+                                SetupForm.HermesEnableAttenuator = false;
+                                RX1PreampMode = PreampMode.HPSDR_OFF;           // set to -20dB
+                                if (rx2_preamp_present)
+                                {
+                                    temp_mode2 = RX2PreampMode;
+                                    RX2PreampMode = PreampMode.HPSDR_OFF;
+                                }
+                                break;
+                            }
 
                         default:
-                        {                           
-                            SetupForm.HermesAttenuatorData = tx_step_attenuator_by_band[(int)rx1_band];
-                            if (chkTUN.Checked || rx1_dsp_mode == DSPMode.CWL || rx1_dsp_mode == DSPMode.CWU)
-                                JanusAudio.SetTxAttenData(31);
-                            else
                             {
-                                JanusAudio.SetTxAttenData(tx_step_attenuator_by_band[(int)rx1_band]);
-                            }
-                            SetupForm.HermesEnableAttenuator = true;
-                            comboRX2Preamp.Enabled = false;
-                            udRX2StepAttData.Enabled = false;
+                                SetupForm.HermesAttenuatorData = tx_step_attenuator_by_band[(int)rx1_band];
+                                if (chkTUN.Checked || rx1_dsp_mode == DSPMode.CWL || rx1_dsp_mode == DSPMode.CWU)
+                                    JanusAudio.SetTxAttenData(31);
+                                else
+                                {
+                                    JanusAudio.SetTxAttenData(tx_step_attenuator_by_band[(int)rx1_band]);
+                                }
+                                SetupForm.HermesEnableAttenuator = true;
+                                comboRX2Preamp.Enabled = false;
+                                udRX2StepAttData.Enabled = false;
 
-                            //if (current_hpsdr_model == HPSDRModel.ANAN100D || current_hpsdr_model == HPSDRModel.ANAN200D)
-                            //{
-                            //    RX2ATT = SetupForm.ATTOnTX;
-                            //    RX2StepAttPresent = true;
-                            //}
-                            break;  
-                        }
-                    }   
+                                //if (current_hpsdr_model == HPSDRModel.ANAN100D || current_hpsdr_model == HPSDRModel.ANAN200D)
+                                //{
+                                //    RX2ATT = SetupForm.ATTOnTX;
+                                //    RX2StepAttPresent = true;
+                                //}
+                                break;
+                            }
+                    }
                 }
                 else JanusAudio.SetTxAttenData(rx1_attenuator_data);
                 // DG8MG
@@ -38883,35 +38886,35 @@ namespace PowerSDR
                     switch (current_hpsdr_model)
                     {
                         case HPSDRModel.CHARLY25:
-                        {
+                            {
                                 RX1PreampMode = temp_mode;
                                 break;
-                        }
+                            }
 
                         case HPSDRModel.HAMLAB:
-                        {
+                            {
                                 RX1PreampMode = temp_mode;
                                 break;
-                        }
+                            }
 
                         case HPSDRModel.HPSDR:
-                        {
-                            RX1PreampMode = temp_mode;
-                            if (rx2_preamp_present)
-                            RX2PreampMode = temp_mode2;
-                            break;
-                        }
+                            {
+                                RX1PreampMode = temp_mode;
+                                if (rx2_preamp_present)
+                                    RX2PreampMode = temp_mode2;
+                                break;
+                            }
 
-                        default:                        
-                        {
-                            comboRX2Preamp.Enabled = true;
-                            udRX2StepAttData.Enabled = true;
+                        default:
+                            {
+                                comboRX2Preamp.Enabled = true;
+                                udRX2StepAttData.Enabled = true;
 
-                            update_preamp_mode = true;
-                            update_preamp = true;
-                            UpdatePreamps();
-                            break;
-                        }
+                                update_preamp_mode = true;
+                                update_preamp = true;
+                                UpdatePreamps();
+                                break;
+                            }
                     }
                 }
                 else JanusAudio.SetTxAttenData(rx1_attenuator_data);
@@ -38928,7 +38931,7 @@ namespace PowerSDR
 
             if (tx) UIMOXChangedTrue();
             else UIMOXChangedFalse();
- 
+
         }
 
         private void chkMOX_Click(object sender, System.EventArgs e)
@@ -39113,7 +39116,7 @@ namespace PowerSDR
                         case MeterTXMode.COMP:
                         case MeterTXMode.ALC:
                             lblMultiSMeter.Text = "   -20            -10               -5              0        4        8       12";
-                           // lblMultiSMeter.Text = "   -20            -10               -5              0        1        2        3";
+                            // lblMultiSMeter.Text = "   -20            -10               -5              0        1        2        3";
                             break;
                         case MeterTXMode.FORWARD_POWER:
                         case MeterTXMode.REVERSE_POWER:
@@ -39157,7 +39160,7 @@ namespace PowerSDR
                         case MeterTXMode.COMP:
                         case MeterTXMode.ALC:
                             lblMultiSMeter.Text = "-20    -10     -5      0   4   8  12";
-                           // lblMultiSMeter.Text = "-20    -10     -5      0   1   2   3";
+                            // lblMultiSMeter.Text = "-20    -10     -5      0   1   2   3";
                             break;
                         case MeterTXMode.FORWARD_POWER:
                         case MeterTXMode.REVERSE_POWER:
@@ -39684,7 +39687,7 @@ namespace PowerSDR
 
         private void chkVFOLock_CheckedChanged(object sender, System.EventArgs e)
         {
-            VFOALock = chkVFOLock.Checked;          
+            VFOALock = chkVFOLock.Checked;
         }
 
         private void chkVFOBLock_CheckedChanged(object sender, EventArgs e)
@@ -39699,7 +39702,7 @@ namespace PowerSDR
 
         private void chkVFOBLock_CheckStateChanged(object sender, EventArgs e)
         {
-           // VFOBLock = chkVFOBLock.CheckState;
+            // VFOBLock = chkVFOBLock.CheckState;
         }
 
         private void btnBandVHF_Click(object sender, System.EventArgs e)
@@ -39859,10 +39862,10 @@ namespace PowerSDR
         private void comboAMTXProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SetupForm == null || initializing ||
-            ( rx1_dsp_mode != DSPMode.AM &&
+            (rx1_dsp_mode != DSPMode.AM &&
             rx1_dsp_mode != DSPMode.SAM)) return;
             SetupForm.TXProfile = comboAMTXProfile.Text;
- 
+
             if (current_display_engine == DisplayEngine.GDI_PLUS)
                 picDisplay.Invalidate();
 
@@ -39972,8 +39975,8 @@ namespace PowerSDR
                         JanusAudio.SetCWSidetoneVolume((int)(ptbAF.Value * 1.27));
                     }
                     else
-                    { 
-                        JanusAudio.SetCWSidetoneVolume(0);                   
+                    {
+                        JanusAudio.SetCWSidetoneVolume(0);
                     }
                 }
             }
@@ -40526,7 +40529,7 @@ namespace PowerSDR
             double dispMargin = 0.025; // Margin from display edge to start scrolling - in fraction of total display width   
 
             // Lock the display //-W2PA Don't freeze display if we are zoomed in too far to fit the passband
-            if (!initializing && click_tune_display && (passbandWidth < (dispWidth * (1.0 - 2.0*dispMargin))) &&  
+            if (!initializing && click_tune_display && (passbandWidth < (dispWidth * (1.0 - 2.0 * dispMargin))) &&
                 ((Display.CurrentDisplayMode == DisplayMode.PANADAPTER && mox && VFOBTX) ||
                  (Display.CurrentDisplayMode == DisplayMode.PANADAPTER && display_duplex) ||
                  (Display.CurrentDisplayMode == DisplayMode.PANADAPTER && !mox) ||
@@ -40553,10 +40556,10 @@ namespace PowerSDR
                 else
                 {
                     //-W2PA If we tune beyond the display limits, re-center or scroll display, and keep going.  Original code above just stops tuning at edges.
-                double Lmargin = Convert.ToDouble( -Display.RX1FilterLow );
-                double Hmargin = Convert.ToDouble( Display.RX1FilterHigh );
-                if (Lmargin < 0.0) Lmargin = 0.0;
-                if (Hmargin < 0.0) Hmargin = 0.0;
+                    double Lmargin = Convert.ToDouble(-Display.RX1FilterLow);
+                    double Hmargin = Convert.ToDouble(Display.RX1FilterHigh);
+                    if (Lmargin < 0.0) Lmargin = 0.0;
+                    if (Hmargin < 0.0) Hmargin = 0.0;
                     Lmargin += dispMargin;
                     Hmargin += dispMargin;
                     double Ldisp = Convert.ToDouble(Display.RXDisplayLow) + dispWidth * dispMargin;
@@ -40564,12 +40567,12 @@ namespace PowerSDR
                     double freqJumpThresh = 0.5e6;  // definition of jumping far, e.g. with memory recall - causes a re-centering
 
                     if (((-rx1_osc) - Lmargin) < (Ldisp - freqJumpThresh) || ((-rx1_osc) + Hmargin) > (Hdisp + freqJumpThresh)) // re-center if we've jumped far
-                {
-                    center_frequency = freq;
-                    update_centerfreq = false;
-                    VFOAFreq = freq;
-                    rx1_osc = 0.0;
-                }
+                    {
+                        center_frequency = freq;
+                        update_centerfreq = false;
+                        VFOAFreq = freq;
+                        rx1_osc = 0.0;
+                    }
                     else  // not a jump - more like tuning
                     if (((-rx1_osc) - Lmargin) < Ldisp) // scroll the spectrum display smoothly at the edge and keep going
                     {
@@ -40593,7 +40596,7 @@ namespace PowerSDR
                     }
                 }
 
-                
+
 
                 if (chkRIT.Checked)
                     rx1_osc -= (int)udRIT.Value;// *0.000001;
@@ -40623,7 +40626,7 @@ namespace PowerSDR
             UpdateVFOAFreq(freq.ToString("f6"));
 
             //-W2PA Freeze display unless we are zoomed in too far to fit the passband
-            if (click_tune_display && (passbandWidth < (dispWidth * (1.0 - 2.0*dispMargin))) &&  
+            if (click_tune_display && (passbandWidth < (dispWidth * (1.0 - 2.0 * dispMargin))) &&
                 ((Display.CurrentDisplayMode == DisplayMode.PANADAPTER && mox && VFOBTX) ||
                  (Display.CurrentDisplayMode == DisplayMode.PANADAPTER && display_duplex) ||
                  (Display.CurrentDisplayMode == DisplayMode.PANADAPTER && !mox) ||
@@ -40705,18 +40708,18 @@ namespace PowerSDR
                 RX1XVTRGainOffset = 0.0f;
                 if (hf_tr_relay)
                 {
-                   // JanusAudio.SetXVTREnable(0); 
+                    // JanusAudio.SetXVTREnable(0); 
                     JanusAudio.SetAlexTRRelayBit(1);
                 }
                 else
                 {
-                   // JanusAudio.SetXVTREnable(0); 
+                    // JanusAudio.SetXVTREnable(0); 
                     JanusAudio.SetAlexTRRelayBit(0);
                 }
 
                 if (enable_xvtr_hf)
                     JanusAudio.SetXVTREnable(1); // enable
-                else 
+                else
                     JanusAudio.SetXVTREnable(0); // disable
 
                 if (rx1_step_att_present) udRX1StepAttData_ValueChanged(this, EventArgs.Empty);
@@ -40790,10 +40793,10 @@ namespace PowerSDR
 
                     if (alex_ant_ctrl_enabled)
                     {
-                       // if (anan8000dpresent)
-                       //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
-                       // else
-                            Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
+                        // if (anan8000dpresent)
+                        //     Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, false);
+                        // else
+                        Alex.getAlex().UpdateAlexAntSelection(lo_band, mox, true);
                     }
                 }
                 else
@@ -41374,21 +41377,21 @@ namespace PowerSDR
                 else
                 {
                     //-W2PA If we tune beyond the display limits, re-center or scroll display, and keep going.  Original code above just stops tuning at edges.
-                double Lmargin = Convert.ToDouble(-Display.RX2FilterLow);
-                double Hmargin = Convert.ToDouble(Display.RX2FilterHigh);
-                if (Lmargin < 0.0) Lmargin = 0.0;
-                if (Hmargin < 0.0) Hmargin = 0.0;
+                    double Lmargin = Convert.ToDouble(-Display.RX2FilterLow);
+                    double Hmargin = Convert.ToDouble(Display.RX2FilterHigh);
+                    if (Lmargin < 0.0) Lmargin = 0.0;
+                    if (Hmargin < 0.0) Hmargin = 0.0;
                     double Ldisp = Convert.ToDouble(Display.RX2DisplayLow) + dispWidth * dispMargin;
                     double Hdisp = Convert.ToDouble(Display.RX2DisplayHigh) - dispWidth * dispMargin;
                     double freqJumpThresh = 0.5e6;  // Definition of jumping far, e.g. with memory recall - causes a re-centering
 
                     if (((-rx2_osc) - Lmargin) < (Ldisp - freqJumpThresh) || ((-rx2_osc) + Hmargin) > (Hdisp + freqJumpThresh)) // re-center if we've jumped far
-                {
-                    center_rx2_frequency = freq;
-                    update_rx2_centerfreq = false;
-                    VFOBFreq = freq;
-                    rx2_osc = 0.0;
-                }
+                    {
+                        center_rx2_frequency = freq;
+                        update_rx2_centerfreq = false;
+                        VFOBFreq = freq;
+                        rx2_osc = 0.0;
+                    }
                     else  // not a jump - more like tuning
                     if (((-rx2_osc) - Lmargin) < Ldisp) // scroll the spectrum display smoothly at the edge and keep going
                     {
@@ -41413,7 +41416,7 @@ namespace PowerSDR
                 }
 
 
-                
+
 
                 if (chkRIT.Checked && VFOSync)
                     rx2_osc -= (int)udRIT.Value;// *0.000001;
@@ -41463,7 +41466,7 @@ namespace PowerSDR
             if (rx2_enabled)
             {
                 if (!stereo_diversity)
-                {  
+                {
                     //-W2PA Freeze display unless we are zoomed in too far to fit the passband
                     if ((click_tune_rx2_display) && (passbandWidth < dispWidth) &&
                                      ((Display.CurrentDisplayModeBottom == DisplayMode.PANADAPTER && mox && !VFOBTX) ||
@@ -41593,12 +41596,12 @@ namespace PowerSDR
             else if (chkVFOSplit.Checked || full_duplex)
                 goto set_tx_freq;
             else goto end;
-        // }
-        //  else if (mox && chkVFOSplit.Checked)
-        //     goto set_tx_freq;
-        // else goto end;
+            // }
+            //  else if (mox && chkVFOSplit.Checked)
+            //     goto set_tx_freq;
+            // else goto end;
 
-        set_tx_freq:
+            set_tx_freq:
             // int last_tx_xvtr_index = tx_xvtr_index;
             tx_xvtr_index = rx2_xvtr_index;
             double tx_freq = freq;
@@ -41613,12 +41616,12 @@ namespace PowerSDR
 
                 if (XVTRForm.GetDisablePA(tx_xvtr_index))
                 {
-                    JanusAudio.SetXVTREnable(1); 
+                    JanusAudio.SetXVTREnable(1);
                     JanusAudio.SetAlexTRRelayBit(1);
                 }
                 else
                 {
-                    JanusAudio.SetXVTREnable(0); 
+                    JanusAudio.SetXVTREnable(0);
                     JanusAudio.SetAlexTRRelayBit(0);
                 }
             }
@@ -41650,12 +41653,12 @@ namespace PowerSDR
 
                 if (hf_tr_relay)
                 {
-                  //  JanusAudio.SetXVTREnable(0); 
+                    //  JanusAudio.SetXVTREnable(0); 
                     JanusAudio.SetAlexTRRelayBit(1);
                 }
                 else
                 {
-                  //  JanusAudio.SetXVTREnable(0); 
+                    //  JanusAudio.SetXVTREnable(0); 
                     JanusAudio.SetAlexTRRelayBit(0);
                 }
 
@@ -41694,7 +41697,7 @@ namespace PowerSDR
                         case DSPMode.CWL:
                         case DSPMode.CWU:
                             MessageBox.Show("The frequency " + tx_freq.ToString("f6") + "MHz is not within the\n" +
-                                
+
                                 // DG8MG
                                 // Corrected string output of the current region
                                 "Band specifications for your region (" + current_region.ToString() + ").",
@@ -41707,7 +41710,7 @@ namespace PowerSDR
                         default:
                             MessageBox.Show("The frequency " + tx_freq.ToString("f6") + "MHz in combination with your TX filter\n" +
                                 "settings [" + Display.TXFilterLow.ToString() + ", " + Display.TXFilterHigh.ToString() + "] are not within the " +
-                                
+
                                 // DG8MG
                                 // Corrected string output of the current region
                                 "Band specifications for your region (" + current_region.ToString() + ").",
@@ -41765,7 +41768,7 @@ namespace PowerSDR
             }
             goto end;
 
-        set_rx2_freq:
+            set_rx2_freq:
             //RX2XVTRIndex = xvtr_index;
 
             Band band = BandByFreq(freq, rx2_xvtr_index, false, current_region);
@@ -41826,7 +41829,7 @@ namespace PowerSDR
             wdsp.RXANBPSetTuneFrequency(wdsp.id(2, 0), (RX2DDSFreq + f_LO) * 1.0e6);
             goto end;
 
-        end:
+            end:
 
             if (chkVFOSync.Checked && txtVFOAFreq.Text != txtVFOBFreq.Text)
             {
@@ -43601,18 +43604,18 @@ namespace PowerSDR
                                     }
                                     else
                                         if (Display.AGCRX2Hang.Contains(e.X, e.Y) && show_agc)
-                                        {
-                                            agc_hang_drag = true;
-                                            Cursor = grabbing; // Cursors.HSplit;
-                                            // Debug.WriteLine("AGCKnee Y:" + Display.AGCKnee.Y);
+                                    {
+                                        agc_hang_drag = true;
+                                        Cursor = grabbing; // Cursors.HSplit;
+                                                           // Debug.WriteLine("AGCKnee Y:" + Display.AGCKnee.Y);
 
-                                        }
-                                        else
-                                        {
-                                            agc_knee_drag = false;
-                                            agc_hang_drag = false;
-                                            // Cursor = Cursors.Cross;
-                                        }
+                                    }
+                                    else
+                                    {
+                                        agc_knee_drag = false;
+                                        agc_hang_drag = false;
+                                        // Cursor = Cursors.Cross;
+                                    }
                                 }
                                 else
                                 {
@@ -43625,18 +43628,18 @@ namespace PowerSDR
                                     }
                                     else
                                         if (Display.AGCHang.Contains(e.X, e.Y) && show_agc)
-                                        {
-                                            agc_hang_drag = true;
-                                            Cursor = grabbing; // Cursors.HSplit;
-                                            // Debug.WriteLine("AGCKnee Y:" + Display.AGCKnee.Y);
+                                    {
+                                        agc_hang_drag = true;
+                                        Cursor = grabbing; // Cursors.HSplit;
+                                                           // Debug.WriteLine("AGCKnee Y:" + Display.AGCKnee.Y);
 
-                                        }
-                                        else
-                                        {
-                                            agc_knee_drag = false;
-                                            agc_hang_drag = false;
-                                            // Cursor = Cursors.Cross;
-                                        }
+                                    }
+                                    else
+                                    {
+                                        agc_knee_drag = false;
+                                        agc_hang_drag = false;
+                                        // Cursor = Cursors.Cross;
+                                    }
                                 }
                                 break;
                         }
@@ -44362,7 +44365,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             if (ModelIsHPSDRorHermes() || HPSDRModelIsCharly25orHAMlab())
-            // DG8MG
+                // DG8MG
 
                 abs_low = (int)(-(double)sample_rate1 * 0.5 + spur_tune_width);
             else
@@ -44405,11 +44408,11 @@ namespace PowerSDR
             {
                 if (VFOAFreq != center_frequency)
                 {
-                	center_frequency = VFOAFreq; 
-                	txtVFOAFreq_LostFocus(this, EventArgs.Empty);
-            	}
+                    center_frequency = VFOAFreq;
+                    txtVFOAFreq_LostFocus(this, EventArgs.Empty);
+                }
             }
-            lastZoom = zoom_factor; 
+            lastZoom = zoom_factor;
 
             //if (ptbDisplayZoom.Focused) btnHidden.Focus();
             if (sender.GetType() == typeof(PrettyTrackBar))
@@ -44714,7 +44717,7 @@ namespace PowerSDR
             bool CTUN;
             int ZoomFactor;
             double CenterFreq;
-            if (DB.GetBandStack(last_band, band_17m_index, out mode, out filter, out freq, out CTUN, out  ZoomFactor, out CenterFreq))
+            if (DB.GetBandStack(last_band, band_17m_index, out mode, out filter, out freq, out CTUN, out ZoomFactor, out CenterFreq))
             {
                 SetBand(mode, filter, freq, CTUN, ZoomFactor, CenterFreq);
             }
@@ -45306,7 +45309,7 @@ namespace PowerSDR
                     ptbFilterShift.Enabled = true;
                     btnFilterShiftReset.Enabled = true;
                     if (new_mode != DSPMode.SPEC || new_mode != DSPMode.FM)
-                        EnableAllFilters();                  
+                        EnableAllFilters();
                     break;
             }
 
@@ -45599,9 +45602,9 @@ namespace PowerSDR
                     /*Display.RXDisplayLow = -8000;
                         Display.RXDisplayHigh = 8000;*/
                     panelModeSpecificDigital.BringToFront();
-                   // btnTNFAdd.Enabled = false;
-                   // chkTNF.Enabled = false;
-                   // chkTNF.Checked = false;
+                    // btnTNFAdd.Enabled = false;
+                    // chkTNF.Enabled = false;
+                    // chkTNF.Checked = false;
                     break;
             }
 
@@ -46669,7 +46672,7 @@ namespace PowerSDR
             get
             {
                 return var1WdithAtLimit;
-            }            
+            }
             set
             {
                 var1WdithAtLimit = value;
@@ -46785,7 +46788,7 @@ namespace PowerSDR
                         }
                     }
 
-                    
+
 
 
                     if (low < -9999)
@@ -46847,7 +46850,7 @@ namespace PowerSDR
                                 high = new_bw;
                             }
                         }
-                    }                    
+                    }
 
                     if (high > 9999)
                     {
@@ -47152,7 +47155,7 @@ namespace PowerSDR
                 //-W2PA If RX2 on and coming from split using VFOB, reset VFOASub to B freq for convenience
                 if (rx2_enabled && Display.TXOnVFOB) VFOASubFreq = VFOBFreq;
                 //-W2PA If never initialized
-                if (rx2_enabled && !Display.TXOnVFOB && saved_vfoa_sub_freq == initialized_saved_vfo_freq) VFOASubFreq = VFOAFreq; 
+                if (rx2_enabled && !Display.TXOnVFOB && saved_vfoa_sub_freq == initialized_saved_vfo_freq) VFOASubFreq = VFOAFreq;
             }
             else
             {
@@ -47331,9 +47334,9 @@ namespace PowerSDR
                 udXIT.Value = udRIT.Value;
                 setXIT_LEDs();
             }
-  
-            if(udRIT.Focused) btnHidden.Focus();
-      }
+
+            if (udRIT.Focused) btnHidden.Focus();
+        }
 
         private void setRIT_LEDs()
         {
@@ -47403,8 +47406,8 @@ namespace PowerSDR
                 setRIT_LEDs();
             }
 
-            if(udXIT.Focused) btnHidden.Focus();
-     }
+            if (udXIT.Focused) btnHidden.Focus();
+        }
 
         private void btnXITReset_Click(object sender, System.EventArgs e)
         {
@@ -47813,7 +47816,7 @@ namespace PowerSDR
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         private void chkDX_CheckStateChanged(object sender, System.EventArgs e)
-        {          
+        {
             if (HPSDRModelIsCharly25orHAMlab())
             {
                 switch (chkDX.CheckState)
@@ -48292,7 +48295,7 @@ namespace PowerSDR
                     Display.CurrentDisplayModeBottom = DisplayMode.PHASE2;
                     break;
                 case "Waterfall":
-                        Display.ResetWaterfallBmp2(1);
+                    Display.ResetWaterfallBmp2(1);
                     Display.CurrentDisplayModeBottom = DisplayMode.WATERFALL;
                     if (chkSplitDisplay.Checked)
                     {
@@ -50106,7 +50109,7 @@ namespace PowerSDR
                     radio.GetDSPRX(1, 0).RXSquelchThreshold = (float)ptbRX2Squelch.Value -
                         RX2MeterCalOffset -
                         RX2PreampOffset;
-                        
+
 
                     radio.GetDSPRX(1, 1).RXSquelchThreshold = (float)ptbRX2Squelch.Value -
                         RX2MeterCalOffset -
@@ -52334,64 +52337,64 @@ namespace PowerSDR
             }
             else
             {
-            	//if (diversity2 && current_hpsdr_model != HPSDRModel.HPSDR)
-            	//{
-            	//    comboPreamp.Items.AddRange(anan100d_preamp_settings);
-	            //}
-	            //else
-	            //{
-	            //    comboPreamp.Items.AddRange(on_off_preamp_settings);
-	            //    if (alexpresent && !anan10present && !anan10Epresent)
-	            //    {
-	            //        comboPreamp.Items.AddRange(alex_preamp_settings);
-	            //    }
-	            //}
-	
-	            switch (current_hpsdr_model)
-	            {
-	                case HPSDRModel.HPSDR:
-	                    comboPreamp.Items.AddRange(on_off_preamp_settings);
-	                    if (alexpresent)
-	                    {
-	                        comboPreamp.Items.AddRange(alex_preamp_settings);
-	                    }
-	
-	                    break;
-	                case HPSDRModel.HERMES:
-	                    if (alexpresent)
-	                    {
-	                        comboPreamp.Items.AddRange(on_off_preamp_settings);
-	                        comboPreamp.Items.AddRange(alex_preamp_settings);
-	                    }
-	                    else
-	                        comboPreamp.Items.AddRange(anan100d_preamp_settings);
-	
-	                    break;
-	                case HPSDRModel.ANAN10:
-	                case HPSDRModel.ANAN10E:
-	                    comboPreamp.Items.AddRange(anan100d_preamp_settings);
-	                    break;
-	                case HPSDRModel.ANAN100:
-	                case HPSDRModel.ANAN100B:
-	                    comboPreamp.Items.AddRange(on_off_preamp_settings);
-	                    comboPreamp.Items.AddRange(alex_preamp_settings);
-	                    break;
-	                case HPSDRModel.ANAN100D:
-	                case HPSDRModel.ANAN200D:
-	                    if (alexpresent)
-	                    {
-	                        comboPreamp.Items.AddRange(on_off_preamp_settings);
-	                        comboPreamp.Items.AddRange(alex_preamp_settings);
-	                    }
-	                    else
-	                        comboPreamp.Items.AddRange(anan100d_preamp_settings);
-	                    break;
+                //if (diversity2 && current_hpsdr_model != HPSDRModel.HPSDR)
+                //{
+                //    comboPreamp.Items.AddRange(anan100d_preamp_settings);
+                //}
+                //else
+                //{
+                //    comboPreamp.Items.AddRange(on_off_preamp_settings);
+                //    if (alexpresent && !anan10present && !anan10Epresent)
+                //    {
+                //        comboPreamp.Items.AddRange(alex_preamp_settings);
+                //    }
+                //}
+
+                switch (current_hpsdr_model)
+                {
+                    case HPSDRModel.HPSDR:
+                        comboPreamp.Items.AddRange(on_off_preamp_settings);
+                        if (alexpresent)
+                        {
+                            comboPreamp.Items.AddRange(alex_preamp_settings);
+                        }
+
+                        break;
+                    case HPSDRModel.HERMES:
+                        if (alexpresent)
+                        {
+                            comboPreamp.Items.AddRange(on_off_preamp_settings);
+                            comboPreamp.Items.AddRange(alex_preamp_settings);
+                        }
+                        else
+                            comboPreamp.Items.AddRange(anan100d_preamp_settings);
+
+                        break;
+                    case HPSDRModel.ANAN10:
+                    case HPSDRModel.ANAN10E:
+                        comboPreamp.Items.AddRange(anan100d_preamp_settings);
+                        break;
+                    case HPSDRModel.ANAN100:
+                    case HPSDRModel.ANAN100B:
+                        comboPreamp.Items.AddRange(on_off_preamp_settings);
+                        comboPreamp.Items.AddRange(alex_preamp_settings);
+                        break;
+                    case HPSDRModel.ANAN100D:
+                    case HPSDRModel.ANAN200D:
+                        if (alexpresent)
+                        {
+                            comboPreamp.Items.AddRange(on_off_preamp_settings);
+                            comboPreamp.Items.AddRange(alex_preamp_settings);
+                        }
+                        else
+                            comboPreamp.Items.AddRange(anan100d_preamp_settings);
+                        break;
                     case HPSDRModel.ANAN7000D:
-	                case HPSDRModel.ANAN8000D:
-	                case HPSDRModel.ORIONMKII:
-	                    comboPreamp.Items.AddRange(anan100d_preamp_settings);
-	                    break;
-	            }
+                    case HPSDRModel.ANAN8000D:
+                    case HPSDRModel.ORIONMKII:
+                        comboPreamp.Items.AddRange(anan100d_preamp_settings);
+                        break;
+                }
             }
             // DG8MG
 
@@ -52411,9 +52414,9 @@ namespace PowerSDR
                 }
                 else
                 {
-                if (anan100dpresent || anan200dpresent || anan7000dpresent || 
-                    anan8000dpresent || orionmkiipresent)
-                    comboRX2Preamp.Items.AddRange(anan100d_preamp_settings);
+                    if (anan100dpresent || anan200dpresent || anan7000dpresent ||
+                        anan8000dpresent || orionmkiipresent)
+                        comboRX2Preamp.Items.AddRange(anan100d_preamp_settings);
                     else
                         comboRX2Preamp.Items.AddRange(on_off_preamp_settings);
                 }
@@ -52471,14 +52474,14 @@ namespace PowerSDR
             // JanusAudio.Write_I2C(hdev, 0x55, freeze_dco, freeze_dco.Length);  //0x55 is the I2C address of SI570
 
             byte[] config = {
-							 7,												
-							 (byte) ((byte)((hs_div<<5) & 0xe0) | (byte)((n1>>2) & 0x1f)),
-							 (byte) ((byte)((rfreq_word>>(4*8)) & 0x3f) | (byte)((n1<<6) & 0xc0)),
-							 (byte) ((rfreq_word>>(3*8)) & 0xff),
-							 (byte) ((rfreq_word>>(2*8)) & 0xff),
-							 (byte) ((rfreq_word>>(1*8)) & 0xff),
-							 (byte) ((rfreq_word>>(0*8)) & 0xff)
-							 };
+                             7,
+                             (byte) ((byte)((hs_div<<5) & 0xe0) | (byte)((n1>>2) & 0x1f)),
+                             (byte) ((byte)((rfreq_word>>(4*8)) & 0x3f) | (byte)((n1<<6) & 0xc0)),
+                             (byte) ((rfreq_word>>(3*8)) & 0xff),
+                             (byte) ((rfreq_word>>(2*8)) & 0xff),
+                             (byte) ((rfreq_word>>(1*8)) & 0xff),
+                             (byte) ((rfreq_word>>(0*8)) & 0xff)
+                             };
             //JanusAudio.Write_I2C(hdev, 0x55, config);
 
             byte[] unfreeze_dco = { 137, 0x00 };
@@ -52504,14 +52507,14 @@ namespace PowerSDR
             n1 = n1 - 1;
 
             byte[] config = {
-								7,												
-								(byte) ((byte)((hs_div<<5) & 0xe0) | (byte)((n1>>2) & 0x1f)),												
-								(byte) ((byte)((rfreq_word>>(4*8)) & 0x3f) | (byte)((n1<<6) & 0xc0)),
-								(byte) ((rfreq_word>>(3*8)) & 0xff),
-								(byte) ((rfreq_word>>(2*8)) & 0xff),
-								(byte) ((rfreq_word>>(1*8)) & 0xff),
-								(byte) ((rfreq_word>>(0 * 8)) & 0xff)
-							};
+                                7,
+                                (byte) ((byte)((hs_div<<5) & 0xe0) | (byte)((n1>>2) & 0x1f)),
+                                (byte) ((byte)((rfreq_word>>(4*8)) & 0x3f) | (byte)((n1<<6) & 0xc0)),
+                                (byte) ((rfreq_word>>(3*8)) & 0xff),
+                                (byte) ((rfreq_word>>(2*8)) & 0xff),
+                                (byte) ((rfreq_word>>(1*8)) & 0xff),
+                                (byte) ((rfreq_word>>(0 * 8)) & 0xff)
+                            };
 
             //JanusAudio.Write_I2C(hdev, 0x55, config);
         }
@@ -52611,25 +52614,25 @@ namespace PowerSDR
 
                             var lineboost = Array.IndexOf(lineinboost, line_in_boost.ToString());
 
-                            Penny_TLV320_data = new byte[] { 0x1e, 0x00,                    
-                                                         0x12, 0x01, 
+                            Penny_TLV320_data = new byte[] { 0x1e, 0x00,
+                                                         0x12, 0x01,
                                                          0x08, 0x12, // DAC on, line input, mic muted
-                                                         0x0c, 0x00, 
-                                                         0x0e, 0x02, 
-                                                         0x10, 0x00, 
-                                                         0x0a, 0x00, 
+                                                         0x0c, 0x00,
+                                                         0x0e, 0x02,
+                                                         0x10, 0x00,
+                                                         0x0a, 0x00,
                                                          0x00, (byte)lineboost,//0x17, // left input, 0dB gain
                                                          0x02, 0x80}; // right input muted
                         }
                         else if (mic_boost)
                         {
-                            Penny_TLV320_data = new byte[] { 0x1e, 0x00, 
-                                                         0x12, 0x01, 
+                            Penny_TLV320_data = new byte[] { 0x1e, 0x00,
+                                                         0x12, 0x01,
                                                          0x08, 0x15, // DAC on, mic input, 20dB gain
-                                                         0x0c, 0x00, 
-                                                         0x0e, 0x02, 
-                                                         0x10, 0x00, 
-                                                         0x0a, 0x00, 
+                                                         0x0c, 0x00,
+                                                         0x0e, 0x02,
+                                                         0x10, 0x00,
+                                                         0x0a, 0x00,
                                                          0x00, 0x80,
                                                          0x02, 0x80};
                         }
@@ -53529,107 +53532,107 @@ namespace PowerSDR
                 }
                 else
                     if (show_rx2)
+                {
+                    top = grpVFOB.Height + 10;
+                    //top = grpMultimeter.Location.Y + grpMultimeter.Height + 5;
+                    //grpVFOA.Location = new Point(gr_VFOA_basis_location.X + (h_delta / 4), gr_VFOA_basis_location.Y);
+                    grpVFOB.Location = new Point((this.ClientSize.Width - grpVFOB.Width) / 2, gr_VFOB_basis_location.Y);
+                    //grpVFOB.Location = new Point(gr_VFOB_basis_location.X + h_delta - (h_delta / 4), gr_VFOB_basis_location.Y);
+                    txtRX2Meter.Location = new Point(((this.ClientSize.Width - (grpVFOB.Location.X + grpVFOB.Width)) -
+                        (txtRX2Meter.Width / 12)) * 2, grpVFOB.Location.Y + 5);
+                    // picMultiMeterDigital.Location = txtMultiText.Location;
+                    // picMultiMeterDigital.Location = new Point(txtMultiText.Location.X, txtMultiText.Location.Y + txtMultiText.Height + 8);
+                    picRX2Meter.Size = new Size(pic_rx2meter_size_basis.Width * 2, pic_rx2meter_size_basis.Height);
+                    picRX2Meter.Location = new Point(((this.ClientSize.Width - (grpVFOB.Location.X + grpVFOB.Width)) -
+                        (picRX2Meter.Width / 6)) * 2, txtRX2Meter.Location.Y + txtRX2Meter.Height + 9);
+                    // picMultiMeterDigital.Size = new Size(pic_multi_meter_size_basis.Width * 2, pic_multi_meter_size_basis.Height);
+                    //grpMultimeter.Size = new Size(grpMultimeter.Width, grpVFOB.Height);
+                    if (current_meter_display_mode == MultiMeterDisplayMode.Original)
                     {
-                        top = grpVFOB.Height + 10;
-                        //top = grpMultimeter.Location.Y + grpMultimeter.Height + 5;
-                        //grpVFOA.Location = new Point(gr_VFOA_basis_location.X + (h_delta / 4), gr_VFOA_basis_location.Y);
-                        grpVFOB.Location = new Point((this.ClientSize.Width - grpVFOB.Width) / 2, gr_VFOB_basis_location.Y);
-                        //grpVFOB.Location = new Point(gr_VFOB_basis_location.X + h_delta - (h_delta / 4), gr_VFOB_basis_location.Y);
-                        txtRX2Meter.Location = new Point(((this.ClientSize.Width - (grpVFOB.Location.X + grpVFOB.Width)) -
-                            (txtRX2Meter.Width / 12)) * 2, grpVFOB.Location.Y + 5);
-                        // picMultiMeterDigital.Location = txtMultiText.Location;
-                        // picMultiMeterDigital.Location = new Point(txtMultiText.Location.X, txtMultiText.Location.Y + txtMultiText.Height + 8);
-                        picRX2Meter.Size = new Size(pic_rx2meter_size_basis.Width * 2, pic_rx2meter_size_basis.Height);
-                        picRX2Meter.Location = new Point(((this.ClientSize.Width - (grpVFOB.Location.X + grpVFOB.Width)) -
-                            (picRX2Meter.Width / 6)) * 2, txtRX2Meter.Location.Y + txtRX2Meter.Height + 9);
-                        // picMultiMeterDigital.Size = new Size(pic_multi_meter_size_basis.Width * 2, pic_multi_meter_size_basis.Height);
-                        //grpMultimeter.Size = new Size(grpMultimeter.Width, grpVFOB.Height);
-                        if (current_meter_display_mode == MultiMeterDisplayMode.Original)
+                        picRX2Meter.Size = new Size(pic_rx2meter_size_basis.Width * 2, pic_rx2meter_size_basis.Height - lblRX2Meter.Height);
+                        lblRX2Meter.Size = new Size(lbl_rx2meter_size_basis.Width * 2, lbl_rx2meter_size_basis.Height);
+                        lblRX2Meter.Location = new Point(picRX2Meter.Location.X, picRX2Meter.Location.Y +
+                                                            picRX2Meter.Height);
+                        lblRX2Meter.Show();
+                        lblRX2Meter.BringToFront();
+                    }
+                    else lblRX2Meter.Hide();
+
+                    comboRX2MeterMode.Location = new Point(txtRX2Meter.Location.X - comboRX2MeterMode.Width - 5,
+                        txtRX2Meter.Location.Y + 2);
+                    // comboMeterTXMode.Location = new Point(comboMeterRXMode.Location.X, 
+                    //     comboMeterRXMode.Location.Y + comboMeterRXMode.Height + 1);
+                    comboMeterTXMode.Location = new Point(txtRX2Meter.Location.X + txtRX2Meter.Width + 5,
+                        txtRX2Meter.Location.Y + 2);
+                    chkPower.Location = new Point(30, grpVFOB.Location.Y + 2);
+                    chkRX2.Location = new Point(chkPower.Location.X + chkRX2.Width + 5, chkPower.Location.Y);
+                    radRX1Show.Location = new Point(chkRX2.Location.X + radRX1Show.Width + 15, chkRX2.Location.Y + 4);
+                    radRX2Show.Location = new Point(radRX1Show.Location.X + radRX1Show.Width + 5, radRX1Show.Location.Y);
+                    //chkMON.Location = new Point(10, chkPower.Location.Y + chkPower.Height + 5);
+                    chkMON.Location = new Point(grpVFOB.Location.X - chkMON.Width - 10, grpVFOB.Location.Y + 8);
+                    //chkMUT.Location = new Point(chkMON.Location.X + chkMON.Width, chkPower.Location.Y + chkPower.Height + 5);
+                    chkTUN.Location = new Point(chkMON.Location.X, chkMON.Location.Y + chkMON.Height + 4);
+                    chkMOX.Location = new Point(chkTUN.Location.X, chkTUN.Location.Y + chkTUN.Height + 4);
+                    chkVOX.Location = new Point(chkMON.Location.X - chkVOX.Width - 10, chkMON.Location.Y);
+                    chkRX2SR.Location = new Point(chkTUN.Location.X - chkRX2SR.Width - 10, chkTUN.Location.Y); //DUP
+                                                                                                               //  chkFWCATU.Location = new Point(chkMOX.Location.X - chkFWCATU.Width - 10, chkMOX.Location.Y); //CTUN
+                    chkX2TR.Location = new Point(chkMOX.Location.X - chkX2TR.Width - 10, chkMOX.Location.Y); //RX2 CTUN
+                    lblAF2.Location = new Point(5, chkPower.Location.Y + chkPower.Height + 5);
+                    //ptbAF.Location = new Point(lblAF2.Location.X + lblAF2.Width, lblAF2.Location.Y); 
+                    ptbRX2AF.Location = new Point(lblAF2.Location.X + lblAF2.Width, lblAF2.Location.Y);
+                    //ptbAF.Location = new Point(10, chkPower.Location.Y + chkPower.Height + 2);
+                    lblPWR2.Location = new Point(ptbRX2AF.Location.X + ptbRX2AF.Width + 2, ptbRX2AF.Location.Y);
+                    ptbPWR.Location = new Point(lblPWR2.Location.X + lblPWR2.Width, lblPWR2.Location.Y);
+                    lblRF2.Location = new Point(5, lblAF2.Location.Y + lblAF2.Height + 2);
+                    ptbRX2RF.Location = new Point(lblRF2.Location.X + lblRF2.Width, ptbRX2AF.Location.Y + ptbRX2AF.Height + 2);
+                    comboRX2AGC.Location = new Point(ptbRX2RF.Location.X + ptbRX2RF.Width + 2, ptbRX2RF.Location.Y + 3);
+                    //chkMUT.Location = new Point(ptbAF.Location.X + ptbAF.Width + 2, ptbAF.Location.Y);
+                    //comboPreamp.Location = new Point(comboRX2AGC.Location.X + comboPreamp.Width + 2, comboRX2AGC.Location.Y);
+
+                    comboPreamp.Location = new Point(comboRX2AGC.Location.X + comboPreamp.Width + 2, comboRX2AGC.Location.Y);
+                    udRX1StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX1StepAttData.Width + 2, comboRX2AGC.Location.Y);
+                    comboRX2Preamp.Location = new Point(comboRX2AGC.Location.X + comboRX2Preamp.Width + 2, comboRX2AGC.Location.Y);
+                    udRX2StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX2StepAttData.Width + 2, comboRX2AGC.Location.Y);
+
+                    if (rx2_preamp_present)
+                    {
+                        if (rx2_step_att_present)
                         {
-                            picRX2Meter.Size = new Size(pic_rx2meter_size_basis.Width * 2, pic_rx2meter_size_basis.Height - lblRX2Meter.Height);
-                            lblRX2Meter.Size = new Size(lbl_rx2meter_size_basis.Width * 2, lbl_rx2meter_size_basis.Height);
-                            lblRX2Meter.Location = new Point(picRX2Meter.Location.X, picRX2Meter.Location.Y +
-                                                                picRX2Meter.Height);
-                            lblRX2Meter.Show();
-                            lblRX2Meter.BringToFront();
-                        }
-                        else lblRX2Meter.Hide();
-
-                        comboRX2MeterMode.Location = new Point(txtRX2Meter.Location.X - comboRX2MeterMode.Width - 5,
-                            txtRX2Meter.Location.Y + 2);
-                        // comboMeterTXMode.Location = new Point(comboMeterRXMode.Location.X, 
-                        //     comboMeterRXMode.Location.Y + comboMeterRXMode.Height + 1);
-                        comboMeterTXMode.Location = new Point(txtRX2Meter.Location.X + txtRX2Meter.Width + 5,
-                            txtRX2Meter.Location.Y + 2);
-                        chkPower.Location = new Point(30, grpVFOB.Location.Y + 2);
-                        chkRX2.Location = new Point(chkPower.Location.X + chkRX2.Width + 5, chkPower.Location.Y);
-                        radRX1Show.Location = new Point(chkRX2.Location.X + radRX1Show.Width + 15, chkRX2.Location.Y + 4);
-                        radRX2Show.Location = new Point(radRX1Show.Location.X + radRX1Show.Width + 5, radRX1Show.Location.Y);
-                        //chkMON.Location = new Point(10, chkPower.Location.Y + chkPower.Height + 5);
-                        chkMON.Location = new Point(grpVFOB.Location.X - chkMON.Width - 10, grpVFOB.Location.Y + 8);
-                        //chkMUT.Location = new Point(chkMON.Location.X + chkMON.Width, chkPower.Location.Y + chkPower.Height + 5);
-                        chkTUN.Location = new Point(chkMON.Location.X, chkMON.Location.Y + chkMON.Height + 4);
-                        chkMOX.Location = new Point(chkTUN.Location.X, chkTUN.Location.Y + chkTUN.Height + 4);
-                        chkVOX.Location = new Point(chkMON.Location.X - chkVOX.Width - 10, chkMON.Location.Y);
-                        chkRX2SR.Location = new Point(chkTUN.Location.X - chkRX2SR.Width - 10, chkTUN.Location.Y); //DUP
-                        //  chkFWCATU.Location = new Point(chkMOX.Location.X - chkFWCATU.Width - 10, chkMOX.Location.Y); //CTUN
-                        chkX2TR.Location = new Point(chkMOX.Location.X - chkX2TR.Width - 10, chkMOX.Location.Y); //RX2 CTUN
-                        lblAF2.Location = new Point(5, chkPower.Location.Y + chkPower.Height + 5);
-                        //ptbAF.Location = new Point(lblAF2.Location.X + lblAF2.Width, lblAF2.Location.Y); 
-                        ptbRX2AF.Location = new Point(lblAF2.Location.X + lblAF2.Width, lblAF2.Location.Y);
-                        //ptbAF.Location = new Point(10, chkPower.Location.Y + chkPower.Height + 2);
-                        lblPWR2.Location = new Point(ptbRX2AF.Location.X + ptbRX2AF.Width + 2, ptbRX2AF.Location.Y);
-                        ptbPWR.Location = new Point(lblPWR2.Location.X + lblPWR2.Width, lblPWR2.Location.Y);
-                        lblRF2.Location = new Point(5, lblAF2.Location.Y + lblAF2.Height + 2);
-                        ptbRX2RF.Location = new Point(lblRF2.Location.X + lblRF2.Width, ptbRX2AF.Location.Y + ptbRX2AF.Height + 2);
-                        comboRX2AGC.Location = new Point(ptbRX2RF.Location.X + ptbRX2RF.Width + 2, ptbRX2RF.Location.Y + 3);
-                        //chkMUT.Location = new Point(ptbAF.Location.X + ptbAF.Width + 2, ptbAF.Location.Y);
-                        //comboPreamp.Location = new Point(comboRX2AGC.Location.X + comboPreamp.Width + 2, comboRX2AGC.Location.Y);
-
-                        comboPreamp.Location = new Point(comboRX2AGC.Location.X + comboPreamp.Width + 2, comboRX2AGC.Location.Y);
-                        udRX1StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX1StepAttData.Width + 2, comboRX2AGC.Location.Y);
-                        comboRX2Preamp.Location = new Point(comboRX2AGC.Location.X + comboRX2Preamp.Width + 2, comboRX2AGC.Location.Y);
-                        udRX2StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX2StepAttData.Width + 2, comboRX2AGC.Location.Y);
-
-                        if (rx2_preamp_present)
-                        {
-                            if (rx2_step_att_present)
-                            {
-                                comboPreamp.Hide();
-                                udRX1StepAttData.Hide();
-                                comboRX2Preamp.Hide();
-                                udRX2StepAttData.Show();
-                                // udRX2StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX2StepAttData.Width + 2, comboRX2AGC.Location.Y);
-                            }
-                            else
-                            {
-                                comboPreamp.Hide();
-                                udRX1StepAttData.Hide();
-                                udRX2StepAttData.Hide();
-                                comboRX2Preamp.Show();
-                                // comboRX2Preamp.Location = new Point(comboRX2AGC.Location.X + comboRX2Preamp.Width + 2, comboRX2AGC.Location.Y);
-                            }
+                            comboPreamp.Hide();
+                            udRX1StepAttData.Hide();
+                            comboRX2Preamp.Hide();
+                            udRX2StepAttData.Show();
+                            // udRX2StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX2StepAttData.Width + 2, comboRX2AGC.Location.Y);
                         }
                         else
                         {
-                            if (rx1_step_att_present)
-                            {
-                                comboPreamp.Hide();
-                                comboRX2Preamp.Hide();
-                                udRX2StepAttData.Hide();
-                                udRX1StepAttData.Show();
-                                //udRX1StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX1StepAttData.Width + 2, comboRX2AGC.Location.Y);
-                            }
-                            else
-                            {
-                                udRX1StepAttData.Hide();
-                                comboRX2Preamp.Hide();
-                                udRX2StepAttData.Hide();
-                                comboPreamp.Show();
-                                // comboPreamp.Location = new Point(comboRX2AGC.Location.X + comboPreamp.Width + 2, comboRX2AGC.Location.Y);
-                            }
+                            comboPreamp.Hide();
+                            udRX1StepAttData.Hide();
+                            udRX2StepAttData.Hide();
+                            comboRX2Preamp.Show();
+                            // comboRX2Preamp.Location = new Point(comboRX2AGC.Location.X + comboRX2Preamp.Width + 2, comboRX2AGC.Location.Y);
                         }
                     }
+                    else
+                    {
+                        if (rx1_step_att_present)
+                        {
+                            comboPreamp.Hide();
+                            comboRX2Preamp.Hide();
+                            udRX2StepAttData.Hide();
+                            udRX1StepAttData.Show();
+                            //udRX1StepAttData.Location = new Point(comboRX2AGC.Location.X + udRX1StepAttData.Width + 2, comboRX2AGC.Location.Y);
+                        }
+                        else
+                        {
+                            udRX1StepAttData.Hide();
+                            comboRX2Preamp.Hide();
+                            udRX2StepAttData.Hide();
+                            comboPreamp.Show();
+                            // comboPreamp.Location = new Point(comboRX2AGC.Location.X + comboPreamp.Width + 2, comboRX2AGC.Location.Y);
+                        }
+                    }
+                }
             }
 
             panelDisplay.Location = new Point(0, top + 20);
@@ -54209,7 +54212,7 @@ namespace PowerSDR
             if (sender == null) return;
             if (sender.GetType() != typeof(RadioButtonTS)) return;
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
-            
+
             // DG8MG
             // Extension for Charly 25 hardware
             if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
@@ -54856,29 +54859,29 @@ namespace PowerSDR
 
         private void btnTNFAdd_CheckedChanged(object sender, EventArgs e)
         {
-          //  if (initializing) return;
-          //  if (PowerOn)
-          //  {
-                //if (btnTNFAdd.Checked)
-                //{
-                //    if (!Alex.trx_ant_not_same)
-                //    {
-                //        btnTNFAdd.Checked = false;
-                //        return;
-                //    }
-                //    Alex.TRxAnt = true;
-                //    btnTNFAdd.Text = "Tx Ant";
-                //    btnTNFAdd.ForeColor = Color.YellowGreen;
-                //}
-                //else
-                //{
-                //    Alex.TRxAnt = false;
-                //    btnTNFAdd.Text = "Rx Ant";
-                //    if (Alex.trx_ant_not_same) btnTNFAdd.ForeColor = Color.SpringGreen;
-                //    else btnTNFAdd.ForeColor = SystemColors.ControlLightLight;
-                //}
-                AlexAntCtrlEnabled = alex_ant_ctrl_enabled;
-           // }
+            //  if (initializing) return;
+            //  if (PowerOn)
+            //  {
+            //if (btnTNFAdd.Checked)
+            //{
+            //    if (!Alex.trx_ant_not_same)
+            //    {
+            //        btnTNFAdd.Checked = false;
+            //        return;
+            //    }
+            //    Alex.TRxAnt = true;
+            //    btnTNFAdd.Text = "Tx Ant";
+            //    btnTNFAdd.ForeColor = Color.YellowGreen;
+            //}
+            //else
+            //{
+            //    Alex.TRxAnt = false;
+            //    btnTNFAdd.Text = "Rx Ant";
+            //    if (Alex.trx_ant_not_same) btnTNFAdd.ForeColor = Color.SpringGreen;
+            //    else btnTNFAdd.ForeColor = SystemColors.ControlLightLight;
+            //}
+            AlexAntCtrlEnabled = alex_ant_ctrl_enabled;
+            // }
         }
 
         // DG8MG
@@ -54890,7 +54893,7 @@ namespace PowerSDR
 
             if (chkC25ANT.Checked)
             {
-                chkC25ANT.Text = "ANT2";             
+                chkC25ANT.Text = "ANT2";
                 chkC25ANT.BackColor = button_selected_color;
                 JanusAudio.SetAntBits_Charly25(1);
             }
@@ -54901,8 +54904,8 @@ namespace PowerSDR
                 JanusAudio.SetAntBits_Charly25(0);
             }
         }
-        
-		// Checks the current commit hash on the Red Pitaya download server and shows if a new PowerSDR version is available
+
+        // Checks the current commit hash on the Red Pitaya download server and shows if a new PowerSDR version is available
         private void CheckCommit()
         {
             System.Console.WriteLine(System.DateTime.Now);
@@ -54930,18 +54933,18 @@ namespace PowerSDR
             }
 
             System.Console.WriteLine(System.DateTime.Now);
-            check_commit_thread.Abort();            
+            check_commit_thread.Abort();
         }
 
-    	public void C25NewReleaseDownloadItem_Click(object sender, EventArgs e)
+        public void C25NewReleaseDownloadItem_Click(object sender, EventArgs e)
         {
             Uri latest_release_uri = new Uri("http://downloads.redpitaya.com/hamlab/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");
 
             if (sender.Equals(SetupForm))
             {
                 latest_release_uri = new Uri("http://praised-land.de/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");
-            }            
-                     
+            }
+
             SaveFileDialog sdC25DownloadNewRelease = new SaveFileDialog();
             sdC25DownloadNewRelease.FileName = "Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe";
             sdC25DownloadNewRelease.Title = "Download new PowerSDR release";
@@ -54958,7 +54961,7 @@ namespace PowerSDR
                     webClient.DownloadFile(latest_release_uri, sdC25DownloadNewRelease.FileName);
                     webClient.Dispose();
 
-                    this.Cursor = oldCursor;                    
+                    this.Cursor = oldCursor;
 
                     if (MessageBox.Show("The latest release of PowerSDR was downloaded successfully.\nDo you want to close this PowerSDR session and install the new release of PowerSDR now?", "Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
@@ -55014,14 +55017,14 @@ namespace PowerSDR
         [DllImport("IpHlpApi.dll")]
         [return: MarshalAs(UnmanagedType.U4)]
         static extern int CreateIpNetEntry(IntPtr pArpEntry);
-                          
+
         private object rp_browse_lock = new object();
 
         private void Browse_RedPitaya_Devices()
         {
             int result = 0;
             string serviceType = "_http._tcp";
-            
+
             ServiceBrowser rpserviceBrowser = new ServiceBrowser();
             rpserviceBrowser.ServiceAdded += onServiceAdded;
             rpserviceBrowser.ServiceRemoved += onServiceRemoved;
@@ -55075,7 +55078,7 @@ namespace PowerSDR
                         IntPtr parpEntry = Marshal.AllocHGlobal(Marshal.SizeOf(arpEntry));
                         Marshal.StructureToPtr(arpEntry, parpEntry, true);
                         System.Console.WriteLine("CreateIpNetEntry returned: {0}", CreateIpNetEntry(parpEntry));
-                        Marshal.FreeHGlobal(parpEntry);                        
+                        Marshal.FreeHGlobal(parpEntry);
                     }
                 }
             }

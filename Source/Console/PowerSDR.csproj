@@ -156,6 +156,7 @@
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
@@ -188,6 +189,7 @@
     <Compile Include="C25SWRView.Designer.cs">
       <DependentUpon>C25SWRView.cs</DependentUpon>
     </Compile>
+    <Compile Include="C25USBPortHelper.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Clock.cs" />
     <Compile Include="CW\CWInput.cs" />

@@ -149,7 +149,7 @@
     <ClInclude Include="libusb\usb.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\lib\pthread\pthread.vcxproj">
+    <ProjectReference Include="..\..\lib\pthread\pthread.vs2013.vcxproj">
       <Project>{7889761c-c21d-4ddd-95d7-86e11efa9005}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
