@@ -21,6 +21,9 @@
 // io-thread.c - this file contains routines reading and writing from the xylo
 //
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
+//
 
 // this is updated for 8 channels
 #include <stdio.h>

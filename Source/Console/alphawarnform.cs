@@ -26,6 +26,10 @@
 //    USA
 //=================================================================
 
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2018 Markus Grundner / DG8MG
+//
+
 namespace PowerSDR
 {
     using System;
