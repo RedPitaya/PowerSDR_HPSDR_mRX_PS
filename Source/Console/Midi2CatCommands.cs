@@ -4943,14 +4943,21 @@ namespace PowerSDR
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         public void MoveVFOADownByTuneStep(int msg, MidiDevice device)
-        {                   
+        {
             parser.nSet = 2;
             parser.nGet = 0;
             int step = StringToFreq(commands.ZZAC(""));
 
-            if (IsBehringerCMD(device))
+            if (msg == 127)
             {
-                ChangeFreqVfoA(63, step, true, device);
+                if (IsBehringerCMD(device))
+                {
+                    ChangeFreqVfoA(63, step, true, device);
+                }
+                else
+                {
+                    ChangeFreqVfoA(127, step, true, device);
+                }
             }
             else
             {
@@ -4962,11 +4969,6 @@ namespace PowerSDR
                 parser.nSet = 11;
                 commands.ZZFA((freq - msg * step).ToString("D11"));
                 commands.isMidi = false;
-
-                //  for (tune_steps = 0; tune_steps < msg; tune_steps++)
-                //  {
-                //      ChangeFreqVfoA(127, step, true, device);
-                //  }
             }
         }
 
@@ -4976,9 +4978,16 @@ namespace PowerSDR
             parser.nGet = 0;
             int step = StringToFreq(commands.ZZAC(""));
 
-            if (IsBehringerCMD(device))
+            if (msg == 127)
             {
-                ChangeFreqVfoA(65, step, true, device);
+                if (IsBehringerCMD(device))
+                {
+                    ChangeFreqVfoA(65, step, true, device);
+                }
+                else
+                {
+                    ChangeFreqVfoA(1, step, true, device);
+                }
             }
             else
             {
@@ -4990,11 +4999,6 @@ namespace PowerSDR
                 parser.nSet = 11;
                 commands.ZZFA((freq + msg * step).ToString("D11"));
                 commands.isMidi = false;
-
-                //  for (tune_steps = 0; tune_steps < msg; tune_steps++)
-                //  {
-                //      ChangeFreqVfoA(1, step, true, device);
-                //  }
             }
         }
         // DG8MG

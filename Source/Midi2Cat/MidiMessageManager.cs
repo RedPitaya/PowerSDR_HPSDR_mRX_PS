@@ -209,21 +209,77 @@ namespace Midi2Cat
                 // If a mapped button was found continue
                 if (midiCtlID != -1)
                 {
-                    // Check if the button is located on the virtual second level of the frontpanel
-                    if (midiCtlID > 15)
+                    try
                     {
-                        midiCtlID -= 16;
-
-                        // Check if the lower LED (virtual second level) must be switched on
-                        if (state > 0)
+                        // Check if the button is located on the virtual second level of the frontpanel
+                        if (midiCtlID > 15)
                         {
-                            state = 2;
-                        }
-                    }
+                            ControllerMapping first_level_mapping = DB.GetMapping(device.GetDeviceName(), midiCtlID - 16);
+                            ControllerMapping second_level_mapping = DB.GetMapping(device.GetDeviceName(), midiCtlID);
 
-                    // Update the LEDs of the related button to the new state
-                    device.Charly25FrontpanelUpdateButtonLED(state, midiCtlID);
-                    System.Console.WriteLine("Charly25SendUpdateToMidi was called by CAT command: {0} to set new state: {1} on midiCtlID: {2}", cmd, state, midiCtlID);
+                            // Check if the LED must be switched off
+                            if (state == 0)
+                            {
+                                // Save the state of the virtual button on the second level
+                                second_level_mapping.MidiOutCmdSetValue = "BS00";
+                                DB.UpdateOrAdd(device.GetDeviceName(), second_level_mapping);
+                                
+                                // Check if there is a CAT command mapped on the virtual first level of this button and the LED on the first level is switched on
+                                if (first_level_mapping != null && first_level_mapping.MidiOutCmdSetValue == "BS01")
+                                {
+                                    // Redefine the state for the LED's on the button
+                                    state = 1;
+                                }
+                            }
+                            // LED of the virtual second level must be switched on
+                            else
+                            {
+                                // Redefine the state for the LED's on the button
+                                state = 2;
+
+                                // Save the state of the virtual button on the second level
+                                second_level_mapping.MidiOutCmdSetValue = "BS02";
+                                DB.UpdateOrAdd(device.GetDeviceName(), second_level_mapping);
+                            }
+
+                            midiCtlID -= 16;
+                        }
+                        // Button is located on the virtual first level of the frontpanel
+                        else
+                        {
+                            ControllerMapping first_level_mapping = DB.GetMapping(device.GetDeviceName(), midiCtlID);
+                            ControllerMapping second_level_mapping = DB.GetMapping(device.GetDeviceName(), midiCtlID + 16);
+
+                            // Check if the LED must be switched off
+                            if (state == 0)
+                            {
+                                // Save the state of the virtual button on the first level
+                                first_level_mapping.MidiOutCmdSetValue = "BS00";
+                                DB.UpdateOrAdd(device.GetDeviceName(), first_level_mapping);
+                                
+                                // Check if there is a CAT command mapped on the virtual second level of this button and the LED on the second level is switched on
+                                if (second_level_mapping != null && second_level_mapping.MidiOutCmdSetValue == "BS02")
+                                {
+                                    // Redefine the state for the LED's on the button
+                                    state = 2;
+                                }
+                            }
+                            // LED of the virtual first level must be switched on
+                            else
+                            {
+                                // Save the state of the virtual button on the first level
+                                first_level_mapping.MidiOutCmdSetValue = "BS01";
+                                DB.UpdateOrAdd(device.GetDeviceName(), first_level_mapping);
+                            }
+                        }
+
+                        // Update the LEDs of the related button to the new state
+                        device.Charly25FrontpanelUpdateButtonLED(state, midiCtlID);
+                        System.Console.WriteLine("Charly25SendUpdateToMidi was called by CAT command: {0} to set new state: {1} on midiCtlID: {2}", cmd, state, midiCtlID);
+                    }
+                    catch
+                    {
+                    }
                 }
             }
             return true;
@@ -383,6 +439,7 @@ namespace Midi2Cat
                                         deviceName = Device.GetDeviceName();
                                         mapping = DB.GetMapping(deviceName, ControlId);
 
+                                        // Check if there is an entry for another button to activate via tristate
                                         if (mapping.MidiOutCmdUp.Length == 4)
                                         {
                                             int.TryParse(mapping.MidiOutCmdUp.Substring(2), out newControlId);

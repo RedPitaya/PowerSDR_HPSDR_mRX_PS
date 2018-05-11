@@ -7893,10 +7893,21 @@ namespace PowerSDR
         {
             // DG8MG
 #if TRACE
-            FileStream trace_fs = new FileStream("TRACE.TXT", FileMode.Create);
             TextWriter old_sw = System.Console.Out;
-            StreamWriter trace_sw = new StreamWriter(trace_fs);
-            System.Console.SetOut(trace_sw);
+            FileStream trace_fs = null;
+            StreamWriter trace_sw = null;
+
+            try
+            {
+                trace_fs = new FileStream("TRACE.TXT", FileMode.Create);
+                trace_sw = new StreamWriter(trace_fs);
+                System.Console.SetOut(trace_sw);
+            }
+            catch
+            {
+                MessageBox.Show("TRACE.TXT file for debugging could not be created, PowerSDR will continue without it.", "Hint", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             System.Console.WriteLine(">>> Standard console output was redirected to this file.    <<<");
             System.Console.WriteLine(">>> Please forward this file to the developer if requested! <<<\n");
 #endif
@@ -8034,7 +8045,14 @@ namespace PowerSDR
 #if TRACE
             System.Console.WriteLine("\n>>> This is the end of the TRACE.TXT file! <<<\n");
             System.Console.SetOut(old_sw);
-            trace_sw.Close();
+
+            try
+            {
+                trace_sw.Close();
+            }
+            catch
+            {
+            }
 #endif
             // DG8MG
         }
@@ -10983,7 +11001,7 @@ namespace PowerSDR
                             c.Checked = bool.Parse(val);    // restore value
 
                             // DG8MG
-                            // Extension for Charly 25 hardware
+                            // Extension for Charly 25 frontpanel hardware
                             if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent && c.ThreeState == false)
                             {
                                 C25FrontpanelLEDUpdateHandler(c.Name, (c.Checked ? 1 : 0));
@@ -11040,7 +11058,7 @@ namespace PowerSDR
                         {
                             if (!val.ToLower().Equals("true") && !val.ToLower().Equals("false"))
                                 val = "True";
-                            c.Checked = bool.Parse(val);	// restore value
+                            c.Checked = bool.Parse(val);    // restore value
                             i = radiobutton_list.Count + 1;
                         }
                         if (i == radiobutton_list.Count)
@@ -54214,8 +54232,8 @@ namespace PowerSDR
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
 
             // DG8MG
-            // Extension for Charly 25 hardware
-            if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            // Extension for Charly 25 frontpanel hardware
+            if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
             }
