@@ -177,7 +177,7 @@ namespace Midi2Cat.IO
         #endregion
 
         // DG8MG
-        // Extension for Charly 25 hardware
+        // Extension for Charly 25 frontpanel hardware
         static int savedControlId = 0;
         // DG8MG
 
@@ -214,7 +214,7 @@ namespace Midi2Cat.IO
                         ControlTypeToUse = (ControlType)row.Cells[ctIdx].Value;
 
                         // DG8MG
-                        // Extension for Charly 25 hardware
+                        // Extension for Charly 25 frontpanel hardware
                         if (DeviceName == "Arduino Micro")
                         {
                             savedControlId = ControlId;

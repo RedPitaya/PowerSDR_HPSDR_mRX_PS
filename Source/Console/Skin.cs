@@ -877,7 +877,7 @@ namespace PowerSDR
             SetCheckBoxImageState(ctrl, state);
 
             // DG8MG
-            // Extension for Charly 25 hardware
+            // Extension for Charly 25 frontpanel hardware
             Console c = Console.getConsole();
 
             if (c != null && c.HPSDRModelIsCharly25orHAMlab() && c.Charly25FrontpanelPresent && ctrl.ThreeState == false)

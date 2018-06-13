@@ -242,7 +242,7 @@ namespace Midi2Cat.Data
         }
 
         // DG8MG
-        // Extension for Charly 25 hardware
+        // Extension for Charly 25 frontpanel hardware
         public List<ControllerMapping> Charly25FrontpanelGetButtonMappings()
         {
             string midiDeviceName = "Arduino Micro";

@@ -149,7 +149,7 @@ namespace Midi2Cat
         }
 
         // DG8MG
-        // Extension for Charly 25 hardware
+        // Extension for Charly 25 frontpanel hardware
         // Used to get the index of Charly 25 frontpanel
         public int Charly25FrontpanelIndex()
         {

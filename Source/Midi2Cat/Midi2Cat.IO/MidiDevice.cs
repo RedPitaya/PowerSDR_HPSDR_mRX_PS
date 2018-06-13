@@ -41,7 +41,7 @@ using System.Text;
 using System.Threading;
 
 // DG8MG
-// Extension for Charly 25 hardware
+// Extension for Charly 25 frontpanel hardware
 // Also added a reference to the System.Management assembly in project properties of the Midi2Cat project
 using System.Management;
 // DG8MG

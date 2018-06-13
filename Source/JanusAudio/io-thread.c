@@ -938,6 +938,7 @@ void IOThreadMainLoop(void) {
 			if ( isMetis ) {
 
 				// DG8MG
+				// Extension for Charly 25 and HAMlab hardware
 				// Check if TCP is used as transmission protocol between PowerSDR and the Red Pitaya device
 				if (Protocol == 1)
 				{
