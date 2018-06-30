@@ -88,7 +88,7 @@ namespace PowerSDR
         }
 
         // DG8MG
-        // Extension for Charly 25 hardware
+        // Extension for Charly 25 frontpanel hardware
         // Use the MidiMessageManager to send an update to the LEDs on the Charly 25 frontpanel
         public bool Charly25SendUpdateToMidi(CatCmd cmd, int state)
         {
@@ -4942,7 +4942,7 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        public void MoveVFOADownByTuneStep(int msg, MidiDevice device)
+        public void MoveCurrentVFODownByTuneStep(int msg, MidiDevice device)
         {
             parser.nSet = 2;
             parser.nGet = 0;
@@ -4962,17 +4962,27 @@ namespace PowerSDR
             else
             {
                 long freq = 0;
-
-                freq = Convert.ToInt64(commands.ZZFA(""));
+                
                 msg = msg * msg;
                 commands.isMidi = true;
                 parser.nSet = 11;
-                commands.ZZFA((freq - msg * step).ToString("D11"));
+
+                if (MidiDevice.VFOSelect == 0)
+                {
+                    freq = Convert.ToInt64(commands.ZZFA(""));
+                    commands.ZZFA((freq - msg * step).ToString("D11"));
+                }
+                else
+                {
+                    freq = Convert.ToInt64(commands.ZZFB(""));
+                    commands.ZZFB((freq - msg * step).ToString("D11"));
+                }
+
                 commands.isMidi = false;
             }
         }
 
-        public void MoveVFOAUpByTuneStep(int msg, MidiDevice device)
+        public void MoveCurrentVFOUpByTuneStep(int msg, MidiDevice device)
         {
             parser.nSet = 2;
             parser.nGet = 0;
@@ -4993,11 +5003,21 @@ namespace PowerSDR
             {
                 long freq = 0;
 
-                freq = Convert.ToInt64(commands.ZZFA(""));
                 msg = msg * msg;
                 commands.isMidi = true;
                 parser.nSet = 11;
-                commands.ZZFA((freq + msg * step).ToString("D11"));
+
+                if (MidiDevice.VFOSelect == 0)
+                {
+                    freq = Convert.ToInt64(commands.ZZFA(""));
+                    commands.ZZFA((freq + msg * step).ToString("D11"));
+                }
+                else
+                {
+                    freq = Convert.ToInt64(commands.ZZFB(""));
+                    commands.ZZFB((freq + msg * step).ToString("D11"));
+                }
+
                 commands.isMidi = false;
             }
         }
@@ -5038,7 +5058,8 @@ namespace PowerSDR
                 MidiDevice.VFOSelect = 2;
                 device.SetPL1ButtonLight(0);
 
-                // DG8MG: Extension for Charly 25 hardware
+                // DG8MG
+                // Extension for Charly 25 frontpanel hardware
                 Charly25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 1);
                 // DG8MG
 
@@ -5054,7 +5075,8 @@ namespace PowerSDR
                 MidiDevice.VFOSelect = 0;
                 device.SetPL1ButtonLight(1);
 
-                // DG8MG: Extension for Charly 25 hardware
+                // DG8MG
+                // Extension for Charly 25 frontpanel hardware
                 Charly25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 0);
                 // DG8MG
             }

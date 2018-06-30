@@ -294,10 +294,10 @@ namespace Midi2Cat.Data
         
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        [CatCommandAttribute("Move VFOA Down By TuneStep", ControlType.Button)]
-        MoveVFOADownByTuneStep = 522,
-        [CatCommandAttribute("Move VFOA Up By TuneStep", ControlType.Button)]
-        MoveVFOAUpByTuneStep = 523,
+        [CatCommandAttribute("Move Current VFO Down By TuneStep", ControlType.Button)]
+        MoveCurrentVFODownByTuneStep = 522,
+        [CatCommandAttribute("Move Current VFO Up By TuneStep", ControlType.Button)]
+        MoveCurrentVFOUpByTuneStep = 523,
 
         // Extension for Charly 25 frontpanel hardware
         [CatCommandAttribute("Reset Charly 25 Frontpanel ", ControlType.Button)]
