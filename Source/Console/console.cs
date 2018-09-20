@@ -54275,6 +54275,12 @@ namespace PowerSDR
                 diversityForm = new DiversityForm(this);
 
             diversityForm.Show();
+
+            // DG8MG
+            // Bring the Diversity form back to normal size if it was minimized before
+            diversityForm.WindowState = FormWindowState.Normal;
+            // DG8MG
+
             diversityForm.Focus();
             UpdateDiversityValues();
         }
