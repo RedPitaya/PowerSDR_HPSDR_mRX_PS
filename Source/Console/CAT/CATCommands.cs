@@ -2715,7 +2715,37 @@ namespace PowerSDR
             else
                 return parser.Error1;
 
-		}
+        }
+
+        // DG8MG
+        // Extension for Charly 25 frontpanel hardware
+        public string ZZFP(string s)
+        {
+            if (s.Length == parser.nSet && (s == "0" || s == "1"))
+            {
+                if (s == "0")
+                {
+                    console.C25HideFrontpanelMenu();
+                    console.C25FrontpanelMenuStatus = false;
+                }
+                else if (s == "1")
+                {
+                    console.C25ShowFrontpanelMenu();
+                    console.C25FrontpanelMenuStatus = true;
+                }
+                return "";
+            }
+            else if (s.Length == parser.nGet)
+            {
+                if (console.C25FrontpanelMenuStatus == true) return "1";
+                else return "0";
+            }
+            else
+            {
+                return parser.Error1;
+            }
+        }
+        // DG8MG
 
         /// <summary>
         /// Reads or sets the RX2 DSP Filter High value

@@ -284,7 +284,35 @@ namespace Midi2Cat
             }
             return true;
         }
-		// DG8MG
+
+        public List<ControllerMapping> Charly25GetFrontpanelMappings()
+        {
+            int index = -1;
+            List<ControllerMapping> mappings = null;
+
+            // Get the MIDI controller index of the Charly 25 frontpanel
+            index = Charly25FrontpanelIndex();
+
+            // If no Charly 25 frontpanel is present, tell the caller that no frontpanel is connected
+            if (index < 0) return null;
+
+            MidiDevice device = bindings[index].Device;
+
+            // Get all relevant mappings of the Charly 25 frontpanel
+            mappings = DB.Charly25FrontpanelGetMappings();
+
+            // If no mappings are given, return and tell the caller that a frontpanel is connected
+            if (mappings != null)
+            {
+                return mappings;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // DG8MG
 
         public void PL1InitialButtonLights(MidiDevice device)
         {
@@ -425,63 +453,102 @@ namespace Midi2Cat
                         {
                             lock (midi_handler_lock)
                             {
-                                if (handlers.CmdHandler != null)
+                                // DG8MG
+                                // Extension for Charly 25 frontpanel hardware
+                                if (ControlId < 32 && Data != 0)
                                 {
-                                    // DG8MG
-                                    // Extension for Charly 25 frontpanel hardware
-                                    if (ControlId < 32 && Data != 0)
+                                    int controlIdState = -1;
+                                    int newControlId = -1;
+                                    string deviceName = "";
+                                    ControllerMapping mapping;
+                                    ControllerMapping c25FrontpanelMenuMapping;
+                                    MidMessageHandler c25FrontpanelMenuHandler;
+
+                                    deviceName = Device.GetDeviceName();
+
+                                    c25FrontpanelMenuMapping = DB.GetReverseMapping(deviceName, CatCmd.C25FrontpanelMenu_OnOff);
+
+                                    // Check if a Charly 25 frontpanel and a menu button is present
+                                    if (deviceName == "Arduino Micro" && c25FrontpanelMenuMapping != null)
                                     {
-                                        int controlIdState = -1;
-                                        int newControlId = -1;
-                                        string deviceName = "";
-                                        ControllerMapping mapping;
+                                        ctrlBinding.CmdBindings.TryGetValue(c25FrontpanelMenuMapping.MidiControlId, out c25FrontpanelMenuHandler);
 
-                                        deviceName = Device.GetDeviceName();
-                                        mapping = DB.GetMapping(deviceName, ControlId);
-
-                                        // Check if there is an entry for another button to activate via tristate
-                                        if (mapping.MidiOutCmdUp.Length == 4)
+                                        // Check if the menu isn't already visible
+                                        if (c25FrontpanelMenuMapping.MidiOutCmdSetValue != "BS01")
                                         {
-                                            int.TryParse(mapping.MidiOutCmdUp.Substring(2), out newControlId);
+                                            // Call the the Charly 25 frontpanel menu handler to show the menu
+                                            c25FrontpanelMenuHandler.ToggleCmdHandler(127, Device);
 
-                                            if (newControlId >= 0)
+                                            // Update and save the state
+                                            c25FrontpanelMenuMapping.MidiOutCmdSetValue = "BS01";
+                                            DB.UpdateOrAdd(deviceName, c25FrontpanelMenuMapping);
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            // Call the the Charly 25 frontpanel menu handler to hide the menu
+                                            c25FrontpanelMenuHandler.ToggleCmdHandler(127, Device);
+
+                                            // Update and save the state
+                                            c25FrontpanelMenuMapping.MidiOutCmdSetValue = "BS00";
+                                            DB.UpdateOrAdd(deviceName, c25FrontpanelMenuMapping);
+
+                                            // Check if the pressed button was the Charly 25 frontpanel menu button
+                                            if (ControlId == c25FrontpanelMenuMapping.MidiControlId)
                                             {
-                                                if (mapping.MidiOutCmdSetValue.Length == 4)
-                                                {
-                                                    int.TryParse(mapping.MidiOutCmdSetValue.Substring(2), out controlIdState);
-                                                }
-                                                else
-                                                {
-                                                    controlIdState = 0;
-                                                }
-
-                                                System.Diagnostics.Debug.WriteLine("Charly 25 frontpanel tristate button modified ControlId from: {0} ", ControlId);
-
-                                                switch (controlIdState)
-                                                {
-                                                    case 0:
-                                                        mapping.MidiOutCmdSetValue = "BS01";
-                                                        break;
-
-                                                    case 1:
-                                                        mapping.MidiOutCmdSetValue = "BS02";
-                                                        ControlId = newControlId;
-                                                        break;
-
-                                                    case 2:
-                                                        mapping.MidiOutCmdSetValue = "BS01";
-                                                        break;
-                                                }
-
-                                                System.Diagnostics.Debug.WriteLine("to ControlId: {0} and new button state: {1} due to controlIdState: {2}.", ControlId, mapping.MidiOutCmdSetValue, controlIdState);
-
-                                                DB.UpdateOrAdd(deviceName, mapping);
-                                                ctrlBinding.CmdBindings.TryGetValue(ControlId, out handlers);
+                                                // Return to avoid wrong menu handling
+                                                return;
                                             }
                                         }
                                     }
-                                    // DG8MG
 
+                                    mapping = DB.GetMapping(deviceName, ControlId);
+
+                                    // Check if there is an entry for another button to activate via tristate
+                                    if (mapping.MidiOutCmdUp.Length == 4)
+                                    {
+                                        int.TryParse(mapping.MidiOutCmdUp.Substring(2), out newControlId);
+
+                                        if (newControlId >= 0)
+                                        {
+                                            if (mapping.MidiOutCmdSetValue.Length == 4)
+                                            {
+                                                int.TryParse(mapping.MidiOutCmdSetValue.Substring(2), out controlIdState);
+                                            }
+                                            else
+                                            {
+                                                controlIdState = 0;
+                                            }
+
+                                            System.Diagnostics.Debug.WriteLine("Charly 25 frontpanel tristate button modified ControlId from: {0} ", ControlId);
+
+                                            switch (controlIdState)
+                                            {
+                                                case 0:
+                                                    mapping.MidiOutCmdSetValue = "BS01";
+                                                    break;
+
+                                                case 1:
+                                                    mapping.MidiOutCmdSetValue = "BS02";
+                                                    ControlId = newControlId;
+                                                    break;
+
+                                                case 2:
+                                                    mapping.MidiOutCmdSetValue = "BS01";
+                                                    break;
+                                            }
+
+                                            System.Diagnostics.Debug.WriteLine("to ControlId: {0} and new button state: {1} due to controlIdState: {2}.", ControlId, mapping.MidiOutCmdSetValue, controlIdState);
+
+                                            DB.UpdateOrAdd(deviceName, mapping);
+                                            ctrlBinding.CmdBindings.TryGetValue(ControlId, out handlers);
+                                        }
+                                    }
+                                }
+                                // DG8MG
+
+                                if (handlers.CmdHandler != null)
+                                {
                                     handlers.CmdHandler(Data, Device);
                                     if (Data <= 0)
                                         state = CmdState.Off;
@@ -492,7 +559,6 @@ namespace Midi2Cat
                                     // Extension for Charly 25 frontpanel hardware
                                     System.Diagnostics.Debug.WriteLine("CAT command handler: {0}, with the parameters Data: {1} and Device: {2} was called.", handlers.CmdHandler.Method, Data, Device.GetDeviceName());
                                     // DG8MG
-
                                 }
                                 else if (handlers.ToggleCmdHandler != null)
                                 {
@@ -511,7 +577,6 @@ namespace Midi2Cat
                                 {
                                     Device.SendMsg(Channel, Data, Status, ControlId, handlers.MidiOutCmdSetValue);
                                 }
-                               
                             }
                         }
                     }

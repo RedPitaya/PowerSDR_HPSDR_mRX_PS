@@ -1114,6 +1114,7 @@ namespace PowerSDR
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         public int sdr_app_running = 0;
+        public bool C25FrontpanelMenuStatus = false;
         public bool Charly25FrontpanelPresent = false;
         public bool Charly25FrontpanelTristateButtons = true;
         // DG8MG
@@ -1611,11 +1612,32 @@ namespace PowerSDR
         private LabelTS lblCWAPFGain;
         private LabelTS lblRX1APF;
         private LabelTS lblRX2APF;
+
         // DG8MG
         public CheckBoxTS chkC25ANT;
         public CheckBoxTS chkC25Diversity;
         public ImageList ilC25ImageList;
+        private LabelTS lblC25FPKnob0;
+        private LabelTS lblC25FPKnob1;
+        private LabelTS lblC25FPKnob2;
+        private LabelTS lblC25FPKnob3;
+        private LabelTS lblC25FPButton0;
+        private LabelTS lblC25FPButton1;
+        private LabelTS lblC25FPButton2;
+        private LabelTS lblC25FPButton3;
+        private LabelTS lblC25FPButton4;
+        private LabelTS lblC25FPButton5;
+        private LabelTS lblC25FPButton6;
+        private LabelTS lblC25FPButton7;
+        private LabelTS lblC25FPButton8;
+        private LabelTS lblC25FPButton9;
+        private LabelTS lblC25FPButton10;
+        private LabelTS lblC25FPButton11;
+        private LabelTS lblC25FPButton12;
+        private LabelTS lblC25FPButton13;
+        private LabelTS lblC25FPButton14;
         // DG8MG
+
         private ToolStripMenuItem NR2ToolStripMenuItem1;
         private ToolStripMenuItem NR2StripMenuItem2;
         private ToolStripMenuItem SNBtoolStripMenuItem;
@@ -1989,10 +2011,11 @@ namespace PowerSDR
             // Extension for Charly 25 frontpanel hardware
             // Reset all Charly 25 frontpanel USB devices
             var usbDevices = USBDeviceInfo.C25GetFrontpanelUSBDevices();
-                foreach (var device in usbDevices)
-                {
-                    PortHelper.TryResetPortByName(device.DeviceID);
-                }            
+
+            foreach (var device in usbDevices)
+            {
+                PortHelper.TryResetPortByName(device.DeviceID);
+            }
             // DG8MG
 
             Midi2Cat = new Midi2CatCommands(this);
@@ -2539,6 +2562,25 @@ namespace PowerSDR
             this.RAtoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerNotchZoom = new System.Windows.Forms.Timer(this.components);
             this.picRX2Squelch = new System.Windows.Forms.PictureBox();
+            this.lblC25FPKnob0 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPKnob1 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPKnob2 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPKnob3 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton0 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton1 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton2 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton3 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton4 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton5 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton6 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton7 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton8 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton9 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton10 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton11 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton12 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton13 = new System.Windows.Forms.LabelTS();
+            this.lblC25FPButton14 = new System.Windows.Forms.LabelTS();
             this.panelRX2RF = new System.Windows.Forms.PanelTS();
             this.ptbRX2Squelch = new PowerSDR.PrettyTrackBar();
             this.panelRX2DSP = new System.Windows.Forms.PanelTS();
@@ -5992,6 +6034,139 @@ namespace PowerSDR
             this.picRX2Squelch.Name = "picRX2Squelch";
             this.picRX2Squelch.TabStop = false;
             // 
+            // lblC25FPKnob0
+            //
+            this.lblC25FPKnob0.BackColor = System.Drawing.Color.White;
+            this.lblC25FPKnob0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPKnob0, "lblC25FPKnob0");
+            this.lblC25FPKnob0.Name = "lblC25FPKnob0";
+            //
+            // lblC25FPKnob1
+            //
+            this.lblC25FPKnob1.BackColor = System.Drawing.Color.White;
+            this.lblC25FPKnob1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPKnob1, "lblC25FPKnob1");
+            this.lblC25FPKnob1.Name = "lblC25FPKnob1";
+            //
+            // lblC25FPKnob2
+            //
+            this.lblC25FPKnob2.BackColor = System.Drawing.Color.White;
+            this.lblC25FPKnob2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPKnob2, "lblC25FPKnob2");
+            this.lblC25FPKnob2.Name = "lblC25FPKnob2";
+            //
+            // lblC25FPKnob3
+            //
+            this.lblC25FPKnob3.BackColor = System.Drawing.Color.White;
+            this.lblC25FPKnob3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPKnob3, "lblC25FPKnob3");
+            this.lblC25FPKnob3.Name = "lblC25FPKnob3";
+            //
+            // lblC25FPButton0
+            //
+            this.lblC25FPButton0.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton0, "lblC25FPButton0");
+            this.lblC25FPButton0.Name = "lblC25FPButton0";
+            //
+            // lblC25FPButton1
+            //
+            this.lblC25FPButton1.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton1, "lblC25FPButton1");
+            this.lblC25FPButton1.Name = "lblC25FPButton1";
+            //
+            // lblC25FPButton2
+            //
+            this.lblC25FPButton2.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton2, "lblC25FPButton2");
+            this.lblC25FPButton2.Name = "lblC25FPButton2";
+            //
+            // lblC25FPButton3
+            //
+            this.lblC25FPButton3.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton3, "lblC25FPButton3");
+            this.lblC25FPButton3.Name = "lblC25FPButton3";
+            //
+            // lblC25FPButton4
+            //
+            this.lblC25FPButton4.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton4, "lblC25FPButton4");
+            this.lblC25FPButton4.Name = "lblC25FPButton4";
+            //
+            // lblC25FPButton5
+            //
+            this.lblC25FPButton5.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton5, "lblC25FPButton5");
+            this.lblC25FPButton5.Name = "lblC25FPButton5";
+            //
+            // lblC25FPButton6
+            //
+            this.lblC25FPButton6.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton6, "lblC25FPButton6");
+            this.lblC25FPButton6.Name = "lblC25FPButton6";
+            //
+            // lblC25FPButton7
+            //
+            this.lblC25FPButton7.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton7, "lblC25FPButton7");
+            this.lblC25FPButton7.Name = "lblC25FPButton7";
+            //
+            // lblC25FPButton8
+            //
+            this.lblC25FPButton8.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton8, "lblC25FPButton8");
+            this.lblC25FPButton8.Name = "lblC25FPButton8";
+            //
+            // lblC25FPButton9
+            //
+            this.lblC25FPButton9.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton9, "lblC25FPButton9");
+            this.lblC25FPButton9.Name = "lblC25FPButton9";
+            //
+            // lblC25FPButton10
+            //
+            this.lblC25FPButton10.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton10, "lblC25FPButton10");
+            this.lblC25FPButton10.Name = "lblC25FPButton10";
+            //
+            // lblC25FPButton11
+            //
+            this.lblC25FPButton11.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton11, "lblC25FPButton11");
+            this.lblC25FPButton11.Name = "lblC25FPButton11";
+            //
+            // lblC25FPButton12
+            //
+            this.lblC25FPButton12.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton12, "lblC25FPButton12");
+            this.lblC25FPButton12.Name = "lblC25FPButton12";
+            //
+            // lblC25FPButton13
+            //
+            this.lblC25FPButton13.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton13, "lblC25FPButton13");
+            this.lblC25FPButton13.Name = "lblC25FPButton13";
+            //
+            // lblC25FPButton14
+            //
+            this.lblC25FPButton14.BackColor = System.Drawing.Color.White;
+            this.lblC25FPButton14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblC25FPButton14, "lblC25FPButton14");
+            this.lblC25FPButton14.Name = "lblC25FPButton14";
+            //
             // panelRX2RF
             // 
             resources.ApplyResources(this.panelRX2RF, "panelRX2RF");
@@ -7732,6 +7907,25 @@ namespace PowerSDR
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.Controls.Add(this.lblC25FPKnob0);
+            this.Controls.Add(this.lblC25FPKnob1);
+            this.Controls.Add(this.lblC25FPKnob2);
+            this.Controls.Add(this.lblC25FPKnob3);
+            this.Controls.Add(this.lblC25FPButton0);
+            this.Controls.Add(this.lblC25FPButton1);
+            this.Controls.Add(this.lblC25FPButton2);
+            this.Controls.Add(this.lblC25FPButton3);
+            this.Controls.Add(this.lblC25FPButton4);
+            this.Controls.Add(this.lblC25FPButton5);
+            this.Controls.Add(this.lblC25FPButton6);
+            this.Controls.Add(this.lblC25FPButton7);
+            this.Controls.Add(this.lblC25FPButton8);
+            this.Controls.Add(this.lblC25FPButton9);
+            this.Controls.Add(this.lblC25FPButton10);
+            this.Controls.Add(this.lblC25FPButton11);
+            this.Controls.Add(this.lblC25FPButton12);
+            this.Controls.Add(this.lblC25FPButton13);
+            this.Controls.Add(this.lblC25FPButton14);
             this.Controls.Add(this.panelRX2RF);
             this.Controls.Add(this.picRX2Squelch);
             this.Controls.Add(this.ptbRX2Squelch);
@@ -49712,7 +49906,7 @@ namespace PowerSDR
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
 
             // DG8MG
-            // Extension for Charly 25 hardware
+            // Extension for Charly 25 frontpanel hardware
             if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
@@ -51179,7 +51373,7 @@ namespace PowerSDR
                 if (b)
                 {
                     // DG8MG
-                    // Extension for Charly 25 hardware
+                    // Extension for Charly 25 frontpanel hardware
                     if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         // Turn off the LED on the old band button
@@ -55650,6 +55844,264 @@ namespace PowerSDR
                     System.Console.WriteLine("Charly 25 frontpanel handler was called by unhandled sender: {0}", senderName);
                     break;
             }
+        }
+
+        public void C25ShowFrontpanelMenu()
+        {
+            if (initializing)
+            {
+                return;
+            }
+
+            // Calculate the size of a single frontpanel button
+            int console_height = getConsole().Height;
+            int console_width = getConsole().Width;
+            int button_left_offset = 0;
+            int button_top_offset = 0;
+            int button_height = (console_height - button_top_offset - 40) / 6;
+            int button_width = (console_width - button_left_offset - 16) / 9;
+            int index = 0;
+
+            List<string> button_states_strings = new List<string>();
+            List<string> button_labels = new List<string>();
+            List<System.Drawing.Color> button_states_colors = new List<System.Drawing.Color>();
+            List<ControllerMapping> frontpanelMappings;
+
+            // Locate and resize the buttons accordingly
+            lblC25FPKnob0.Left = button_left_offset;
+            lblC25FPKnob0.Top = button_top_offset;
+            lblC25FPKnob0.Width = button_width;
+            lblC25FPKnob0.Height = button_height;
+
+            lblC25FPKnob1.Left = button_left_offset;
+            lblC25FPKnob1.Top = button_top_offset + button_height;
+            lblC25FPKnob1.Width = button_width;
+            lblC25FPKnob1.Height = button_height;
+
+            lblC25FPKnob2.Left = button_left_offset;
+            lblC25FPKnob2.Top = button_top_offset + button_height * 2;
+            lblC25FPKnob2.Width = button_width;
+            lblC25FPKnob2.Height = button_height;
+
+            lblC25FPKnob3.Left = button_left_offset;
+            lblC25FPKnob3.Top = button_top_offset + button_height * 3;
+            lblC25FPKnob3.Width = button_width;
+            lblC25FPKnob3.Height = button_height;
+
+            lblC25FPButton0.Left = button_left_offset;
+            lblC25FPButton0.Top = button_top_offset + button_height * 4;
+            lblC25FPButton0.Width = button_width;
+            lblC25FPButton0.Height = button_height;
+
+            lblC25FPButton1.Left = button_left_offset;
+            lblC25FPButton1.Top = button_top_offset + button_height * 5;
+            lblC25FPButton1.Width = button_width;
+            lblC25FPButton1.Height = button_height;
+
+            lblC25FPButton2.Left = button_left_offset + button_width;
+            lblC25FPButton2.Top = button_top_offset + button_height * 5;
+            lblC25FPButton2.Width = button_width;
+            lblC25FPButton2.Height = button_height;
+
+            lblC25FPButton3.Left = button_left_offset + button_width * 2;
+            lblC25FPButton3.Top = button_top_offset + button_height * 5;
+            lblC25FPButton3.Width = button_width;
+            lblC25FPButton3.Height = button_height;
+
+            lblC25FPButton4.Left = button_left_offset + button_width * 3;
+            lblC25FPButton4.Top = button_top_offset + button_height * 5;
+            lblC25FPButton4.Width = button_width;
+            lblC25FPButton4.Height = button_height;
+
+            lblC25FPButton5.Left = button_left_offset + button_width * 4;
+            lblC25FPButton5.Top = button_top_offset + button_height * 5;
+            lblC25FPButton5.Width = button_width;
+            lblC25FPButton5.Height = button_height;
+
+            lblC25FPButton6.Left = button_left_offset + button_width * 5;
+            lblC25FPButton6.Top = button_top_offset + button_height * 5;
+            lblC25FPButton6.Width = button_width;
+            lblC25FPButton6.Height = button_height;
+
+            lblC25FPButton7.Left = button_left_offset + button_width * 6;
+            lblC25FPButton7.Top = button_top_offset + button_height * 5;
+            lblC25FPButton7.Width = button_width;
+            lblC25FPButton7.Height = button_height;
+
+            lblC25FPButton8.Left = button_left_offset + button_width * 7;
+            lblC25FPButton8.Top = button_top_offset + button_height * 5;
+            lblC25FPButton8.Width = button_width;
+            lblC25FPButton8.Height = button_height;
+
+            lblC25FPButton9.Left = button_width * 8;
+            lblC25FPButton9.Top = button_top_offset;
+            lblC25FPButton9.Width = button_width;
+            lblC25FPButton9.Height = button_height;
+
+            lblC25FPButton10.Left = button_width * 8;
+            lblC25FPButton10.Top = button_top_offset + button_height;
+            lblC25FPButton10.Width = button_width;
+            lblC25FPButton10.Height = button_height;
+
+            lblC25FPButton11.Left = button_width * 8;
+            lblC25FPButton11.Top = button_top_offset + button_height * 2;
+            lblC25FPButton11.Width = button_width;
+            lblC25FPButton11.Height = button_height;
+
+            lblC25FPButton12.Left = button_width * 8;
+            lblC25FPButton12.Top = button_top_offset + button_height * 3;
+            lblC25FPButton12.Width = button_width;
+            lblC25FPButton12.Height = button_height;
+
+            lblC25FPButton13.Left = button_width * 8;
+            lblC25FPButton13.Top = button_top_offset + button_height * 4;
+            lblC25FPButton13.Width = button_width;
+            lblC25FPButton13.Height = button_height;
+
+            lblC25FPButton14.Left = button_width * 8;
+            lblC25FPButton14.Top = button_top_offset + button_height * 5;
+            lblC25FPButton14.Width = button_width;
+            lblC25FPButton14.Height = button_height;
+
+            // Get the necessary information of the knobs and buttons based on the currently assigned functions
+            frontpanelMappings = Midi2Cat.Charly25GetFrontpanelMappings();
+
+            foreach (ControllerMapping mapping in frontpanelMappings)
+            {
+                // Label the knobs with coresponding texts
+                switch (mapping.MidiControlId)
+                {
+                    case 112:
+                        lblC25FPKnob0.Text = "K1\n" + mapping.MidiControlName;
+                        break;
+
+                    case 113:
+                        lblC25FPKnob1.Text = "K2\n" + mapping.MidiControlName;
+                        break;
+
+                    case 114:
+                        lblC25FPKnob2.Text = "K3\n" + mapping.MidiControlName;
+                        break;
+
+                    case 115:
+                        lblC25FPKnob3.Text = "K4\n" + mapping.MidiControlName;
+                        break;
+                }
+            }
+
+            for (index = 0; index < 31; index++)
+            {
+                button_states_strings.Add("BS00");
+                button_labels.Add(" ");
+            }
+
+            foreach (ControllerMapping mapping in frontpanelMappings)
+            {
+                // Only take care about the buttons without the knobs and avoid an exception if the string is empty
+                if (mapping.MidiControlId > 30 || mapping.MidiOutCmdSetValue =="") continue;
+
+                button_labels[mapping.MidiControlId] = mapping.MidiControlName;
+                button_states_strings[mapping.MidiControlId] = mapping.MidiOutCmdSetValue;
+            }
+
+            // Get the color values based on the current status of the buttons
+            for (index = 0; index < 15; index++)
+            {
+                int button_status = 0;
+                int.TryParse(button_states_strings[index].Substring(3) + button_states_strings[index + 16].Substring(3), out button_status);
+
+                if (button_status == 2 || button_status > 11)
+                {
+                    button_states_colors.Add(Color.Red);
+                }
+                else if (button_status > 0)
+                {
+                    button_states_colors.Add(Color.Yellow);
+                }
+                else
+                {
+                    button_states_colors.Add(Color.White);
+                }
+            }
+
+            // Assign the color values to the buttons
+            lblC25FPButton0.BackColor = button_states_colors[0];
+            lblC25FPButton1.BackColor = button_states_colors[1];
+            lblC25FPButton2.BackColor = button_states_colors[2];
+            lblC25FPButton3.BackColor = button_states_colors[3];
+            lblC25FPButton4.BackColor = button_states_colors[4];
+            lblC25FPButton5.BackColor = button_states_colors[5];
+            lblC25FPButton6.BackColor = button_states_colors[6];
+            lblC25FPButton7.BackColor = button_states_colors[7];
+            lblC25FPButton8.BackColor = button_states_colors[8];
+            lblC25FPButton9.BackColor = button_states_colors[9];
+            lblC25FPButton10.BackColor = button_states_colors[10];
+            lblC25FPButton11.BackColor = button_states_colors[11];
+            lblC25FPButton12.BackColor = button_states_colors[12];
+            lblC25FPButton13.BackColor = button_states_colors[13];
+            lblC25FPButton14.BackColor = button_states_colors[14];
+
+            // Label all buttons with coresponding texts
+            lblC25FPButton0.Text = "B1\n" + button_labels[0] + "\n\n\n" + "B16\n" + button_labels[16];
+            lblC25FPButton1.Text = "B2\n" + button_labels[1] + "\n\n\n" + "B17\n" + button_labels[17];
+            lblC25FPButton2.Text = "B3\n" + button_labels[2] + "\n\n\n" + "B18\n" + button_labels[18];
+            lblC25FPButton3.Text = "B4\n" + button_labels[3] + "\n\n\n" + "B19\n" + button_labels[19];
+            lblC25FPButton4.Text = "B5\n" + button_labels[4] + "\n\n\n" + "B20\n" + button_labels[20];
+            lblC25FPButton5.Text = "B6\n" + button_labels[5] + "\n\n\n" + "B21\n" + button_labels[21];
+            lblC25FPButton6.Text = "B7\n" + button_labels[6] + "\n\n\n" + "B22\n" + button_labels[22];
+            lblC25FPButton7.Text = "B8\n" + button_labels[7] + "\n\n\n" + "B23\n" + button_labels[23];
+            lblC25FPButton8.Text = "B9\n" + button_labels[8] + "\n\n\n" + "B24\n" + button_labels[24];
+            lblC25FPButton9.Text = "B10\n" + button_labels[9] + "\n\n\n" + "B25\n" + button_labels[25];
+            lblC25FPButton10.Text = "B11\n" + button_labels[10] + "\n\n\n" + "B26\n" + button_labels[26];
+            lblC25FPButton11.Text = "B12\n" + button_labels[11] + "\n\n\n" + "B27\n" + button_labels[27];
+            lblC25FPButton12.Text = "B13\n" + button_labels[12] + "\n\n\n" + "B28\n" + button_labels[28];
+            lblC25FPButton13.Text = "B14\n" + button_labels[13] + "\n\n\n" + "B29\n" + button_labels[29];
+            lblC25FPButton14.Text = "B15\n" + button_labels[14] + "\n\n\n" + "B30\n" + button_labels[30];
+
+            // Show the knobs and buttons
+            lblC25FPKnob0.Visible = true;
+            lblC25FPKnob1.Visible = true;
+            lblC25FPKnob2.Visible = true;
+            lblC25FPKnob3.Visible = true;
+            lblC25FPButton0.Visible = true;
+            lblC25FPButton1.Visible = true;
+            lblC25FPButton2.Visible = true;
+            lblC25FPButton3.Visible = true;
+            lblC25FPButton4.Visible = true;
+            lblC25FPButton5.Visible = true;
+            lblC25FPButton6.Visible = true;
+            lblC25FPButton7.Visible = true;
+            lblC25FPButton8.Visible = true;
+            lblC25FPButton9.Visible = true;
+            lblC25FPButton10.Visible = true;
+            lblC25FPButton11.Visible = true;
+            lblC25FPButton12.Visible = true;
+            lblC25FPButton13.Visible = true;
+            lblC25FPButton14.Visible = true;
+        }
+
+        public void C25HideFrontpanelMenu()
+        {
+            // Hide the knobs and buttons
+            lblC25FPKnob0.Visible = false;
+            lblC25FPKnob1.Visible = false;
+            lblC25FPKnob2.Visible = false;
+            lblC25FPKnob3.Visible = false;
+            lblC25FPButton0.Visible = false;
+            lblC25FPButton1.Visible = false;
+            lblC25FPButton2.Visible = false;
+            lblC25FPButton3.Visible = false;
+            lblC25FPButton4.Visible = false;
+            lblC25FPButton5.Visible = false;
+            lblC25FPButton6.Visible = false;
+            lblC25FPButton7.Visible = false;
+            lblC25FPButton8.Visible = false;
+            lblC25FPButton9.Visible = false;
+            lblC25FPButton10.Visible = false;
+            lblC25FPButton11.Visible = false;
+            lblC25FPButton12.Visible = false;
+            lblC25FPButton13.Visible = false;
+            lblC25FPButton14.Visible = false;
         }
         // DG8MG
     }

@@ -94,6 +94,12 @@ namespace PowerSDR
         {
             return midiManager.Charly25SendUpdateToMidi(cmd, state);
         }
+
+        // Get all information about the mapped knobs and buttons on the Charly 25 frontpanel
+        public List<ControllerMapping> Charly25GetFrontpanelMappings()
+        {
+            return midiManager.Charly25GetFrontpanelMappings();
+        }
         // DG8MG
         #endregion
 
@@ -5020,6 +5026,31 @@ namespace PowerSDR
 
                 commands.isMidi = false;
             }
+        }
+
+        public CmdState C25FrontpanelMenu_OnOff(int msg, MidiDevice device)
+        {
+            if (msg == 127)
+            {
+                parser.nGet = 0;
+                parser.nSet = 1;
+
+                int MenuState = Convert.ToInt16(commands.ZZFP(""));
+
+                if (MenuState == 0)
+                {
+                    Charly25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 1);
+                    commands.ZZFP("1");
+                    return CmdState.On;
+                }
+                if (MenuState == 1)
+                {
+                    Charly25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 0);
+                    commands.ZZFP("0");
+                    return CmdState.Off;
+                }
+            }
+            return CmdState.NoChange;
         }
         // DG8MG
 

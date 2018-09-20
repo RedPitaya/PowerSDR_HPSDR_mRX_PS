@@ -259,6 +259,23 @@ namespace Midi2Cat.Data
             }
             return mappings;
         }
+
+        public List<ControllerMapping> Charly25FrontpanelGetMappings()
+        {
+            string midiDeviceName = "Arduino Micro";
+            List<ControllerMapping> mappings = new List<ControllerMapping>();
+            DataTable t = GetTable(midiDeviceName);
+            for (int i = 0; i < t.Rows.Count; i++)
+            {
+                ControllerMapping mapping = GetRow(midiDeviceName, i);
+                mapping.CatCmd = CatCmdDb.Get(mapping.CatCmd.CatCommandId);
+                if ((mapping.CatCmd.CatCommandId != CatCmd.None) && (mapping.MidiControlId < 120))
+                {
+                    mappings.Add(mapping);
+                }
+            }
+            return mappings;
+        }
         // DG8MG
 
         public ControllerMapping GetMapping(string MidiDeviceName, int MidiControlId)

@@ -300,7 +300,9 @@ namespace Midi2Cat.Data
         MoveCurrentVFOUpByTuneStep = 523,
 
         // Extension for Charly 25 frontpanel hardware
-        [CatCommandAttribute("Reset Charly 25 Frontpanel ", ControlType.Button)]
+        [CatCommandAttribute("Charly 25 Frontpanel Menu On Off", ControlType.Button, true)]
+        C25FrontpanelMenu_OnOff = 998,
+        [CatCommandAttribute("Reset Charly 25 Frontpanel", ControlType.Button)]
         ResetC25Frontpanel = 999,
         // DG8MG
 
