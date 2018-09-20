@@ -7892,6 +7892,7 @@ namespace PowerSDR
         static void Main(string[] args)
         {
             // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
 #if TRACE
             TextWriter old_sw = System.Console.Out;
             FileStream trace_fs = null;
@@ -8042,6 +8043,7 @@ namespace PowerSDR
             }
 
             // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
 #if TRACE
             System.Console.WriteLine("\n>>> This is the end of the TRACE.TXT file! <<<\n");
             System.Console.SetOut(old_sw);
@@ -17707,7 +17709,7 @@ namespace PowerSDR
             return ret_val;
         }
 
-        public bool CalibrateRX2Level_Charly25(float level, float freq, Progress progress, bool suppress_errors)
+        public bool C25CalibrateRX2Level(float level, float freq, Progress progress, bool suppress_errors)
         {
             // DG8MG: Test me!
             // Calibration routine called by Setup Form.
@@ -17731,8 +17733,6 @@ namespace PowerSDR
             double[] sum = new double[fft_size];            // buffer for "averaged" spectrum data
 
             int iterations = 20;                            // number of samples to average
-
-            //~~~~~
 
             double vfob = VFOBFreq;								// save current VFOB
 
@@ -17760,19 +17760,15 @@ namespace PowerSDR
 
             int progress_divisor;
 
-            // DG8MG: Implement me!
-            // Check if Preamps and Attenuators for RX2 are present
-            /*
-            if (...)
+            // Check if Charly 25 Attenuators and Preamps are present
+            if (RX2PreampPresent)
             {
                 progress_divisor = 600;
             }
             else
-            */
             {
                 progress_divisor = 100;
             }
-            // DG8MG
 
             comboRX2Preamp.Enabled = false;
             comboRX2DisplayMode.Enabled = false;
@@ -17841,14 +17837,10 @@ namespace PowerSDR
 
             Band band = BandByFreq(freq, -1, false, current_region);
 
-            // DG8MG: Implement me!
-            // Check if Preamps and Attenuators for RX2 are present               
-            /*
-            if (...)           
+            // Check if Charly 25 Attenuators and Preamps are present
+            if (RX2PreampPresent)
             {
                 float current_offset = 0;
-
-
 
                 for (int rx2_preamp_mode = (int)PreampMode.C25_MINUS36; rx2_preamp_mode <= (int)PreampMode.C25_PLUS36; rx2_preamp_mode++)
                 {
@@ -17861,7 +17853,7 @@ namespace PowerSDR
 
                     for (int i = 0; i < 50; i++)
                     {
-                        num2 += wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+                        num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
                         Thread.Sleep(50);
                         if (!progress.Visible)
                             goto end;
@@ -17879,8 +17871,7 @@ namespace PowerSDR
 
                 RX2PreampMode = PreampMode.C25_OFF;  // set preamp to 0dB
             }
-            else  // No RX2 preamps and attenuators present
-            */
+            else  // No RX2 attenuators and preamps present
             {
                 // Set preamp to 0dB
                 RX2PreampMode = PreampMode.C25_OFF;
@@ -19294,7 +19285,7 @@ namespace PowerSDR
                 {
                     JanusAudio.EnableDiversity2(0);
 
-                    // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator 
+                    // DG8MG: Test me: Extension for Charly 25 RX2 Preamp and Attenuator 
                     if (RX2StepAttPresent) udRX2StepAttData_ValueChanged(this, EventArgs.Empty);
                     else comboRX2Preamp_SelectedIndexChanged(this, EventArgs.Empty);
                     wdsp.SetEXTDIVRun(0, 0);
@@ -23145,7 +23136,7 @@ namespace PowerSDR
             set { current_ptt_mode = value; }
         }
 
-        // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator 
+        // DG8MG: Test me: Extension for C25 RX2 Preamp and Attenuator 
         private bool rx2_preamp_present = false;
         public bool RX2PreampPresent
         {
@@ -23153,29 +23144,52 @@ namespace PowerSDR
             set
             {
                 rx2_preamp_present = value;
-                if (rx2_preamp_present)
+
+                // DG8MG
+                // Extension for Charly 25 RX2 Attenuator and Preamp
+                if (HPSDRModelIsCharly25orHAMlab())
                 {
-                    if (current_hpsdr_model == HPSDRModel.HPSDR)
-                    {
-                        RX2StepAttPresent = false;
+                    RX2StepAttPresent = false;
+                    udRX2StepAttData.Hide();
+
+                    if (rx2_preamp_present)
+                    {                       
+                        comboRX2Preamp.Show();
+                        lblRX2Preamp.Visible = true;
                     }
                     else
                     {
-                        rx2_step_att_present = true;
-                        // JanusAudio.EnableADC2StepAtten(0);
-                        comboRX2Preamp.Show();
-                        udRX2StepAttData.Show();
-                        lblRX2Preamp.Visible = true;
+                        comboRX2Preamp.Hide();
+                        lblRX2Preamp.Visible = false;
                     }
-
                 }
                 else
+                // DG8MG
                 {
-                    //rx2_step_att_present = false;
-                    JanusAudio.EnableADC2StepAtten(0);
-                    comboRX2Preamp.Hide();
-                    udRX2StepAttData.Hide();
-                    lblRX2Preamp.Visible = false;
+                    if (rx2_preamp_present)
+                    {
+                        if (current_hpsdr_model == HPSDRModel.HPSDR)
+                        {
+                            RX2StepAttPresent = false;
+                        }
+                        else
+                        {
+                            rx2_step_att_present = true;
+                            // JanusAudio.EnableADC2StepAtten(0);
+                            comboRX2Preamp.Show();
+                            udRX2StepAttData.Show();
+                            lblRX2Preamp.Visible = true;
+                        }
+
+                    }
+                    else
+                    {
+                        //rx2_step_att_present = false;
+                        JanusAudio.EnableADC2StepAtten(0);
+                        comboRX2Preamp.Hide();
+                        udRX2StepAttData.Hide();
+                        lblRX2Preamp.Visible = false;
+                    }
                 }
             }
         }
@@ -27936,7 +27950,7 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator 
+        // DG8MG: Test me: Extension for C25 RX2 Preamp and Attenuator 
         private PreampMode rx2_preamp_mode = PreampMode.HPSDR_OFF;
         public PreampMode RX2PreampMode
         {
@@ -27975,7 +27989,93 @@ namespace PowerSDR
                         rx2_att_value = 30;
                         comboRX2Preamp.Text = "-30dB";
                         break;
+
+                    // DG8MG
+                    // Extension for Charly 25 RX2 Attenuator and Preamp 
+                    case PreampMode.C25_MINUS36:
+                        rx2_att_value = 3;  // 12dB and 24dB attenuator active
+                        rx2_preamp = 0;  // No preamp active
+                        comboRX2Preamp.Text = "-36dB";
+                        lblRX2Preamp.Text = "ATT";
+                        break;
+
+                    case PreampMode.C25_MINUS24:
+                        rx2_att_value = 2;  // 24dB attenuator active
+                        rx2_preamp = 0;  // No preamp active
+                        comboRX2Preamp.Text = "-24dB";
+                        lblRX2Preamp.Text = "ATT";
+                        break;
+
+                    case PreampMode.C25_MINUS18:
+                        rx2_att_value = 3;  // 12dB and 24dB attenuator active
+                        rx2_preamp = 1;  // 18dB preamp active
+                        comboRX2Preamp.Text = "-18dB";
+                        lblRX2Preamp.Text = "ATT";
+                        break;
+
+                    case PreampMode.C25_MINUS12:
+                        rx2_att_value = 1;  // 12dB attenuator active
+                        rx2_preamp = 0;  // No preamp active
+                        comboRX2Preamp.Text = "-12dB";
+                        lblRX2Preamp.Text = "ATT";
+                        break;
+
+                    case PreampMode.C25_MINUS6:
+                        rx2_att_value = 2;  // 24dB attenuator active
+                        rx2_preamp = 1;  // 18dB preamp active
+                        comboRX2Preamp.Text = "  -6dB";
+                        lblRX2Preamp.Text = "ATT";
+                        break;
+
+                    case PreampMode.C25_OFF:
+                        rx2_att_value = 0;  // No attenuator active
+                        rx2_preamp = 0;  // No preamp active
+                        comboRX2Preamp.Text = "   0dB";
+                        lblRX2Preamp.Text = "ATT";
+                        break;
+
+                    case PreampMode.C25_PLUS6:
+                        rx2_att_value = 1;  // 12dB attenuator active
+                        rx2_preamp = 1;  // 18dB preamp active
+                        comboRX2Preamp.Text = "   6dB";
+                        lblRX2Preamp.Text = "PRE";
+                        break;
+
+                    case PreampMode.C25_PLUS12:
+                        rx2_att_value = 2;  // 24dB attenuator active
+                        rx2_preamp = 3;  // Two preamps must be active
+                        comboRX2Preamp.Text = " 12dB";
+                        lblRX2Preamp.Text = "PRE";
+                        break;
+
+                    case PreampMode.C25_PLUS18:
+                        rx2_att_value = 0;  // No attenuator active
+                        rx2_preamp = 1;  // 18dB preamp active
+                        comboRX2Preamp.Text = " 18dB";
+                        lblRX2Preamp.Text = "PRE";
+                        break;
+
+                    case PreampMode.C25_PLUS24:
+                        rx2_att_value = 1;  // 12dB attenuator active
+                        rx2_preamp = 3;  // Two preamps must be active
+                        comboRX2Preamp.Text = " 24dB";
+                        lblRX2Preamp.Text = "PRE";
+                        break;
+
+                    case PreampMode.C25_PLUS36:
+                        rx2_att_value = 0;  // No attenuator active
+                        rx2_preamp = 3;  // Two preamps must be active
+                        comboRX2Preamp.Text = " 36dB";
+                        lblRX2Preamp.Text = "PRE";
+                        break;                        
                 }
+                
+                if (HPSDRModelIsCharly25orHAMlab())
+                {
+                    JanusAudio.C25SetRX2Attenuator(rx2_att_value);
+                    JanusAudio.C25SetRX2Preamp(rx2_preamp);
+                }
+                // DG8MG
 
                 if (current_hpsdr_model == HPSDRModel.ANAN100D ||
                     current_hpsdr_model == HPSDRModel.ANAN200D ||
@@ -36915,10 +37015,39 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 else
                 {
-                    SetupForm.UpdateC25HardwareOptions();
-                    if (SetupForm.lblC25TRXPresent.Text == "Charly 25LC" || SetupForm.lblC25TRXPresent.Text == "HAMlab 80-10")
+                    int penelopeFWVersion = JanusAudio.getPenelopeFWVersion();
+                    // SetupForm.UpdateC25HardwareOptions();
+
+                    switch (penelopeFWVersion)
                     {
-                        chkC25ANT.Enabled = false;
+                        case 128:
+                        case 129:
+                            // Disable the antenna 1/2 button if a Charly 25LC TRX board is present
+                            chkC25ANT.Enabled = false;
+                            break;
+
+                        case 130:
+                            // Enable the antenna 1/2 button if a Charly 25AB TRX board is present
+                            chkC25ANT.Enabled = true;
+                            break;
+
+                        case 131:
+                            // Enable the antenna 1/2 button if a Charly 25PP TRX board is present
+                            chkC25ANT.Enabled = true;
+
+                            // Switch the Charly 25PP TRX board into SDR mode
+                            JanusAudio.C25SetRPExternal(1);
+                            break;
+                    }
+    
+                    // Thread to check if a new SDR application version for the Red Pitaya device is available
+                    if ((current_hpsdr_model == HPSDRModel.CHARLY25) && (check_sdr_app_version_thread == null || !check_sdr_app_version_thread.IsAlive))
+                    {
+                        check_sdr_app_version_thread = new Thread(new ThreadStart(C25CheckSDRAppVersion));
+                        check_sdr_app_version_thread.Name = "Check SDR App Version Thread";
+                        check_sdr_app_version_thread.Priority = ThreadPriority.Lowest;
+                        check_sdr_app_version_thread.IsBackground = true;
+                        check_sdr_app_version_thread.Start();
                     }
                 }
                 // DG8MG
@@ -37131,6 +37260,13 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 if (sdr_app_running > 0)
                 {
+                    // If a Charly 25PP TRX board is present, switch it back into non SDR mode
+                    if (JanusAudio.getPenelopeFWVersion() == 131)
+                    {                        
+                        JanusAudio.C25SetRPExternal(0);
+                        Thread.Sleep(100);
+                    }
+
                     JanusAudio.StopAudio();
 
                     if (vac_enabled)
@@ -37755,7 +37891,7 @@ namespace PowerSDR
         }
 
 
-        // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator 
+        // DG8MG: Test me: Extension for C25 RX2 Preamp and Attenuator 
         private void comboRX2Preamp_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             //if (initializing) return;
@@ -37778,6 +37914,54 @@ namespace PowerSDR
                 case "-30dB":
                     mode = PreampMode.HPSDR_MINUS30;
                     break;
+
+                // DG8MG
+                // Extension for Charly 25 RX2 Attenuator and Preamp
+                case "-36dB":
+                    mode = PreampMode.C25_MINUS36;
+                    break;
+
+                case "-24dB":
+                    mode = PreampMode.C25_MINUS24;
+                    break;
+
+                case "-18dB":
+                    mode = PreampMode.C25_MINUS18;
+                    break;
+
+                case "-12dB":
+                    mode = PreampMode.C25_MINUS12;
+                    break;
+
+                case "  -6dB":
+                    mode = PreampMode.C25_MINUS6;
+                    break;
+
+                case "   0dB":
+                    mode = PreampMode.C25_OFF;
+                    break;
+
+                case "   6dB":
+                    mode = PreampMode.C25_PLUS6;
+                    break;
+
+                case " 12dB":
+                    mode = PreampMode.C25_PLUS12;
+                    break;
+
+                case " 18dB":
+                    mode = PreampMode.C25_PLUS18;
+                    break;
+
+                case " 24dB":
+                    mode = PreampMode.C25_PLUS24;
+                    break;
+
+                case " 36dB":
+                    mode = PreampMode.C25_PLUS36;
+                    break;
+                // DG8MG
+
                 default:
                     exit = true;
                     break;
@@ -39982,7 +40166,7 @@ namespace PowerSDR
         {
             if (SetupForm != null) SetupForm.CWDisableMonitor = chkCWSidetone.Checked;
 
-            // DG8MG: Test me!
+            // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             if (HPSDRModelIsCharly25orHAMlab())
             {
@@ -44383,7 +44567,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             if (ModelIsHPSDRorHermes() || HPSDRModelIsCharly25orHAMlab())
-                // DG8MG
+            // DG8MG
 
                 abs_low = (int)(-(double)sample_rate1 * 0.5 + spur_tune_width);
             else
@@ -52417,13 +52601,13 @@ namespace PowerSDR
             // DG8MG
 
 
-            // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator 
+            // DG8MG: Test me: Extension for C25 RX2 Preamp and Attenuator 
             if (comboRX2Preamp != null)
             {
                 comboRX2Preamp.Items.Clear();
 
                 // DG8MG
-                // Extension for C25 RX2 Preamp and Attenuator 
+                // Extension for Charly 25 RX2 Attenuator and Preamp
                 if (HPSDRModelIsCharly25orHAMlab())
                 {
                     comboRX2Preamp.Items.AddRange(C25_attenuator_settings);
@@ -54385,12 +54569,14 @@ namespace PowerSDR
         }
         // DG8MG
 
-        // DG8MG: Implement me: Extension for C25 RX2 Preamp and Attenuator
+        // DG8MG
+        // Extension for Charly 25 RX2 Attenuator and Preamp
         private void lblRX2Preamp_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (current_model != Model.HPSDR)
+            if (current_model != Model.HPSDR && current_model != Model.CHARLY25 && current_model != Model.HAMLAB)
                 SetupForm.RX2EnableAtt = !SetupForm.RX2EnableAtt;
         }
+        // DG8MG
 
         private void picWaterfall_Resize(object sender, EventArgs e)
         {

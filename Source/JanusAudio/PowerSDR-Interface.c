@@ -1037,28 +1037,94 @@ KD5TFDVK6APHAUDIO_API void SetRX1Preamp(int bits) {
 }
 
 // DG8MG
-// Extension for Charly 25 and HAMlab Attenuator and Preamp
+// Extension for Charly 25 and HAMlab hardware
 KD5TFDVK6APHAUDIO_API void SetRX1Preamp_Charly25(int bits) {
 	switch (bits)
 	{
-	case 1:  // First preamp switched on
-		RX1Preamp = 1;
-		MercPreamp = (1 << 2);  // First preamp switched on
-		MercDither = 0;  // Second preamp switched off
+		case 1:  // First preamp switched on
+			RX1Preamp = 1;
+			MercPreamp = (1 << 2);  // First preamp switched on
+			MercDither = 0;  // Second preamp switched off
 		break;
 
-	case 2:  // First and second preamp switched on
-		RX1Preamp = 1;
-		MercPreamp = (1 << 2);
-		MercDither = (1 << 3);  // Second preamp switched on
+		case 2:  // First and second preamp switched on
+			RX1Preamp = 1;
+			MercPreamp = (1 << 2);
+			MercDither = (1 << 3);  // Second preamp switched on
 		break;
 
-	default:  // Both preamps switched off
-		RX1Preamp = 0;
-		MercPreamp = 0;  // First preamp switeched off 
-		MercDither = 0;  // Second preamp switched off
+		default:  // Both preamps switched off
+			RX1Preamp = 0;
+			MercPreamp = 0;  // First preamp switeched off 
+			MercDither = 0;  // Second preamp switched off
 	}
-	return;
+}
+
+KD5TFDVK6APHAUDIO_API void C25SetRX2Attenuator(int bits) {
+	if (bits > 0 && bits < 4)
+	{
+		C25RX2Att = bits;
+	}
+	else
+	{
+		C25RX2Att = 0;
+	}
+}
+
+
+KD5TFDVK6APHAUDIO_API void C25SetRX2Preamp(int bits) {
+	if (bits > 0 && bits < 4)
+	{
+		C25RX2Pre = bits;
+	}
+	else
+	{
+		C25RX2Pre = 0;
+	}
+}
+
+KD5TFDVK6APHAUDIO_API void C25SetStepAttenuator(int bits) {
+	if (bits >= 0 && bits <= 31)
+	{
+		C25StepAtt = bits;
+	}
+	else
+	{
+		C25StepAtt = 0;
+	}
+}
+
+KD5TFDVK6APHAUDIO_API void C25SetVHFUHF(int bits) {
+	if (bits >= 0 && bits <= 7)
+	{
+		C25VHFUHF = bits;
+	}
+	else
+	{
+		C25VHFUHF = 0;
+	}
+}
+
+KD5TFDVK6APHAUDIO_API void C25SetRPExternal(int bit) {
+	if (bit == 1)
+	{
+		C25RPExternal = 1;
+	}
+	else
+	{
+		C25RPExternal = 0;
+	}
+}
+
+KD5TFDVK6APHAUDIO_API void C25SetRPEnvMod(int bit) {
+	if (bit == 1)
+	{
+		C25RPEnvMod = 1;
+	}
+	else
+	{
+		C25RPEnvMod = 0;
+	}
 }
 // DG8MG
 

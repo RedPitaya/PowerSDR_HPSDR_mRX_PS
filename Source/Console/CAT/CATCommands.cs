@@ -4523,8 +4523,9 @@ namespace PowerSDR
                 return parser.Error1;
         }
 
-		// Sets or reads the Preamp thumbwheel
-		public string ZZPA(string s)
+        // DG8MG: Implement me! Extension for the Charly 25 and HAMlab Attenuator and Preamp
+        // Sets or reads the Preamp thumbwheel
+        public string ZZPA(string s)
 		{
 			int n = 0;
 			if(s != "")
@@ -4578,6 +4579,7 @@ namespace PowerSDR
             }
 		}
 
+        // DG8MG: Implement me! Extension for the Charly 25 RX2 Attenuator and Preamp
         //Sets or reads the RX2 Preamp button
         public string ZZPB(string s)
         {

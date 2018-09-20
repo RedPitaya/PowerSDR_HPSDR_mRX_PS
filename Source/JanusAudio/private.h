@@ -441,6 +441,14 @@ extern int WSAinitialized;
 // Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
 extern int Protocol;
 extern SOCKET c25TCPSocket;
+
+// Extension for Charly 25 hardware
+extern int C25RX2Att;
+extern int C25RX2Pre;
+extern int C25StepAtt;
+extern int C25VHFUHF;
+extern int C25RPExternal;
+extern int C25RPEnvMod;
 // DG8MG
 
 // extern int MetisReadThreadRunning;

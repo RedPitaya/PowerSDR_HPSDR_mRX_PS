@@ -1305,7 +1305,12 @@ namespace PowerSDR
         private LabelTS lblDisplayWaterfallHighColor;
         private LabelTS lblMetisBoardID;
         private LabelTS labelTS88;
-        private LabelTS lblMetisCodeVersion;
+
+        // DG8MG
+        // Changed from private to public
+        public LabelTS lblMetisCodeVersion;
+        // DG8MG
+
         private LabelTS lblMetisVer;
         private TabPage tpInfo;
         public TextBoxTS textAlexFwdPower;
@@ -3385,6 +3390,8 @@ namespace PowerSDR
                         {
                             lblC25TRXPresent.Text = "HAMlab 80-10";
                         }
+
+                        console.RX2PreampPresent = false;
                         break;
 
                     case 130:
@@ -3398,6 +3405,8 @@ namespace PowerSDR
                         {
                             lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6";
                         }
+
+                        console.RX2PreampPresent = false;
                         break;
 
                     case 131:
@@ -3411,6 +3420,8 @@ namespace PowerSDR
                         {
                             lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6 PP";
                         }
+
+                        console.RX2PreampPresent = true;
                         break;
 
                     default:
@@ -8979,7 +8990,9 @@ namespace PowerSDR
                 grpCHARLY25PAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
                 chkATTOnTX.Checked = false;  // Charly 25 doesn't have a TX step attenuator
-                console.RX2PreampPresent = false;  // Charly 25 doesn't have a RX2 preamp
+                // console.RX1StepAttPresent = false;  // Charly 25 doesn't have a RX1 step attenuator
+                // console.RX2StepAttPresent = false;  // Charly 25 doesn't have a RX2 step attenuator
+                console.RX2PreampPresent = false;  // Charly 25 doesn't have a RX2 preamp by default
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
                 chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
@@ -9155,7 +9168,9 @@ namespace PowerSDR
                 chkAutoPACalibrate.Visible = true;
                 grpCHARLY25PAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator
+                chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator                
+                // console.RX1StepAttPresent = false;  // HAMlab doesn't have a RX1 step attenuator
+                // console.RX2StepAttPresent = false;  // HAMlab doesn't have a RX2 step attenuator
                 console.RX2PreampPresent = false;  // HAMlab doesn't have a RX2 preamp
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
@@ -10020,7 +10035,7 @@ namespace PowerSDR
             bool done = false;
             if (console.HPSDRModelIsCharly25orHAMlab())
             {
-                done = console.CalibrateRX2Level_Charly25(
+                done = console.C25CalibrateRX2Level(
                 (float)udGeneralCalRX2Level.Value,
                 (float)udGeneralCalRX2Freq2.Value,
                 progress,

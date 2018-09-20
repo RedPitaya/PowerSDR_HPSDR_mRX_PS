@@ -1391,6 +1391,12 @@ void IOThreadMainLoop(void) {
 					case 27:
 					case 29:
 					case 31:
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 33:
+					// DG8MG
+
 						FPGAWriteBufp[writebufpos] |= 0;
 
 						if (reset_delay_xmit)
@@ -1460,6 +1466,12 @@ void IOThreadMainLoop(void) {
 						FPGAWriteBufp[writebufpos] |= 0x24; //C0 0010 010x
 						break;
 
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 34: // Charly 25 Extension board
+						FPGAWriteBufp[writebufpos] |= 0x18; //C0 0001 100x
+						break;
+					// DG8MG
 					}
 
 					ControlBytesOut[0] = FPGAWriteBufp[writebufpos];
@@ -1484,6 +1496,12 @@ void IOThreadMainLoop(void) {
 					case 27:
 					case 29:
 					case 31:
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 33:
+					// DG8MG
+
 						FPGAWriteBufp[writebufpos] = (SampleRateIn2Bits & 3) | (C1Mask & 0xfc);
 						// printf(" C1Mask: %d\n", C1Mask);
 						break;
@@ -1555,6 +1573,13 @@ void IOThreadMainLoop(void) {
 					case 32: // BPF2
 						FPGAWriteBufp[writebufpos] = (XmitBit ? gndrx2ontx : 0 | Alex2HPFMask) & 0xff;
 						break;
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 34: // Charly 25 Extension board
+						FPGAWriteBufp[writebufpos] = (C25RX2Att | (C25RX2Pre << 2) | (C25VHFUHF << 5)) & 0xef;  // C1: Bit 0-1 - RX2 12dB attenuator and RX2 24db attenuator, Bit 2-3 - RX2 18dB preamp 1 and 2, Bit 4 - unused, Bit 5 - VHF/UHF switch RX2, Bit 6 - VHF/UHF switch RX1, Bit 7 - VHF/UHF switch TX
+						break;
+					// DG8MG
 					}
 
 					ControlBytesOut[1] = FPGAWriteBufp[writebufpos];
@@ -1579,6 +1604,12 @@ void IOThreadMainLoop(void) {
 					case 27:
 					case 29:
 					case 31:
+					
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 33:
+					// DG8MG
+					
 						FPGAWriteBufp[writebufpos] = (PennyOCBits | (EClass & XmitBit)) & 0xff;
 						break;
 					case 1:
@@ -1636,6 +1667,13 @@ void IOThreadMainLoop(void) {
 					case 32: // xvtr
 						FPGAWriteBufp[writebufpos] = (xvtr_enable << 1) & 0x02;
 						break;
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 34: // Charly 25 Extension board
+						FPGAWriteBufp[writebufpos] = (C25StepAtt | (C25RPExternal << 5) | (C25RPEnvMod << 6)) & 0xef;  // C2: Bit 0-4 - Step attenuator 0-31dB, Bit 5 - RP external, Bit 6 - RP TX channel 2 envelope modulation, Bit 7 - unused
+						break;
+					// DG8MG
 					}
 
 					ControlBytesOut[2] = FPGAWriteBufp[writebufpos];
@@ -1659,6 +1697,12 @@ void IOThreadMainLoop(void) {
 					case 27:
 					case 29:
 					case 31:
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 33:
+					// DG8MG
+					
 						FPGAWriteBufp[writebufpos] = (AlexAtten | MercDither | MercPreamp |
 							MercRandom | AlexRxAnt | AlexRxOut) & 0xff; 
 						break;
@@ -1716,6 +1760,13 @@ void IOThreadMainLoop(void) {
 					case 32: // BPF2
 						FPGAWriteBufp[writebufpos] = 0;
 						break;
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 34: // Charly 25 Extension board
+						FPGAWriteBufp[writebufpos] = 0;
+						break;
+					// DG8MG
 					}
 
 					ControlBytesOut[3] = FPGAWriteBufp[writebufpos];
@@ -1740,6 +1791,12 @@ void IOThreadMainLoop(void) {
 					case 27:
 					case 29:
 					case 31:
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 33:
+					// DG8MG
+					
 						FPGAWriteBufp[writebufpos] = AlexTxAnt | NRx | Duplex | diversitymode2 << 7;
 						break;
 
@@ -1797,6 +1854,13 @@ void IOThreadMainLoop(void) {
 					case 32: // BPF2
 						FPGAWriteBufp[writebufpos] = 0;
 						break;
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 34: // Charly 25 Extension board
+						FPGAWriteBufp[writebufpos] = 0;
+						break;
+					// DG8MG
 					}
 
 					ControlBytesOut[4] = FPGAWriteBufp[writebufpos];
@@ -1910,11 +1974,24 @@ void IOThreadMainLoop(void) {
 						out_control_idx = 31; // 0;
 						break;		
 					case 31:
-						out_control_idx = is_orion_mkii ? 32 : 0;
+
+					// DG8MG
+					// Changed for Charly 25 Extension board support
+						out_control_idx = is_orion_mkii ? 32 : 34;
+						// out_control_idx = is_orion_mkii ? 32 : 0;
+					// DG8MG
+
 						break;
 					case 32: // BPF2
 						out_control_idx = 0;
 						break;
+
+					// DG8MG
+					// Extension for Charly 25 hardware
+					case 34: // Charly 25 Extension board
+						out_control_idx = 0;
+						break;
+					// DG8MG
 					}
 	/*				if (reset_control_idx)
 					{
