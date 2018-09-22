@@ -557,6 +557,12 @@ namespace PowerSDR
         Low_Latency = 1,
     }
 
+    public enum C25AntennaPort
+    {
+        ANT1 = 0,
+        ANT2 = 1,
+    }
+
     //public class HPSDRDevice
     //{
     //    public HPSDRHW deviceType;   // which type of device (currently Metis or Hermes)
@@ -826,6 +832,8 @@ namespace PowerSDR
         // DG8MG: Extension for Charly 25 and HAMlab hardware
         public float[,,] C25_RX1_level_table;				// table used to store C25 specific RX1 level cal settings (three dimentions: Band, Preamp/Attenuator mode, type of level)
         public float[,,] C25_RX2_level_table;				// table used to store C25 specific RX2 level cal settings (three dimentions: Band, Preamp/Attenuator mode, type of level)
+        public int[] C25_RX1_antenna_by_band;
+        public int[] C25_RX2_antenna_by_band;
         // DG8MG
 
         //public byte rx1_level_checksum;
@@ -8737,6 +8745,19 @@ namespace PowerSDR
                     C25_RX2_level_table[band, mode, 2] = -11.5f;
                 }
             }
+
+            // Extension for Charly 25 and HAMlab hardware
+            C25_RX1_antenna_by_band = new int[(int)Band.LAST];
+            for (int band = 0; band < (int)Band.LAST; band++)
+            {
+                C25_RX1_antenna_by_band[band] = (int)C25AntennaPort.ANT1;
+            }
+
+            C25_RX2_antenna_by_band = new int[(int)Band.LAST];
+            for (int band = 0; band < (int)Band.LAST; band++)
+            {
+                C25_RX2_antenna_by_band[band] = (int)C25AntennaPort.ANT1;
+            }
             // DG8MG
 
             this.ActiveControl = chkPower;		// Power has focus initially
@@ -9568,6 +9589,21 @@ namespace PowerSDR
                     a.Add(s);
                 }
             }
+
+            // Extension for Charly 25 and HAMlab hardware
+            for (int i = 0; i < (int)Band.LAST; i++)
+            {
+                s = "c25_rx1_antenna_by_band[" + i + "]/";
+                s += C25_RX1_antenna_by_band[i].ToString("d1");
+                a.Add(s);
+            }
+
+            for (int i = 0; i < (int)Band.LAST; i++)
+            {
+                s = "c25_rx2_antenna_by_band[" + i + "]/";
+                s += C25_RX2_antenna_by_band[i].ToString("d1");
+                a.Add(s);
+            }
             // DG8MG
 
             /*  for (int i = 0; i < (int)Band.LAST; i++)
@@ -10153,6 +10189,24 @@ namespace PowerSDR
                     string[] list = val.Split('|');
                     for (int index = 0; index < 3; index++)
                         C25_RX2_level_table[band, mode, index] = (float)Math.Round(float.Parse(list[index]), 3);
+                }
+
+                // Extension for Charly 25 and HAMlab hardware
+                else if (name.StartsWith("c25_rx1_antenna_by_band"))
+                {
+                    int start = name.IndexOf("[") + 1;
+                    int length = name.IndexOf("]") - start;
+                    int band = int.Parse(name.Substring(start, length));
+
+                    int.TryParse(val, out C25_RX1_antenna_by_band[band]);
+                }
+                else if (name.StartsWith("c25_rx2_antenna_by_band"))
+                {
+                    int start = name.IndexOf("[") + 1;
+                    int length = name.IndexOf("]") - start;
+                    int band = int.Parse(name.Substring(start, length));
+
+                    int.TryParse(val, out C25_RX2_antenna_by_band[band]);
                 }
                 // DG8MG
 
@@ -12265,6 +12319,11 @@ namespace PowerSDR
             ClickTuneDisplay = CTUN;
             chkFWCATU.Checked = ClickTuneDisplay;
             VFOAFreq = freq;                                       // Restore actual receive frequency after CTUN status restored - G3OQD
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            chkC25ANT.Checked = C25_RX1_antenna_by_band[(int)rx1_band] == 1 ? true : false;
+            // DG8MG
         }
 
         private void ChangeTuneStepUp()
@@ -55300,12 +55359,14 @@ namespace PowerSDR
                 chkC25ANT.Text = "ANT2";
                 chkC25ANT.BackColor = button_selected_color;
                 JanusAudio.SetAntBits_Charly25(1);
+                C25_RX1_antenna_by_band[(int)rx1_band] = 1;
             }
             else
             {
                 chkC25ANT.Text = "ANT1";
                 chkC25ANT.BackColor = SystemColors.Control;
                 JanusAudio.SetAntBits_Charly25(0);
+                C25_RX1_antenna_by_band[(int)rx1_band] = 0;
             }
         }
 
