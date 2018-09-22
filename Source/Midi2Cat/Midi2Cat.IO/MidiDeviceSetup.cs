@@ -327,8 +327,20 @@ namespace Midi2Cat.IO
         {
             tabControl.Visible = false;
             LoadNonDataBoundControls(ctrlId, value);
+
+            // DG8MG
+            // Added the following line to avoid a wrong selection at the first call of mapping edit function
+            CatCmd saveSelectedValue = (CatCmd)mappingAvailableCmdsLB.SelectedValue;
+            // DG8MG
+
             ShowAddPrompt();
             mapInCtrl2CmdPanel.Visible = true;
+
+            // DG8MG
+            // Added the following line to avoid a wrong selection at the first call of mapping edit function
+            mappingAvailableCmdsLB.SelectedValue = saveSelectedValue;
+            // DG8MG
+
             ResizeDialogs();
             if (string.IsNullOrWhiteSpace(mappingControlNameTB2.Text))
                 mappingControlNameTB2.Focus();
