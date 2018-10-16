@@ -496,6 +496,10 @@ C3 – Bits 15-8 of Forward Power from Alex or Apollo*(AIN1)
 C4 – Bits 7-0  of Forward Power from Alex or Apollo*(AIN1)
 */
 
+// DG8MG
+// At Charly 25PP hardware AIN1 is used for the forwarded power
+// DG8MG
+
 KD5TFDVK6APHAUDIO_API int getFwdPower() { 
 	if ( !isMetis ) { 
 		getI2CBytes(I2C_PENNY_ALC);
@@ -519,12 +523,20 @@ C3 – Bits 15-8 of AIN3 from Penny or Hermes*
 C4 – Bits 7-0  of AIN3 from Penny or Hermes*
 */
 
+// DG8MG
+// At Charly 25PP hardware AIN2 is used for the reflected power
+// DG8MG
+
 KD5TFDVK6APHAUDIO_API float getRefPower() { 
 	if ( !isMetis ) { 
 		getI2CBytes(I2C_PENNY_REV);
 	}
 	return RefPower; 
 } 
+
+// DG8MG
+// At Charly 25PP hardware AIN3 is used for the total current value
+// DG8MG
 
 KD5TFDVK6APHAUDIO_API int getAIN3() {
 	return AIN3;
@@ -538,6 +550,10 @@ C2 - Bits 7-0  of AIN4 from Penny or Hermes*
 C3 – Bits 15-8 of AIN6,13.8v supply on Hermes*
 C4 – Bits 7-0  of AIN6,13.8v supply on Hermes*
 */
+
+// DG8MG
+// At Charly 25PP hardware AIN4 is used for the power amplifier current value
+// DG8MG
 
 KD5TFDVK6APHAUDIO_API int getAIN4() {
 	return AIN4;

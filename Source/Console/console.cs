@@ -308,6 +308,12 @@ namespace PowerSDR
         ADC_R,
         ADC2_L,
         ADC2_R,
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        TOTAL_CURRENT,
+        // DG8MG
+
         OFF,
         LAST,
     }
@@ -328,6 +334,13 @@ namespace PowerSDR
         ALC,
         ALC_G,
         SWR,
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        TOTAL_CURRENT,
+        PA_CURRENT,
+        // DG8MG
+
         OFF,
         LAST,
     }
@@ -22971,19 +22984,80 @@ namespace PowerSDR
             set
             {
                 current_hpsdr_model = value;
+
+                // DG8MG
+                // Extension for Charly 25 hardware
+                if (comboMeterRXMode.Items.Contains("Tot Cur"))
+                {
+                    comboMeterRXMode.Items.Remove("Tot Cur");
+                    comboMeterRXMode.SelectedIndex = 0;
+                }
+
+                if (comboMeterTXMode.Items.Contains("Tot Cur"))
+                    comboMeterTXMode.Items.Remove("Tot Cur");
+                if (comboMeterTXMode.Items.Contains("PA Cur"))
+                    comboMeterTXMode.Items.Remove("PA Cur");
+
+                if (!C25ModelIsCharly25orHAMlab() && !comboMeterTXMode.Items.Contains("Fwd Pwr"))
+                {
+                    comboMeterTXMode.Items.Insert(0, "Fwd Pwr");
+                }
+                // DG8MG
+
                 switch (current_hpsdr_model)
                 {
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
                     case HPSDRModel.CHARLY25:
+                        chkDX.Visible = true;
+
+                        if (comboMeterTXMode.Items.Contains("Fwd SWR"))
+                                comboMeterTXMode.Items.Remove("Fwd SWR");
+
+                        if (CurrentModel == Model.CHARLY25PP)
+                        {
+                            if (!comboMeterRXMode.Items.Contains("Tot Cur"))
+                                comboMeterRXMode.Items.Insert(6, "Tot Cur");
+
+                            if (!comboMeterTXMode.Items.Contains("Fwd Pwr"))
+                                comboMeterTXMode.Items.Insert(0, "Fwd Pwr");
+                            if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
+                                comboMeterTXMode.Items.Insert(1, "Ref Pwr");
+                            if (!comboMeterTXMode.Items.Contains("SWR"))
+                                comboMeterTXMode.Items.Insert(2, "SWR");
+                            if (!comboMeterTXMode.Items.Contains("Tot Cur"))
+                                comboMeterTXMode.Items.Insert(12, "Tot Cur");
+                            if (!comboMeterTXMode.Items.Contains("PA Cur"))
+                                comboMeterTXMode.Items.Insert(13, "PA Cur");
+                        }
+                        else
+                        {
+                            if (comboMeterTXMode.Items.Contains("Fwd Pwr"))
+                                comboMeterTXMode.Items.Remove("Fwd Pwr");
+                            if (comboMeterTXMode.Items.Contains("Ref Pwr"))
+                                comboMeterTXMode.Items.Remove("Ref Pwr");
+                            if (comboMeterTXMode.Items.Contains("SWR"))
+                                comboMeterTXMode.Items.Remove("SWR");
+                        }
+
+                        if (comboMeterTXMode.SelectedIndex < 0)
+                                comboMeterTXMode.SelectedIndex = 0;
+                        break;
+
                     case HPSDRModel.HAMLAB:
                         chkDX.Visible = true;
 
-                        if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
-                            comboMeterTXMode.Items.Insert(1, "Ref Pwr");
-                        if (!comboMeterTXMode.Items.Contains("SWR"))
-                            comboMeterTXMode.Items.Insert(2, "SWR");
+                        if (comboMeterTXMode.Items.Contains("Fwd SWR"))
+                            comboMeterTXMode.Items.Remove("Fwd SWR");
+                        if (comboMeterTXMode.Items.Contains("Fwd Pwr"))
+                            comboMeterTXMode.Items.Remove("Fwd Pwr");
+                        if (comboMeterTXMode.Items.Contains("Ref Pwr"))
+                            comboMeterTXMode.Items.Remove("Ref Pwr");
+                        if (comboMeterTXMode.Items.Contains("SWR"))
+                            comboMeterTXMode.Items.Remove("SWR");
 
+                        if (comboMeterTXMode.SelectedIndex < 0)
+                                comboMeterTXMode.SelectedIndex = 0;
                         break;
                     // DG8MG
 
@@ -23018,7 +23092,6 @@ namespace PowerSDR
                             comboMeterTXMode.Items.Insert(3, "Fwd SWR");
                         chkDX.Visible = true;
                         break;
-
                 }
 
                 SetComboPreampForHPSDR();
@@ -26484,6 +26557,14 @@ namespace PowerSDR
                     case MeterRXMode.ADC2_R:
                         text = "ADC2 R";
                         break;
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    case MeterRXMode.TOTAL_CURRENT:
+                        text = "Tot Cur";
+                        break;
+                    // DG8MG
+
                     case MeterRXMode.OFF:	// BT Added 7/24/05 for CAT commands
                         text = "Off";
                         break;
@@ -26581,6 +26662,17 @@ namespace PowerSDR
                     case MeterTXMode.SWR:
                         text = "SWR";
                         break;
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    case MeterTXMode.TOTAL_CURRENT:
+                        text = "Tot Cur";
+                        break;
+                    case MeterTXMode.PA_CURRENT:
+                        text = "PA Cur";
+                        break;
+                    // DG8MG
+
                     case MeterTXMode.OFF:		// BT Added 07/24/05 for CAT commands
                         text = "Off";
                         break;
@@ -27816,52 +27908,62 @@ namespace PowerSDR
             get { return alexpresent; }
             set
             {
-                alexpresent = value;
-                int alex_enabled = 0;
-                if (alexpresent)
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (C25ModelIsCharly25orHAMlab())
                 {
-                    if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
-                        comboMeterTXMode.Items.Insert(1, "Ref Pwr");
-                    if (!comboMeterTXMode.Items.Contains("Fwd SWR"))
-                        comboMeterTXMode.Items.Insert(3, "Fwd SWR");
-
-                    if (!comboMeterTXMode.Items.Contains("SWR"))
-                        comboMeterTXMode.Items.Insert(2, "SWR");
-
-                    if (comboMeterTXMode.SelectedIndex < 0)
-                        comboMeterTXMode.SelectedIndex = 0;
-                    if (chkPower.Checked)
-                    {
-                        SetAlexHPF(fwc_dds_freq);
-                        SetAlexLPF(tx_dds_freq_mhz);
-
-                        // SetAlex2HPF(rx2_dds_freq_mhz);
-                        // SetAlex2LPF(rx2_dds_freq_mhz);
-                    }
-
-                    alex_enabled = 1;
+                    return;
                 }
                 else
+                // DG8MG
                 {
-                    string cur_txt = comboMeterTXMode.Text;
-
-                    if (!initializing)
+                    alexpresent = value;
+                    int alex_enabled = 0;
+                    if (alexpresent)
                     {
-                        if (comboMeterTXMode.Items.Contains("Ref Pwr"))
-                            comboMeterTXMode.Items.Remove("Ref Pwr");
-                        if (comboMeterTXMode.Items.Contains("SWR"))
-                            comboMeterTXMode.Items.Remove("SWR");
-                        if (comboMeterTXMode.Items.Contains("Fwd SWR"))
-                            comboMeterTXMode.Items.Remove("Fwd SWR");
-                    }
+                        if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
+                            comboMeterTXMode.Items.Insert(1, "Ref Pwr");
+                        if (!comboMeterTXMode.Items.Contains("Fwd SWR"))
+                            comboMeterTXMode.Items.Insert(3, "Fwd SWR");
 
-                    comboMeterTXMode.Text = cur_txt;
-                    if (comboMeterTXMode.SelectedIndex < 0 &&
-                        comboMeterTXMode.Items.Count > 0)
-                        comboMeterTXMode.SelectedIndex = 0;
-                    alex_enabled = 0;
+                        if (!comboMeterTXMode.Items.Contains("SWR"))
+                            comboMeterTXMode.Items.Insert(2, "SWR");
+
+                        if (comboMeterTXMode.SelectedIndex < 0)
+                            comboMeterTXMode.SelectedIndex = 0;
+                        if (chkPower.Checked)
+                        {
+                            SetAlexHPF(fwc_dds_freq);
+                            SetAlexLPF(tx_dds_freq_mhz);
+
+                            // SetAlex2HPF(rx2_dds_freq_mhz);
+                            // SetAlex2LPF(rx2_dds_freq_mhz);
+                        }
+
+                        alex_enabled = 1;
+                    }
+                    else
+                    {
+                        string cur_txt = comboMeterTXMode.Text;
+
+                        if (!initializing)
+                        {
+                            if (comboMeterTXMode.Items.Contains("Ref Pwr"))
+                                comboMeterTXMode.Items.Remove("Ref Pwr");
+                            if (comboMeterTXMode.Items.Contains("SWR"))
+                                comboMeterTXMode.Items.Remove("SWR");
+                            if (comboMeterTXMode.Items.Contains("Fwd SWR"))
+                                comboMeterTXMode.Items.Remove("Fwd SWR");
+                        }
+
+                        comboMeterTXMode.Text = cur_txt;
+                        if (comboMeterTXMode.SelectedIndex < 0 &&
+                            comboMeterTXMode.Items.Count > 0)
+                            comboMeterTXMode.SelectedIndex = 0;
+                        alex_enabled = 0;
+                    }
+                    JanusAudio.SetAlexEnabled(alex_enabled);
                 }
-                JanusAudio.SetAlexEnabled(alex_enabled);
             }
         }
 
@@ -30529,6 +30631,74 @@ namespace PowerSDR
                                         break;
                                 }
                                 break;
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterRXMode.TOTAL_CURRENT:
+                                switch ((int)g.DpiX)
+                                {
+                                    case 96:
+                                        if (collapsedDisplay)
+                                        {
+                                            if (double.IsInfinity(num))
+                                                pixel_x = 200;
+                                            else if (num <= 1.0f)
+                                                pixel_x = (int)(0 + num * 6);
+                                            else if (num <= 1.5f)
+                                                pixel_x = (int)(6 + (num - 1.0) / 0.5 * 54);
+                                            else if (num <= 2.0f)
+                                                pixel_x = (int)(60 + (num - 1.5) / 0.5 * 40);
+                                            else if (num <= 3.0f)
+                                                pixel_x = (int)(100 + (num - 2.0) / 1.0 * 42);
+                                            else if (num <= 5.0f)
+                                                pixel_x = (int)(142 + (num - 3.0) / 2.0 * 42);
+                                            else if (num <= 10.0f)
+                                                pixel_x = (int)(184 + (num - 5.0) / 5.0 * 42);
+                                            else
+                                                pixel_x = (int)(226 + (num - 10.0) / 15.0 * 52);
+                                        }
+                                        else
+                                        {
+                                            if (double.IsInfinity(num))
+                                                pixel_x = 200;
+                                            else if (num <= 1.0f)
+                                                pixel_x = (int)(0 + num * 3);
+                                            else if (num <= 1.5f)
+                                                pixel_x = (int)(3 + (num - 1.0) / 0.5 * 27);
+                                            else if (num <= 2.0f)
+                                                pixel_x = (int)(30 + (num - 1.5) / 0.5 * 20);
+                                            else if (num <= 3.0f)
+                                                pixel_x = (int)(50 + (num - 2.0) / 1.0 * 21);
+                                            else if (num <= 5.0f)
+                                                pixel_x = (int)(71 + (num - 3.0) / 2.0 * 21);
+                                            else if (num <= 10.0f)
+                                                pixel_x = (int)(92 + (num - 5.0) / 5.0 * 21);
+                                            else
+                                                pixel_x = (int)(113 + (num - 10.0) / 15.0 * 26);
+                                        }
+                                        break;
+                                    case 120:
+                                        if (double.IsInfinity(num))
+                                            pixel_x = 200;
+                                        else if (num <= 1.0f)
+                                            pixel_x = (int)(0 + num * 3);
+                                        else if (num <= 1.5f)
+                                            pixel_x = (int)(3 + (num - 1.0) / 0.5 * 31);
+                                        else if (num <= 2.0f)
+                                            pixel_x = (int)(34 + (num - 1.5) / 0.5 * 22);
+                                        else if (num <= 3.0f)
+                                            pixel_x = (int)(56 + (num - 2.0) / 1.0 * 22);
+                                        else if (num <= 5.0f)
+                                            pixel_x = (int)(78 + (num - 3.0) / 2.0 * 23);
+                                        else if (num <= 10.0f)
+                                            pixel_x = (int)(101 + (num - 5.0) / 5.0 * 23);
+                                        else
+                                            pixel_x = (int)(124 + (num - 10.0) / 15.0 * 43);
+                                        break;
+                                }
+                                break;
+                                // DG8MG
+
                             case MeterRXMode.OFF:
                                 break;
                         }
@@ -30637,7 +30807,12 @@ namespace PowerSDR
                                                 else
                                                     pixel_x = (int)(256 + (num - 25) / 5 * 32);
                                             }
-                                            else if (apollopresent)
+
+                                            // DG8MG
+                                            // Extension for Charly 25 hardware
+                                            else if (apollopresent || C25ModelIsCharly25orHAMlab())
+                                            // DG8MG
+
                                             {
                                                 if (num <= 1.0f)
                                                     pixel_x = (int)(0 + num * 16);
@@ -30729,7 +30904,12 @@ namespace PowerSDR
                                                 else
                                                     pixel_x = (int)(122 + (num - 25) / 5 * 16);
                                             }
-                                            else if (apollopresent)
+
+                                            // DG8MG
+                                            // Extension for Charly 25 hardware
+                                            else if (apollopresent || C25ModelIsCharly25orHAMlab())
+                                            // DG8MG
+
                                             {
                                                 if (num <= 1.0f)
                                                     pixel_x = (int)(0 + num * 2);
@@ -30819,6 +30999,13 @@ namespace PowerSDR
                                 }
                                 break;
                             case MeterTXMode.SWR:
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterTXMode.TOTAL_CURRENT:
+                            case MeterTXMode.PA_CURRENT:
+                            // DG8MG
+
                                 switch ((int)g.DpiX)
                                 {
                                     case 96:
@@ -31058,6 +31245,14 @@ namespace PowerSDR
                                 case MeterRXMode.ADC_R:
                                     output = num.ToString("f1") + " dBFS";
                                     break;
+
+                                // DG8MG
+                                // Extension for Charly 25 hardware
+                                case MeterRXMode.TOTAL_CURRENT:
+                                    output = num.ToString(format) + " A";
+                                    break;
+                                // DG8MG
+
                                 case MeterRXMode.OFF:
                                     output = "";
                                     break;
@@ -31082,7 +31277,12 @@ namespace PowerSDR
                                     break;
                                 case MeterTXMode.FORWARD_POWER:
                                 case MeterTXMode.REVERSE_POWER:
-                                    if (alexpresent || pa_present || apollopresent)
+
+                                    // DG8MG
+                                    // Extension for Charly 25 hardware
+                                    if (alexpresent || pa_present || apollopresent || C25ModelIsCharly25orHAMlab())
+                                        // DG8MG
+
                                         output = num.ToString(format) + " W";
                                     else
                                         output = num.ToString(format) + " mW";
@@ -31090,6 +31290,15 @@ namespace PowerSDR
                                 case MeterTXMode.SWR:
                                     output = num.ToString("f1") + " : 1";
                                     break;
+
+                                // DG8MG
+                                // Extension for Charly 25 hardware
+                                case MeterTXMode.TOTAL_CURRENT:
+                                case MeterTXMode.PA_CURRENT:
+                                    output = num.ToString(format) + " A";
+                                    break;
+                                // DG8MG
+
                                 case MeterTXMode.OFF:
                                     output = "";
                                     break;
@@ -31221,6 +31430,65 @@ namespace PowerSDR
 
                                 pixel_x = (int)((num + 120.0) / 120.0 * (W - 5.0));
                                 break;
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterRXMode.TOTAL_CURRENT:
+                                g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
+                                g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 10, 2);
+                                spacing = (W * 0.75 - 2.0) / 4.0;
+                                string_height = 0;
+                                string[] current_list = { "0.5", "1", "5", "10" };
+
+                                for (int i = 1; i < 5; i++)
+                                {
+                                    g.FillRectangle(low_brush, (int)(i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                    g.FillRectangle(low_brush, (int)(i * spacing), H - 4 - 6, 2, 6);
+
+                                    string s = current_list[i - 1];
+                                    SizeF size = g.MeasureString("0", font7, 1, StringFormat.GenericTypographic);
+                                    double string_width = size.Width - 2.0;
+                                    string_height = size.Height - 2.0;
+
+                                    g.DrawString(s, font7, low_brush, (int)(i * spacing - string_width * s.Length + (int)(i / 3) + (int)(i / 4)), (int)(H - 4 - 8 - string_height));
+                                }
+
+                                spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+
+                                for (int i = 1; i < 2; i++)
+                                {
+                                    g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                    g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing), H - 4 - 6, 2, 6);
+
+                                    SizeF size = g.MeasureString("0", font7, 3, StringFormat.GenericTypographic);
+
+                                    double string_width = size.Width - 2.0;
+
+                                    g.TextRenderingHint = TextRenderingHint.SystemDefault;
+                                    g.DrawString("12+", font7, high_brush, (int)(W * 0.75 + i * spacing - (int)3.5 * string_width), (int)(H - 4 - 8 - string_height));
+                                }
+
+                                if (num <= 10.0) // low area
+                                {
+                                    spacing = (W * 0.75 - 2.0) / 4.0;
+                                    if (num <= 1.0)
+                                        pixel_x = (int)(spacing + (num - 0.5) / 0.5 * spacing);
+                                    else if (num <= 5.0)
+                                        pixel_x = (int)(2 * spacing + (num - 1.0) / 4.0 * spacing);
+                                    else // <= 10
+                                        pixel_x = (int)(3 * spacing + (num - 5.0) / 5.0 * spacing);
+                                }
+                                else
+                                {
+                                    spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+                                    if (num <= 12.0)
+                                        pixel_x = (int)(W * 0.75 + (num - 10.0) / 2.0 * spacing);
+                                    else
+                                        pixel_x = (int)(W * 0.75 + spacing + (num - 12.0) / 6.0 * spacing);
+                                }
+                                break;
+                                // DG8MG
+
                             case MeterRXMode.OFF:
                                 break;
                         }
@@ -31455,7 +31723,12 @@ namespace PowerSDR
                                             pixel_x = (int)(W * 0.75 + spacing + (num - 25.0) / 5.0 * spacing);
                                     }
                                 }
-                                else if (apollopresent) //(anan10present || apollopresent) // 30W
+
+                                // DG8MG
+                                // Extension for Charly 25 hardware
+                                else if (apollopresent || C25ModelIsCharly25orHAMlab()) //(anan10present || apollopresent) // 30W
+                                // DG8MG
+
                                 {
                                     g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
                                     g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 10, 2);
@@ -32348,6 +32621,66 @@ namespace PowerSDR
                                 spacing = (W * 0.75 - 2.0) / 4.0;
                                 pixel_x = (int)(num / 5.0 * spacing);
                                 break;
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterTXMode.TOTAL_CURRENT:
+                            case MeterTXMode.PA_CURRENT:
+                                g.FillRectangle(low_brush, 0, H - 4, (int)(W * 0.75), 2);
+                                g.FillRectangle(high_brush, (int)(W * 0.75), H - 4, (int)(W * 0.25) - 10, 2);
+                                spacing = (W * 0.75 - 2.0) / 4.0;
+                                string_height = 0;
+                                string[] current_list = { "0.5", "1", "5", "10" };
+
+                                for (int i = 1; i < 5; i++)
+                                {
+                                    g.FillRectangle(low_brush, (int)(i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                    g.FillRectangle(low_brush, (int)(i * spacing), H - 4 - 6, 2, 6);
+
+                                    string s = current_list[i - 1];
+                                    SizeF size = g.MeasureString("0", font7, 1, StringFormat.GenericTypographic);
+                                    double string_width = size.Width - 2.0;
+                                    string_height = size.Height - 2.0;
+
+                                    g.DrawString(s, font7, low_brush, (int)(i * spacing - string_width * s.Length + (int)(i / 3) + (int)(i / 4)), (int)(H - 4 - 8 - string_height));
+                                }
+
+                                spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+
+                                for (int i = 1; i < 2; i++)
+                                {
+                                    g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing - spacing * 0.5), H - 4 - 3, 1, 3);
+                                    g.FillRectangle(high_brush, (int)((double)W * 0.75 + i * spacing), H - 4 - 6, 2, 6);
+
+                                    SizeF size = g.MeasureString("0", font7, 3, StringFormat.GenericTypographic);
+
+                                    double string_width = size.Width - 2.0;
+
+                                    g.TextRenderingHint = TextRenderingHint.SystemDefault;
+                                    g.DrawString("12+", font7, high_brush, (int)(W * 0.75 + i * spacing - (int)3.5 * string_width), (int)(H - 4 - 8 - string_height));
+                                }
+
+                                if (num <= 10.0) // low area
+                                {
+                                    spacing = (W * 0.75 - 2.0) / 4.0;
+                                    if (num <= 1.0)
+                                        pixel_x = (int)(spacing + (num - 0.5) / 0.5 * spacing);
+                                    else if (num <= 5.0)
+                                        pixel_x = (int)(2 * spacing + (num - 1.0) / 4.0 * spacing);
+                                    else // <= 10
+                                        pixel_x = (int)(3 * spacing + (num - 5.0) / 5.0 * spacing);
+                                }
+                                else
+                                {
+                                    spacing = (W * 0.25 - 2.0 - 10.0) / 1.0;
+                                    if (num <= 12.0)
+                                        pixel_x = (int)(W * 0.75 + (num - 10.0) / 2.0 * spacing);
+                                    else
+                                        pixel_x = (int)(W * 0.75 + spacing + (num - 12.0) / 6.0 * spacing);
+                                }
+                                break;
+                                // DG8MG
+
                             case MeterTXMode.OFF:
                                 break;
                         }
@@ -32478,6 +32811,14 @@ namespace PowerSDR
                                 case MeterRXMode.ADC2_R:
                                     output = num.ToString("f1") + " dBFS";
                                     break;
+
+                                // DG8MG
+                                // Extension for Charly 25 hardware
+                                case MeterRXMode.TOTAL_CURRENT:
+                                    output = num.ToString(format) + " A";
+                                    break;
+                                // DG8MG
+
                                 case MeterRXMode.OFF:
                                     output = "";
                                     break;
@@ -32503,7 +32844,14 @@ namespace PowerSDR
                                 case MeterTXMode.FORWARD_POWER:
                                 case MeterTXMode.REVERSE_POWER:
                                 case MeterTXMode.SWR_POWER:
-                                    if (anan10present || anan10Epresent || apollopresent) output = num.ToString(format) + " W";
+
+                                    // DG8MG
+                                    // Extension for Charly 25 hardware
+                                    if (anan10present || anan10Epresent || apollopresent || C25ModelIsCharly25orHAMlab())
+                                    {
+                                        output = num.ToString(format) + " W";
+                                    }
+                                    // DG8MG
                                     else if ((alexpresent || pa_present))
                                     {
                                         if (anan8000dpresent && tx_xvtr_index >= 0)
@@ -32516,6 +32864,15 @@ namespace PowerSDR
                                 case MeterTXMode.SWR:
                                     output = num.ToString("f1") + " : 1";
                                     break;
+
+                                // DG8MG
+                                // Extension for Charly 25 hardware
+                                case MeterTXMode.TOTAL_CURRENT:
+                                case MeterTXMode.PA_CURRENT:
+                                    output = num.ToString(format) + " A";
+                                    break;
+                                    // DG8MG
+
                                 case MeterTXMode.OFF:
                                     output = "";
                                     break;
@@ -33702,6 +34059,14 @@ namespace PowerSDR
                                 //output = num.ToString("f1")+" dBFS";
                                 new_meter_data = num;
                                 break;
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterRXMode.TOTAL_CURRENT:
+                                new_meter_data = C25GetTotalCurrent();
+                                break;
+                            // DG8MG
+
                             case MeterRXMode.OFF:
                                 //output = "";
                                 new_meter_data = -200.0f;
@@ -33758,7 +34123,7 @@ namespace PowerSDR
 
                                 // DG8MG
                                 // Extension for Charly 25 and HAMlab hardware
-                                if (alexpresent || apollopresent || HPSDRModelIsCharly25orHAMlab())
+                                if (alexpresent || apollopresent || C25ModelIsCharly25orHAMlab())
                                 // DG8MG
 
                                 {
@@ -33799,8 +34164,8 @@ namespace PowerSDR
                             case MeterTXMode.REVERSE_POWER:
 
                                 // DG8MG
-                                // Extension for Charly 25 and HAMlab hardware
-                                if (alexpresent || apollopresent || HPSDRModelIsCharly25orHAMlab())
+                                // Extension for Charly 25 hardware
+                                if (alexpresent || apollopresent || C25ModelIsCharly25orHAMlab())
                                 // DG8MG
 
                                 {
@@ -33811,6 +34176,17 @@ namespace PowerSDR
                             case MeterTXMode.SWR:
                                 new_meter_data = alex_swr;
                                 break;
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterTXMode.TOTAL_CURRENT:
+                                new_meter_data = C25GetTotalCurrent();
+                                break;
+                            case MeterTXMode.PA_CURRENT:
+                                new_meter_data = C25GetPACurrent();
+                                break;
+                            // DG8MG
+
                             case MeterTXMode.OFF:
                                 //output = "";
                                 new_meter_data = -200.0f;
@@ -34581,25 +34957,32 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         public float computeCharly25Power(float adc_value)
         {
-            double power_f_dbm = 0;
-            double power_f_mW = 0;
-            double result = 0.0;
+            float result = 0;
 
-            // Polynominal interpolation with a polynomial degree of 3
-            // y = -5.475282575�10 - 1 x2 + 25.00323026 x + 2.331621005
-            // power_f = -5.475282575 * Math.Pow(10, -1) * Math.Pow(power_int, 2) + 25.00323026 * power_int + 2.331621005;            
+            result = adc_value - 1;  // Power must be zero when drive power is zero
+            result /= 54;
 
-            // y = -0.210103721 x3 + 7.051974611 x2 - 49.37859391 x + 98.61457434            
-            // power_f = -0.210103721 * Math.Pow(power_int, 3) + 7.051974611 * Math.Pow(power_int, 2) - 49.37859391 * power_int + 98.61457434;                       
+            return result;
+        }
 
-            // Polynominal interpolation with a polynomial degree of 4
-            // y = -3.509522373�10-10 x4 + 6.422788961�10-7 x3 - 4.154718764�10-4 x2 + 1.274603483�10-1 x + 21.09655237
-            power_f_dbm = -3.509522373 * Math.Pow(10, -10) * Math.Pow(adc_value, 4) + 6.422788961 * Math.Pow(10, -7) * Math.Pow(adc_value, 3) - 4.154718764 * Math.Pow(10, -4) * Math.Pow(adc_value, 2) + 1.274603483 * 0.1 * adc_value + 21.09655237;
-            power_f_mW = Math.Pow(10, power_f_dbm / 10);
+        public float C25GetTotalCurrent()
+        {
+            float result = 0;
 
-            result = power_f_mW;
+            result = JanusAudio.getAIN3();
+            result /= 900;  // Calculate total current in ampere from ADC value
 
-            return (float)result;
+            return result;
+        }
+
+        public float C25GetPACurrent()
+        {
+            float result = 0;
+
+            result = JanusAudio.getAIN4();
+            result /= 900;  // Calculate PA current in ampere from ADC value
+
+            return result;
         }
         // DG8MG
 
@@ -35529,12 +35912,12 @@ namespace PowerSDR
             {
                 if (mox)
                 {
-                    // DG8MG: Debug me!
-                    // Extension for Charly 25 and HAMlab hardwware
-                    if (HPSDRModelIsCharly25orHAMlab())
+                    // DG8MG
+                    // Extension for Charly 25 hardwware
+                    if (C25ModelIsCharly25orHAMlab())
                     {
-                        float temp_fwdadc = JanusAudio.getAlexFwdPower() - 12;
-                        float temp_revadc = JanusAudio.getRefPower() - 12;
+                        float temp_fwdadc = JanusAudio.getAlexFwdPower();
+                        float temp_revadc = JanusAudio.getRefPower();
 
                         if (temp_fwdadc < 0)
                         {
@@ -35560,7 +35943,7 @@ namespace PowerSDR
 
                         rho = (float)Math.Sqrt(alex_rev / alex_fwd);
 
-                        if (alex_fwd < 500 || float.IsNaN(rho) || float.IsInfinity(rho))
+                        if (alex_fwd < 0.1 || float.IsNaN(rho) || float.IsInfinity(rho))
                         {
                             swr = 1.0f;
                         }
@@ -39438,6 +39821,14 @@ namespace PowerSDR
                     case "ADC2 R":
                         mode = MeterRXMode.ADC2_R;
                         break;
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    case "Tot Cur":
+                        mode = MeterRXMode.TOTAL_CURRENT;
+                        break;
+                    // DG8MG
+
                     case "Off":
                         mode = MeterRXMode.OFF;
                         break;
@@ -39458,6 +39849,14 @@ namespace PowerSDR
                             case MeterRXMode.ADC_R:
                                 lblMultiSMeter.Text = "   -100           -80           -60           -40           -20             0";
                                 break;
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterRXMode.TOTAL_CURRENT:
+                                lblMultiSMeter.Text = " 1               1.5         2            3            5            10";
+                                break;
+                            // DG8MG
+
                             case MeterRXMode.OFF:
                                 lblMultiSMeter.Text = "";
                                 break;
@@ -39476,6 +39875,14 @@ namespace PowerSDR
                             case MeterRXMode.ADC_R:
                                 lblMultiSMeter.Text = "-100  -80   -60   -40   -20    0";
                                 break;
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            case MeterRXMode.TOTAL_CURRENT:
+                                lblMultiSMeter.Text = "1      1.5   2     3     5    10";
+                                break;
+                            // DG8MG
+
                             case MeterRXMode.OFF:
                                 lblMultiSMeter.Text = "";
                                 break;
@@ -39542,6 +39949,18 @@ namespace PowerSDR
                     case "SWR":
                         mode = MeterTXMode.SWR;
                         break;
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    case "Tot Cur":
+                        mode = MeterTXMode.TOTAL_CURRENT;
+                        break;
+
+                    case "PA Cur":
+                        mode = MeterTXMode.PA_CURRENT;
+                        break;
+                    // DG8MG
+
                     case "Off":
                         mode = MeterTXMode.OFF;
                         break;
@@ -39578,7 +39997,12 @@ namespace PowerSDR
                         case MeterTXMode.SWR_POWER:
                             if (anan10present || anan10Epresent)
                                 lblMultiSMeter.Text = "    1              5             10            15            20            25+";
-                            else if (apollopresent)
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            else if (apollopresent || C25ModelIsCharly25orHAMlab())
+                                // DG8MG
+
                                 lblMultiSMeter.Text = "    1              5             10            15            30            50+";
                             else if (anan8000dpresent)
                                 lblMultiSMeter.Text = "    1              10            20            100          200          240+";
@@ -39591,6 +40015,15 @@ namespace PowerSDR
                             lblMultiSMeter.Text = " 1               1.5         2            3            5            10";
                             //  lblMultiSMeter.Text = "0             10              20";
                             break;
+
+                        // DG8MG
+                        // Extension for Charly 25 hardware
+                        case MeterTXMode.TOTAL_CURRENT:
+                        case MeterTXMode.PA_CURRENT:
+                            lblMultiSMeter.Text = " 1               1.5         2            3            5            10";
+                            break;
+                        // DG8MG
+
                         case MeterTXMode.OFF:
                             lblMultiSMeter.Text = "";
                             break;
@@ -39622,7 +40055,12 @@ namespace PowerSDR
                         case MeterTXMode.SWR_POWER:
                             if (anan10present || anan10Epresent)
                                 lblMultiSMeter.Text = "1      5     10    15   20    25+";
-                            else if (apollopresent)
+
+                            // DG8MG
+                            // Extension for Charly 25 hardware
+                            else if (apollopresent || C25ModelIsCharly25orHAMlab())
+                                // DG8MG
+
                                 lblMultiSMeter.Text = "1      5     10    15   30    50+";
                             else if (anan8000dpresent)
                                 lblMultiSMeter.Text = "1      10    20   100  200  240+";
@@ -39635,6 +40073,15 @@ namespace PowerSDR
                             lblMultiSMeter.Text = "1      1.5   2     3     5    10";
                             //  lblMultiSMeter.Text = "0             10              20";
                             break;
+
+                        // DG8MG
+                        // Extension for Charly 25 hardware
+                        case MeterTXMode.TOTAL_CURRENT:
+                        case MeterTXMode.PA_CURRENT:
+                            lblMultiSMeter.Text = "1      1.5   2     3     5    10";
+                            break;
+                        // DG8MG
+
                         case MeterTXMode.OFF:
                             lblMultiSMeter.Text = "";
                             break;

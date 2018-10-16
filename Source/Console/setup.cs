@@ -3445,6 +3445,9 @@ namespace PowerSDR
                 {
                     lblC25RX2FbPresent.Visible = true;
                 }
+
+                // Call the set function of CurrentHPSDRModel (again) to update the RX and TX meter options
+                console.CurrentHPSDRModel = console.CurrentHPSDRModel;
             }
         }
         // DG8MG
@@ -22627,6 +22630,8 @@ namespace PowerSDR
             }
 
             C25SWRView.c25SWRViewChartSetup(this);
+            C25SWRView.Show();
+            C25SWRView.BringToFront();
 
             console.TUN = true;
 
@@ -22638,7 +22643,7 @@ namespace PowerSDR
                 if (C25TXFreqSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
                 {
                     break;
-                }               
+                }
 
                 System.Console.WriteLine("Frequency: " + console.VFOAFreq + " MHz. Forward power: " + console.alex_fwd + ", reflected power: " + console.alex_rev);
                 
@@ -22663,21 +22668,23 @@ namespace PowerSDR
 
                 System.Console.WriteLine("SWR: " + swr);
 
-                C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq, swr);            
+                C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq, swr);
 
                 DateTime start = DateTime.Now;
 
                 while ((C25TXFreqSwpTest_is_canceled == false) && (C25TXFreqSwpTest_is_paused == true || ((DateTime.Now - start).TotalMilliseconds < (int)udC25TXFreqSwpTestInterval.Value)))
                 {
                     Application.DoEvents();
-                }             
+                }
             }
 
+            /*
             if (C25TXFreqSwpTest_is_canceled != true && console.MOX != false && console.TUN != false)
             {
                 C25SWRView.Show();
                 C25SWRView.BringToFront();
             }
+            */
 
             console.TUN = false;
             

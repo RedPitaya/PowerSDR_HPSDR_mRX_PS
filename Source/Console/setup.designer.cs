@@ -50318,7 +50318,7 @@
             0});
             this.udC25TXFreqSwpTestInterval.Location = new System.Drawing.Point(171, 75);
             this.udC25TXFreqSwpTestInterval.Maximum = new decimal(new int[] {
-            100000,
+            10000,
             0,
             0,
             0});
@@ -50360,7 +50360,7 @@
             // udC25TXFreqSwpTestRate
             // 
             this.udC25TXFreqSwpTestRate.Increment = new decimal(new int[] {
-            100000,
+            1000,
             0,
             0,
             0});
