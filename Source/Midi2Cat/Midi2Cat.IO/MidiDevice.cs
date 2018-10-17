@@ -621,7 +621,7 @@ namespace Midi2Cat.IO
                 {
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    ControlId = Charly25SpecificMidiHandling(ControlId, Data, Event, Channel);
+                    ControlId = C25SpecificMidiHandling(ControlId, Data, Event, Channel);
                     // DG8MG
 
                     ControlId = FixBehringerCtlID(ControlId, Status); //-W2PA Disambiguate messages from Behringer controllers
@@ -882,7 +882,7 @@ namespace Midi2Cat.IO
 
         // DG8MG
         // Extension for Charly 25 frontpanel hardware
-        public void Charly25FrontpanelUpdateButtonLED(int n, int inCtlID)  // 0 = off, 1 = upper LED on, 2 = lower LED on, on button whose ID = inCtlID
+        public void C25FrontpanelUpdateButtonLED(int n, int inCtlID)  // 0 = off, 1 = upper LED on, 2 = lower LED on, on button whose ID = inCtlID
         {
             string cID = inCtlID.ToString("X2");
             string led;
@@ -892,7 +892,7 @@ namespace Midi2Cat.IO
             return;
         }
 
-        public int Charly25SpecificMidiHandling(int ControlID, int Data, int Event, int Channel)
+        public int C25SpecificMidiHandling(int ControlID, int Data, int Event, int Channel)
         {
             // Checked if the special MIDI message for shuting down the Charly 25 frontend computer system was sent
             if (DeviceName == "Arduino Micro" && ControlID == 120 && Data == 0 && Event == 11 && Channel == 15)

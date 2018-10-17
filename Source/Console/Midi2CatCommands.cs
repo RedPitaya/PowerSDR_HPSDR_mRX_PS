@@ -90,15 +90,15 @@ namespace PowerSDR
         // DG8MG
         // Extension for Charly 25 frontpanel hardware
         // Use the MidiMessageManager to send an update to the LEDs on the Charly 25 frontpanel
-        public bool Charly25SendUpdateToMidi(CatCmd cmd, int state)
+        public bool C25SendUpdateToMidi(CatCmd cmd, int state)
         {
-            return midiManager.Charly25SendUpdateToMidi(cmd, state);
+            return midiManager.C25SendUpdateToMidi(cmd, state);
         }
 
         // Get all information about the mapped knobs and buttons on the Charly 25 frontpanel
-        public List<ControllerMapping> Charly25GetFrontpanelMappings()
+        public List<ControllerMapping> C25GetFrontpanelMappings()
         {
-            return midiManager.Charly25GetFrontpanelMappings();
+            return midiManager.C25GetFrontpanelMappings();
         }
         // DG8MG
         #endregion
@@ -5039,13 +5039,13 @@ namespace PowerSDR
 
                 if (MenuState == 0)
                 {
-                    Charly25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 1);
+                    C25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 1);
                     commands.ZZFP("1");
                     return CmdState.On;
                 }
                 if (MenuState == 1)
                 {
-                    Charly25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 0);
+                    C25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 0);
                     commands.ZZFP("0");
                     return CmdState.Off;
                 }
@@ -5091,7 +5091,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 frontpanel hardware
-                Charly25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 1);
+                C25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 1);
                 // DG8MG
 
                 return;
@@ -5108,7 +5108,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 frontpanel hardware
-                Charly25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 0);
+                C25SendUpdateToMidi(CatCmd.ToggleVFOWheel, 0);
                 // DG8MG
             }
             return;

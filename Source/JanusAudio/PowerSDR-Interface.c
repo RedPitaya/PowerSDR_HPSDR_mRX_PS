@@ -754,7 +754,7 @@ KD5TFDVK6APHAUDIO_API void SetAlexAntBits(int rx_only_ant, int trx_ant, int rx_o
 
 // DG8MG
 // Extension for Charly 25 and HAMlab hardware
-KD5TFDVK6APHAUDIO_API void SetAntBits_Charly25(int ant) 
+KD5TFDVK6APHAUDIO_API void C25SetAntBits(int ant)
 {
 	AlexRxAnt = (ant & 0x03) << 5;
 
@@ -1040,7 +1040,7 @@ C1
   +------------------------ Mic PTT (0=Enable, 1=Disable) (Orion)
   */
 
-KD5TFDVK6APHAUDIO_API void SetRX1Preamp(int bits) { 
+KD5TFDVK6APHAUDIO_API void SetRX1Preamp(int bits) {
 	if ( bits != 0 ) { 
 		RX1Preamp = 1; 
 		MercPreamp = (1 << 2);
@@ -1054,7 +1054,7 @@ KD5TFDVK6APHAUDIO_API void SetRX1Preamp(int bits) {
 
 // DG8MG
 // Extension for Charly 25 and HAMlab hardware
-KD5TFDVK6APHAUDIO_API void SetRX1Preamp_Charly25(int bits) {
+KD5TFDVK6APHAUDIO_API void C25SetRX1Preamp(int bits) {
 	switch (bits)
 	{
 		case 1:  // First preamp switched on

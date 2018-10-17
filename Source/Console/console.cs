@@ -1149,8 +1149,8 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         public int sdr_app_running = 0;
         public bool C25FrontpanelMenuStatus = false;
-        public bool Charly25FrontpanelPresent = false;
-        public bool Charly25FrontpanelTristateButtons = true;
+        public bool C25FrontpanelPresent = false;
+        public bool C25FrontpanelTristateButtons = true;
         // DG8MG
 
         #endregion
@@ -2060,7 +2060,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
             // Check if a Charly 25 frontpanel is present
-            Charly25FrontpanelPresent = Midi2Cat.Charly25SendUpdateToMidi(CatCmd.None, 0);
+            C25FrontpanelPresent = Midi2Cat.C25SendUpdateToMidi(CatCmd.None, 0);
             // DG8MG
 
             InitConsole();                                      // Initialize all forms and main variables
@@ -11279,7 +11279,7 @@ namespace PowerSDR
 
                             // DG8MG
                             // Extension for Charly 25 frontpanel hardware
-                            if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent && c.ThreeState == false)
+                            if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent && c.ThreeState == false)
                             {
                                 C25FrontpanelLEDUpdateHandler(c.Name, (c.Checked ? 1 : 0));
                             }
@@ -24716,15 +24716,15 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
-            if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
             {
                 if (midi_messages_per_tune_step == min_midi_messages_per_tune_step)
                 {
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MidiMessagesPerTuneStepToggle, 1);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.MidiMessagesPerTuneStepToggle, 1);
                 }
                 else
                 {
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MidiMessagesPerTuneStepToggle, 0);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.MidiMessagesPerTuneStepToggle, 0);
                 }
             }
             // DG8MG
@@ -24808,7 +24808,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNR.CheckState == CheckState.Indeterminate)
@@ -24840,7 +24840,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNR.CheckState == CheckState.Unchecked)
@@ -24872,7 +24872,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NR.CheckState == CheckState.Indeterminate)
@@ -24904,7 +24904,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NR.CheckState == CheckState.Unchecked)
@@ -24965,7 +24965,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNB.CheckState == CheckState.Indeterminate)
@@ -25002,7 +25002,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNB.CheckState == CheckState.Unchecked)
@@ -25042,7 +25042,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NB.CheckState == CheckState.Indeterminate)
@@ -25248,7 +25248,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NB.CheckState == CheckState.Unchecked)
@@ -28189,7 +28189,7 @@ namespace PowerSDR
                 // Check if Charly 25 or HAMlab hardware is present
                 else if (C25ModelIsCharly25orHAMlab())
                 {
-                    JanusAudio.SetRX1Preamp_Charly25(merc_preamp);
+                    JanusAudio.C25SetRX1Preamp(merc_preamp);
                     JanusAudio.EnableADC1StepAtten(0);
                 }
                 // HPSDR hardware is present
@@ -31298,7 +31298,7 @@ namespace PowerSDR
                                     // DG8MG
                                     // Extension for Charly 25 hardware
                                     if (alexpresent || pa_present || apollopresent || C25ModelIsCharly25orHAMlab())
-                                        // DG8MG
+                                    // DG8MG
 
                                         output = num.ToString(format) + " W";
                                     else
@@ -34972,7 +34972,7 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        public float computeCharly25Power(float adc_value)
+        public float C25ComputeTxPower(float adc_value)
         {
             float result = 0;
 
@@ -35954,9 +35954,9 @@ namespace PowerSDR
                             average_revadc = temp_revadc;
                         }
 
-                        alex_fwd = computeCharly25Power(average_fwdadc);
+                        alex_fwd = C25ComputeTxPower(average_fwdadc);
                         calfwdpower = alex_fwd;
-                        alex_rev = computeCharly25Power(average_revadc);
+                        alex_rev = C25ComputeTxPower(average_revadc);
 
                         rho = (float)Math.Sqrt(alex_rev / alex_fwd);
 
@@ -46633,7 +46633,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 hardware
-            if (!initializing && C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (!initializing && C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
             }
@@ -50425,7 +50425,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
-            if (!initializing && C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (!initializing && C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
             }
@@ -51892,7 +51892,7 @@ namespace PowerSDR
                 {
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (!initializing && C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (!initializing && C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
                         // Turn off the LED on the old band button
                         char[] charsToTrim = { 'B', 'M' };
@@ -55129,7 +55129,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
-            if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
             }
@@ -55491,10 +55491,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware                   
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
                     }
                     // DG8MG
                     break;
@@ -55512,10 +55512,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
                     }
                     // DG8MG
                     break;
@@ -55533,10 +55533,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
                     }
                     // DG8MG
                     break;
@@ -55560,10 +55560,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
                     }
                     // DG8MG
                     break;
@@ -55581,10 +55581,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
                     }
                     // DG8MG
                     break;
@@ -55602,10 +55602,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
                     }
                     // DG8MG
                     break;
@@ -55627,10 +55627,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
                     }
                     // DG8MG
                     break;
@@ -55646,10 +55646,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
                     }
                     // DG8MG
                     break;
@@ -55665,10 +55665,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
                     }
                     // DG8MG
                     break;
@@ -55690,10 +55690,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
                     }
                     // DG8MG
                     break;
@@ -55709,10 +55709,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
                     }
                     // DG8MG
                     break;
@@ -55728,10 +55728,10 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
-                        Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
+                        Midi2Cat.C25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
                     }
                     // DG8MG
                     break;
@@ -55817,14 +55817,14 @@ namespace PowerSDR
             {
                 chkC25ANT.Text = "ANT2";
                 chkC25ANT.BackColor = button_selected_color;
-                JanusAudio.SetAntBits_Charly25(1);
+                JanusAudio.C25SetAntBits(1);
                 C25_RX1_antenna_by_band[(int)rx1_band] = 1;
             }
             else
             {
                 chkC25ANT.Text = "ANT1";
                 chkC25ANT.BackColor = SystemColors.Control;
-                JanusAudio.SetAntBits_Charly25(0);
+                JanusAudio.C25SetAntBits(0);
                 C25_RX1_antenna_by_band[(int)rx1_band] = 0;
             }
         }
@@ -56033,151 +56033,151 @@ namespace PowerSDR
             {
                 // Radio buttons for the different bands of RX1 start here
                 case "radBand160":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band160m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band160m, state);
                     break;
 
                 case "radBand80":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band80m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band80m, state);
                     break;
 
                 case "radBand60":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band60m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band60m, state);
                     break;
 
                 case "radBand40":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band40m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band40m, state);
                     break;
 
                 case "radBand30":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band30m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band30m, state);
                     break;
 
                 case "radBand20":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band20m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band20m, state);
                     break;
 
                 case "radBand17":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band17m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band17m, state);
                     break;
 
                 case "radBand15":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band15m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band15m, state);
                     break;
 
                 case "radBand12":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band12m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band12m, state);
                     break;
 
                 case "radBand10":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band10m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band10m, state);
                     break;
 
                 case "radBand6":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band6m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band6m, state);
                     break;
 
                 case "radBand2":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band2m, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band2m, state);
                     break;
 
 
                 // ComboBox items for the different bands of RX2 start here
                 case "160m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band160mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band160mRX2, state);
                     break;
 
                 case "80m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band80mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band80mRX2, state);
                     break;
 
                 case "60m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band60mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band60mRX2, state);
                     break;
 
                 case "40m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band40mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band40mRX2, state);
                     break;
 
                 case "30m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band30mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band30mRX2, state);
                     break;
 
                 case "20m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band20mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band20mRX2, state);
                     break;
 
                 case "17m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band17mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band17mRX2, state);
                     break;
 
                 case "15m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band15mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band15mRX2, state);
                     break;
 
                 case "12m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band12mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band12mRX2, state);
                     break;
 
                 case "10m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band10mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band10mRX2, state);
                     break;
 
                 case "6m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band6mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band6mRX2, state);
                     break;
 
                 case "2m":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Band2mRX2, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.Band2mRX2, state);
                     break;
 
 
                 // Radio buttons for the different modes of RX1 start here
                 case "radModeLSB":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeLSB, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeLSB, state);
                     break;
 
                 case "radModeUSB":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeUSB, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeUSB, state);
                     break;
 
                 case "radModeDSB":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDSB, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDSB, state);
                     break;
 
                 case "radModeCWL":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWL, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeCWL, state);
                     break;
 
                 case "radModeCWU":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWU, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeCWU, state);
                     break;
 
                 case "radModeFMN":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeFM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeFM, state);
                     break;
 
                 case "radModeAM":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeAM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeAM, state);
                     break;
 
                 case "radModeSAM":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSAM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeSAM, state);
                     break;
 
                 case "radModeSPEC":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSPEC, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeSPEC, state);
                     break;
 
                 case "radModeDIGL":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGL, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDIGL, state);
                     break;
 
                 case "radModeDIGU":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGU, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDIGU, state);
                     break;
 
                 case "radModeDRM":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDRM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDRM, state);
                     break;
 
 
@@ -56185,179 +56185,179 @@ namespace PowerSDR
                 // Not implemented yet due to missing CAT commands
                 /*
                 case "radRX2ModeLSB":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeLSB, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeLSB, state);
                     break;
 
                 case "radRX2ModeUSB":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeUSB, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeUSB, state);
                     break;
 
                 case "radRX2ModeDSB":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDSB, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDSB, state);
                     break;
 
                 case "radRX2ModeCWL":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWL, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeCWL, state);
                     break;
 
                 case "radRX2ModeCWU":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeCWU, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeCWU, state);
                     break;
 
                 case "radRX2ModeFMN":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeFM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeFM, state);
                     break;
 
                 case "radRX2ModeAM":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeAM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeAM, state);
                     break;
 
                 case "radRX2ModeSAM":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSAM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeSAM, state);
                     break;
 
                 case "radRX2ModeSPEC":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeSPEC, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeSPEC, state);
                     break;
 
                 case "radRX2ModeDIGL":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGL, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDIGL, state);
                     break;
 
                 case "radRX2ModeDIGU":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDIGU, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDIGU, state);
                     break;
 
                 case "radRX2ModeDRM":
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.ModeDRM, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.ModeDRM, state);
                     break;
                 */
 
 
                 // Checkboxes for the different functions start here
                 case "chkVFOSplit":  // Split
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SplitOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.SplitOnOff, state);
                     break;
 
                 case "chkRIT":  // RIT
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.RitOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.RitOnOff, state);
                     break;
 
                 case "chkXIT":  // XIT
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.XitOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.XitOnOff, state);
                     break;
 
                 case "chkEnableMultiRX":  // MultiRx
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MultiRxOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.MultiRxOnOff, state);
                     break;
 
                 case "chkVFOSync":  // VFO Sync
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VfoSyncOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.VfoSyncOnOff, state);
                     break;
 
                 case "chkVFOLock":  // VFO Lock
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.LockVFOOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.LockVFOOnOff, state);
                     break;
 
                 case "chkMOX":  // MOX
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MOXOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.MOXOnOff, state);
                     break;
 
                 case "chkVOX":  // VOX
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VOXOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.VOXOnOff, state);
                     break;
 
                 case "chkMUT":  // Mute
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MuteOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.MuteOnOff, state);
                     break;
 
                 case "chkANF":  // ANF
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.AutoNotchOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.AutoNotchOnOff, state);
                     break;
 
                 case "chkBIN":  // BIN
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.BinauralOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.BinauralOnOff, state);
                     break;
 
                 case "chkPower":  // Power
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.StartOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.StartOnOff, state);
                     break;
 
                 case "chkTUN":  // TUN
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.TunerOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.TunerOnOff, state);
                     break;
 
                 case "chkCPDR":  // COMP
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.CompanderOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.CompanderOnOff, state);
                     break;
 
                 case "chkDX":  // Phone DX On/Off
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DXLevel, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.DXLevel, state);
                     // TODO: TriState Button!!!
                     break;
 
                 case "chkNoiseGate":  // DEXP
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DEXPOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.DEXPOnOff, state);
                     break;
 
                 case "chkRX2":  // RX2 On/Off
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.RX2OnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.RX2OnOff, state);
                     break;
 
                 case "chkRXEQ":  // Enable Rx EQ
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.RXEQOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.RXEQOnOff, state);
                     break;
 
                 case "chkTXEQ":  // Enable Tx EQ
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.TXEQOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.TXEQOnOff, state);
                     break;
 
                 case "chkSquelch":  // Squelch
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SquelchOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.SquelchOnOff, state);
                     break;
 
                 case "chkDSPNB2":  // Spectral NB
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SpectralNoiseBlankerOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.SpectralNoiseBlankerOnOff, state);
                     break;
 
                 case "chkRX2NB2":  // RX2 Spectral NB
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.SpectralNoiseBlankerRx2OnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.SpectralNoiseBlankerRx2OnOff, state);
                     break;
 
                 case "chkDisplayAVG":  // AVG
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DisplayAverage, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.DisplayAverage, state);
                     break;
 
                 case "chkDisplayPeak":  // Peak
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DisplayPeak, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.DisplayPeak, state);
                     break;
 
                 case "chkShowTXFilter":  // Show TX Filter
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.DisplayTxFilter, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.DisplayTxFilter, state);
                     break;
 
                 case "chkMON":  // MON
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MONOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.MONOnOff, state);
                     break;
 
                 case "chkVAC1":  // VAC On/Off
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VACOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.VACOnOff, state);
                     break;
 
                 case "chkVAC2":  // VAC2 On/Off
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.VAC2OnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.VAC2OnOff, state);
                     break;
 
                 case "chkFWCATU":  // Click Tune On/Off
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.CTunOnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.CTunOnOff, state);
                     break;
 
                 case "chkRX2Mute":  // Mute RX2
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.MuteRX2OnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.MuteRX2OnOff, state);
                     break;
 
                 case "chkCWAPFEnabled":  // Audio Peek Filter On/Off
-                    Midi2Cat.Charly25SendUpdateToMidi(CatCmd.APF_OnOff, state);
+                    Midi2Cat.C25SendUpdateToMidi(CatCmd.APF_OnOff, state);
                     break;
 
                 default:  // Handle all other checkboxes
@@ -56484,7 +56484,7 @@ namespace PowerSDR
             lblC25FPButton14.Height = button_height;
 
             // Get the necessary information of the knobs and buttons based on the currently assigned functions
-            frontpanelMappings = Midi2Cat.Charly25GetFrontpanelMappings();
+            frontpanelMappings = Midi2Cat.C25GetFrontpanelMappings();
 
             foreach (ControllerMapping mapping in frontpanelMappings)
             {

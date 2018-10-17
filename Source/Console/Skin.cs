@@ -880,7 +880,7 @@ namespace PowerSDR
             // Extension for Charly 25 frontpanel hardware
             Console c = Console.getConsole();
 
-            if (c != null && c.C25ModelIsCharly25orHAMlab() && c.Charly25FrontpanelPresent && ctrl.ThreeState == false)
+            if (c != null && c.C25ModelIsCharly25orHAMlab() && c.C25FrontpanelPresent && ctrl.ThreeState == false)
             {
                 c.C25FrontpanelLEDUpdateHandler(ctrl.Name, (ctrl.Checked ? 1 : 0));
             }

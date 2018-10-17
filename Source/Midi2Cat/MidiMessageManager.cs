@@ -151,7 +151,7 @@ namespace Midi2Cat
         // DG8MG
         // Extension for Charly 25 frontpanel hardware
         // Used to get the index of Charly 25 frontpanel
-        public int Charly25FrontpanelIndex()
+        public int C25FrontpanelIndex()
         {
             if (bindings.Count == 0) return -1;
             int index = -1;
@@ -167,13 +167,13 @@ namespace Midi2Cat
             return index;
         }
 
-        public bool Charly25SendUpdateToMidi(CatCmd cmd, int state)
+        public bool C25SendUpdateToMidi(CatCmd cmd, int state)
 		{
             int index = -1;
             List<ControllerMapping> mappings = null;
 
             // Get the MIDI controller index of the Charly 25 frontpanel
-            index = Charly25FrontpanelIndex();
+            index = C25FrontpanelIndex();
 
             // If no Charly 25 frontpanel is present, tell the caller that no frontpanel is connected
             if (index < 0) return false;
@@ -189,7 +189,7 @@ namespace Midi2Cat
             }
 
             // Get all button mappings of the Charly 25 frontpanel
-            mappings = DB.Charly25FrontpanelGetButtonMappings();
+            mappings = DB.C25FrontpanelGetButtonMappings();
 
             // If no mappings are given, return and tell the caller that a frontpanel is connected
             if (mappings != null)
@@ -274,8 +274,8 @@ namespace Midi2Cat
                         }
 
                         // Update the LEDs of the related button to the new state
-                        device.Charly25FrontpanelUpdateButtonLED(state, midiCtlID);
-                        System.Console.WriteLine("Charly25SendUpdateToMidi was called by CAT command: {0} to set new state: {1} on midiCtlID: {2}", cmd, state, midiCtlID);
+                        device.C25FrontpanelUpdateButtonLED(state, midiCtlID);
+                        System.Console.WriteLine("C25SendUpdateToMidi was called by CAT command: {0} to set new state: {1} on midiCtlID: {2}", cmd, state, midiCtlID);
                     }
                     catch
                     {
@@ -285,13 +285,13 @@ namespace Midi2Cat
             return true;
         }
 
-        public List<ControllerMapping> Charly25GetFrontpanelMappings()
+        public List<ControllerMapping> C25GetFrontpanelMappings()
         {
             int index = -1;
             List<ControllerMapping> mappings = null;
 
             // Get the MIDI controller index of the Charly 25 frontpanel
-            index = Charly25FrontpanelIndex();
+            index = C25FrontpanelIndex();
 
             // If no Charly 25 frontpanel is present, tell the caller that no frontpanel is connected
             if (index < 0) return null;
@@ -299,7 +299,7 @@ namespace Midi2Cat
             MidiDevice device = bindings[index].Device;
 
             // Get all relevant mappings of the Charly 25 frontpanel
-            mappings = DB.Charly25FrontpanelGetMappings();
+            mappings = DB.C25FrontpanelGetMappings();
 
             // If no mappings are given, return and tell the caller that a frontpanel is connected
             if (mappings != null)
