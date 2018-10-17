@@ -6462,6 +6462,7 @@
             this.grpC25HardwareOptions.TabIndex = 38;
             this.grpC25HardwareOptions.TabStop = false;
             this.grpC25HardwareOptions.Text = "Hardware Options";
+            this.grpC25HardwareOptions.Visible = false;
             // 
             // lblC25RX2FbPresent
             // 

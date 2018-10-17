@@ -298,7 +298,7 @@ namespace PowerSDR
                 {
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (c.HPSDRModelIsCharly25orHAMlab())
+                    if (c.C25ModelIsCharly25orHAMlab())
                     {
                         int result = StartupRPDeviceRemotely();
 
@@ -361,7 +361,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (c.HPSDRModelIsCharly25orHAMlab())
+                    if (c.C25ModelIsCharly25orHAMlab())
                     {
                         int result = StartupRPDeviceRemotely();
 
@@ -418,7 +418,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (c.HPSDRModelIsCharly25orHAMlab())
+                if (c.C25ModelIsCharly25orHAMlab())
                 {
                     Metis_IP_address = "";
 
@@ -862,7 +862,7 @@ namespace PowerSDR
             result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send, c.SetupForm.chkC25useTCP.Checked ? 1 : 0);      
             
 			// Charly 25 and HAMlab hardware must skip the firmware check
-            if (c.HPSDRModelIsCharly25orHAMlab())
+            if (c.C25ModelIsCharly25orHAMlab())
             {
                 fwVersionsChecked = true;
             }

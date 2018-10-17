@@ -3318,10 +3318,11 @@ namespace PowerSDR
         }
 
         // DG8MG
-        // Extension for Charly 25 and HAMlab hardware       
+        // Extension for Charly 25 and HAMlab hardware
         public void UpdateC25HardwareOptions()
         {
-            string sdr_app_version = "0";           
+            string sdr_app_version = "0";
+            lblMetisCodeVersion.Text = "unknown";
 
             lblC25TRXPresent.Visible = false;
             lblC25AudioCodecPresent.Visible = false;
@@ -3350,7 +3351,7 @@ namespace PowerSDR
                         // Exception occurred during SDR application version read attempt
                     }
                 }
-                                
+
                 // Check if the SDR application software version on the Red Pitaya device is high enough to support TCP as transmission protocol between PowerSDR and the Red Pitaya device
                 if (Convert.ToInt32(sdr_app_version) < 20170723)
                 {
@@ -3362,11 +3363,7 @@ namespace PowerSDR
                     chkC25useTCP.Enabled = true;
                 }
 
-                if (sdr_app_version == "0")
-                {
-                    lblMetisCodeVersion.Text = "unknown";
-                }
-                else
+                if (sdr_app_version != "0")
                 {
                     lblMetisCodeVersion.Text = sdr_app_version;
                 }
@@ -3384,12 +3381,17 @@ namespace PowerSDR
 
                         if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
                         {
-                            lblC25TRXPresent.Text = "Charly 25LC";                        
+                            console.CurrentModel = Model.CHARLY25LC;
+                            lblC25TRXPresent.Text = "Charly 25LC";
                         }
                         else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
                         {
+                            console.CurrentModel = Model.CHARLY25LC;
                             lblC25TRXPresent.Text = "HAMlab 80-10";
                         }
+
+                        // Disable the antenna 1/2 button if a Charly 25LC TRX board is present
+                        console.chkC25ANT.Enabled = false;
 
                         console.RX2PreampPresent = false;
                         break;
@@ -3399,12 +3401,17 @@ namespace PowerSDR
 
                         if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
                         {
-                            lblC25TRXPresent.Text = "Charly 25AB";                        
+                            console.CurrentModel = Model.CHARLY25AB;
+                            lblC25TRXPresent.Text = "Charly 25AB";
                         }
                         else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
                         {
+                            console.CurrentModel = Model.CHARLY25AB;
                             lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6";
                         }
+
+                        // Enable the antenna 1/2 button if a Charly 25AB TRX board is present
+                        console.chkC25ANT.Enabled = true;
 
                         console.RX2PreampPresent = false;
                         break;
@@ -3414,14 +3421,22 @@ namespace PowerSDR
 
                         if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
                         {
+                            console.CurrentModel = Model.CHARLY25PP;
                             lblC25TRXPresent.Text = "Charly 25PP";
                         }
                         else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
                         {
+                            console.CurrentModel = Model.CHARLY25PP;
                             lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6 PP";
                         }
 
+                        // Enable the antenna 1/2 button if a Charly 25PP TRX board is present
+                        console.chkC25ANT.Enabled = true;
+
                         console.RX2PreampPresent = true;
+
+                        // Switch the Charly 25PP TRX board into SDR mode
+                        JanusAudio.C25SetRPExternalOff(1);
                         break;
 
                     default:
@@ -4922,11 +4937,12 @@ namespace PowerSDR
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
                     case Model.CHARLY25:
-                        force_model = true;
+                    case Model.CHARLY25LC:
+                    case Model.CHARLY25AB:
+                    case Model.CHARLY25PP:
                         radGenModelCharly25.Checked = true;
                         break;
                     case Model.HAMLAB:
-                        force_model = true;
                         radGenModelHAMlab.Checked = true;
                         break;
                     // DG8MG
@@ -8946,6 +8962,7 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.CHARLY25;
                 console.CurrentHPSDRModel = HPSDRModel.CHARLY25;
+                UpdateC25HardwareOptions();
              
                 /*
                 Type formType = typeof(Form);
@@ -9139,6 +9156,8 @@ namespace PowerSDR
                 JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
+                UpdateC25HardwareOptions();
+
                 console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon
                 this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());
 
@@ -9208,6 +9227,7 @@ namespace PowerSDR
             {
                 console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon
                 this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
+
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 console.chkC25Diversity.Visible = false;  // reset to default setting
@@ -9223,7 +9243,7 @@ namespace PowerSDR
                 {
                     tcSetup.TabPages.Remove(tpC25Tests);
                     tcSetup.SelectedIndex = 0;
-                }                
+                }
             }
 
             // DG8MG: Test me!
@@ -10036,7 +10056,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             bool done = false;
-            if (console.HPSDRModelIsCharly25orHAMlab())
+            if (console.C25ModelIsCharly25orHAMlab())
             {
                 done = console.C25CalibrateRX2Level(
                 (float)udGeneralCalRX2Level.Value,
@@ -19024,7 +19044,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (!console.HPSDRModelIsCharly25orHAMlab())
+            if (!console.C25ModelIsCharly25orHAMlab())
             {
                 lblMetisCodeVersion.Text = JanusAudio.MetisCodeVersion.ToString("0\\.0");
             }
@@ -20043,8 +20063,8 @@ namespace PowerSDR
         {
             
             // DG8MG
-            // Extension for Charly 25 / HAMlab edition
-            if (console.HPSDRModelIsCharly25orHAMlab())
+            // Extension for Charly 25 and HAMlab hardware
+            if (console.C25ModelIsCharly25orHAMlab())
             {
                 panelRX2LevelCal.Visible = true;
             }

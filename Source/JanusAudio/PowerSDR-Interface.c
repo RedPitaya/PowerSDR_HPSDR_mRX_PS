@@ -1121,14 +1121,14 @@ KD5TFDVK6APHAUDIO_API void C25SetVHFUHF(int bits) {
 	}
 }
 
-KD5TFDVK6APHAUDIO_API void C25SetRPExternal(int bit) {
+KD5TFDVK6APHAUDIO_API void C25SetRPExternalOff(int bit) {
 	if (bit == 1)
 	{
-		C25RPExternal = 1;
+		C25RPExternalOff = 1;
 	}
 	else
 	{
-		C25RPExternal = 0;
+		C25RPExternalOff = 0;
 	}
 }
 

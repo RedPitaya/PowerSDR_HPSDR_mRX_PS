@@ -447,7 +447,7 @@ extern int C25RX2Att;
 extern int C25RX2Pre;
 extern int C25StepAtt;
 extern int C25VHFUHF;
-extern int C25RPExternal;
+extern int C25RPExternalOff;
 extern int C25RPEnvMod;
 // DG8MG
 

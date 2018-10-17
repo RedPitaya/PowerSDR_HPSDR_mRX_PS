@@ -1671,7 +1671,7 @@ void IOThreadMainLoop(void) {
 					// DG8MG
 					// Extension for Charly 25 hardware
 					case 34: // Charly 25 Extension board
-						FPGAWriteBufp[writebufpos] = (C25StepAtt | (C25RPExternal << 5) | (C25RPEnvMod << 6)) & 0xef;  // C2: Bit 0-4 - Step attenuator 0-31dB, Bit 5 - RP external, Bit 6 - RP TX channel 2 envelope modulation, Bit 7 - unused
+						FPGAWriteBufp[writebufpos] = (C25StepAtt | (C25RPExternalOff << 5) | (C25RPEnvMod << 6)) & 0xef;  // C2: Bit 0-4 - Step attenuator 0-31dB, Bit 5 - RP external off (SDR mode on), Bit 6 - RP TX channel 2 envelope modulation, Bit 7 - unused
 						break;
 					// DG8MG
 					}

@@ -185,8 +185,15 @@ namespace PowerSDR
         ORIONMKII,
         ANAN7000D,
         ANAN8000D,
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         CHARLY25,
+        CHARLY25LC,
+        CHARLY25AB,
+        CHARLY25PP,
         HAMLAB
+        // DG8MG
     }
 
     public enum HPSDRModel
@@ -203,8 +210,13 @@ namespace PowerSDR
         ORIONMKII,
         ANAN7000D,
         ANAN8000D,
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         CHARLY25,
         HAMLAB,
+        // DG8MG
+
         LAST
     }
 
@@ -399,7 +411,7 @@ namespace PowerSDR
         HPSDR_MINUS50,
         HPSDR_SMINUS10,
         HPSDR_SMINUS30,
-       
+
         // DG8MG
         // Extension for Charly 25 and HAMlab Attenuator and Preamp
         C25_MINUS36,
@@ -414,6 +426,7 @@ namespace PowerSDR
         C25_PLUS24,
         C25_PLUS36,
         // DG8MG
+
         LAST,
     }
 
@@ -2104,7 +2117,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 if (rx1_meter_cal_offset == 0.0f)
                 {
@@ -8441,7 +8454,7 @@ namespace PowerSDR
 
                         // DG8MG
                         // Extension for Charly 25 and HAMlab Attenuator and Preamp
-                        if (HPSDRModelIsCharly25orHAMlab())
+                        if (C25ModelIsCharly25orHAMlab())
                         {
                             rx1_preamp_by_band[i] = PreampMode.C25_OFF;
                             rx2_preamp_by_band[i] = PreampMode.C25_OFF;
@@ -8455,7 +8468,7 @@ namespace PowerSDR
                         }
                         break;
                     default:
-                        if (HPSDRModelIsCharly25orHAMlab())
+                        if (C25ModelIsCharly25orHAMlab())
                         {
                             rx1_preamp_by_band[i] = PreampMode.C25_OFF;
                             rx2_preamp_by_band[i] = PreampMode.C25_OFF;
@@ -9575,6 +9588,7 @@ namespace PowerSDR
                 a.Add(s);
             }
             */
+
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             for (int i = 0; i < (int)Band.LAST; i++)
@@ -11243,7 +11257,7 @@ namespace PowerSDR
                     case "show_alpha_warning":
                         show_alpha_warning = bool.Parse(val);
                         break;
-                    // DG8MG
+                        // DG8MG
                 }
             }
 
@@ -11265,7 +11279,7 @@ namespace PowerSDR
 
                             // DG8MG
                             // Extension for Charly 25 frontpanel hardware
-                            if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent && c.ThreeState == false)
+                            if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent && c.ThreeState == false)
                             {
                                 C25FrontpanelLEDUpdateHandler(c.Name, (c.Checked ? 1 : 0));
                             }
@@ -13133,7 +13147,7 @@ namespace PowerSDR
                     // DG8MG
                     // Corrected band borders
                     else if (freq >= 5.3515 && freq < 5.3665)
-                    // DG8MG
+                        // DG8MG
 
                         return Band.B60M;
                     else if (freq >= 7.0 && freq <= 7.2)
@@ -14521,7 +14535,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 switch (b)
                 {
@@ -17528,7 +17542,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 RX1PreampMode = PreampMode.C25_OFF;			// set preamp to 0dB
             }
@@ -17551,7 +17565,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 progress_divisor = 600;
             }
@@ -17675,7 +17689,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 float current_offset = 0;
 
@@ -20515,7 +20529,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     Display.RX1PreampOffset = PreampOffset;
                     if (rx2_preamp_present)
@@ -20588,7 +20602,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (HPSDRModelIsCharly25orHAMlab())
+                    if (C25ModelIsCharly25orHAMlab())
                     {
                         Display.RX2DisplayCalOffset = rx2_display_cal_offset + rx2_xvtr_gain_offset;
                     }
@@ -20603,7 +20617,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (HPSDRModelIsCharly25orHAMlab())
+                    if (C25ModelIsCharly25orHAMlab())
                     {
                         Display.RX2DisplayCalOffset = rx2_display_cal_offset + rx2_path_offset + rx2_xvtr_gain_offset;
                     }
@@ -21641,7 +21655,7 @@ namespace PowerSDR
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
                 // Taking over the RX1 value for RX2 is only needed if no Charly 25 or HAMlab hardware is active, because Charly 25 and HAMlab hardware have their own RX2 calibration routine!
-                if (!HPSDRModelIsCharly25orHAMlab())
+                if (!C25ModelIsCharly25orHAMlab())
                 {
                     RX2DisplayCalOffset = value;
                 }
@@ -22973,8 +22987,8 @@ namespace PowerSDR
             }
         }
 
-        // DG8MG: This is the Charly 25 / HAMlab / STEMlab edition of PowerSDR, so the program starts with HAMlab / STEMlab as default hardware
-        private HPSDRModel current_hpsdr_model = HPSDRModel.HAMLAB;
+        // DG8MG: This is the Charly 25 / HAMlab / STEMlab edition of PowerSDR, so the program starts with Charly 25 as default hardware
+        private HPSDRModel current_hpsdr_model = HPSDRModel.CHARLY25;
         //private HPSDRModel current_hpsdr_model = HPSDRModel.HPSDR;
         // DG8MG
 
@@ -23193,6 +23207,9 @@ namespace PowerSDR
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
                     case Model.CHARLY25:
+                    case Model.CHARLY25LC:
+                    case Model.CHARLY25AB:
+                    case Model.CHARLY25PP:
                     case Model.HAMLAB:
                         MinFreq = 0.000000;
                         MaxFreq = 61.0;
@@ -23473,13 +23490,13 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 RX2 Attenuator and Preamp
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     RX2StepAttPresent = false;
                     udRX2StepAttData.Hide();
 
                     if (rx2_preamp_present)
-                    {                       
+                    {
                         comboRX2Preamp.Show();
                         lblRX2Preamp.Visible = true;
                     }
@@ -24699,7 +24716,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
-            if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 if (midi_messages_per_tune_step == min_midi_messages_per_tune_step)
                 {
@@ -24791,7 +24808,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNR.CheckState == CheckState.Indeterminate)
@@ -24823,7 +24840,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNR.CheckState == CheckState.Unchecked)
@@ -24855,7 +24872,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NR.CheckState == CheckState.Indeterminate)
@@ -24887,7 +24904,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NR.CheckState == CheckState.Unchecked)
@@ -24948,7 +24965,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNB.CheckState == CheckState.Indeterminate)
@@ -24985,7 +25002,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkNB.CheckState == CheckState.Unchecked)
@@ -25025,7 +25042,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NB.CheckState == CheckState.Indeterminate)
@@ -25231,7 +25248,7 @@ namespace PowerSDR
                 // DG8MG: Test me!
                 // Extension for the Charly 25 hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
-                if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
+                if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelTristateButtons)
                 {
                     // Perform a round robin shift of the button state
                     if (chkRX2NB.CheckState == CheckState.Unchecked)
@@ -26088,7 +26105,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab hardware
             num = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.SIGNAL_STRENGTH);
 
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 num = num +
                     MultiMeterCalOffset;
@@ -26121,7 +26138,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 num = num +
                     MultiMeterCalOffset +
@@ -28161,7 +28178,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Check if Charly 25 or HAMlab hardware is present
-                if (current_hpsdr_model != HPSDRModel.HPSDR && !HPSDRModelIsCharly25orHAMlab())
+                if (current_hpsdr_model != HPSDRModel.HPSDR && !C25ModelIsCharly25orHAMlab())
                 {
                     if (!rx1_step_att_present)
                     {
@@ -28170,7 +28187,7 @@ namespace PowerSDR
                     }
                 }
                 // Check if Charly 25 or HAMlab hardware is present
-                else if (HPSDRModelIsCharly25orHAMlab())
+                else if (C25ModelIsCharly25orHAMlab())
                 {
                     JanusAudio.SetRX1Preamp_Charly25(merc_preamp);
                     JanusAudio.EnableADC1StepAtten(0);
@@ -28422,10 +28439,10 @@ namespace PowerSDR
                         rx2_preamp = 3;  // Two preamps must be active
                         comboRX2Preamp.Text = " 36dB";
                         lblRX2Preamp.Text = "PRE";
-                        break;                        
+                        break;
                 }
-                
-                if (HPSDRModelIsCharly25orHAMlab())
+
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     JanusAudio.C25SetRX2Attenuator(rx2_att_value);
                     JanusAudio.C25SetRX2Preamp(rx2_preamp);
@@ -29627,7 +29644,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab hardware
             get
             {
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     return C25_RX1_level_table[(int)rx1_band, (int)rx1_preamp_mode, 2];
                 }
@@ -29646,7 +29663,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab hardware
             get
             {
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     return C25_RX2_level_table[(int)rx2_band, (int)rx2_preamp_mode, 2];
                 }
@@ -29664,7 +29681,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab hardware
             get
             {
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     return C25_RX1_level_table[(int)rx1_band, (int)rx1_preamp_mode, 1];
                 }
@@ -29682,7 +29699,7 @@ namespace PowerSDR
         {
             get
             {
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     return C25_RX2_level_table[(int)rx2_band, (int)rx2_preamp_mode, 1];
                 }
@@ -33982,7 +33999,7 @@ namespace PowerSDR
 
                         // DG8MG
                         // Extension for Charly 25 and HAMlab hardware
-                        if (HPSDRModelIsCharly25orHAMlab())
+                        if (C25ModelIsCharly25orHAMlab())
                         {
                             rx1PreampOffset = PreampOffset;
                         }
@@ -33997,7 +34014,7 @@ namespace PowerSDR
                             case MeterRXMode.SIGNAL_STRENGTH:
                                 num = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.SIGNAL_STRENGTH);
 
-                                if (HPSDRModelIsCharly25orHAMlab())
+                                if (C25ModelIsCharly25orHAMlab())
                                 {
                                     num = num +
                                         MultiMeterCalOffset +
@@ -34019,7 +34036,7 @@ namespace PowerSDR
                             case MeterRXMode.SIGNAL_AVERAGE:
                                 num = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
 
-                                if (HPSDRModelIsCharly25orHAMlab())
+                                if (C25ModelIsCharly25orHAMlab())
                                 {
                                     num = num +
                                         // MultiMeterCalOffset +
@@ -34276,7 +34293,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    else if (HPSDRModelIsCharly25orHAMlab())
+                    else if (C25ModelIsCharly25orHAMlab())
                     {
                         rx2PreampOffset = RX2PreampOffset;
                     }
@@ -34301,7 +34318,7 @@ namespace PowerSDR
 
                             // DG8MG
                             // Extension for Charly 25 and HAMlab hardware
-                            if (HPSDRModelIsCharly25orHAMlab())
+                            if (C25ModelIsCharly25orHAMlab())
                             {
                                 num = num +
                                   RX2MeterCalOffset +
@@ -34328,7 +34345,7 @@ namespace PowerSDR
 
                             // DG8MG
                             // Extension for Charly 25 and HAMlab hardware
-                            if (HPSDRModelIsCharly25orHAMlab())
+                            if (C25ModelIsCharly25orHAMlab())
                             {
                                 num = num +
                                   RX2MeterCalOffset +
@@ -34995,7 +35012,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     rx1PreampOffset = PreampOffset;
                 }
@@ -35010,7 +35027,7 @@ namespace PowerSDR
                 {
                     float num = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.SIGNAL_STRENGTH);
 
-                    if (HPSDRModelIsCharly25orHAMlab())
+                    if (C25ModelIsCharly25orHAMlab())
                     {
                         num = num + MultiMeterCalOffset;
                     }
@@ -35046,7 +35063,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     num = num +
                         RX2MeterCalOffset +
@@ -35348,7 +35365,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             // Behave like a HPSDR
-            if (current_hpsdr_model == HPSDRModel.HPSDR || HPSDRModelIsCharly25orHAMlab())
+            if (current_hpsdr_model == HPSDRModel.HPSDR || C25ModelIsCharly25orHAMlab())
             {
                 update_preamp = false;
                 update_preamp_mode = false;
@@ -37651,8 +37668,8 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 else
                 {
+                    /*
                     int penelopeFWVersion = JanusAudio.getPenelopeFWVersion();
-                    // SetupForm.UpdateC25HardwareOptions();
 
                     switch (penelopeFWVersion)
                     {
@@ -37672,12 +37689,19 @@ namespace PowerSDR
                             chkC25ANT.Enabled = true;
 
                             // Switch the Charly 25PP TRX board into SDR mode
-                            JanusAudio.C25SetRPExternal(1);
+                            JanusAudio.C25SetRPExternalOff(1);
                             break;
                     }
-    
+                    */
+
+                    if (C25ModelIsCharly25orHAMlab())
+                    {
+                        SetupForm.UpdateC25HardwareOptions();
+                    }
+
+                    // DG8MG: Test me with HAMlab hardware!
                     // Thread to check if a new SDR application version for the Red Pitaya device is available
-                    if ((current_hpsdr_model == HPSDRModel.CHARLY25) && (check_sdr_app_version_thread == null || !check_sdr_app_version_thread.IsAlive))
+                    if (C25ModelIsCharly25orHAMlab() && (check_sdr_app_version_thread == null || !check_sdr_app_version_thread.IsAlive))
                     {
                         check_sdr_app_version_thread = new Thread(new ThreadStart(C25CheckSDRAppVersion));
                         check_sdr_app_version_thread.Name = "Check SDR App Version Thread";
@@ -37830,7 +37854,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     chkCWSidetone_CheckedChanged(this, EventArgs.Empty);
                 }
@@ -37898,8 +37922,8 @@ namespace PowerSDR
                 {
                     // If a Charly 25PP TRX board is present, switch it back into non SDR mode
                     if (JanusAudio.getPenelopeFWVersion() == 131)
-                    {                        
-                        JanusAudio.C25SetRPExternal(0);
+                    {
+                        JanusAudio.C25SetRPExternalOff(0);
                         Thread.Sleep(100);
                     }
 
@@ -38655,9 +38679,9 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        public bool HPSDRModelIsCharly25orHAMlab()
+        public bool C25ModelIsCharly25orHAMlab()
         {
-            if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+            if (CurrentModel == Model.CHARLY25 || CurrentModel == Model.CHARLY25LC || CurrentModel == Model.CHARLY25AB || CurrentModel == Model.CHARLY25PP || CurrentModel == Model.HAMLAB)
             {
                 return true;
             }
@@ -38949,7 +38973,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     radio.GetDSPRX(0, 0).RXSquelchThreshold = (float)ptbSquelch.Value -
                         PreampOffset -
@@ -39209,7 +39233,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB)
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     JanusAudio.SetXmitBit(1);
                 }
@@ -39233,7 +39257,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if ((current_hpsdr_model == HPSDRModel.CHARLY25 || current_hpsdr_model == HPSDRModel.HAMLAB) && (RX1DSPMode == DSPMode.CWL || RX1DSPMode == DSPMode.CWU))
+                if (C25ModelIsCharly25orHAMlab() && (RX1DSPMode == DSPMode.CWL || RX1DSPMode == DSPMode.CWU))
                 {
                     Thread.Sleep((int)udCWBreakInDelay.Value + key_up_delay);
                 }
@@ -39613,13 +39637,6 @@ namespace PowerSDR
                     switch (current_hpsdr_model)
                     {
                         case HPSDRModel.CHARLY25:
-                            {
-                                temp_mode = RX1PreampMode;
-                                SetupForm.HermesEnableAttenuator = false;
-                                RX1PreampMode = PreampMode.C25_OFF;
-                                break;
-                            }
-
                         case HPSDRModel.HAMLAB:
                             {
                                 temp_mode = RX1PreampMode;
@@ -39724,11 +39741,6 @@ namespace PowerSDR
                     switch (current_hpsdr_model)
                     {
                         case HPSDRModel.CHARLY25:
-                            {
-                                RX1PreampMode = temp_mode;
-                                break;
-                            }
-
                         case HPSDRModel.HAMLAB:
                             {
                                 RX1PreampMode = temp_mode;
@@ -40001,7 +40013,7 @@ namespace PowerSDR
                             // DG8MG
                             // Extension for Charly 25 hardware
                             else if (apollopresent || C25ModelIsCharly25orHAMlab())
-                                // DG8MG
+                            // DG8MG
 
                                 lblMultiSMeter.Text = "    1              5             10            15            30            50+";
                             else if (anan8000dpresent)
@@ -40868,7 +40880,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 if (!initializing)
                 {
@@ -45266,7 +45278,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (ModelIsHPSDRorHermes() || HPSDRModelIsCharly25orHAMlab())
+            if (ModelIsHPSDRorHermes() || C25ModelIsCharly25orHAMlab())
             // DG8MG
 
                 abs_low = (int)(-(double)sample_rate1 * 0.5 + spur_tune_width);
@@ -46621,7 +46633,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 hardware
-            if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (!initializing && C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
             }
@@ -48679,7 +48691,7 @@ namespace PowerSDR
         {
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (!HPSDRModelIsCharly25orHAMlab())
+            if (!C25ModelIsCharly25orHAMlab())
             {
                 StereoDiversity = chkDX.Checked;
             }
@@ -48719,7 +48731,7 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         private void chkDX_CheckStateChanged(object sender, System.EventArgs e)
         {
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 switch (chkDX.CheckState)
                 {
@@ -48792,7 +48804,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 SetupForm.UpdateC25HardwareOptions();
             }
@@ -49763,7 +49775,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (!chkRX2.Checked && HPSDRModelIsCharly25orHAMlab())
+            if (!chkRX2.Checked && C25ModelIsCharly25orHAMlab())
             {
                 StereoDiversity = false;
             }
@@ -50413,7 +50425,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
-            if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (!initializing && C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
             }
@@ -51006,7 +51018,7 @@ namespace PowerSDR
             {
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     radio.GetDSPRX(1, 0).RXSquelchThreshold = (float)ptbRX2Squelch.Value -
                         RX2MeterCalOffset -
@@ -51880,7 +51892,7 @@ namespace PowerSDR
                 {
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (!initializing && HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (!initializing && C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         // Turn off the LED on the old band button
                         char[] charsToTrim = { 'B', 'M' };
@@ -53105,7 +53117,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 SetupForm.UpdateC25HardwareOptions();
             }
@@ -53231,7 +53243,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 comboPreamp.Items.AddRange(C25_attenuator_settings);
                 comboPreamp.Items.AddRange(C25_preamp_settings);
@@ -53308,7 +53320,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 RX2 Attenuator and Preamp
-                if (HPSDRModelIsCharly25orHAMlab())
+                if (C25ModelIsCharly25orHAMlab())
                 {
                     comboRX2Preamp.Items.AddRange(C25_attenuator_settings);
                     comboRX2Preamp.Items.AddRange(C25_preamp_settings);
@@ -53647,7 +53659,7 @@ namespace PowerSDR
         {
             // DG8MG
             // Extension for Charly 25 standalone transceiver
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 FormBorderStyle = FormBorderStyle.Sizable;
             }
@@ -53987,7 +53999,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 standalone transceiver
-            if (HPSDRModelIsCharly25orHAMlab())
+            if (C25ModelIsCharly25orHAMlab())
             {
                 FormBorderStyle = FormBorderStyle.None;
                 WindowState = FormWindowState.Maximized;
@@ -55117,7 +55129,7 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
-            if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+            if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
             }
@@ -55264,7 +55276,7 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab Attenuator and Preamp
         private void lblPreamp_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (current_model != Model.HPSDR && current_model != Model.CHARLY25 && current_model != Model.HAMLAB)
+            if (current_model != Model.HPSDR && !C25ModelIsCharly25orHAMlab())
                 SetupForm.HermesEnableAttenuator = !SetupForm.HermesEnableAttenuator;
         }
         // DG8MG
@@ -55273,7 +55285,7 @@ namespace PowerSDR
         // Extension for Charly 25 RX2 Attenuator and Preamp
         private void lblRX2Preamp_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (current_model != Model.HPSDR && current_model != Model.CHARLY25 && current_model != Model.HAMLAB)
+            if (current_model != Model.HPSDR && !C25ModelIsCharly25orHAMlab())
                 SetupForm.RX2EnableAtt = !SetupForm.RX2EnableAtt;
         }
         // DG8MG
@@ -55479,7 +55491,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware                   
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
@@ -55500,7 +55512,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
@@ -55521,7 +55533,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReductionOnOff, cat_nr_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
@@ -55548,7 +55560,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
@@ -55569,7 +55581,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
@@ -55590,7 +55602,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReductionOnOff, cat_rx2_nr_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseReduction2OnOff, cat_rx2_nr2_status);
@@ -55615,7 +55627,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
@@ -55634,7 +55646,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
@@ -55653,7 +55665,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1NoiseBlanker1OnOff, cat_nb1_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx1Noiseblanker2OnOff, cat_nb2_status);
@@ -55678,7 +55690,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
@@ -55697,7 +55709,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
@@ -55716,7 +55728,7 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 frontpanel hardware
-                    if (HPSDRModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
+                    if (C25ModelIsCharly25orHAMlab() && Charly25FrontpanelPresent)
                     {
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2NoiseBlanker1OnOff, cat_rx2nb1_status);
                         Midi2Cat.Charly25SendUpdateToMidi(CatCmd.Rx2Noiseblanker2OnOff, cat_rx2nb2_status);
@@ -56649,7 +56661,7 @@ namespace PowerSDR
         public bool RXEQ { get; set; }
         public bool ANF { get; set; }
         public bool CESSB { get; set; }
-        public CheckState NR { get; set; }     
+        public CheckState NR { get; set; }
         public bool CFCEnabled { get; set; }
         public bool PhaseRotEnabled { get; set; }
     }

@@ -324,7 +324,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (console.CurrentModel == Model.CHARLY25 || console.CurrentModel == Model.HAMLAB || console.CurrentModel == Model.HERMES || 
+                if (console.C25ModelIsCharly25orHAMlab() || console.CurrentModel == Model.HERMES ||
                                             console.PennyLanePresent ||
                                            (console.PennyPresent && console.CWFWKeyer))
                 // DG8MG
@@ -7272,7 +7272,7 @@ namespace PowerSDR
                 System.Console.WriteLine("JanusAudio.StartAudio failed w/ rc: " + rc);
 
                 // Check if the Cancel button on the ChooseDevice form had been pressed
-                if ((rc == -2) && console.HPSDRModelIsCharly25orHAMlab())
+                if ((rc == -2) && console.C25ModelIsCharly25orHAMlab())
                 {
                     return false;
                 }               

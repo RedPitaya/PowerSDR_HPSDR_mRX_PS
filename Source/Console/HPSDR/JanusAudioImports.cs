@@ -221,7 +221,7 @@ namespace PowerSDR
         public static extern void C25SetVHFUHF(int bits);
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void C25SetRPExternal(int bit);
+        public static extern void C25SetRPExternalOff(int bit);
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void C25SetRPEnvMod(int bit);
