@@ -38650,12 +38650,31 @@ namespace PowerSDR
             }
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        static int rx0GainValue;
+        static int rx1GainValue;
+        // DG8MG
+
         private void chkMUT_CheckedChanged(object sender, System.EventArgs e)
         {
 
             if (chkMUT.Checked)
             {
                 Audio.MuteRX1 = true;
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                rx0GainValue = RX0Gain;
+                rx1GainValue = RX1Gain;
+                RX0Gain = 0;
+                RX1Gain = 0;
+                ptbRX1AF.Value = 0;
+                ptbRX0Gain.Enabled = false;
+                ptbRX1Gain.Enabled = false;
+                ptbRX1AF.Enabled = false;
+                // DG8MG
+
                 //  radio.GetDSPRX(0, 0).RXOutputGain = 0.0;
                 chkMUT.BackColor = button_selected_color;
                 lblRX1MuteVFOA.Text = "MUTE";
@@ -38665,6 +38684,17 @@ namespace PowerSDR
                 Audio.MuteRX1 = false;
                 radio.GetDSPRX(0, 0).RXOutputGain = (double)ptbRX0Gain.Value / ptbRX0Gain.Maximum;
                 ptbAF_Scroll(this, EventArgs.Empty);
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                RX0Gain = rx0GainValue;
+                RX1Gain = rx1GainValue;
+                ptbRX1AF.Value = rx0GainValue;
+                ptbRX0Gain.Enabled = true;
+                ptbRX1Gain.Enabled = true;
+                ptbRX1AF.Enabled = true;
+                // DG8MG
+
                 chkMUT.BackColor = SystemColors.Control;
                 lblRX1MuteVFOA.Text = "";
             }
@@ -41438,6 +41468,16 @@ namespace PowerSDR
             }
 
             double freq = double.Parse(txtVFOAFreq.Text);
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            // Interprete entered frequency values above the maximum frequency as kHz instead of MHz, so they can be entered without a separator
+            if (freq > max_freq)
+            {
+                freq = freq / 1000;
+            }
+            // DG8MG
+
             if (freq > 30.0) rx1_above30 = true;
             else rx1_above30 = false;
 
@@ -51120,11 +51160,26 @@ namespace PowerSDR
             Midi2Cat.SendUpdateToMidi(CatCmd.VolumeVfoB_inc, pct);
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        static int rx2GainValue;
+        // DG8MG
+
         private void chkRX2Mute_CheckedChanged(object sender, System.EventArgs e)
         {
             if (chkRX2Mute.Checked)
             {
                 Audio.MuteRX2 = true;
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                rx2GainValue = RX2Gain;
+                RX2Gain = 0;
+                ptbRX2AF.Value = 0;
+                ptbRX2Gain.Enabled = false;
+                ptbRX2AF.Enabled = false;
+                // DG8MG
+
                 //  radio.GetDSPRX(1, 0).RXOutputGain = 0.0;
                 lblRX2MuteVFOB.Text = "MUTE";
             }
@@ -51132,6 +51187,15 @@ namespace PowerSDR
             {
                 Audio.MuteRX2 = false;
                 ptbRX2Gain_Scroll(this, EventArgs.Empty);
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                RX2Gain = rx2GainValue;
+                ptbRX2AF.Value = rx2GainValue;
+                ptbRX2Gain.Enabled = true;
+                ptbRX2AF.Enabled = true;
+                // DG8MG
+
                 lblRX2MuteVFOB.Text = "";
             }
             if (chkRX2Mute.Focused)
