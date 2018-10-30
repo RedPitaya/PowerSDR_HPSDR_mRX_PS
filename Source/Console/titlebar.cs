@@ -71,7 +71,7 @@ namespace PowerSDR
             return s;
         }
 
-        public static string GetCommitC25Edition()
+        public static string C25GetCommitHash()
         {
             return Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1);
         }

@@ -22823,7 +22823,7 @@ namespace PowerSDR
         {
             if (Keyboard.IsKeyDown(Keys.ControlKey))
             {
-                console.C25NewReleaseDownloadItem_Click(this, EventArgs.Empty);
+                console.C25UpdatePowerSDRItem_Click(this, EventArgs.Empty);
             }
             else if (Keyboard.IsKeyDown(Keys.ShiftKey))
             {

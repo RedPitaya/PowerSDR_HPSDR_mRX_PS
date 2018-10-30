@@ -70,6 +70,7 @@ namespace PowerSDR
     // Extension for Charly 25 / HAMlab / STEMlab hardware
     using Tmds.MDns;
     using Devices;
+    using Renci.SshNet;
     // DG8MG
 
     #region Enums
@@ -649,6 +650,9 @@ namespace PowerSDR
         // DG8MG
         // Thread to check if a new PowerSDR Charly 25 / HAMlab / STEMlab edition is available
         private Thread check_commit_thread;
+
+        // Thread to check if a new SDR application version for the Red Pitaya device is available
+        private Thread check_sdr_app_version_thread;
 
         // Thread to browse the network for Red Pitaya devices
         private Thread browse_rp_devices_thread;
@@ -2083,7 +2087,7 @@ namespace PowerSDR
             // Thread to check if a new PowerSDR Charly 25 / HAMlab / STEMlab edition is available
             if (check_commit_thread == null || !check_commit_thread.IsAlive)
             {
-                check_commit_thread = new Thread(new ThreadStart(CheckCommit));
+                check_commit_thread = new Thread(new ThreadStart(C25PowerSDRCheckCommit));
                 check_commit_thread.Name = "Check Commit Thread";
                 check_commit_thread.Priority = ThreadPriority.Lowest;
                 check_commit_thread.IsBackground = true;
@@ -37955,7 +37959,9 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if ((sdr_app_running > 0) && HPSDRModelIsCharly25orHAMlab())
+                menuStrip1.Items.RemoveByKey("SDR APP");  // remove the potentially earlier added Charly 25 SDR specific menu item
+
+                if ((sdr_app_running > 0) && C25ModelIsCharly25orHAMlab())
                 {
                     try
                     {
@@ -55864,78 +55870,191 @@ namespace PowerSDR
             }
         }
 
-        // Checks the current commit hash on the Red Pitaya download server and shows if a new PowerSDR version is available
-        private void CheckCommit()
+        // Checks the current commit hash on the download server and shows if a new PowerSDR version is available
+        private void C25PowerSDRCheckCommit()
         {
-            System.Console.WriteLine(System.DateTime.Now);
+            System.Console.WriteLine(DateTime.Now);
             try
             {
-                var latest_release_string = "http://downloads.redpitaya.com/hamlab/powersdr/current_commit.txt";
-                var latest_release_url = string.Format(latest_release_string);
+                string latest_version_url = SetupForm.txtC25UpdatePaths.Lines.GetValue(0).ToString();
 
-                System.Console.WriteLine(String.Format("Attempting to get the latest commit from from this download server URL: {0}", latest_release_url));
+                System.Console.WriteLine(String.Format("Attempting to get the latest commit from from this download server URL: {0}", latest_version_url));
                 var webClient = new WebClient();
-                var response = webClient.DownloadString(latest_release_url);
+                var response = webClient.DownloadString(latest_version_url);
                 System.Console.WriteLine(String.Format("Response from download server: {0}", response));
 
-                if (response.Substring(0, 7) != TitleBar.GetCommitC25Edition())
+                if (response.Substring(0, 7) != TitleBar.C25GetCommitHash())
                 {
-                    ToolStripMenuItem C25DownloadNewReleaseItem = new ToolStripMenuItem("DOWNLOAD NEW RELEASE", null, C25NewReleaseDownloadItem_Click);
-                    C25DownloadNewReleaseItem.ForeColor = Color.Red;
-                    this.menuStrip1.Items.Add(C25DownloadNewReleaseItem);
+                    ToolStripMenuItem C25UpdatePowerSDRItem = new ToolStripMenuItem("UPDATE POWERSDR", null, C25UpdatePowerSDRItem_Click);
+                    C25UpdatePowerSDRItem.ForeColor = Color.Red;
+                    this.menuStrip1.Items.Add(C25UpdatePowerSDRItem);
                 }
                 webClient.Dispose();
             }
             catch
             {
-                System.Console.WriteLine(String.Format("Exception occurred during latest release commit string download attempt!"));
+                System.Console.WriteLine("Exception occurred during latest release commit string download attempt!");
             }
 
-            System.Console.WriteLine(System.DateTime.Now);
+            System.Console.WriteLine(DateTime.Now);
             check_commit_thread.Abort();
         }
 
-        public void C25NewReleaseDownloadItem_Click(object sender, EventArgs e)
+        public void C25UpdatePowerSDRItem_Click(object sender, EventArgs e)
         {
-            Uri latest_release_uri = new Uri("http://downloads.redpitaya.com/hamlab/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");
+            string powersdr_temp_path = Path.GetTempPath() + "\\Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe";
+
+            Uri latest_release_uri = new Uri(SetupForm.txtC25UpdatePaths.Lines.GetValue(1).ToString());
 
             if (sender.Equals(SetupForm))
             {
-                latest_release_uri = new Uri("http://praised-land.de/powersdr/Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe");
+                latest_release_uri = new Uri(SetupForm.txtC25UpdatePaths.Lines.GetValue(2).ToString());
             }
 
-            SaveFileDialog sdC25DownloadNewRelease = new SaveFileDialog();
-            sdC25DownloadNewRelease.FileName = "Setup_PowerSDR_Charly_25_HAMlab_STEMlab_Edition.exe";
-            sdC25DownloadNewRelease.Title = "Download new PowerSDR release";
-
-            if (sdC25DownloadNewRelease.ShowDialog() == DialogResult.OK)
+            try
             {
-                try
+                Cursor oldCursor = this.Cursor;
+                this.Cursor = Cursors.WaitCursor;
+
+                System.Console.WriteLine("Attempting to download the latest release from the download server.");
+                var webClient = new WebClient();
+                webClient.DownloadFile(latest_release_uri, powersdr_temp_path);
+                webClient.Dispose();
+
+                this.Cursor = oldCursor;
+
+                if (MessageBox.Show("The latest release of PowerSDR was downloaded successfully.\nDo you want to close this PowerSDR session and install the new release of PowerSDR now?", "Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    Cursor oldCursor = this.Cursor;
-                    this.Cursor = Cursors.WaitCursor;
+                    Process.Start(powersdr_temp_path);
+                    this.Close();
+                }
+            }
+            catch
+            {
+                // Exception occurred during latest release download attempt
+                MessageBox.Show("The download of the new PowerSDR version was not successful,\nbut you can continue with the current version as before!", "Download failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
 
-                    System.Console.WriteLine(String.Format("Attempting to download the latest release from the download server"));
-                    var webClient = new WebClient();
-                    webClient.DownloadFile(latest_release_uri, sdC25DownloadNewRelease.FileName);
-                    webClient.Dispose();
+        // Checks the current version number on the download server and shows if a new SDR application version for the Red Pitaya device is available
+        public void C25CheckSDRAppVersion()
+        {
+            System.Console.WriteLine(DateTime.Now);
+            try
+            {
+                string latest_version_url = SetupForm.txtC25UpdatePaths.Lines.GetValue(3).ToString();
 
-                    this.Cursor = oldCursor;
+                System.Console.WriteLine(String.Format("Attempting to get the latest SDR application version from from this download server URL: {0}", latest_version_url));
+                var webClient = new WebClient();
+                var response = webClient.DownloadString(latest_version_url);
+                System.Console.WriteLine(String.Format("Response from download server: {0}", response));
 
-                    if (MessageBox.Show("The latest release of PowerSDR was downloaded successfully.\nDo you want to close this PowerSDR session and install the new release of PowerSDR now?", "Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if ((string.Compare(response.Substring(0, 8), SetupForm.lblMetisCodeVersion.Text) > 0) && (menuStrip1.Items.IndexOfKey("SDR APP") < 0))
+                {
+                    ToolStripMenuItem C25UpdateSDRAppItem = new ToolStripMenuItem("UPDATE SDR APP", null, C25UpdateSDRAppItem_Click, "SDR APP");
+                    C25UpdateSDRAppItem.ForeColor = Color.Yellow;
+                    menuStrip1.Items.Add(C25UpdateSDRAppItem);
+                }
+                else if (string.Compare(response.Substring(0, 8), SetupForm.lblMetisCodeVersion.Text) <= 0)
+                {
+                    menuStrip1.Items.RemoveByKey("SDR APP");
+                }
+
+                webClient.Dispose();
+            }
+            catch
+            {
+                System.Console.WriteLine("Exception occurred during latest SDR application version string download attempt!");
+            }
+
+            System.Console.WriteLine(DateTime.Now);
+            check_sdr_app_version_thread.Abort();
+        }
+
+        public void C25UpdateSDRAppItem_Click(object sender, EventArgs e)
+        {
+            string sdr_app_filename = "stemlab_sdr_transceiver_hpsdr.zip";
+            string sdr_app_temp_path = Path.GetTempPath() + "\\" + sdr_app_filename;
+
+            Uri latest_release_uri = new Uri(SetupForm.txtC25UpdatePaths.Lines.GetValue(4).ToString());
+
+            try
+            {
+                Cursor oldCursor = Cursor;
+                Cursor = Cursors.WaitCursor;
+
+                System.Console.WriteLine("Attempting to download the latest version from the download server.");
+
+                var webClient = new WebClient();
+                webClient.DownloadFile(latest_release_uri, sdr_app_temp_path);
+                webClient.Dispose();
+
+                Cursor = oldCursor;
+
+                if (MessageBox.Show("The latest version of the SDR application was downloaded successfully.\nDo you want to install the new version now?", "Download finished", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    var connectionInfo = new ConnectionInfo(JanusAudio.Metis_IP_address, "root", new PasswordAuthenticationMethod("root", "root"));
+
+                    using (var sftpclient = new SftpClient(connectionInfo))
                     {
-                        Process.Start(sdC25DownloadNewRelease.FileName);
-                        this.Close();
+                        sftpclient.Connect();
+
+                        if (sftpclient.IsConnected)
+                        {
+                            using (var uplfileStream = File.OpenRead(sdr_app_temp_path))
+                            {
+                                sftpclient.UploadFile(uplfileStream, "/tmp/" + sdr_app_filename, true);
+                            }
+
+                            sftpclient.Disconnect();
+                        }
                     }
-                }
-                catch
-                {
-                    // Exception occurred during latest release download attempt
-                    MessageBox.Show("The download of the new PowerSDR version was not successful,\nbut you can continue with the current version as before!", "Download failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
 
+                    bool last_power_state;
 
+                    if (PowerOn)
+                    {
+                        PowerOn = false;
+                        last_power_state = true;
+                    }
+                    else
+                    {
+                        last_power_state = false;
+                    }
+
+                    using (var sshclient = new SshClient(connectionInfo))
+                    {
+                        sshclient.Connect();
+
+                        if (sshclient.IsConnected)
+                        {
+                            using (var cmd = sshclient.CreateCommand("mount -o rw,remount /opt/redpitaya && unzip -o /tmp/" + sdr_app_filename + " -d /opt/redpitaya/www/apps && mount -o ro,remount /opt/redpitaya"))
+                            {
+                                cmd.Execute();
+                                System.Console.WriteLine("SSH Command>" + cmd.CommandText);
+                                System.Console.WriteLine("SSH Command Return Value = {0}", cmd.ExitStatus);
+                                if (cmd.ExitStatus == 0)
+                                {
+                                    MessageBox.Show("The update of the SDR application on the Red Pitaya device was successful.", "Update successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The update of the SDR application on the Red Pitaya device was NOT successful.\nThe Red Pitaya device continues working with the previous version.", "Update not successful!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }
+                                sshclient.Disconnect();
+                            }
+                        }
+                    }
+
+                    PowerOn = last_power_state;
+                }
+            }
+            catch
+            {
+                // Exception occurred during latest version download attempt
+                MessageBox.Show("The download of the new SDR application version was not successful,\nbut you can continue with the current version as before!", "Download failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 

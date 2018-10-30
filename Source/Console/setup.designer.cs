@@ -2977,6 +2977,7 @@
             this.grpTestAudioBalance = new System.Windows.Forms.GroupBoxTS();
             this.btnTestAudioBalStart = new System.Windows.Forms.ButtonTS();
             this.tpC25Tests = new System.Windows.Forms.TabPage();
+            this.txtC25UpdatePaths = new System.Windows.Forms.TextBoxTS();
             this.btnC25TXPASwitch = new System.Windows.Forms.ButtonTS();
             this.grpC25TXFrequencySweepTest = new System.Windows.Forms.GroupBoxTS();
             this.udC25TXFreqSwpTestInterval = new System.Windows.Forms.NumericUpDownTS();
@@ -50264,6 +50265,7 @@
             // tpC25Tests
             // 
             this.tpC25Tests.BackColor = System.Drawing.SystemColors.Control;
+            this.tpC25Tests.Controls.Add(this.txtC25UpdatePaths);
             this.tpC25Tests.Controls.Add(this.btnC25TXPASwitch);
             this.tpC25Tests.Controls.Add(this.grpC25TXFrequencySweepTest);
             this.tpC25Tests.Controls.Add(this.grpC25RXAttPreTest);
@@ -50275,6 +50277,19 @@
             this.tpC25Tests.TabIndex = 11;
             this.tpC25Tests.Text = "C25 Tests";
             this.tpC25Tests.DoubleClick += new System.EventHandler(this.tpC25Tests_DoubleClick);
+            // 
+            // txtC25UpdatePaths
+            // 
+            this.txtC25UpdatePaths.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtC25UpdatePaths.Location = new System.Drawing.Point(268, 209);
+            this.txtC25UpdatePaths.Multiline = true;
+            this.txtC25UpdatePaths.Name = "txtC25UpdatePaths";
+            this.txtC25UpdatePaths.ReadOnly = true;
+            this.txtC25UpdatePaths.Size = new System.Drawing.Size(304, 149);
+            this.txtC25UpdatePaths.TabIndex = 105;
+            this.txtC25UpdatePaths.TabStop = false;
+            this.txtC25UpdatePaths.Text = resources.GetString("txtC25UpdatePaths.Text");
+            this.txtC25UpdatePaths.Visible = false;
             // 
             // btnC25TXPASwitch
             // 
@@ -53072,6 +53087,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.udImpulseNum)).EndInit();
             this.grpTestAudioBalance.ResumeLayout(false);
             this.tpC25Tests.ResumeLayout(false);
+            this.tpC25Tests.PerformLayout();
             this.grpC25TXFrequencySweepTest.ResumeLayout(false);
             this.grpC25TXFrequencySweepTest.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestInterval)).EndInit();
@@ -54786,5 +54802,6 @@
         private System.Windows.Forms.ButtonTS btnC25RXAttPreTestCancel;
         private System.Windows.Forms.ButtonTS btnC25TXPASwitch;
         public System.Windows.Forms.CheckBoxTS chkC25useTCP;
+        public System.Windows.Forms.TextBoxTS txtC25UpdatePaths;
     }
 }
