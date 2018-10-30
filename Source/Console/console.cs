@@ -23000,81 +23000,12 @@ namespace PowerSDR
                 current_hpsdr_model = value;
 
                 // DG8MG
-                // Extension for Charly 25 hardware
-                if (comboMeterRXMode.Items.Contains("Tot Cur"))
-                {
-                    comboMeterRXMode.Items.Remove("Tot Cur");
-                    comboMeterRXMode.SelectedIndex = 0;
-                }
-
-                if (comboMeterTXMode.Items.Contains("Tot Cur"))
-                    comboMeterTXMode.Items.Remove("Tot Cur");
-                if (comboMeterTXMode.Items.Contains("PA Cur"))
-                    comboMeterTXMode.Items.Remove("PA Cur");
-
-                if (!C25ModelIsCharly25orHAMlab() && !comboMeterTXMode.Items.Contains("Fwd Pwr"))
-                {
-                    comboMeterTXMode.Items.Insert(0, "Fwd Pwr");
-                }
+                // Extension for Charly 25 and HAMlab hardware
+                C25UpdateRXTXMeterOptions();
                 // DG8MG
 
                 switch (current_hpsdr_model)
                 {
-                    // DG8MG
-                    // Extension for Charly 25 and HAMlab hardware
-                    case HPSDRModel.CHARLY25:
-                        chkDX.Visible = true;
-
-                        if (comboMeterTXMode.Items.Contains("Fwd SWR"))
-                                comboMeterTXMode.Items.Remove("Fwd SWR");
-
-                        if (CurrentModel == Model.CHARLY25PP)
-                        {
-                            if (!comboMeterRXMode.Items.Contains("Tot Cur"))
-                                comboMeterRXMode.Items.Insert(6, "Tot Cur");
-
-                            if (!comboMeterTXMode.Items.Contains("Fwd Pwr"))
-                                comboMeterTXMode.Items.Insert(0, "Fwd Pwr");
-                            if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
-                                comboMeterTXMode.Items.Insert(1, "Ref Pwr");
-                            if (!comboMeterTXMode.Items.Contains("SWR"))
-                                comboMeterTXMode.Items.Insert(2, "SWR");
-                            if (!comboMeterTXMode.Items.Contains("Tot Cur"))
-                                comboMeterTXMode.Items.Insert(12, "Tot Cur");
-                            if (!comboMeterTXMode.Items.Contains("PA Cur"))
-                                comboMeterTXMode.Items.Insert(13, "PA Cur");
-                        }
-                        else
-                        {
-                            if (comboMeterTXMode.Items.Contains("Fwd Pwr"))
-                                comboMeterTXMode.Items.Remove("Fwd Pwr");
-                            if (comboMeterTXMode.Items.Contains("Ref Pwr"))
-                                comboMeterTXMode.Items.Remove("Ref Pwr");
-                            if (comboMeterTXMode.Items.Contains("SWR"))
-                                comboMeterTXMode.Items.Remove("SWR");
-                        }
-
-                        if (comboMeterTXMode.SelectedIndex < 0)
-                                comboMeterTXMode.SelectedIndex = 0;
-                        break;
-
-                    case HPSDRModel.HAMLAB:
-                        chkDX.Visible = true;
-
-                        if (comboMeterTXMode.Items.Contains("Fwd SWR"))
-                            comboMeterTXMode.Items.Remove("Fwd SWR");
-                        if (comboMeterTXMode.Items.Contains("Fwd Pwr"))
-                            comboMeterTXMode.Items.Remove("Fwd Pwr");
-                        if (comboMeterTXMode.Items.Contains("Ref Pwr"))
-                            comboMeterTXMode.Items.Remove("Ref Pwr");
-                        if (comboMeterTXMode.Items.Contains("SWR"))
-                            comboMeterTXMode.Items.Remove("SWR");
-
-                        if (comboMeterTXMode.SelectedIndex < 0)
-                                comboMeterTXMode.SelectedIndex = 0;
-                        break;
-                    // DG8MG
-
                     case HPSDRModel.HPSDR:
                     case HPSDRModel.HERMES:
                         chkDX.Checked = false;
@@ -23116,6 +23047,84 @@ namespace PowerSDR
                 }
             }
         }
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        public void C25UpdateRXTXMeterOptions()
+        {
+
+            if (comboMeterRXMode.Items.Contains("Tot Cur"))
+            {
+                comboMeterRXMode.Items.Remove("Tot Cur");
+                comboMeterRXMode.SelectedIndex = 0;
+            }
+
+            if (comboMeterTXMode.Items.Contains("Tot Cur"))
+                comboMeterTXMode.Items.Remove("Tot Cur");
+            if (comboMeterTXMode.Items.Contains("PA Cur"))
+                comboMeterTXMode.Items.Remove("PA Cur");
+
+            if (!C25ModelIsCharly25orHAMlab() && !comboMeterTXMode.Items.Contains("Fwd Pwr"))
+            {
+                comboMeterTXMode.Items.Insert(0, "Fwd Pwr");
+            }
+
+            switch (current_hpsdr_model)
+            {
+                case HPSDRModel.CHARLY25:
+                    chkDX.Visible = true;
+
+                    if (comboMeterTXMode.Items.Contains("Fwd SWR"))
+                        comboMeterTXMode.Items.Remove("Fwd SWR");
+
+                    if (CurrentModel == Model.CHARLY25PP)
+                    {
+                        if (!comboMeterRXMode.Items.Contains("Tot Cur"))
+                            comboMeterRXMode.Items.Insert(6, "Tot Cur");
+
+                        if (!comboMeterTXMode.Items.Contains("Fwd Pwr"))
+                            comboMeterTXMode.Items.Insert(0, "Fwd Pwr");
+                        if (!comboMeterTXMode.Items.Contains("Ref Pwr"))
+                            comboMeterTXMode.Items.Insert(1, "Ref Pwr");
+                        if (!comboMeterTXMode.Items.Contains("SWR"))
+                            comboMeterTXMode.Items.Insert(2, "SWR");
+                        if (!comboMeterTXMode.Items.Contains("Tot Cur"))
+                            comboMeterTXMode.Items.Insert(12, "Tot Cur");
+                        if (!comboMeterTXMode.Items.Contains("PA Cur"))
+                            comboMeterTXMode.Items.Insert(13, "PA Cur");
+                    }
+                    else
+                    {
+                        if (comboMeterTXMode.Items.Contains("Fwd Pwr"))
+                            comboMeterTXMode.Items.Remove("Fwd Pwr");
+                        if (comboMeterTXMode.Items.Contains("Ref Pwr"))
+                            comboMeterTXMode.Items.Remove("Ref Pwr");
+                        if (comboMeterTXMode.Items.Contains("SWR"))
+                            comboMeterTXMode.Items.Remove("SWR");
+                    }
+
+                    if (comboMeterTXMode.SelectedIndex < 0)
+                        comboMeterTXMode.SelectedIndex = 0;
+                    break;
+
+                case HPSDRModel.HAMLAB:
+                    chkDX.Visible = true;
+
+                    if (comboMeterTXMode.Items.Contains("Fwd SWR"))
+                        comboMeterTXMode.Items.Remove("Fwd SWR");
+                    if (comboMeterTXMode.Items.Contains("Fwd Pwr"))
+                        comboMeterTXMode.Items.Remove("Fwd Pwr");
+                    if (comboMeterTXMode.Items.Contains("Ref Pwr"))
+                        comboMeterTXMode.Items.Remove("Ref Pwr");
+                    if (comboMeterTXMode.Items.Contains("SWR"))
+                        comboMeterTXMode.Items.Remove("SWR");
+
+                    if (comboMeterTXMode.SelectedIndex < 0)
+                        comboMeterTXMode.SelectedIndex = 0;
+                    break;
+            }
+        }
+        // DG8MG
 
         private HPSDRHW current_hpsdr_hardware = HPSDRHW.Metis;
         public HPSDRHW CurrentHPSDRHardware

@@ -3461,8 +3461,8 @@ namespace PowerSDR
                     lblC25RX2FbPresent.Visible = true;
                 }
 
-                // Call the set function of CurrentHPSDRModel (again) to update the RX and TX meter options
-                console.CurrentHPSDRModel = console.CurrentHPSDRModel;
+                // Update the RX and TX meter options
+                console.C25UpdateRXTXMeterOptions();
             }
         }
         // DG8MG
