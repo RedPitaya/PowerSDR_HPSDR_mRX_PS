@@ -2612,10 +2612,11 @@ namespace PowerSDR
             out_l4 = out_l_ptr4; // 6 CallbackOutL3bufp VAC/RX1 L 
             out_r4 = out_r_ptr4; // 7 CallbackOutR3bufp VAC/RX1 R
 
-			// DG8MG: Test me!
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
             bool c25_receiver_diversity = false;
 
-            if (console.C25ReceiverDiversity)
+            if (console.SetupForm.C25ReceiverDiversity)
             {
                 c25_receiver_diversity = true;
             }
@@ -2684,12 +2685,12 @@ namespace PowerSDR
                             Win32.EnterCriticalSection(cs_vac);
                             rb_vacOUT_l.WritePtr(out_l4, out_count);
 
-                        	// DG8MG
-                        	if (c25_receiver_diversity)
-                        	{
-                            	ClearBuffer(out_r4, out_count);
-                        	}
-                        	// DG8MG
+                            // DG8MG
+                            if (c25_receiver_diversity)
+                            {
+                                ClearBuffer(out_r4, out_count);
+                            }
+                            // DG8MG
 
                             rb_vacOUT_r.WritePtr(out_r4, out_count);
                             Win32.LeaveCriticalSection(cs_vac);

@@ -22331,6 +22331,57 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
+        private static int samplerate2 = 7;
+        private static int samplerate3 = 7;
+        private static bool vacstereo = false;
+        private static bool vac2stereo = false;
+        private static bool vacenabled = false;
+        private static bool vac2enabled = false;
+        private bool c25_receiver_diversity = false;
+        public bool C25ReceiverDiversity
+        {
+            get { return c25_receiver_diversity; }
+            set
+            {
+                c25_receiver_diversity = value;
+
+                if (!initializing && !console.StereoDiversity && console.RX2Enabled)
+                {
+                    bool poweron = console.PowerOn;
+
+                    console.PowerOn = false;
+
+                    if (value)
+                    {
+                        samplerate2 = comboAudioSampleRate2.SelectedIndex;
+                        samplerate3 = comboAudioSampleRate3.SelectedIndex;
+                        vacstereo = VACStereo;
+                        vac2stereo = VAC2Stereo;
+                        vacenabled = chkAudioEnableVAC.Checked;
+                        vac2enabled = chkVAC2Enable.Checked;
+
+                        comboAudioSampleRate2.SelectedIndex = 7;
+                        comboAudioSampleRate3.SelectedIndex = 7;
+                        VACStereo = true;
+                        VAC2Stereo = true;
+                        chkAudioEnableVAC.Checked = true;
+                        chkVAC2Enable.Checked = true;
+                    }
+                    else
+                    {
+                        comboAudioSampleRate2.SelectedValue = samplerate2;
+                        comboAudioSampleRate3.SelectedValue = samplerate3;
+                        VACStereo = vacstereo;
+                        VAC2Stereo = vac2stereo;
+                        chkAudioEnableVAC.Checked = vacenabled;
+                        chkVAC2Enable.Checked = vac2enabled;
+                    }
+
+                    console.PowerOn = poweron;
+                }
+            }
+        }
+
         bool C25TXLPFTest_is_canceled = false;
         bool tmC25TXLPFTestTimer_is_elapsed = false;
 

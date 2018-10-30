@@ -9321,7 +9321,7 @@ namespace PowerSDR
             a.Add("chkNB_checkstate/" + chkNB.CheckState.ToString());
             a.Add("chkRX2NB_checkstate/" + chkRX2NB.CheckState.ToString());
 
-            a.Add("chkDX_checkstate/" + chkDX.CheckState.ToString());  // DG8MG: Tristate Checkbox for SD2 functionality
+            a.Add("chkDX_checkstate/" + chkDX.CheckState.ToString());  // DG8MG: Tristate Checkbox for receiver diversity (RD) functionality
 
             a.Add("current_datetime_mode/" + (int)current_datetime_mode);
             a.Add("rx1_display_cal_offset/" + rx1_display_cal_offset.ToString("f3"));
@@ -10458,7 +10458,7 @@ namespace PowerSDR
                     case "chkRX2NB_checkstate":
                         chkRX2NB.CheckState = (CheckState)(Enum.Parse(typeof(CheckState), val));
                         break;
-                    case "chkDX_checkstate":  // DG8MG: Tristate Checkbox for SD2 functionality
+                    case "chkDX_checkstate":  // DG8MG: Tristate Checkbox for receiver diversity (RD) functionality
                         chkDX.CheckState = (CheckState)(Enum.Parse(typeof(CheckState), val));
                         break;
                     case "band_160m_index":
@@ -19444,44 +19444,6 @@ namespace PowerSDR
 
             }
         }
-
-        // DG8MG
-        // Extension for Charly 25 and HAMlab hardware
-        private bool c25_receiver_diversity = false;
-        public bool C25ReceiverDiversity
-        {
-            get { return c25_receiver_diversity; }
-            set
-            {
-                c25_receiver_diversity = value;
-
-                if (!initializing && RX2Enabled)
-                {
-                    if (value)
-                    {
-                        if (PowerOn)
-                        {
-                            PowerOn = false;
-                            VACStereo = true;
-                            VAC2Stereo = true;
-                            VACEnabled = true;
-                            VAC2Enabled = true;
-                            PowerOn = true;
-                        }
-                        else
-                        {
-                            VACStereo = true;
-                            VAC2Stereo = true;
-                            VACEnabled = true;
-                            VAC2Enabled = true;
-                        }
-                        // VACSoundCardStereo = true;
-                        // VAC2SoundCardStereo = true;
-                    }
-                }
-            }
-        }
-        // DG8MG
 
         private string apf_btn = "APF";
         public string APFbtn
@@ -48786,19 +48748,19 @@ namespace PowerSDR
                 {
                     case CheckState.Checked: // SD
                         StereoDiversity = chkDX.Checked;
-                        C25ReceiverDiversity = false;
+                        SetupForm.C25ReceiverDiversity = false;
                         chkDX.Text = "SD";
                         break;
 
-                    case CheckState.Indeterminate: // SD2
+                    case CheckState.Indeterminate: // RD
                         StereoDiversity = false;
-                        C25ReceiverDiversity = true;
-                        chkDX.Text = "SD2";
+                        SetupForm.C25ReceiverDiversity = true;
+                        chkDX.Text = "RD";
                         break;
 
                     case CheckState.Unchecked: // all off
                         StereoDiversity = chkDX.Checked;
-                        C25ReceiverDiversity = false;
+                        SetupForm.C25ReceiverDiversity = false;
                         chkDX.Text = "SD";
                         break;
                 }
@@ -56366,7 +56328,7 @@ namespace PowerSDR
 
                 case "chkDX":  // Phone DX On/Off
                     Midi2Cat.C25SendUpdateToMidi(CatCmd.DXLevel, state);
-                    // TODO: TriState Button!!!
+                    // DG8MG: Implement me: TriState Button!!!
                     break;
 
                 case "chkNoiseGate":  // DEXP
