@@ -8959,7 +8959,6 @@ namespace PowerSDR
 
             if (radGenModelCharly25.Checked)  // Charly 25 is selected
             {
-                JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.CHARLY25;
                 console.CurrentHPSDRModel = HPSDRModel.CHARLY25;
                 UpdateC25HardwareOptions();
@@ -9153,7 +9152,6 @@ namespace PowerSDR
 
             if (radGenModelHAMlab.Checked)  // HAMlab is selected
             {
-                JanusAudio.fwVersionsChecked = false;
                 console.CurrentModel = Model.HAMLAB;
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
                 UpdateC25HardwareOptions();

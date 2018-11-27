@@ -8126,13 +8126,14 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
 #if TRACE
+            string trace_path = Path.GetTempPath() + "TRACE.TXT";
             TextWriter old_sw = System.Console.Out;
             FileStream trace_fs = null;
             StreamWriter trace_sw = null;
 
             try
             {
-                trace_fs = new FileStream("TRACE.TXT", FileMode.Create);
+                trace_fs = new FileStream(trace_path, FileMode.Create);
                 trace_sw = new StreamWriter(trace_fs);
                 System.Console.SetOut(trace_sw);
             }
@@ -37578,6 +37579,7 @@ namespace PowerSDR
             }
         }
 
+        static bool janusAudioStatus = false;
         private byte[] id_bytes = new byte[1];
         private void chkPower_CheckedChanged(object sender, System.EventArgs e)
         {
@@ -37633,42 +37635,18 @@ namespace PowerSDR
 
                 Thread.Sleep(100); // wait for hardware to settle before starting audio (possible sample rate change)
                 psform.ForcePS();
-                if (!Audio.Start(nreceivers))   // starts JanusAudio running
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                janusAudioStatus = Audio.Start(nreceivers);   // starts JanusAudio running
+
+                if (janusAudioStatus == false)
                 {
                     chkPower.Checked = false;
                     return;
                 }
-
-                // DG8MG
-                // Extension for Charly 25 and HAMlab hardware
                 else
                 {
-                    /*
-                    int penelopeFWVersion = JanusAudio.getPenelopeFWVersion();
-
-                    switch (penelopeFWVersion)
-                    {
-                        case 128:
-                        case 129:
-                            // Disable the antenna 1/2 button if a Charly 25LC TRX board is present
-                            chkC25ANT.Enabled = false;
-                            break;
-
-                        case 130:
-                            // Enable the antenna 1/2 button if a Charly 25AB TRX board is present
-                            chkC25ANT.Enabled = true;
-                            break;
-
-                        case 131:
-                            // Enable the antenna 1/2 button if a Charly 25PP TRX board is present
-                            chkC25ANT.Enabled = true;
-
-                            // Switch the Charly 25PP TRX board into SDR mode
-                            JanusAudio.C25SetRPExternalOff(1);
-                            break;
-                    }
-                    */
-
                     if (C25ModelIsCharly25orHAMlab())
                     {
                         SetupForm.UpdateC25HardwareOptions();
@@ -37893,7 +37871,7 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (sdr_app_running > 0)
+                if (sdr_app_running > 0 && janusAudioStatus == true)
                 {
                     // If a Charly 25PP TRX board is present, switch it back into non SDR mode
                     if (JanusAudio.getPenelopeFWVersion() == 131)
