@@ -18517,6 +18517,228 @@ namespace PowerSDR
             return ret_val;
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        public bool C25CalibratePAGain(Progress progress, bool[] run, int target_watts)
+        {
+            bool ret_val = false;
+
+            if (!chkPower.Checked)
+            {
+                MessageBox.Show("Power must be active in order to calibrate PA gain.", "Power is not presently active",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return false;
+            }
+
+            calibrating = true;
+
+            bool ctun = chkFWCATU.Checked;  // save current CTUN state
+            chkFWCATU.Checked = false;
+
+            DSPMode dsp_mode = rx1_dsp_mode;  // save current dsp mode
+            RX1DSPMode = DSPMode.CWU;  // set dsp mode to CWU
+
+            double vfo_freq = VFOAFreq;  // save current frequency
+
+            int pwr = PWR;  // save current pwr level
+            PWR = 100;
+
+            bool tx_eq = chkTXEQ.Checked;
+            chkTXEQ.Checked = false;
+
+            bool dx = chkDX.Checked;
+            chkDX.Checked = false;
+
+            bool cpdr = chkCPDR.Checked;
+            chkCPDR.Checked = false;
+
+            DisableAllFilters();
+            DisableAllModes();
+            VFOLock = CheckState.Checked;
+            comboPreamp.Enabled = false;
+            comboDisplayMode.Enabled = false;
+
+            progress.SetPercent(0.0f);
+
+            float[] band_freqs = {1.9f, 3.65f, 5.359f, 7.1f, 10.125f, 14.175f, 18.12f, 21.225f, 24.94f, 28.85f, 50.5f};
+            float[] old_pa_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+            // save the old PA values
+            old_pa_values[0] = SetupForm.CHARLY25PAGain160;
+            old_pa_values[1] = SetupForm.CHARLY25PAGain80;
+            old_pa_values[2] = SetupForm.CHARLY25PAGain60;
+            old_pa_values[3] = SetupForm.CHARLY25PAGain40;
+            old_pa_values[4] = SetupForm.CHARLY25PAGain30;
+            old_pa_values[5] = SetupForm.CHARLY25PAGain20;
+            old_pa_values[6] = SetupForm.CHARLY25PAGain17;
+            old_pa_values[7] = SetupForm.CHARLY25PAGain15;
+            old_pa_values[8] = SetupForm.CHARLY25PAGain12;
+            old_pa_values[9] = SetupForm.CHARLY25PAGain10;
+            old_pa_values[10] = SetupForm.CHARLY25PAGain6;
+
+            if (run[0]) SetupForm.CHARLY25PAGain160 = 60f;
+            if (run[1]) SetupForm.CHARLY25PAGain80 = 60f;
+            if (run[2]) SetupForm.CHARLY25PAGain60 = 60f;
+            if (run[3]) SetupForm.CHARLY25PAGain40 = 60f;
+            if (run[4]) SetupForm.CHARLY25PAGain30 = 60f;
+            if (run[5]) SetupForm.CHARLY25PAGain20 = 60f;
+            if (run[6]) SetupForm.CHARLY25PAGain17 = 60f;
+            if (run[7]) SetupForm.CHARLY25PAGain15 = 60f;
+            if (run[8]) SetupForm.CHARLY25PAGain12 = 60f;
+            if (run[9]) SetupForm.CHARLY25PAGain10 = 60f;
+            if (run[10]) SetupForm.CHARLY25PAGain6 = 60f;
+
+            for (int i = 0; i < band_freqs.Length; i++)
+            {
+                if (run[i])
+                {
+                    int adjust_counter = 0;
+                    VFOLock = CheckState.Unchecked;
+                    VFOAFreq = band_freqs[i];
+                    VFOLock = CheckState.Checked;
+
+                    // pause to let the power meter come down to zero again
+                    Thread.Sleep(1000);
+
+                    chkTUN.Checked = true;
+
+                    bool good_result = false;
+                    while (good_result == false)
+                    {
+                        double watts = 0.0;
+
+                        for (int j = 0; j < 5; j++)
+                        {
+                            watts += alex_fwd;
+                            Thread.Sleep(10);
+                        }
+
+                        watts /= 5;
+
+                        if (!progress.Visible)
+                            goto end;
+
+                        if (watts < target_watts)
+                        {
+                            adjust_counter++;
+
+                            // adjust gain value
+                            switch (i)
+                            {
+                                case 0:
+                                    SetupForm.CHARLY25PAGain160 -= (float)0.1;
+                                    break;
+
+                                case 1:
+                                    SetupForm.CHARLY25PAGain80 -= (float)0.1;
+                                    break;
+
+                                case 2:
+                                    SetupForm.CHARLY25PAGain60 -= (float)0.1;
+                                    break;
+
+                                case 3:
+                                    SetupForm.CHARLY25PAGain40 -= (float)0.1;
+                                    break;
+
+                                case 4:
+                                    SetupForm.CHARLY25PAGain30 -= (float)0.1;
+                                    break;
+
+                                case 5:
+                                    SetupForm.CHARLY25PAGain20 -= (float)0.1;
+                                    break;
+
+                                case 6:
+                                    SetupForm.CHARLY25PAGain17 -= (float)0.1;
+                                    break;
+
+                                case 7:
+                                    SetupForm.CHARLY25PAGain15 -= (float)0.1;
+                                    break;
+
+                                case 8:
+                                    SetupForm.CHARLY25PAGain12 -= (float)0.1;
+                                    break;
+
+                                case 9:
+                                    SetupForm.CHARLY25PAGain10 -= (float)0.1;
+                                    break;
+
+                                case 10:
+                                    SetupForm.CHARLY25PAGain6 -= (float)0.1;
+                                    break;
+                            }
+
+                            // check adjust counter
+                            if (adjust_counter > 598)
+                            {
+                                goto error;
+                            }
+                        }
+                        else
+                        {
+                            good_result = true;
+                        }
+                    }
+                }
+                progress.SetPercent((float)(i + 1) / 11);
+            }
+
+            ret_val = true;
+
+            end:
+            Thread.Sleep(1000);
+
+            if (!progress.Visible) progress.Text = "";
+
+            progress.Hide();
+
+            EnableAllFilters();
+            EnableAllModes();
+            VFOLock = CheckState.Unchecked;
+            comboPreamp.Enabled = true;
+            comboDisplayMode.Enabled = true;
+
+            chkTXEQ.Checked = tx_eq;
+            chkDX.Checked = dx;
+            chkCPDR.Checked = cpdr;
+
+            chkTUN.Checked = false;
+
+            RX1DSPMode = dsp_mode;  // restore dsp mode
+            VFOAFreq = vfo_freq;  // restore frequency
+            txtVFOAFreq_LostFocus(this, EventArgs.Empty);
+            PWR = pwr;  // restore pwr level
+            chkFWCATU.Checked = ctun;  // restore CTUN state
+
+            calibrating = false;
+
+            return ret_val;
+
+            error:
+            MessageBox.Show("PA calibration failed. Please double check connections and try again.\n",
+                "No valid PA setting found",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+
+            // restore the old PA settings
+            SetupForm.CHARLY25PAGain160 = old_pa_values[0];
+            SetupForm.CHARLY25PAGain80 = old_pa_values[1];
+            SetupForm.CHARLY25PAGain60 = old_pa_values[2];
+            SetupForm.CHARLY25PAGain40 = old_pa_values[3];
+            SetupForm.CHARLY25PAGain30 = old_pa_values[4];
+            SetupForm.CHARLY25PAGain20 = old_pa_values[5];
+            SetupForm.CHARLY25PAGain17 = old_pa_values[6];
+            SetupForm.CHARLY25PAGain15 = old_pa_values[7];
+            SetupForm.CHARLY25PAGain12 = old_pa_values[8];
+            SetupForm.CHARLY25PAGain10 = old_pa_values[9];
+            SetupForm.CHARLY25PAGain6 = old_pa_values[10];
+
+            goto end;
+        }
+        // DG8MG
+
         public bool CalibratePAGain(Progress progress, bool[] run, int target_watts) // calibrate PA Gain values
         {
             //			HiPerfTimer t1 = new HiPerfTimer();

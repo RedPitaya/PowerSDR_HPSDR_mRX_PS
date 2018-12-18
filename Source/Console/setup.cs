@@ -13909,24 +13909,46 @@ namespace PowerSDR
 
         private void btnPAGainCalibration_Click(object sender, System.EventArgs e)
         {
-            string s = "NOTE: this routine works well with Penelope. At present this calibration\n" +
-                       "routine is NOT recommended if you are using PennyLane, Hermes or \n" +
-                       "Angelia as it produces a large overshoot during the calibraion \n" +
-                       "process when used with those boards! \n\n" +
-                "Is a 50 Ohm dummy load connected to the amplifier?\n" +
-                "\n This function is valid only with an external amplifier and Alex (or equivalent) present." +
-                "\n\nFailure to use a dummy load with this routine could cause damage to the amplifier.";
-            if (radGenModelFLEX5000.Checked)
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            string s = "";
+            if (console.C25ModelIsCharly25orHAMlab())
             {
-                s = "Is a 50 Ohm dummy load connected to the correct antenna port (";
-                switch (FWCAnt.ANT1)
+                s = "Is a 50 Ohm dummy load connected to the selected antenna port:\n";
+                if (console.chkC25ANT.Checked)
                 {
-                    case FWCAnt.ANT1: s += "ANT 1"; break;
-                    /*case FWCAnt.ANT2: s += "ANT 2"; break;
-                    case FWCAnt.ANT3: s += "ANT 3"; break;*/
+                    s += "ANT 2";
                 }
-                s += ")?\nFailure to connect a dummy load properly could cause damage to the radio.";
+                else
+                {
+                    s += "ANT 1";
+                }
+
+                s += "?\nFailure to connect a dummy load properly could cause damage to the radio!";
             }
+            else
+            {
+                s = "NOTE: this routine works well with Penelope. At present this calibration\n" +
+                           "routine is NOT recommended if you are using PennyLane, Hermes or \n" +
+                           "Angelia as it produces a large overshoot during the calibraion \n" +
+                           "process when used with those boards! \n\n" +
+                    "Is a 50 Ohm dummy load connected to the amplifier?\n" +
+                    "\n This function is valid only with an external amplifier and Alex (or equivalent) present." +
+                    "\n\nFailure to use a dummy load with this routine could cause damage to the amplifier.";
+                if (radGenModelFLEX5000.Checked)
+                {
+                    s = "Is a 50 Ohm dummy load connected to the correct antenna port (";
+                    switch (FWCAnt.ANT1)
+                    {
+                        case FWCAnt.ANT1: s += "ANT 1"; break;
+                            /*case FWCAnt.ANT2: s += "ANT 2"; break;
+                            case FWCAnt.ANT3: s += "ANT 3"; break;*/
+                    }
+                    s += ")?\nFailure to connect a dummy load properly could cause damage to the radio.";
+                }
+            }
+            // DG8MG
+
             DialogResult dr = MessageBox.Show(s,
                 "Warning: Is dummy load properly connected?",
                 MessageBoxButtons.YesNo,
@@ -13973,7 +13995,19 @@ namespace PowerSDR
                 run[10] = chkPA6.Checked;
             }
             bool done = false;
-            done = chkPANewCal.Checked ? console.CalibratePAGain2(progress, run, false) : console.CalibratePAGain(progress, run, (int)udPACalPower.Value);
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (console.C25ModelIsCharly25orHAMlab())
+            {
+                done = console.C25CalibratePAGain(progress, run, (int)udPACalPower.Value);
+            }
+            else
+            {
+                done = chkPANewCal.Checked ? console.CalibratePAGain2(progress, run, false) : console.CalibratePAGain(progress, run, (int)udPACalPower.Value);
+            }
+            // DG8MG
+
             if (done) MessageBox.Show("PA Gain Calibration complete.");
             btnPAGainCalibration.Enabled = true;
         }
