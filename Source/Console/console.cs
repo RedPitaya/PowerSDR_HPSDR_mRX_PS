@@ -574,7 +574,8 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        RedPitaya = 100,
+        STEMlabZ10 = 100,
+        STEMlabZ20 = 101,
         // DG8MG
     }
 

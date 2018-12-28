@@ -7690,7 +7690,7 @@
             this.lblMetisBoardID.Image = null;
             this.lblMetisBoardID.Location = new System.Drawing.Point(180, 34);
             this.lblMetisBoardID.Name = "lblMetisBoardID";
-            this.lblMetisBoardID.Size = new System.Drawing.Size(65, 16);
+            this.lblMetisBoardID.Size = new System.Drawing.Size(70, 16);
             this.lblMetisBoardID.TabIndex = 7;
             this.lblMetisBoardID.Text = "00";
             // 
