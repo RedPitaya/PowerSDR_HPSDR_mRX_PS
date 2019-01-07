@@ -22876,10 +22876,20 @@ namespace PowerSDR
 
                     if (odC25SDRAppUpdate.ShowDialog() == DialogResult.OK)
                     {
+                        string ip_address = "";
                         string sdrapp_path_name = odC25SDRAppUpdate.FileName;
                         string sdrapp_name = Path.GetFileName(sdrapp_path_name);
 
-                        var connectionInfo = new ConnectionInfo(JanusAudio.Metis_IP_address, "root", new PasswordAuthenticationMethod("root", "root"));                        
+                        if (JanusAudio.enableStaticIP)
+                        {
+                            ip_address = console.MetisNetworkIPAddr;
+                        }
+                        else
+                        {
+                            ip_address = JanusAudio.Metis_IP_address;
+                        }
+
+                        ConnectionInfo connectionInfo = new ConnectionInfo(ip_address, "root", new PasswordAuthenticationMethod("root", "root"));
 
                         using (var sftpclient = new SftpClient(connectionInfo))
                         {
