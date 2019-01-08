@@ -122,7 +122,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>$(Platform)\$(Configuration)\PA19.lib</ImportLibrary>
+      <ImportLibrary>$(SolutionDir)..\bin\$(Configuration)\PA19.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalLibraryDirectories>..\..\lib</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -219,7 +219,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
-      <ImportLibrary>$(Platform)\$(Configuration)\PA19.lib</ImportLibrary>
+      <ImportLibrary>$(SolutionDir)..\bin\$(Configuration)\PA19.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalLibraryDirectories>..\..\lib</AdditionalLibraryDirectories>
     </Link>
