@@ -312,8 +312,6 @@ namespace Midi2Cat
             }
         }
 
-        // DG8MG
-
         public void PL1InitialButtonLights(MidiDevice device)
         {
 
@@ -455,50 +453,74 @@ namespace Midi2Cat
                             {
                                 // DG8MG
                                 // Extension for Charly 25 frontpanel hardware
+                                string deviceName = "";
+
+                                ControllerMapping c25FrontpanelMenuButtonMapping;
+                                MidMessageHandler c25FrontpanelMenuHandler;
+
+                                deviceName = Device.GetDeviceName();
+                                c25FrontpanelMenuButtonMapping = DB.GetReverseMapping(deviceName, CatCmd.C25FrontpanelMenu_OnOff);
+                                ctrlBinding.CmdBindings.TryGetValue(c25FrontpanelMenuButtonMapping.MidiControlId, out c25FrontpanelMenuHandler);
+
                                 if (ControlId < 32 && Data != 0)
                                 {
                                     int controlIdState = -1;
                                     int newControlId = -1;
-                                    string deviceName = "";
+
                                     ControllerMapping mapping;
-                                    ControllerMapping c25FrontpanelMenuMapping;
-                                    MidMessageHandler c25FrontpanelMenuHandler;
 
-                                    deviceName = Device.GetDeviceName();
-
-                                    c25FrontpanelMenuMapping = DB.GetReverseMapping(deviceName, CatCmd.C25FrontpanelMenu_OnOff);
-
-                                    // Check if a Charly 25 frontpanel and a menu button is present
-                                    if (deviceName == "Arduino Micro" && c25FrontpanelMenuMapping != null)
+                                    // Check if a Charly 25 frontpanel is present and a menu button is present and the menu should be shown every time a frontpanel button is pressed
+                                    if (deviceName == "Arduino Micro" && (c25FrontpanelMenuButtonMapping != null && c25FrontpanelMenuButtonMapping.MidiOutCmdDown != "") || ControlId == c25FrontpanelMenuButtonMapping.MidiControlId)
                                     {
-                                        ctrlBinding.CmdBindings.TryGetValue(c25FrontpanelMenuMapping.MidiControlId, out c25FrontpanelMenuHandler);
-
-                                        // Check if the menu isn't already visible
-                                        if (c25FrontpanelMenuMapping.MidiOutCmdSetValue != "BS01")
+                                        // Check if the menu is already visible
+                                        if (c25FrontpanelMenuButtonMapping.MidiOutCmdSetValue == "BS01")
                                         {
-                                            // Call the the Charly 25 frontpanel menu handler to show the menu
-                                            c25FrontpanelMenuHandler.ToggleCmdHandler(127, Device);
+                                            // Check if the menu should be hidden immediately
+                                            if (ControlId == c25FrontpanelMenuButtonMapping.MidiControlId || c25FrontpanelMenuButtonMapping.MidiOutCmdDown == "" || c25FrontpanelMenuButtonMapping.MidiOutCmdDown == "BT00")
+                                            {
+                                                // Call the the Charly 25 frontpanel menu handler to hide the menu
+                                                c25FrontpanelMenuHandler.ToggleCmdHandler(101, Device);
 
-                                            // Update and save the state
-                                            c25FrontpanelMenuMapping.MidiOutCmdSetValue = "BS01";
-                                            DB.UpdateOrAdd(deviceName, c25FrontpanelMenuMapping);
-                                            return;
+                                                // Update and save the state
+                                                c25FrontpanelMenuButtonMapping.MidiOutCmdSetValue = "BS00";
+                                                DB.UpdateOrAdd(deviceName, c25FrontpanelMenuButtonMapping);
+
+                                                // Check if the pressed button was the Charly 25 frontpanel menu button
+                                                if (ControlId == c25FrontpanelMenuButtonMapping.MidiControlId)
+                                                {
+                                                    // Return to avoid wrong menu handling
+                                                    return;
+                                                }
+                                            }
                                         }
+                                        // the menu isn't visible yet
                                         else
                                         {
-                                            // Call the the Charly 25 frontpanel menu handler to hide the menu
-                                            c25FrontpanelMenuHandler.ToggleCmdHandler(127, Device);
+                                            // Check if the menu button itself was pressed but no duration is defined
+                                            if (ControlId == c25FrontpanelMenuButtonMapping.MidiControlId && (c25FrontpanelMenuButtonMapping.MidiOutCmdDown == "" || c25FrontpanelMenuButtonMapping.MidiOutCmdDown == "BT00"))
+                                            {
+                                                // Call the the Charly 25 frontpanel menu handler to show the menu infinitive
+                                                c25FrontpanelMenuHandler.ToggleCmdHandler(100, Device);
+                                            }
+                                            else
+                                            {
+                                                int duration = 100;
+                                                duration = int.Parse(c25FrontpanelMenuButtonMapping.MidiOutCmdDown.Remove(0, 2));
+
+                                                // Check if the menu should be shown infinitive
+                                                if (duration == 0)
+                                                {
+                                                    duration = 100;
+                                                }
+
+                                                // Call the the Charly 25 frontpanel menu handler to show the menu for the defined duration
+                                                c25FrontpanelMenuHandler.ToggleCmdHandler(duration, Device);
+                                            }
 
                                             // Update and save the state
-                                            c25FrontpanelMenuMapping.MidiOutCmdSetValue = "BS00";
-                                            DB.UpdateOrAdd(deviceName, c25FrontpanelMenuMapping);
-
-                                            // Check if the pressed button was the Charly 25 frontpanel menu button
-                                            if (ControlId == c25FrontpanelMenuMapping.MidiControlId)
-                                            {
-                                                // Return to avoid wrong menu handling
-                                                return;
-                                            }
+                                            c25FrontpanelMenuButtonMapping.MidiOutCmdSetValue = "BS01";
+                                            DB.UpdateOrAdd(deviceName, c25FrontpanelMenuButtonMapping);
+                                            return;
                                         }
                                     }
 
@@ -577,6 +599,16 @@ namespace Midi2Cat
                                 {
                                     Device.SendMsg(Channel, Data, Status, ControlId, handlers.MidiOutCmdSetValue);
                                 }
+
+                                // DG8MG
+                                // Extension for Charly 25 frontpanel hardware
+                                // Check if the frontpanel menu needs to be updated
+                                if (ControlId < 32 && Data == 0 && ControlId != c25FrontpanelMenuButtonMapping.MidiControlId)
+                                {
+                                    // Update the frontpanel menu
+                                    c25FrontpanelMenuHandler.ToggleCmdHandler(126, Device);
+                                }
+                                // DG8MG
                             }
                         }
                     }

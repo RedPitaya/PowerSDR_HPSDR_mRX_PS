@@ -1153,9 +1153,10 @@ namespace PowerSDR
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
         public int sdr_app_running = 0;
-        public bool C25FrontpanelMenuStatus = false;
+        public bool C25FrontpanelMenuVisible = false;
         public bool C25FrontpanelPresent = false;
         public bool C25FrontpanelTristateButtons = true;
+        System.Timers.Timer C25FrontpanelMenuTimer = new System.Timers.Timer();
         // DG8MG
 
         #endregion
@@ -2064,8 +2065,15 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 frontpanel hardware
-            // Check if a Charly 25 frontpanel is present
             C25FrontpanelPresent = Midi2Cat.C25SendUpdateToMidi(CatCmd.None, 0);
+
+            // Check if a Charly 25 frontpanel is present
+            if (C25FrontpanelPresent)
+            {
+                // Setup the timer to automatically hide the frontpanel menu
+                C25FrontpanelMenuTimer.Elapsed += new ElapsedEventHandler(C25FrontpanelMenuTimer_Elapsed);
+                C25FrontpanelMenuTimer.AutoReset = false;
+            }
             // DG8MG
 
             InitConsole();                                      // Initialize all forms and main variables
@@ -55732,7 +55740,7 @@ namespace PowerSDR
                     chkNR.Text = "NR";
 
                     // DG8MG
-                    // Extension for Charly 25 frontpanel hardware                   
+                    // Extension for Charly 25 frontpanel hardware
                     if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
                     {
                         Midi2Cat.C25SendUpdateToMidi(CatCmd.NoiseReduction2OnOff, cat_nr2_status);
@@ -55783,6 +55791,15 @@ namespace PowerSDR
                     // DG8MG
                     break;
             }
+
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            // Check if the Charly 25 frontpanel menu is currently shown
+            if (C25FrontpanelMenuVisible)
+            {
+                C25UpdateFrontpanelMenu();
+            }
+            // DG8MG
         }
 
         private void chkRX2NR_CheckStateChanged(object sender, EventArgs e)
@@ -55852,6 +55869,15 @@ namespace PowerSDR
                     // DG8MG
                     break;
             }
+
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            // Check if the Charly 25 frontpanel menu is currently shown
+            if (C25FrontpanelMenuVisible)
+            {
+                C25UpdateFrontpanelMenu();
+            }
+            // DG8MG
         }
 
         private void chkNB_CheckStateChanged(object sender, EventArgs e)
@@ -55896,7 +55922,7 @@ namespace PowerSDR
                     // DG8MG
                     break;
 
-                case CheckState.Unchecked: // all off                    
+                case CheckState.Unchecked: // all off
                     specRX.GetSpecRX(0).NBOn = false;
                     specRX.GetSpecRX(0).NB2On = false;
                     NB2ToolStripMenuItem.Checked = false;
@@ -55915,6 +55941,15 @@ namespace PowerSDR
                     // DG8MG
                     break;
             }
+
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            // Check if the Charly 25 frontpanel menu is currently shown
+            if (C25FrontpanelMenuVisible)
+            {
+                C25UpdateFrontpanelMenu();
+            }
+            // DG8MG
         }
 
         private void chkRX2NB_CheckStateChanged(object sender, EventArgs e)
@@ -55959,7 +55994,7 @@ namespace PowerSDR
                     // DG8MG
                     break;
 
-                case CheckState.Unchecked: // all off                    
+                case CheckState.Unchecked: // all off
                     specRX.GetSpecRX(1).NBOn = false;
                     specRX.GetSpecRX(1).NB2On = false;
                     nB2ToolStripMenuItem1.Checked = false;
@@ -55978,6 +56013,15 @@ namespace PowerSDR
                     // DG8MG
                     break;
             }
+
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            // Check if the Charly 25 frontpanel menu is currently shown
+            if (C25FrontpanelMenuVisible)
+            {
+                C25UpdateFrontpanelMenu();
+            }
+            // DG8MG
         }
 
         private void radBandVHF_CheckedChanged(object sender, EventArgs e)
@@ -56719,9 +56763,15 @@ namespace PowerSDR
                     System.Console.WriteLine("Charly 25 frontpanel handler was called by unhandled sender: {0}", senderName);
                     break;
             }
+
+            // Check if the Charly 25 frontpanel menu is currently shown
+            if (C25FrontpanelMenuVisible)
+            {
+                C25UpdateFrontpanelMenu();
+            }
         }
 
-        public void C25ShowFrontpanelMenu()
+        public void C25ShowFrontpanelMenu(int duration)
         {
             if (initializing)
             {
@@ -56974,10 +57024,28 @@ namespace PowerSDR
             lblC25FPButton12.BringToFront();
             lblC25FPButton13.BringToFront();
             lblC25FPButton14.BringToFront();
+
+            C25FrontpanelMenuVisible = true;
+
+            // Handle special duration of 100 as infinitive duration, don't start timer
+            if (duration < 100)
+            {
+                // Set the duration in ms
+                C25FrontpanelMenuTimer.Interval = duration * 1000;
+                C25FrontpanelMenuTimer.Start();
+            }
+        }
+
+        private void C25FrontpanelMenuTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            C25HideFrontpanelMenu();
         }
 
         public void C25HideFrontpanelMenu()
         {
+            C25FrontpanelMenuTimer.Stop();
+            C25FrontpanelMenuVisible = false;
+
             // Hide the knobs and buttons
             lblC25FPKnob0.Visible = false;
             lblC25FPKnob1.Visible = false;
@@ -56998,6 +57066,103 @@ namespace PowerSDR
             lblC25FPButton12.Visible = false;
             lblC25FPButton13.Visible = false;
             lblC25FPButton14.Visible = false;
+        }
+
+        public void C25UpdateFrontpanelMenu()
+        {
+            // Avoid updates during initializing phase or when the frontpanel menu is not shown
+            if (initializing || !C25FrontpanelMenuVisible)
+            {
+                return;
+            }
+
+            int index = 0;
+
+            List<string> button_states_strings = new List<string>();
+            List<System.Drawing.Color> button_states_colors = new List<System.Drawing.Color>();
+            List<ControllerMapping> frontpanelMappings;
+
+            // Get the necessary information of the knobs and buttons based on the currently assigned functions
+            frontpanelMappings = Midi2Cat.C25GetFrontpanelMappings();
+
+            for (index = 0; index < 31; index++)
+            {
+                button_states_strings.Add("BS00");
+            }
+
+            foreach (ControllerMapping mapping in frontpanelMappings)
+            {
+                // Only take care about the buttons without the knobs and avoid an exception if the string is empty
+                if (mapping.MidiControlId > 30 || mapping.MidiOutCmdSetValue == "") continue;
+
+                button_states_strings[mapping.MidiControlId] = mapping.MidiOutCmdSetValue;
+            }
+
+            // Get the color values based on the current status of the buttons
+            for (index = 0; index < 15; index++)
+            {
+                int button_status = 0;
+                int.TryParse(button_states_strings[index].Substring(3) + button_states_strings[index + 16].Substring(3), out button_status);
+
+                if (button_status == 2 || button_status > 11)
+                {
+                    button_states_colors.Add(Color.Red);
+                }
+                else if (button_status > 0)
+                {
+                    button_states_colors.Add(Color.Yellow);
+                }
+                else
+                {
+                    button_states_colors.Add(Color.White);
+                }
+            }
+
+            // Assign the color values to the buttons
+            lblC25FPButton0.BackColor = button_states_colors[0];
+            lblC25FPButton1.BackColor = button_states_colors[1];
+            lblC25FPButton2.BackColor = button_states_colors[2];
+            lblC25FPButton3.BackColor = button_states_colors[3];
+            lblC25FPButton4.BackColor = button_states_colors[4];
+            lblC25FPButton5.BackColor = button_states_colors[5];
+            lblC25FPButton6.BackColor = button_states_colors[6];
+            lblC25FPButton7.BackColor = button_states_colors[7];
+            lblC25FPButton8.BackColor = button_states_colors[8];
+            lblC25FPButton9.BackColor = button_states_colors[9];
+            lblC25FPButton10.BackColor = button_states_colors[10];
+            lblC25FPButton11.BackColor = button_states_colors[11];
+            lblC25FPButton12.BackColor = button_states_colors[12];
+            lblC25FPButton13.BackColor = button_states_colors[13];
+            lblC25FPButton14.BackColor = button_states_colors[14];
+
+            // Bring the knobs and buttons to the front
+            lblC25FPKnob0.BringToFront();
+            lblC25FPKnob1.BringToFront();
+            lblC25FPKnob2.BringToFront();
+            lblC25FPKnob3.BringToFront();
+            lblC25FPButton0.BringToFront();
+            lblC25FPButton1.BringToFront();
+            lblC25FPButton2.BringToFront();
+            lblC25FPButton3.BringToFront();
+            lblC25FPButton4.BringToFront();
+            lblC25FPButton5.BringToFront();
+            lblC25FPButton6.BringToFront();
+            lblC25FPButton7.BringToFront();
+            lblC25FPButton8.BringToFront();
+            lblC25FPButton9.BringToFront();
+            lblC25FPButton10.BringToFront();
+            lblC25FPButton11.BringToFront();
+            lblC25FPButton12.BringToFront();
+            lblC25FPButton13.BringToFront();
+            lblC25FPButton14.BringToFront();
+
+            // Check if the frontpanel menu timer is running
+            if (C25FrontpanelMenuTimer.Enabled)
+            {
+                // Restart the timer
+                C25FrontpanelMenuTimer.Stop();
+                C25FrontpanelMenuTimer.Start();
+            }
         }
         // DG8MG
     }

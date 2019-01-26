@@ -2721,28 +2721,27 @@ namespace PowerSDR
         // Extension for Charly 25 frontpanel hardware
         public string ZZFP(string s)
         {
-            if (s.Length == parser.nSet && (s == "0" || s == "1"))
+            if (s == "RS")
             {
-                if (s == "0")
-                {
-                    console.C25HideFrontpanelMenu();
-                    console.C25FrontpanelMenuStatus = false;
-                }
-                else if (s == "1")
-                {
-                    console.C25ShowFrontpanelMenu();
-                    console.C25FrontpanelMenuStatus = true;
-                }
+                if (console.C25FrontpanelMenuVisible == true) return "1";
+                else return "0";
+            }
+            else if (s == "H")
+            {
+                console.C25HideFrontpanelMenu();
                 return "";
             }
-            else if (s.Length == parser.nGet)
+            else if (s == "U")
             {
-                if (console.C25FrontpanelMenuStatus == true) return "1";
-                else return "0";
+                console.C25UpdateFrontpanelMenu();
+                return "";
             }
             else
             {
-                return parser.Error1;
+                int duration = 0;
+                int.TryParse(s, out duration);
+                console.C25ShowFrontpanelMenu(duration);
+                return "";
             }
         }
         // DG8MG

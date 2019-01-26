@@ -5030,26 +5030,35 @@ namespace PowerSDR
 
         public CmdState C25FrontpanelMenu_OnOff(int msg, MidiDevice device)
         {
-            if (msg == 127)
+            if (msg == 0)
             {
-                parser.nGet = 0;
-                parser.nSet = 1;
-
-                int MenuState = Convert.ToInt16(commands.ZZFP(""));
-
-                if (MenuState == 0)
-                {
-                    C25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 1);
-                    commands.ZZFP("1");
-                    return CmdState.On;
-                }
-                if (MenuState == 1)
-                {
-                    C25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 0);
-                    commands.ZZFP("0");
-                    return CmdState.Off;
-                }
+                return CmdState.NoChange;
             }
+            else if (msg < 101)
+            {
+                // Show the menu for the defined time, 100 for infinitive
+                C25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 1);
+                commands.ZZFP(msg.ToString());
+                return CmdState.On;
+            }
+            else if (msg == 101)
+            {
+                // Hide the menu
+                C25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 0);
+                commands.ZZFP("H");
+                return CmdState.Off;
+            }
+            else if (msg == 126)
+            {
+                // Update the menu
+                commands.ZZFP("U");
+            }
+            else if (msg == 127)
+            {
+                // Read the menu status
+                commands.ZZFP("RS");
+            }
+
             return CmdState.NoChange;
         }
         // DG8MG
