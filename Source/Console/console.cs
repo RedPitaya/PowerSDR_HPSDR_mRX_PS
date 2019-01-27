@@ -35179,12 +35179,22 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        public float C25ComputeTxPower(float adc_value)
+        public float C25ComputeFwdPower(float adc_value)
         {
             float result = 0;
 
             result = adc_value - 1;  // Power must be zero when drive power is zero
-            result /= 54;
+            result /= (float)SetupForm.udC25ForwardPowerADCFactor.Value;
+
+            return result;
+        }
+
+        public float C25ComputeRevPower(float adc_value)
+        {
+            float result = 0;
+
+            result = adc_value - 1;  // Power must be zero when drive power is zero
+            result /= (float)SetupForm.udC25ReflectedPowerADCFactor.Value;
 
             return result;
         }
@@ -35194,7 +35204,7 @@ namespace PowerSDR
             float result = 0;
 
             result = JanusAudio.getAIN3();
-            result /= 900;  // Calculate total current in ampere from ADC value
+            result /= (float)SetupForm.udC25CurrentADCFactor.Value;  // Calculate total current in ampere from ADC value
 
             return result;
         }
@@ -35204,7 +35214,7 @@ namespace PowerSDR
             float result = 0;
 
             result = JanusAudio.getAIN4();
-            result /= 900;  // Calculate PA current in ampere from ADC value
+            result /= (float)SetupForm.udC25CurrentADCFactor.Value;  // Calculate PA current in ampere from ADC value
 
             return result;
         }
@@ -36145,25 +36155,23 @@ namespace PowerSDR
 
                         if (temp_fwdadc < 0)
                         {
-                            average_fwdadc = 0;
+                            alex_fwd = 0;
                         }
                         else
                         {
-                            average_fwdadc = temp_fwdadc;
+                            alex_fwd = C25ComputeFwdPower(temp_fwdadc);
                         }
+
+                        calfwdpower = alex_fwd;
 
                         if (temp_revadc < 0)
                         {
-                            average_revadc = 0;
+                            alex_rev = 0;
                         }
                         else
                         {
-                            average_revadc = temp_revadc;
+                            alex_rev = C25ComputeRevPower(temp_revadc);
                         }
-
-                        alex_fwd = C25ComputeTxPower(average_fwdadc);
-                        calfwdpower = alex_fwd;
-                        alex_rev = C25ComputeTxPower(average_revadc);
 
                         rho = (float)Math.Sqrt(alex_rev / alex_fwd);
 
@@ -36178,8 +36186,14 @@ namespace PowerSDR
 
                         if (swr >= 3)
                         {
-                            JanusAudio.SetSWRProtect((float)(2.0 / (swr + 1.0)));
                             HighSWR = true;
+
+                            if (!is_tune || (!DisableSWRonTune && is_tune))
+                            {
+                                // JanusAudio.SetSWRProtect((float)(2.0 / (swr + 1.0)));
+                                PWR = (int)(PWR * (2 / (swr + 1)));
+                                Thread.Sleep(100);
+                            }
                         }
                         else
                         {

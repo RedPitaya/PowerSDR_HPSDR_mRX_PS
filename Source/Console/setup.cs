@@ -9215,16 +9215,22 @@ namespace PowerSDR
                     chkVACAllowBypass.Checked = false;  // HAMlab with old USB audio codec needs this to be unchecked
                 }
 
+                if (!tcSetup.TabPages.Contains(tpC25Settings))
+                {
+                    tcSetup.TabPages.Add(tpC25Settings);
+                    tcSetup.SelectedIndex = 0;
+                }
+
                 if (!tcSetup.TabPages.Contains(tpC25Tests))
                 {
                     tcSetup.TabPages.Add(tpC25Tests);
                     tcSetup.SelectedIndex = 0;
-                }                
+                }
             }
             else  // HAMlab is deselected
             {
                 console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon
-                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
+                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
 
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
@@ -9236,6 +9242,12 @@ namespace PowerSDR
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
                 grpC25HardwareOptions.Visible = false;  // reset to default setting
                 chkC25useTCP.Visible = false;  // reset to default setting
+
+                if (tcSetup.TabPages.Contains(tpC25Settings))
+                {
+                    tcSetup.TabPages.Remove(tpC25Settings);
+                    tcSetup.SelectedIndex = 0;
+                }
 
                 if (tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -23363,6 +23375,14 @@ namespace PowerSDR
                 JanusAudio.ResetOoopCounter();
             }
         }
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        private void chkC25BypassSWRCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            console.DisableSWRonTune = chkC25BypassSWRCheck.Checked;
+        }
+        // DG8MG
 
         //private void chkCTUNScroll_CheckedChanged(object sender, EventArgs e)
         //{

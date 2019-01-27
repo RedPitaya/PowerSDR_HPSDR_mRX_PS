@@ -2976,6 +2976,16 @@
             this.btnImpulse = new System.Windows.Forms.ButtonTS();
             this.grpTestAudioBalance = new System.Windows.Forms.GroupBoxTS();
             this.btnTestAudioBalStart = new System.Windows.Forms.ButtonTS();
+            this.tpC25Settings = new System.Windows.Forms.TabPage();
+            this.grpC25MeasurementSettings = new System.Windows.Forms.GroupBoxTS();
+            this.udC25ReflectedPowerADCFactor = new System.Windows.Forms.NumericUpDownTS();
+            this.lblC25ReflectedPowerADCFactor = new System.Windows.Forms.LabelTS();
+            this.udC25ForwardPowerADCFactor = new System.Windows.Forms.NumericUpDownTS();
+            this.lblC25ForwardPowerADCFactor = new System.Windows.Forms.LabelTS();
+            this.lblC25CurrentADCFactor = new System.Windows.Forms.LabelTS();
+            this.udC25CurrentADCFactor = new System.Windows.Forms.NumericUpDownTS();
+            this.grpC25TransmitterSettings = new System.Windows.Forms.GroupBoxTS();
+            this.chkC25BypassSWRCheck = new System.Windows.Forms.CheckBoxTS();
             this.tpC25Tests = new System.Windows.Forms.TabPage();
             this.txtC25UpdatePaths = new System.Windows.Forms.TextBoxTS();
             this.btnC25TXPASwitch = new System.Windows.Forms.ButtonTS();
@@ -3019,6 +3029,7 @@
             this.chkEnableRFEPATR = new System.Windows.Forms.CheckBoxTS();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.timerVACrmatchMonitor = new System.Windows.Forms.Timer(this.components);
             this.numericUpDownTS3 = new System.Windows.Forms.NumericUpDownTS();
             this.numericUpDownTS4 = new System.Windows.Forms.NumericUpDownTS();
             this.numericUpDownTS6 = new System.Windows.Forms.NumericUpDownTS();
@@ -3068,7 +3079,6 @@
             this.panelTS4 = new System.Windows.Forms.PanelTS();
             this.radioButtonTS5 = new System.Windows.Forms.RadioButtonTS();
             this.radioButtonTS6 = new System.Windows.Forms.RadioButtonTS();
-            this.timerVACrmatchMonitor = new System.Windows.Forms.Timer(this.components);
             tpAlexAntCtrl = new System.Windows.Forms.TabPage();
             grpKBCW = new System.Windows.Forms.GroupBoxTS();
             tpAlexAntCtrl.SuspendLayout();
@@ -4027,6 +4037,12 @@
             this.grpImpulseTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udImpulseNum)).BeginInit();
             this.grpTestAudioBalance.SuspendLayout();
+            this.tpC25Settings.SuspendLayout();
+            this.grpC25MeasurementSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25ReflectedPowerADCFactor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25ForwardPowerADCFactor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25CurrentADCFactor)).BeginInit();
+            this.grpC25TransmitterSettings.SuspendLayout();
             this.tpC25Tests.SuspendLayout();
             this.grpC25TXFrequencySweepTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestInterval)).BeginInit();
@@ -6391,6 +6407,7 @@
             this.tcSetup.Controls.Add(this.tpKeyboard);
             this.tcSetup.Controls.Add(this.tpCATControl);
             this.tcSetup.Controls.Add(this.tpTests);
+            this.tcSetup.Controls.Add(this.tpC25Settings);
             this.tcSetup.Controls.Add(this.tpC25Tests);
             this.tcSetup.Location = new System.Drawing.Point(8, 8);
             this.tcSetup.Name = "tcSetup";
@@ -7688,7 +7705,7 @@
             // lblMetisBoardID
             // 
             this.lblMetisBoardID.Image = null;
-            this.lblMetisBoardID.Location = new System.Drawing.Point(180, 34);
+            this.lblMetisBoardID.Location = new System.Drawing.Point(178, 34);
             this.lblMetisBoardID.Name = "lblMetisBoardID";
             this.lblMetisBoardID.Size = new System.Drawing.Size(70, 16);
             this.lblMetisBoardID.TabIndex = 7;
@@ -7706,7 +7723,7 @@
             // lblMetisCodeVersion
             // 
             this.lblMetisCodeVersion.Image = null;
-            this.lblMetisCodeVersion.Location = new System.Drawing.Point(180, 16);
+            this.lblMetisCodeVersion.Location = new System.Drawing.Point(178, 16);
             this.lblMetisCodeVersion.Name = "lblMetisCodeVersion";
             this.lblMetisCodeVersion.Size = new System.Drawing.Size(57, 16);
             this.lblMetisCodeVersion.TabIndex = 5;
@@ -50262,6 +50279,167 @@
             this.btnTestAudioBalStart.Text = "Start";
             this.btnTestAudioBalStart.Click += new System.EventHandler(this.btnTestAudioBalStart_Click);
             // 
+            // tpC25Settings
+            // 
+            this.tpC25Settings.Controls.Add(this.grpC25MeasurementSettings);
+            this.tpC25Settings.Controls.Add(this.grpC25TransmitterSettings);
+            this.tpC25Settings.Location = new System.Drawing.Point(4, 22);
+            this.tpC25Settings.Name = "tpC25Settings";
+            this.tpC25Settings.Padding = new System.Windows.Forms.Padding(3);
+            this.tpC25Settings.Size = new System.Drawing.Size(584, 364);
+            this.tpC25Settings.TabIndex = 12;
+            this.tpC25Settings.Text = "C25 Settings";
+            this.tpC25Settings.UseVisualStyleBackColor = true;
+            // 
+            // grpC25MeasurementSettings
+            // 
+            this.grpC25MeasurementSettings.Controls.Add(this.udC25ReflectedPowerADCFactor);
+            this.grpC25MeasurementSettings.Controls.Add(this.lblC25ReflectedPowerADCFactor);
+            this.grpC25MeasurementSettings.Controls.Add(this.udC25ForwardPowerADCFactor);
+            this.grpC25MeasurementSettings.Controls.Add(this.lblC25ForwardPowerADCFactor);
+            this.grpC25MeasurementSettings.Controls.Add(this.lblC25CurrentADCFactor);
+            this.grpC25MeasurementSettings.Controls.Add(this.udC25CurrentADCFactor);
+            this.grpC25MeasurementSettings.Location = new System.Drawing.Point(6, 6);
+            this.grpC25MeasurementSettings.Name = "grpC25MeasurementSettings";
+            this.grpC25MeasurementSettings.Size = new System.Drawing.Size(210, 106);
+            this.grpC25MeasurementSettings.TabIndex = 1;
+            this.grpC25MeasurementSettings.TabStop = false;
+            this.grpC25MeasurementSettings.Text = "Measurement Settings";
+            // 
+            // udC25ReflectedPowerADCFactor
+            // 
+            this.udC25ReflectedPowerADCFactor.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25ReflectedPowerADCFactor.Location = new System.Drawing.Point(154, 71);
+            this.udC25ReflectedPowerADCFactor.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.udC25ReflectedPowerADCFactor.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25ReflectedPowerADCFactor.Name = "udC25ReflectedPowerADCFactor";
+            this.udC25ReflectedPowerADCFactor.Size = new System.Drawing.Size(48, 20);
+            this.udC25ReflectedPowerADCFactor.TabIndex = 5;
+            this.udC25ReflectedPowerADCFactor.Value = new decimal(new int[] {
+            54,
+            0,
+            0,
+            0});
+            // 
+            // lblC25ReflectedPowerADCFactor
+            // 
+            this.lblC25ReflectedPowerADCFactor.AutoSize = true;
+            this.lblC25ReflectedPowerADCFactor.Image = null;
+            this.lblC25ReflectedPowerADCFactor.Location = new System.Drawing.Point(6, 73);
+            this.lblC25ReflectedPowerADCFactor.Name = "lblC25ReflectedPowerADCFactor";
+            this.lblC25ReflectedPowerADCFactor.Size = new System.Drawing.Size(147, 13);
+            this.lblC25ReflectedPowerADCFactor.TabIndex = 4;
+            this.lblC25ReflectedPowerADCFactor.Text = "Reflected Power ADC Factor:";
+            // 
+            // udC25ForwardPowerADCFactor
+            // 
+            this.udC25ForwardPowerADCFactor.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25ForwardPowerADCFactor.Location = new System.Drawing.Point(154, 45);
+            this.udC25ForwardPowerADCFactor.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.udC25ForwardPowerADCFactor.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25ForwardPowerADCFactor.Name = "udC25ForwardPowerADCFactor";
+            this.udC25ForwardPowerADCFactor.Size = new System.Drawing.Size(48, 20);
+            this.udC25ForwardPowerADCFactor.TabIndex = 3;
+            this.udC25ForwardPowerADCFactor.Value = new decimal(new int[] {
+            54,
+            0,
+            0,
+            0});
+            // 
+            // lblC25ForwardPowerADCFactor
+            // 
+            this.lblC25ForwardPowerADCFactor.AutoSize = true;
+            this.lblC25ForwardPowerADCFactor.Image = null;
+            this.lblC25ForwardPowerADCFactor.Location = new System.Drawing.Point(6, 47);
+            this.lblC25ForwardPowerADCFactor.Name = "lblC25ForwardPowerADCFactor";
+            this.lblC25ForwardPowerADCFactor.Size = new System.Drawing.Size(139, 13);
+            this.lblC25ForwardPowerADCFactor.TabIndex = 2;
+            this.lblC25ForwardPowerADCFactor.Text = "Forward Power ADC Factor:";
+            // 
+            // lblC25CurrentADCFactor
+            // 
+            this.lblC25CurrentADCFactor.AutoSize = true;
+            this.lblC25CurrentADCFactor.Image = null;
+            this.lblC25CurrentADCFactor.Location = new System.Drawing.Point(6, 21);
+            this.lblC25CurrentADCFactor.Name = "lblC25CurrentADCFactor";
+            this.lblC25CurrentADCFactor.Size = new System.Drawing.Size(102, 13);
+            this.lblC25CurrentADCFactor.TabIndex = 1;
+            this.lblC25CurrentADCFactor.Text = "Current ADC Factor:";
+            // 
+            // udC25CurrentADCFactor
+            // 
+            this.udC25CurrentADCFactor.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25CurrentADCFactor.Location = new System.Drawing.Point(154, 19);
+            this.udC25CurrentADCFactor.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.udC25CurrentADCFactor.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25CurrentADCFactor.Name = "udC25CurrentADCFactor";
+            this.udC25CurrentADCFactor.Size = new System.Drawing.Size(48, 20);
+            this.udC25CurrentADCFactor.TabIndex = 0;
+            this.udC25CurrentADCFactor.Value = new decimal(new int[] {
+            900,
+            0,
+            0,
+            0});
+            // 
+            // grpC25TransmitterSettings
+            // 
+            this.grpC25TransmitterSettings.Controls.Add(this.chkC25BypassSWRCheck);
+            this.grpC25TransmitterSettings.Location = new System.Drawing.Point(6, 118);
+            this.grpC25TransmitterSettings.Name = "grpC25TransmitterSettings";
+            this.grpC25TransmitterSettings.Size = new System.Drawing.Size(210, 100);
+            this.grpC25TransmitterSettings.TabIndex = 0;
+            this.grpC25TransmitterSettings.TabStop = false;
+            this.grpC25TransmitterSettings.Text = "Transmitter Settings";
+            // 
+            // chkC25BypassSWRCheck
+            // 
+            this.chkC25BypassSWRCheck.AutoSize = true;
+            this.chkC25BypassSWRCheck.Image = null;
+            this.chkC25BypassSWRCheck.Location = new System.Drawing.Point(6, 19);
+            this.chkC25BypassSWRCheck.Name = "chkC25BypassSWRCheck";
+            this.chkC25BypassSWRCheck.Size = new System.Drawing.Size(168, 17);
+            this.chkC25BypassSWRCheck.TabIndex = 1;
+            this.chkC25BypassSWRCheck.Text = "Bypass SWR Check On Tune";
+            this.toolTip1.SetToolTip(this.chkC25BypassSWRCheck, "Bypass SWR check while tuning");
+            this.chkC25BypassSWRCheck.UseVisualStyleBackColor = true;
+            this.chkC25BypassSWRCheck.CheckedChanged += new System.EventHandler(this.chkC25BypassSWRCheck_CheckedChanged);
+            // 
             // tpC25Tests
             // 
             this.tpC25Tests.BackColor = System.Drawing.SystemColors.Control;
@@ -50844,6 +51022,11 @@
             this.saveFileDialog1.Filter = "PowerSDR Database Files (*.xml)|*.xml|All files|*.*";
             this.saveFileDialog1.InitialDirectory = "Environment.GetFolderPath(Environment.SpecialFolder.Desktop)";
             this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
+            // timerVACrmatchMonitor
+            // 
+            this.timerVACrmatchMonitor.Enabled = true;
+            this.timerVACrmatchMonitor.Tick += new System.EventHandler(this.timerVACrmatchMonitor_Tick);
             // 
             // numericUpDownTS3
             // 
@@ -52003,11 +52186,6 @@
             this.radioButtonTS6.Text = "Auto";
             this.radioButtonTS6.UseVisualStyleBackColor = true;
             // 
-            // timerVACrmatchMonitor
-            // 
-            this.timerVACrmatchMonitor.Enabled = true;
-            this.timerVACrmatchMonitor.Tick += new System.EventHandler(this.timerVACrmatchMonitor_Tick);
-            // 
             // Setup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -53086,6 +53264,14 @@
             this.grpImpulseTest.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.udImpulseNum)).EndInit();
             this.grpTestAudioBalance.ResumeLayout(false);
+            this.tpC25Settings.ResumeLayout(false);
+            this.grpC25MeasurementSettings.ResumeLayout(false);
+            this.grpC25MeasurementSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25ReflectedPowerADCFactor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25ForwardPowerADCFactor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25CurrentADCFactor)).EndInit();
+            this.grpC25TransmitterSettings.ResumeLayout(false);
+            this.grpC25TransmitterSettings.PerformLayout();
             this.tpC25Tests.ResumeLayout(false);
             this.tpC25Tests.PerformLayout();
             this.grpC25TXFrequencySweepTest.ResumeLayout(false);
@@ -54803,5 +54989,15 @@
         private System.Windows.Forms.ButtonTS btnC25TXPASwitch;
         public System.Windows.Forms.CheckBoxTS chkC25useTCP;
         public System.Windows.Forms.TextBoxTS txtC25UpdatePaths;
+        private System.Windows.Forms.TabPage tpC25Settings;
+        private System.Windows.Forms.GroupBoxTS grpC25MeasurementSettings;
+        private System.Windows.Forms.GroupBoxTS grpC25TransmitterSettings;
+        private System.Windows.Forms.CheckBoxTS chkC25BypassSWRCheck;
+        private System.Windows.Forms.LabelTS lblC25ForwardPowerADCFactor;
+        private System.Windows.Forms.LabelTS lblC25CurrentADCFactor;
+        public System.Windows.Forms.NumericUpDownTS udC25ForwardPowerADCFactor;
+        public System.Windows.Forms.NumericUpDownTS udC25CurrentADCFactor;
+        private System.Windows.Forms.LabelTS lblC25ReflectedPowerADCFactor;
+        public System.Windows.Forms.NumericUpDownTS udC25ReflectedPowerADCFactor;
     }
 }
