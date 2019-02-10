@@ -293,13 +293,11 @@ namespace Midi2Cat.Data
         MoveVFOAUp100Khz = 521,
         
         // DG8MG
-        // Extension for Charly 25 and HAMlab hardware
+        // Extension for Charly 25 frontpanel hardware
         [CatCommandAttribute("Move Current VFO Down By TuneStep", ControlType.Button)]
         MoveCurrentVFODownByTuneStep = 522,
         [CatCommandAttribute("Move Current VFO Up By TuneStep", ControlType.Button)]
         MoveCurrentVFOUpByTuneStep = 523,
-
-        // Extension for Charly 25 frontpanel hardware
         [CatCommandAttribute("Charly 25 Frontpanel Menu On Off", ControlType.Button, true)]
         C25FrontpanelMenu_OnOff = 998,
         [CatCommandAttribute("Reset Charly 25 Frontpanel", ControlType.Button)]

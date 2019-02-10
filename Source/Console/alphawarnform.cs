@@ -96,7 +96,7 @@ namespace PowerSDR
 
             // DG8MG
             // Changed for Charly 25 and HAMlab hardware, original version below 
-            this.rtxtWarning.Text = @"Warning: This is alpha software and may contain bugs.  Use at your own risk.  If you are uncomfortable with running software that may contain bugs and thus interrupt normal operation, please use our latest official release. Thanks and have fun.";
+            this.rtxtWarning.Text = @"Warning: This is beta software and may contain bugs.  Use at your own risk.  If you are uncomfortable with running software that may contain bugs and thus interrupt normal operation, please use our latest official release. Thanks and have fun.";
             // this.rtxtWarning.Text = @"Warning: This is alpha software and may contain bugs.  Use at your own risk.  If you are uncomfortable with running software that may contain bugs and thus interrupt normal operation, please use our latest official release which may be found at http://www.flex-radio.com.  Bugs found in this software may be reported at http://support.flex-radio.com on the Bug Tracker.  Please do NOT post bugs on the email reflector or forums.  Thanks and have fun.";
             // DG8MG
 

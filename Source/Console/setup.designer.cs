@@ -50911,7 +50911,7 @@
             this.btnC25TXLPFTestCancel.TabIndex = 2;
             this.btnC25TXLPFTestCancel.Text = "Cancel";
             this.btnC25TXLPFTestCancel.UseVisualStyleBackColor = true;
-            this.btnC25TXLPFTestCancel.Click += new System.EventHandler(this.btnTXLPFTestCancel_Click);
+            this.btnC25TXLPFTestCancel.Click += new System.EventHandler(this.btnC25TXLPFTestCancel_Click);
             // 
             // btnC25TXLPFTestPause
             // 
@@ -50922,7 +50922,7 @@
             this.btnC25TXLPFTestPause.TabIndex = 1;
             this.btnC25TXLPFTestPause.Text = "Pause";
             this.btnC25TXLPFTestPause.UseVisualStyleBackColor = true;
-            this.btnC25TXLPFTestPause.Click += new System.EventHandler(this.btnTXLPFTestPause_Click);
+            this.btnC25TXLPFTestPause.Click += new System.EventHandler(this.btnC25TXLPFTestPause_Click);
             // 
             // btnC25TXLPFTestStart
             // 
@@ -50933,7 +50933,7 @@
             this.btnC25TXLPFTestStart.TabIndex = 0;
             this.btnC25TXLPFTestStart.Text = "Start";
             this.btnC25TXLPFTestStart.UseVisualStyleBackColor = true;
-            this.btnC25TXLPFTestStart.Click += new System.EventHandler(this.btnTXLPFTestStart_Click);
+            this.btnC25TXLPFTestStart.Click += new System.EventHandler(this.btnC25TXLPFTestStart_Click);
             // 
             // openFileDialog1
             // 

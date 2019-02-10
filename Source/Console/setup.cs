@@ -8976,8 +8976,8 @@ namespace PowerSDR
                 }
                 */
 
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());
-                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());  // set the Charly 25 icon on the console form
+                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());  // set the Charly 25 icon on the setup form
 
                 console.chkSR.Visible = false;  // Charly 25 doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25
@@ -9009,8 +9009,6 @@ namespace PowerSDR
                 grpCHARLY25PAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
                 chkATTOnTX.Checked = false;  // Charly 25 doesn't have a TX step attenuator
-                // console.RX1StepAttPresent = false;  // Charly 25 doesn't have a RX1 step attenuator
-                // console.RX2StepAttPresent = false;  // Charly 25 doesn't have a RX2 step attenuator
                 console.RX2PreampPresent = false;  // Charly 25 doesn't have a RX2 preamp by default
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
@@ -9018,7 +9016,7 @@ namespace PowerSDR
                 grpOzyType.Visible = true;
                 radOzyUSB.Checked = false;
                 radOzyUSB.Enabled = false;
-                radMetis.Checked = true;               
+                radMetis.Checked = true;
                 chkC25useTCP.Enabled = true;
                 chkC25useTCP.Visible = true;
                 console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
@@ -9033,6 +9031,12 @@ namespace PowerSDR
                     chkVACAllowBypass.Checked = false;  // Charly 25 without audio codec needs this to be unchecked
                 }
 
+                if (!tcSetup.TabPages.Contains(tpC25Settings))
+                {
+                    tcSetup.TabPages.Add(tpC25Settings);
+                    tcSetup.SelectedIndex = 0;
+                }
+
                 if (!tcSetup.TabPages.Contains(tpC25Tests))
                 {
                     tcSetup.TabPages.Add(tpC25Tests);
@@ -9041,10 +9045,11 @@ namespace PowerSDR
             }
             else  // Charly 25 is deselected
             {
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon
-                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the console form
+                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the setup form
+
                 console.chkSR.Visible = true;  // reset to default setting
-                console.chkC25ANT.Visible = false;  // reset to default setting               
+                console.chkC25ANT.Visible = false;  // reset to default setting
                 console.chkC25Diversity.Visible = false;  // reset to default setting
                 console.chkDX.ThreeState = false; // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
@@ -9053,6 +9058,12 @@ namespace PowerSDR
                 console.psform.AutoAttenuate_Visible = true;  // reset to default setting
                 grpC25HardwareOptions.Visible = false;  // reset to default setting
                 chkC25useTCP.Visible = false;  // reset to default setting
+
+                if (tcSetup.TabPages.Contains(tpC25Settings))
+                {
+                    tcSetup.TabPages.Remove(tpC25Settings);
+                    tcSetup.SelectedIndex = 0;
+                }
 
                 if (tcSetup.TabPages.Contains(tpC25Tests))
                 {
@@ -9156,8 +9167,8 @@ namespace PowerSDR
                 console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
                 UpdateC25HardwareOptions();
 
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon
-                this.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon on the console form
+                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon on the setup form
 
                 console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
@@ -9188,9 +9199,7 @@ namespace PowerSDR
                 chkAutoPACalibrate.Visible = true;
                 grpCHARLY25PAGainByBand.BringToFront();
                 labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator                
-                // console.RX1StepAttPresent = false;  // HAMlab doesn't have a RX1 step attenuator
-                // console.RX2StepAttPresent = false;  // HAMlab doesn't have a RX2 step attenuator
+                chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator
                 console.RX2PreampPresent = false;  // HAMlab doesn't have a RX2 preamp
                 chkRxOutOnTx.Text = "RX 1 OUT on Tx";
                 chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
@@ -9229,8 +9238,8 @@ namespace PowerSDR
             }
             else  // HAMlab is deselected
             {
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon
-                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());
+                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the console form
+                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the setup form
 
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
@@ -9656,7 +9665,7 @@ namespace PowerSDR
             //}
 
             // DG8MG
-            // Extension for Charly 25 and HAMlab Attenuator and Preamp
+            // Extension for Charly 25 and HAMlab hardware
             if ((!radGenModelCharly25.Checked) && (!radGenModelHAMlab.Checked))
             {
                 if (!tcGeneral.TabPages.Contains(tpHPSDR))
@@ -22436,7 +22445,7 @@ namespace PowerSDR
             tmC25TXLPFTestTimer_is_elapsed = true;
         }
 
-        private void btnTXLPFTestStart_Click(object sender, EventArgs e)
+        private void btnC25TXLPFTestStart_Click(object sender, EventArgs e)
         {
             int txlpftest_band = 0;
             int old_pwr = 0;
@@ -22514,7 +22523,7 @@ namespace PowerSDR
             console.VFOAFreq = old_vfoa_frequency;
         }
 
-        private void btnTXLPFTestPause_Click(object sender, EventArgs e)
+        private void btnC25TXLPFTestPause_Click(object sender, EventArgs e)
         {
             if (tmC25TXLPFTestTimer.Enabled == true)
             {
@@ -22528,7 +22537,7 @@ namespace PowerSDR
             }            
         }
 
-        private void btnTXLPFTestCancel_Click(object sender, EventArgs e)
+        private void btnC25TXLPFTestCancel_Click(object sender, EventArgs e)
         {
             C25TXLPFTest_is_canceled = true;
         }
@@ -22915,7 +22924,7 @@ namespace PowerSDR
                                 }
 
                                 sftpclient.Disconnect();
-                            }                           
+                            }
                         }
 
                         using (var sshclient = new SshClient(connectionInfo))
@@ -22928,11 +22937,17 @@ namespace PowerSDR
                                 {
                                     cmd.Execute();
                                     System.Console.WriteLine("SSH Command>" + cmd.CommandText);
-                                    System.Console.WriteLine("SSH Command Return Value = {0}", cmd.ExitStatus);
+                                    System.Console.WriteLine("SSH Command ExitStatus = {0}, Result: {1}", cmd.ExitStatus, cmd.Result);
+
                                     if (cmd.ExitStatus == 0)
                                     {
                                         MessageBox.Show("The update of the SDR application was successful.\nVersion: " + Path.GetFileNameWithoutExtension(sdrapp_name) + "\nis now running on the Red Pitaya device.", "Update successful!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     }
+                                    else
+                                    {
+                                        throw new Exception("Error occurred during SSH command execution!");
+                                    }
+
                                     sshclient.Disconnect();
                                 }
                             }

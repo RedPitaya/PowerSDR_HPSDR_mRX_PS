@@ -67,7 +67,7 @@ namespace PowerSDR
     using System.Timers;
 
     // DG8MG
-    // Extension for Charly 25 / HAMlab / STEMlab hardware
+    // Extension for Charly 25 and HAMlab hardware
     using Tmds.MDns;
     using Devices;
     using Renci.SshNet;
@@ -649,6 +649,7 @@ namespace PowerSDR
         private Thread noise_gate_update_thread;			// polls the mic input during TX
 
         // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
         // Thread to check if a new PowerSDR Charly 25 / HAMlab / STEMlab edition is available
         private Thread check_commit_thread;
 
@@ -1654,6 +1655,7 @@ namespace PowerSDR
         private LabelTS lblRX2APF;
 
         // DG8MG
+        // Extension for Charly 25 frontpanel hardware
         public CheckBoxTS chkC25ANT;
         public CheckBoxTS chkC25Diversity;
         public ImageList ilC25ImageList;
@@ -2093,6 +2095,7 @@ namespace PowerSDR
             this.Text = TitleBar.GetString();
 
             // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
             // Thread to check if a new PowerSDR Charly 25 / HAMlab / STEMlab edition is available
             if (check_commit_thread == null || !check_commit_thread.IsAlive)
             {
@@ -13161,7 +13164,7 @@ namespace PowerSDR
                     // DG8MG
                     // Corrected band borders
                     else if (freq >= 5.3515 && freq < 5.3665)
-                        // DG8MG
+                    // DG8MG
 
                         return Band.B60M;
                     else if (freq >= 7.0 && freq <= 7.2)
@@ -25013,7 +25016,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -25045,7 +25048,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -25077,7 +25080,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -25109,7 +25112,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -25170,7 +25173,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -25207,7 +25210,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -25247,7 +25250,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -25453,7 +25456,7 @@ namespace PowerSDR
             set
             {
                 // DG8MG: Test me!
-                // Extension for the Charly 25 hardware
+                // Extension for the Charly 25 frontpanel hardware
                 // Check if the tristate button flag for the Charly 25 frontpanel is set
                 if (C25ModelIsCharly25orHAMlab() && C25FrontpanelTristateButtons)
                 {
@@ -28384,7 +28387,7 @@ namespace PowerSDR
                 }
 
                 // DG8MG
-                // Check if Charly 25 or HAMlab hardware is present
+                // Check if Charly 25 or HAMlab hardware is not present
                 if (current_hpsdr_model != HPSDRModel.HPSDR && !C25ModelIsCharly25orHAMlab())
                 {
                     if (!rx1_step_att_present)
@@ -35178,7 +35181,7 @@ namespace PowerSDR
         */
 
         // DG8MG
-        // Extension for Charly 25 and HAMlab hardware
+        // Extension for Charly 25 hardware
         public float C25ComputeFwdPower(float adc_value)
         {
             float result = 0;
@@ -38751,7 +38754,7 @@ namespace PowerSDR
         }
 
 
-        // DG8MG: Test me: Extension for C25 RX2 Preamp and Attenuator 
+        // DG8MG: Test me: Extension for Charly 25 RX2 Preamp and Attenuator
         private void comboRX2Preamp_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             //if (initializing) return;
@@ -40301,7 +40304,7 @@ namespace PowerSDR
                             // DG8MG
                             // Extension for Charly 25 hardware
                             else if (apollopresent || C25ModelIsCharly25orHAMlab())
-                                // DG8MG
+                            // DG8MG
 
                                 lblMultiSMeter.Text = "1      5     10    15   30    50+";
                             else if (anan8000dpresent)
@@ -40322,7 +40325,7 @@ namespace PowerSDR
                         case MeterTXMode.PA_CURRENT:
                             lblMultiSMeter.Text = "1      1.5   2     3     5    10";
                             break;
-                        // DG8MG
+                            // DG8MG
 
                         case MeterTXMode.OFF:
                             lblMultiSMeter.Text = "";
@@ -46872,7 +46875,7 @@ namespace PowerSDR
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
 
             // DG8MG
-            // Extension for Charly 25 hardware
+            // Extension for Charly 25 frontpanel hardware
             if (!initializing && C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
             {
                 C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
@@ -53577,7 +53580,7 @@ namespace PowerSDR
             // DG8MG
 
 
-            // DG8MG: Test me: Extension for C25 RX2 Preamp and Attenuator 
+            // DG8MG: Test me: Extension for Charly 25 RX2 Preamp and Attenuator
             if (comboRX2Preamp != null)
             {
                 comboRX2Preamp.Items.Clear();
@@ -56359,7 +56362,6 @@ namespace PowerSDR
 
         private void Browse_RedPitaya_Devices()
         {
-            int result = 0;
             string serviceType = "_http._tcp";
 
             ServiceBrowser rpserviceBrowser = new ServiceBrowser();
