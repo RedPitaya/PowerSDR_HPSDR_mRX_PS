@@ -122,9 +122,9 @@ namespace PowerSDR
             // pnlStatus
             // 
             this.pnlStatus.BackColor = System.Drawing.Color.Transparent;
-            this.pnlStatus.Location = new System.Drawing.Point(12, 180);
+            this.pnlStatus.Location = new System.Drawing.Point(35, 180);
             this.pnlStatus.Name = "pnlStatus";
-            this.pnlStatus.Size = new System.Drawing.Size(251, 16);
+            this.pnlStatus.Size = new System.Drawing.Size(217, 16);
             this.pnlStatus.TabIndex = 2;
             this.pnlStatus.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlStatus_Paint);
             // 
@@ -151,7 +151,7 @@ namespace PowerSDR
             this.lblStatus.Image = null;
             this.lblStatus.Location = new System.Drawing.Point(12, 198);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(251, 15);
+            this.lblStatus.Size = new System.Drawing.Size(263, 15);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "Status";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -160,7 +160,7 @@ namespace PowerSDR
             // 
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(275, 279);
+            this.ClientSize = new System.Drawing.Size(287, 307);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblTimeRemaining);
             this.Controls.Add(this.pnlStatus);
@@ -426,11 +426,11 @@ namespace PowerSDR
 					new LinearGradientBrush(m_rProgress, 
 					
                     // DG8MG
-                    // Changed the colours to the Red Pitaya CI
+                    // Changed the colours to the Charly 25 CI
                     // Color.FromArgb(100, 100, 100),
                     Color.FromArgb(0, 0 , 0),
                     // Color.FromArgb(130, 255, 130),
-                    Color.FromArgb(224, 19, 38),
+                    Color.FromArgb(255, 0, 0),
                     // DG8MG
 
                     LinearGradientMode.Horizontal);

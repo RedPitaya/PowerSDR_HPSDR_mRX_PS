@@ -7,7 +7,7 @@
     <ProjectGuid>{831AEB2F-CA78-4057-85D7-32B4816ED6AE}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>redpitaya.ico</ApplicationIcon>
+    <ApplicationIcon>C25.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>PowerSDR</AssemblyName>
