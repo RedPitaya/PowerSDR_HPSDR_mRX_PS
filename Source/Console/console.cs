@@ -1743,7 +1743,7 @@ namespace PowerSDR
                 // AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                 //     + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
                 AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
+                    + "\\Charly 25\\PowerSDR Charly 25 HAMlab STEMlab Edition\\";
                 // DG8MG
 
             }
@@ -8201,7 +8201,7 @@ namespace PowerSDR
                 // app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                 //     + "\\FlexRadio Systems\\PowerSDR mRX PS\\";
                 app_data_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
+                    + "\\Charly 25\\PowerSDR Charly 25 HAMlab STEMlab Edition\\";
                 // DG8MG
 
 #if(DEBUG)

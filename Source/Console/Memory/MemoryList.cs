@@ -89,7 +89,7 @@ namespace PowerSDR
             // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
             // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
+                    + "\\Charly 25\\PowerSDR Charly 25 HAMlab STEMlab Edition\\";
             // DG8MG
 
             string file_name = path + "memory.xml";
@@ -120,7 +120,7 @@ namespace PowerSDR
             // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
             // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    + "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\";
+                    + "\\Charly 25\\PowerSDR Charly 25 HAMlab STEMlab Edition\\";
             // DG8MG
 
             string file_name = path + "memory.xml";

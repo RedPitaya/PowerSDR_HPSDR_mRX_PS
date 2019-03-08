@@ -3,8 +3,8 @@
 
 #define MyAppName "PowerSDR Charly 25 HAMlab STEMlab Edition"
 #define MyAppVersion "1.0"
-#define MyAppPublisher "Red Pitaya d.d."
-#define MyAppURL "www.redpitaya.com"
+#define MyAppPublisher "Charly 25"
+#define MyAppURL "charly25-sdr.github.io"
 #define MyAppExeName "PowerSDR.exe"
 
 #define VCmsg "Installing Microsoft Visual C++ Redistributable...."
@@ -13,7 +13,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{5A4846ED-55B8-4CA8-A6B2-5B941130120F}
+AppId={{2DA88383-B1CA-476C-A6C9-D4496CA62381}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
@@ -65,14 +65,14 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\..\bin\Release\PowerSDR.exe"; DestDir: "{app}"; Flags: ignoreversion
 
-; DG8MG: Test me!
+; DG8MG
 Source: "..\..\bin\Runtime Libraries\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"; DestDir: "{tmp}"
 ; DG8MG
 
 Source: "..\..\bin\Runtime Libraries\vc_redist.x86.exe"; DestDir: "{tmp}"
 Source: "..\..\bin\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-Source: "..\..\Skins\*"; DestDir: "{userappdata}\Red Pitaya\PowerSDR mRX PS Charly25 HAMlab\Skins\"; Flags: ignoreversion createallsubdirs recursesubdirs
+Source: "..\..\Skins\*"; DestDir: "{userappdata}\{#MyAppPublisher}\{#MyAppName}\Skins\"; Flags: ignoreversion createallsubdirs recursesubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -81,7 +81,7 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 
 [Run]
-; DG8MG: Test me!
+; DG8MG
 Filename: "msiexec.exe"; Parameters: "/i ""{tmp}\SlimDX Runtime .NET 4.0 x86 (January 2012).msi"""; Check: not SlimDXinstalled
 ; DG8MG
 
@@ -123,7 +123,7 @@ function VCinstalled: Boolean;
    end;
  end;
 
-// DG8MG: Test me!
+// DG8MG
 function SlimDXinstalled: Boolean;
  // By Markus Grundner / DG8MG
  // Function for Inno Setup Compiler

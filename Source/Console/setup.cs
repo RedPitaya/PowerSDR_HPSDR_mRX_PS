@@ -2079,7 +2079,7 @@ namespace PowerSDR
             // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
             // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\Skins\\";
+                    "\\Charly 25\\PowerSDR Charly 25 HAMlab STEMlab Edition\\Skins\\";
             // DG8MG
 
             if (!Directory.Exists(path))
@@ -2115,9 +2115,9 @@ namespace PowerSDR
                     comboAppSkin.Text = "Default";
                 else
                     // DG8MG
-                    // Changed default skin to Red Pitaya
+                    // Changed default skin to Charly 25
                     // comboAppSkin.Text = "OpenHPSDR-Gray";
-                    comboAppSkin.Text = "Red Pitaya";
+                    comboAppSkin.Text = "Charly 25";
                     // DG8MG
             }
             else if (comboAppSkin.Items.Contains(skin))
@@ -17426,7 +17426,7 @@ namespace PowerSDR
             // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
             // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\Skins\\";
+                    "\\Charly 25\\PowerSDR Charly 25 HAMlab STEMlab Edition\\Skins\\";
             // DG8MG
 
             if (Directory.Exists(path + comboAppSkin.Text))
@@ -17445,7 +17445,7 @@ namespace PowerSDR
             // to use the same application data base directory as the rest of PowerSDR mRX PS Charly 25 HAMlab edition
             // and avoid incompatibility with other PowerSDR versions
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                    "\\Red Pitaya\\PowerSDR mRX PS Charly25 HAMlab\\Skins\\";
+                    "\\Charly 25\\PowerSDR Charly 25 HAMlab STEMlab Edition\\Skins\\";
             // DG8MG
 
             if (Directory.Exists(path + comboAppSkin.Text))

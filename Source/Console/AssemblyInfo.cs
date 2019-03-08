@@ -42,9 +42,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("PowerSDR/HPSDR Charly 25 / HAMlab / STEMlab SDR Edition")]
 [assembly: AssemblyDescription("Software Defined Radio Application")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Red Pitaya")]
+[assembly: AssemblyCompany("Charly 25")]
 [assembly: AssemblyProduct("PowerSDR")]
-[assembly: AssemblyCopyright("2018")]
+[assembly: AssemblyCopyright("2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 //In order to begin building localizable applications, set 
