@@ -315,40 +315,62 @@ namespace PowerSDR
                             c.sdr_app_running = result;
                         }
                     }
+
+                    if (c.C25ModelIsCharly25orHAMlab() && c.SetupForm.chkC25useTCP.Checked)
+                    {
+                        System.Console.WriteLine(String.Format("Attempting to connect to host adapter {0}, metis IP {1} via TCP protocol", EthernetHostIPAddress, Metis_IP_address));
+                        if (C25TCPDiscoverMetisOnPort(ref mhd, hostIP, targetIP))
+                        {
+                            foundMetis = true;
+                        }
+                    }
+                    else
+                    {
+                        System.Console.WriteLine(String.Format("Attempting fast re-connect to host adapter {0}, metis IP {1}", EthernetHostIPAddress, Metis_IP_address));
+
+                        if (DiscoverMetisOnPort(ref mhd, hostIP, targetIP))
+                        {
+                            foundMetis = true;
+                        }
+                    }
                     // DG8MG
 
-                    System.Console.WriteLine(String.Format("Attempting fast re-connect to host adapter {0}, metis IP {1}", EthernetHostIPAddress, Metis_IP_address));
-
-                    if (DiscoverMetisOnPort(ref mhd, hostIP, targetIP))
+                    // make sure that there is only one entry in the list!
+                    if (mhd.Count > 0)
                     {
-                        foundMetis = true;
-
-                        // make sure that there is only one entry in the list!
-                        if (mhd.Count > 0)
+                        // remove the extra ones that don't match!
+                        HPSDRDevice m2 = null;
+                        foreach (var m in mhd)
                         {
-                            // remove the extra ones that don't match!
-                            HPSDRDevice m2 = null;
-                            foreach (var m in mhd)
+                            if (m.IPAddress.CompareTo(Metis_IP_address) == 0)
                             {
-                                if (m.IPAddress.CompareTo(Metis_IP_address) == 0)
-                                {
-                                    m2 = m;
-                                }
+                                m2 = m;
                             }
+                        }
 
-                            // clear the list and put our single element in it, if we found it.
-                            mhd.Clear();
-                            if (m2 != null)
-                            {
-                                mhd.Add(m2);
-                            }
-                            else
-                            {
-                                foundMetis = false;
-                            }
+                        // clear the list and put our single element in it, if we found it.
+                        mhd.Clear();
+                        if (m2 != null)
+                        {
+                            mhd.Add(m2);
+                        }
+                        else
+                        {
+                            foundMetis = false;
                         }
                     }
                 }
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                // Don't scan the network for Red Pitaya devices at other IP addresses if there's none at the specified IP address
+                if (!foundMetis)
+                {
+                    if (cleanup)
+                        Win32.WSACleanup();
+                    return -1;
+                }
+                // DG8MG
             }
 
             if (FastConnect  && (EthernetHostIPAddress.Length > 0) && (Metis_IP_address.Length > 0))
@@ -412,6 +434,17 @@ namespace PowerSDR
                         }
                     }
                 }
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                // Don't scan the network for Red Pitaya devices at other IP addresses if there's none at the specified IP address
+                if (!foundMetis)
+                {
+                    if (cleanup)
+                        Win32.WSACleanup();
+                    return -1;
+                }
+                // DG8MG
             }
 
             if (!foundMetis)
@@ -514,9 +547,9 @@ namespace PowerSDR
             MetisCodeVersion = mhd[chosenDevice].codeVersion;
             Metis_IP_address = mhd[chosenDevice].IPAddress;
             MetisMAC = mhd[chosenDevice].MACAddress;
-            EthernetHostIPAddress = mhd[chosenDevice].hostPortIPAddress.ToString();            
+            EthernetHostIPAddress = mhd[chosenDevice].hostPortIPAddress.ToString();
 
-            rc = nativeInitMetis(Metis_IP_address, c.SetupForm.chkC25useTCP.Checked ? 1 : 0);
+            rc = nativeInitMetis(Metis_IP_address, (c.C25ModelIsCharly25orHAMlab() && c.SetupForm.chkC25useTCP.Checked) ? 1 : 0);
             return -rc;
         }
 
@@ -859,7 +892,7 @@ namespace PowerSDR
             }
 
 			// Extended by parameter 'protocol' to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
-            result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send, c.SetupForm.chkC25useTCP.Checked ? 1 : 0);      
+            result = StartAudioNative(sample_rate, samples_per_block, cb, sample_bits, no_send, (c.C25ModelIsCharly25orHAMlab() && c.SetupForm.chkC25useTCP.Checked) ? 1 : 0);      
             
 			// Charly 25 and HAMlab hardware must skip the firmware check
             if (c.C25ModelIsCharly25orHAMlab())
@@ -1456,6 +1489,123 @@ namespace PowerSDR
             return have_Metis;
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        private static bool C25TCPDiscoverMetisOnPort(ref List<HPSDRDevice> mhdList, IPAddress HostIP, IPAddress targetIP)
+        {
+            bool result = false;
+
+            // configure a new socket object for each Ethernet port we're scanning
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            // Listen to data on this PC's IP address. Allow the program to allocate a free port.
+            iep = new IPEndPoint(targetIP, MetisPort);
+
+            try
+            {
+                // connect to socket and Port
+                socket.Connect(iep);
+
+                IPEndPoint localEndPoint = (IPEndPoint)socket.LocalEndPoint;
+                System.Console.WriteLine("Looking for Red Pitaya boards using host adapter IP {0}, port {1}, via TCP", localEndPoint.Address, localEndPoint.Port);
+
+                if (C25_TCP_RedPitaya_Discovery(ref mhdList, HostIP, targetIP))
+                {
+                    result = true;
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine("Caught an exception while binding a TCP socket to endpoint {0}.  Exception was: {1} ", iep.ToString(), ex.ToString());
+                result = false;
+            }
+            finally
+            {
+                socket.Close();
+                socket = null;
+            }
+
+            return result;
+        }
+
+        private static bool C25_TCP_RedPitaya_Discovery(ref List<HPSDRDevice> mhdList, IPAddress HostIP, IPAddress targetIP)
+        {
+            string RedPitayaMAC;
+
+            // set up HPSDR Metis discovery packet
+            byte[] Metis_discovery = new byte[1032];
+            Array.Clear(Metis_discovery, 0, Metis_discovery.Length);
+
+            byte[] Metis_discovery_preamble = new byte[] { 0xEF, 0xFE, 0x02 };
+            Metis_discovery_preamble.CopyTo(Metis_discovery, 0);
+
+            int attempts = 0;
+
+            // send until we either find a Red Pitaya device or exceed the number of attempts
+            while (attempts < 3)
+            {
+                // send a Metis discovery packet to the port 1024
+                socket.Send(Metis_discovery);
+
+                // now listen on send port for a Red Pitaya device
+                System.Console.WriteLine("Ready to receive....");
+                int recv;
+                byte[] data = new byte[100];
+
+                Thread.Sleep(100);  // wait 100 msec for time out
+
+                if (socket.Available > 0)
+                {
+                    recv = socket.Receive(data, 60, SocketFlags.None);  // recv has number of bytes we received
+
+                    System.Console.WriteLine("raw Discovery data = " + BitConverter.ToString(data, 0, recv));
+
+                    // get RedPitaya MAC address from the payload
+                    byte[] MAC = { 0, 0, 0, 0, 0, 0 };
+                    Array.Copy(data, 3, MAC, 0, 6);
+                    RedPitayaMAC = BitConverter.ToString(MAC);
+                    byte codeVersion = data[9];
+                    byte boardType = data[10];
+
+                    // check for HPSDR frame ID and type 2 (not currently streaming data, which also means 'not yet in use')
+                    // changed to find RedPitaya boards, even if alreay in use!  This prevents the need to power-cycle RedPitaya.
+                    // (G Byrkit, 8 Jan 2012)
+                    if ((data[0] == 0xEF) && (data[1] == 0xFE) && ((data[2] & 0x02) != 0))
+                    {
+                        System.Console.WriteLine("\nFound a Red Pitaya.");
+                        System.Console.WriteLine("RedPitaya MAC address from payload = " + RedPitayaMAC);
+
+                        if (RedPitayaMAC.Equals("00-00-00-00-00-00"))
+                        {
+                            System.Console.WriteLine("Rejected: contains bogus MAC address of all-zeroes");
+                        }
+                        else
+                        {
+                            HPSDRDevice mhd = new HPSDRDevice();
+                            mhd.IPAddress = targetIP.ToString();
+                            mhd.MACAddress = RedPitayaMAC;
+                            mhd.deviceType = (HPSDRHW)boardType;
+                            mhd.codeVersion = codeVersion;
+                            mhd.InUse = false;
+                            mhd.hostPortIPAddress = HostIP;
+                            mhdList.Add(mhd);
+
+                            // A Red Pitaya device was found
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    System.Console.WriteLine("No data available.");
+                    attempts++;
+                }
+            }
+            System.Console.WriteLine("Number of attempts exceed!");
+            return false;
+        }
+
         /// <summary>
         /// Determines whether the board and hostAdapter IPAddresses are on the same subnet,
         /// using subnetMask to make the determination.  All addresses are IPV4 addresses
@@ -1617,6 +1767,24 @@ namespace PowerSDR
                 }
             }
 
+            switch (c.rpdeviceForm.lbChooseDevice.Items.Count)
+            {
+                case 0:
+                    return rpIPAddress;
+
+                case 1:
+                    c.rpdeviceForm.lbChooseDevice.SelectedIndex = 0;
+                    break;
+
+                default:
+                    if (c.rpdeviceForm.ShowDialog() == DialogResult.Cancel)
+                    {
+                        return rpIPAddress;
+                    }
+                    break;
+            }
+
+/*
             if (c.rpdeviceForm.lbChooseDevice.Items.Count > 1)
             {
                 if (c.rpdeviceForm.ShowDialog() == DialogResult.Cancel)
@@ -1624,10 +1792,15 @@ namespace PowerSDR
                     return rpIPAddress;
                 }
             }
+            else if (c.rpdeviceForm.lbChooseDevice.Items.Count == 0)
+            {
+                return rpIPAddress;
+            }
             else
             {
                 c.rpdeviceForm.lbChooseDevice.SelectedIndex = 0;
             }
+*/
 
             String ChosenDevice = c.rpdeviceForm.lbChooseDevice.SelectedItem.ToString().Remove(0, 12);
             ChosenDevice = ChosenDevice.Remove(ChosenDevice.IndexOf(' '));

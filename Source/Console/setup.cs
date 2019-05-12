@@ -3353,14 +3353,16 @@ namespace PowerSDR
                 }
 
                 // Check if the SDR application software version on the Red Pitaya device is high enough to support TCP as transmission protocol between PowerSDR and the Red Pitaya device
-                if (Convert.ToInt32(sdr_app_version) < 20170723)
+                if (Convert.ToInt32(sdr_app_version) < 20181129)
                 {
                     chkC25useTCP.Checked = false;
                     chkC25useTCP.Enabled = false;
+                    // chkC25useTCP.Visible = false;
                 }
                 else
                 {
                     chkC25useTCP.Enabled = true;
+                    chkC25useTCP.Visible = true;
                 }
 
                 if (sdr_app_version != "0")

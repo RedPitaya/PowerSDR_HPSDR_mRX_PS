@@ -215,29 +215,34 @@ int SendStartToMetis(void) 	 {
 		unsigned char packetbuf[64];
 	} outpacket;
 
+	struct c25_tcp_outdgram {
+		unsigned char packetbuf[1032];
+	} c25_tcp_outpacket;
+
 	struct indgram {
 		unsigned char fbuf[2000];
 	} inpacket;
 
 	int i;
 
-	memset(outpacket.packetbuf, 0, sizeof(outpacket));
-
-	outpacket.packetbuf[0] = 0xef;
-	outpacket.packetbuf[1] = 0xfe;
-	outpacket.packetbuf[2] = 0x04;
-	outpacket.packetbuf[3] = 0x01;
-
 	// DG8MG
 	// Extension to select UDP or TCP as transmission protocol between PowerSDR and the Red Pitaya device
 	if (Protocol == 1)
 	{
 		// TCP protocol is used
-		outpacket.packetbuf[3] = 0x11;
+		memset(c25_tcp_outpacket.packetbuf, 0, sizeof(c25_tcp_outpacket));
+		c25_tcp_outpacket.packetbuf[0] = 0xef;
+		c25_tcp_outpacket.packetbuf[1] = 0xfe;
+		c25_tcp_outpacket.packetbuf[2] = 0x04;
+		c25_tcp_outpacket.packetbuf[3] = 0x01;
 	}
 	else
 	{
 		// UDP protocol is used
+		memset(outpacket.packetbuf, 0, sizeof(outpacket));
+		outpacket.packetbuf[0] = 0xef;
+		outpacket.packetbuf[1] = 0xfe;
+		outpacket.packetbuf[2] = 0x04;
 		outpacket.packetbuf[3] = 0x01;
 	}
 	// DG8MG
@@ -246,12 +251,16 @@ int SendStartToMetis(void) 	 {
 	for (i = 0; i < 5; i++) {
 		/* printf("start sent\n"); */
 		ForceCandCFrame(1);
-		sendto(listenSock, (char *)&outpacket, sizeof(outpacket), 0, (SOCKADDR *)&MetisSockAddr, sizeof(MetisSockAddr));
 		
 		// DG8MG
 		// Check if TCP is used as transmission protocol between PowerSDR and the Red Pitaya device
 		if (Protocol == 1)
 		{
+			int bytes_sent = 0;
+			bytes_sent = send(c25TCPSocket, (char *)&c25_tcp_outpacket, sizeof(c25_tcp_outpacket), 0);
+			printf("SendStartToMetis: TCP bytes sent: %d, errno: %d\n", bytes_sent, errno);
+			fflush(stdout);
+
 			// Wait for the TCP client on the Red Pitaya device to be initialized
 			Sleep(100);
 
@@ -267,8 +276,9 @@ int SendStartToMetis(void) 	 {
 		// UDP protocol is used as transmission protocol between PowerSDR and the Red Pitaya device
 		else
 		{
+			sendto(listenSock, (char *)&outpacket, sizeof(outpacket), 0, (SOCKADDR *)&MetisSockAddr, sizeof(MetisSockAddr));
 			MetisReadDirect((char *)&inpacket, sizeof(inpacket));
-		}		
+		}
 		// DG8MG
 
 		if (MetisLastRecvSeq != starting_seq) {
@@ -353,6 +363,16 @@ int MetisReadDirect(char *bufp, int buflen) {
 			if (seqnum != (1 + MetisLastRecvSeq))  {
 				printf("MRD: seq error this: %d last: %d\n", seqnum, MetisLastRecvSeq);
 				fflush(stdout);
+
+/*
+				// DG8MG: DEBUG
+				FILE *fp;
+				fp = fopen("c:\\POWERSDR_SEQ_NUMBERS.TXT", "at");
+				fprintf(fp, "MRD: seq error this: %d last: %d\n", seqnum, MetisLastRecvSeq);
+				fflush(stdout);
+				fclose(fp);
+				// DG8MG
+*/
 			}
 			MetisLastRecvSeq = seqnum;
 
@@ -581,7 +601,7 @@ SOCKET C25MetisTCPConnectionSetup(void)
 		printf("CreateSockets Warning: TCP setsockopt SO_SNDBUF failed!\n");
 	}
 
-	rcvbufsize = 0x1000;
+	rcvbufsize = 0xffff;
 	rc = setsockopt(tcpSocket, SOL_SOCKET, SO_RCVBUF, (const char *)&rcvbufsize, sizeof(int));
 	if (rc == SOCKET_ERROR)
 	{
@@ -619,7 +639,7 @@ int C25MetisTCPReadDirect(char *bufp, int buflen)
 	if (rc < 0)
 	/* failed */
 	{  
-		printf("MRD TCP: recvfrom on listSock failed w/ rc=%d!\n", rc);
+		printf("MRD TCP: recvfrom on c25TCPSocket failed w/ rc=%d!\n", rc);
 		fflush(stdout);
 		return rc;
 	}
@@ -627,7 +647,8 @@ int C25MetisTCPReadDirect(char *bufp, int buflen)
 	{
 		while (rc < 1032)
 		{
-			rc += recvfrom_withtimeout(c25TCPSocket, (char *)(readbuf + rc), sizeof(readbuf) - rc, 0, (struct sockaddr *)&fromaddr, &fromlen, 0, 500000);			 
+			rc += recvfrom_withtimeout(c25TCPSocket, (char *)(readbuf + rc), sizeof(readbuf) - rc, 0, (struct sockaddr *)&fromaddr, &fromlen, 0, 50000);
+			printf("MRD TCP: receive buffer underrun error at seqnum: %d\n", seqnum);
 		}
 	}
 	
