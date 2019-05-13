@@ -3352,6 +3352,37 @@ namespace PowerSDR
                     }
                 }
 
+                string[] redpitaya_devices = { "hamlab.device", "stemlab.device" };
+
+                // Try to read the Red Pitaya device version
+                foreach (string redpitaya_device in redpitaya_devices)
+                {
+                    try
+                    {
+                        WebRequest request = WebRequest.Create("http://" + JanusAudio.Metis_IP_address + "/" + redpitaya_device);
+                        request.Method = "HEAD";
+
+                        using (WebResponse response = request.GetResponse())
+                        {
+                            switch (redpitaya_device)
+                            {
+                                case "hamlab.device":
+                                    console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
+                                    break;
+
+                                case "stemlab.device":
+                                    console.CurrentHPSDRModel = HPSDRModel.CHARLY25;
+                                    break;
+                            }
+                        }
+                        break;
+                    }
+                    catch
+                    {
+                        // Exception occurred during Red Pitaya device version read attempt
+                    }
+                }
+
                 // Check if the SDR application software version on the Red Pitaya device is high enough to support TCP as transmission protocol between PowerSDR and the Red Pitaya device
                 if (Convert.ToInt32(sdr_app_version) < 20181129)
                 {
@@ -4944,9 +4975,9 @@ namespace PowerSDR
                     case Model.CHARLY25PP:
                         radGenModelCharly25.Checked = true;
                         break;
-                    case Model.HAMLAB:
-                        radGenModelHAMlab.Checked = true;
-                        break;
+                    //case Model.HAMLAB:
+                    //    radGenModelHAMlab.Checked = true;
+                    //    break;
                     // DG8MG
                 }
             }
@@ -8968,11 +8999,11 @@ namespace PowerSDR
                 /*
                 Type formType = typeof(Form);
 
-                foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+                foreach (Type t in System.Reflection.Assembly.GetExecutingAssembly().GetTypes())
                 {
                     if (formType.IsAssignableFrom(t))
                     {
-                        PropertyInfo property = t.GetProperty("Icon");                     
+                        System.Reflection.PropertyInfo property = t.GetProperty("Icon");
                         Debug.WriteLine(t.Name);
                     }
                 }
@@ -9159,196 +9190,197 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for HAMlab hardware
-        private void radGenModelHamlab_CheckedChanged(object sender, System.EventArgs e)
-        {
-            HPSDRModel old_model = console.CurrentHPSDRModel;
+        //private void radGenModelHamlab_CheckedChanged(object sender, System.EventArgs e)
+        //{
+        //    HPSDRModel old_model = console.CurrentHPSDRModel;
 
-            if (radGenModelHAMlab.Checked)  // HAMlab is selected
-            {
-                console.CurrentModel = Model.HAMLAB;
-                console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
-                UpdateC25HardwareOptions();
+        //    if (radGenModelHAMlab.Checked)  // HAMlab is selected
+        //    {
+        //        console.CurrentModel = Model.HAMLAB;
+        //        console.CurrentHPSDRModel = HPSDRModel.HAMLAB;
+        //        UpdateC25HardwareOptions();
 
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon on the console form
-                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon on the setup form
+        //        console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon on the console form
+        //        Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[1]).GetHicon());  // set the Red Pitaya icon on the setup form
 
-                console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
-                console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
-                console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
-                console.chkC25Diversity.Enabled = true;  // HAMlab has an additional button for the Auto-Diversity functionality
-                console.chkC25Diversity.Visible = true;  // HAMlab has an additional button for the Auto-Diversity functionality
-                console.chkDX.ThreeState = true; // HAMlab has a thrid state here for listening to different receivers on left and right audio channel
-                groupBoxHPSDRHW.Visible = false;  // HAMlab doesn't have this hardware options
-                grpC25HardwareOptions.Visible = true;  // HAMlab has its own hardware options
-                chkPennyPresent.Checked = true;
-                chkPennyLane.Checked = false;  // HAMlab doesn't need this functionality
-                chkMercuryPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkJanusPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkExcaliburPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkAlexPresent.Checked = false;  // HAMlab doesn't need this functionality
-                chkApolloPresent.Checked = false;  // HAMlab doesn't need this functionality
-                groupBox10MhzClock.Visible = true;
-                groupBox122MHz.Visible = true;
-                groupBoxMicSource.Visible = true;
-                chkHermesStepAttenuator.Checked = false;  // HAMlab doesn't need this functionality
-                grpHermesStepAttenuator.Visible = false;  // HAMlab doesn't need this functionality
-                groupBoxRXOptions.Text = "Mercury Options";
-                radMetis.Text = "Red Pitaya (Ethernet)";
-                grpMetisAddr.Text = "Red Pitaya Address";
-                chkAlexPresent_CheckedChanged(this, EventArgs.Empty);
-                chkAlexAntCtrl_CheckedChanged(this, EventArgs.Empty);
-                chkBypassANANPASettings.Visible = false;
-                chkAutoPACalibrate.Visible = true;
-                grpCHARLY25PAGainByBand.BringToFront();
-                labelRXAntControl.Text = "  RX1   RX2    XVTR";
-                chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator
-                console.RX2PreampPresent = false;  // HAMlab doesn't have a RX2 preamp
-                chkRxOutOnTx.Text = "RX 1 OUT on Tx";
-                chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
-                chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
-                grpOzyType.Visible = true;
-                radOzyUSB.Checked = false;
-                radOzyUSB.Enabled = false;
-                radMetis.Checked = true;
-                chkC25useTCP.Checked = false;
-                chkC25useTCP.Enabled = true;
-                chkC25useTCP.Visible = true;
+        //        console.chkSR.Visible = false;  // HAMlab doesn't need this functionality
+        //        console.chkC25ANT.Checked = false;  // Switch to first antenna on HAMlab
+        //        console.chkC25ANT.Visible = true;  // Make antenna switch button for HAMlab visible
+        //        console.chkC25Diversity.Enabled = false;  // HAMlab has an additional button for the Auto-Diversity functionality
+        //        console.chkC25Diversity.Visible = true;  // HAMlab has an additional button for the Auto-Diversity functionality
+        //        console.chkDX.ThreeState = true; // HAMlab has a thrid state here for listening to different receivers on left and right audio channel
+        //        groupBoxHPSDRHW.Visible = false;  // HAMlab doesn't have this hardware options
+        //        grpC25HardwareOptions.Visible = true;  // HAMlab has its own hardware options
+        //        chkPennyPresent.Checked = true;
+        //        chkPennyLane.Checked = false;  // HAMlab doesn't need this functionality
+        //        chkMercuryPresent.Checked = false;  // HAMlab doesn't need this functionality
+        //        chkJanusPresent.Checked = false;  // HAMlab doesn't need this functionality
+        //        chkExcaliburPresent.Checked = false;  // HAMlab doesn't need this functionality
+        //        chkAlexPresent.Checked = false;  // HAMlab doesn't need this functionality
+        //        chkApolloPresent.Checked = false;  // HAMlab doesn't need this functionality
+        //        groupBox10MhzClock.Visible = true;
+        //        groupBox122MHz.Visible = true;
+        //        groupBoxMicSource.Visible = true;
+        //        chkHermesStepAttenuator.Checked = false;  // HAMlab doesn't need this functionality
+        //        grpHermesStepAttenuator.Visible = false;  // HAMlab doesn't need this functionality
+        //        groupBoxRXOptions.Text = "Mercury Options";
+        //        radMetis.Text = "Red Pitaya (Ethernet)";
+        //        grpMetisAddr.Text = "Red Pitaya Address";
+        //        chkAlexPresent_CheckedChanged(this, EventArgs.Empty);
+        //        chkAlexAntCtrl_CheckedChanged(this, EventArgs.Empty);
+        //        chkBypassANANPASettings.Visible = false;
+        //        chkAutoPACalibrate.Visible = true;
+        //        grpCHARLY25PAGainByBand.BringToFront();
+        //        labelRXAntControl.Text = "  RX1   RX2    XVTR";
+        //        chkATTOnTX.Checked = false;  // HAMlab doesn't have a TX step attenuator
+        //        console.RX2PreampPresent = false;  // HAMlab doesn't have a RX2 preamp
+        //        chkRxOutOnTx.Text = "RX 1 OUT on Tx";
+        //        chkEXT1OutOnTx.Text = "RX 2 IN on Tx";
+        //        chkEXT2OutOnTx.Text = "RX 1 IN on Tx";
+        //        grpOzyType.Visible = true;
+        //        radOzyUSB.Checked = false;
+        //        radOzyUSB.Enabled = false;
+        //        radMetis.Checked = true;
+        //        // chkC25useTCP.Checked = false;
+        //        chkC25useTCP.Enabled = true;
+        //        chkC25useTCP.Visible = true;
 
-                console.psform.AutoAttenuate = false;  // HAMlab doesn't have this functionality
-                console.psform.AutoAttenuate_Visible = false;  // HAMlab doesn't have this functionality
+        //        console.psform.AutoAttenuate = false;  // HAMlab doesn't have this functionality
+        //        console.psform.AutoAttenuate_Visible = false;  // HAMlab doesn't have this functionality
 
-                if (lblC25AudioCodecPresent.Visible)
-                {
-                    chkVACAllowBypass.Checked = true;  // HAMlab with new audio codec needs this to be checked
-                }
-                else
-                {
-                    chkVACAllowBypass.Checked = false;  // HAMlab with old USB audio codec needs this to be unchecked
-                }
+        //        if (lblC25AudioCodecPresent.Visible)
+        //        {
+        //            chkVACAllowBypass.Checked = true;  // HAMlab with new audio codec needs this to be checked
+        //        }
+        //        else
+        //        {
+        //            chkVACAllowBypass.Checked = false;  // HAMlab with old USB audio codec needs this to be unchecked
+        //        }
 
-                if (!tcSetup.TabPages.Contains(tpC25Settings))
-                {
-                    tcSetup.TabPages.Add(tpC25Settings);
-                    tcSetup.SelectedIndex = 0;
-                }
+        //        if (!tcSetup.TabPages.Contains(tpC25Settings))
+        //        {
+        //            tcSetup.TabPages.Add(tpC25Settings);
+        //            tcSetup.SelectedIndex = 0;
+        //        }
 
-                if (!tcSetup.TabPages.Contains(tpC25Tests))
-                {
-                    tcSetup.TabPages.Add(tpC25Tests);
-                    tcSetup.SelectedIndex = 0;
-                }
-            }
-            else  // HAMlab is deselected
-            {
-                console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the console form
-                Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the setup form
+        //        if (!tcSetup.TabPages.Contains(tpC25Tests))
+        //        {
+        //            tcSetup.TabPages.Add(tpC25Tests);
+        //            tcSetup.SelectedIndex = 0;
+        //        }
+        //    }
+        //    else  // HAMlab is deselected
+        //    {
+        //        console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the console form
+        //        Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the setup form
 
-                console.chkSR.Visible = true;  // reset to default setting
-                console.chkC25ANT.Visible = false;  // reset to default setting
-                console.chkC25Diversity.Visible = false;  // reset to default setting
-                console.chkDX.ThreeState = false; // reset to default setting
-                chkVACAllowBypass.Checked = true;  // reset to default setting
-                grpHermesStepAttenuator.Visible = true;  // reset to default setting
-                console.psform.AutoAttenuate = true;  // reset to default setting
-                console.psform.AutoAttenuate_Visible = true;  // reset to default setting
-                grpC25HardwareOptions.Visible = false;  // reset to default setting
-                chkC25useTCP.Visible = false;  // reset to default setting
+        //        console.chkSR.Visible = true;  // reset to default setting
+        //        console.chkC25ANT.Visible = false;  // reset to default setting
+        //        console.chkC25Diversity.Enabled = false;  // reset to default setting
+        //        console.chkC25Diversity.Visible = false;  // reset to default setting
+        //        console.chkDX.ThreeState = false; // reset to default setting
+        //        chkVACAllowBypass.Checked = true;  // reset to default setting
+        //        grpHermesStepAttenuator.Visible = true;  // reset to default setting
+        //        console.psform.AutoAttenuate = true;  // reset to default setting
+        //        console.psform.AutoAttenuate_Visible = true;  // reset to default setting
+        //        grpC25HardwareOptions.Visible = false;  // reset to default setting
+        //        chkC25useTCP.Visible = false;  // reset to default setting
 
-                if (tcSetup.TabPages.Contains(tpC25Settings))
-                {
-                    tcSetup.TabPages.Remove(tpC25Settings);
-                    tcSetup.SelectedIndex = 0;
-                }
+        //        if (tcSetup.TabPages.Contains(tpC25Settings))
+        //        {
+        //            tcSetup.TabPages.Remove(tpC25Settings);
+        //            tcSetup.SelectedIndex = 0;
+        //        }
 
-                if (tcSetup.TabPages.Contains(tpC25Tests))
-                {
-                    tcSetup.TabPages.Remove(tpC25Tests);
-                    tcSetup.SelectedIndex = 0;
-                }
-            }
+        //        if (tcSetup.TabPages.Contains(tpC25Tests))
+        //        {
+        //            tcSetup.TabPages.Remove(tpC25Tests);
+        //            tcSetup.SelectedIndex = 0;
+        //        }
+        //    }
 
-            // DG8MG: Test me!
-            // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for HAMlab
-            {
-                // remove setup pages for HPSDR stuff 
-                RemoveHPSDRPages();
+        //    // DG8MG: Test me!
+        //    // Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for HAMlab
+        //    {
+        //        // remove setup pages for HPSDR stuff 
+        //        RemoveHPSDRPages();
 
-                // force setting of audio card 
-                comboAudioSoundCard.Text = "HPSDR";
-                comboAudioSoundCard.Enabled = false;
-                udAudioVoltage1.Value = 0.80M;
-                udAudioVoltage1.Enabled = false;
-                btnAudioVoltTest1.Visible = false;
-                // and enable the gain by band page 
-                grpFRSRegion.Visible = true;
-                grpPAGainByBand.Visible = true;
-                grpGenCalRXImage.Visible = false;
-                grpTestX2.Visible = false;
-                lblMoxDelay.Visible = true;
-                udMoxDelay.Visible = true;
-                udMoxDelay.Enabled = true;
-                udRFDelay.Visible = true;
-                udRFDelay.Enabled = true;
-                lblRFDelay.Visible = true;
-                grpImpulseTest.Visible = false;
+        //        // force setting of audio card 
+        //        comboAudioSoundCard.Text = "HPSDR";
+        //        comboAudioSoundCard.Enabled = false;
+        //        udAudioVoltage1.Value = 0.80M;
+        //        udAudioVoltage1.Enabled = false;
+        //        btnAudioVoltTest1.Visible = false;
+        //        // and enable the gain by band page 
+        //        grpFRSRegion.Visible = true;
+        //        grpPAGainByBand.Visible = true;
+        //        grpGenCalRXImage.Visible = false;
+        //        grpTestX2.Visible = false;
+        //        lblMoxDelay.Visible = true;
+        //        udMoxDelay.Visible = true;
+        //        udMoxDelay.Enabled = true;
+        //        udRFDelay.Visible = true;
+        //        udRFDelay.Enabled = true;
+        //        lblRFDelay.Visible = true;
+        //        grpImpulseTest.Visible = false;
 
-                {
-                    grpGeneralHardwareORION.Visible = false;
-                    groupBoxHPSDRHW.BringToFront();
-                    // groupBoxHPSDRHW.Visible = true;
-                }
+        //        {
+        //            grpGeneralHardwareORION.Visible = false;
+        //            groupBoxHPSDRHW.BringToFront();
+        //            // groupBoxHPSDRHW.Visible = true;
+        //        }
 
-                chkAudioExpert.Checked = false;
-                chkAudioExpert.Visible = false;
-                grpGenCalRXImage.Enabled = false;
-                chkCalExpert.Enabled = false;
-                grpHPSDRFreqCalDbg.Visible = true;
+        //        chkAudioExpert.Checked = false;
+        //        chkAudioExpert.Visible = false;
+        //        grpGenCalRXImage.Enabled = false;
+        //        chkCalExpert.Enabled = false;
+        //        grpHPSDRFreqCalDbg.Visible = true;
 
-                chkLimitRX.Enabled = true;
-                tpPennyCtrl.Text = "Penny Ctrl";
-            }
-            // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for HAMlab
+        //        chkLimitRX.Enabled = true;
+        //        tpPennyCtrl.Text = "Penny Ctrl";
+        //    }
+        //    // End of Copied content from function: radGenModelHPSDR_or_Hermes_CheckedChanged(sender, e, false) and modified it for HAMlab
 
-            if (radMetis.Checked)
-            {
-                console.HPSDRisMetis = true;
-                grpMetisAddr.Visible = true;
-            }
+        //    if (radMetis.Checked)
+        //    {
+        //        console.HPSDRisMetis = true;
+        //        grpMetisAddr.Visible = true;
+        //    }
 
-            if (radGenModelHAMlab.Checked)   // Test me! DG8MG
-            {
-                int nr = 2;
-                bool pwr_cycled = false;
-                if (!chkDisablePureSignal.Checked)
-                    nr = console.psform.NRX(nr, console.CurrentHPSDRModel);
-                int old_rate = console.NReceivers;
-                int new_rate = nr;
-                bool power = console.PowerOn;
-                if (power && new_rate != old_rate)
-                {
-                    console.PowerOn = false;
-                    Thread.Sleep(100);
-                }
-                console.psform.SetPSReceivers(console.CurrentHPSDRModel);
-                console.NReceivers = nr;
+        //    if (radGenModelHAMlab.Checked)   // Test me! DG8MG
+        //    {
+        //        int nr = 2;
+        //        bool pwr_cycled = false;
+        //        if (!chkDisablePureSignal.Checked)
+        //            nr = console.psform.NRX(nr, console.CurrentHPSDRModel);
+        //        int old_rate = console.NReceivers;
+        //        int new_rate = nr;
+        //        bool power = console.PowerOn;
+        //        if (power && new_rate != old_rate)
+        //        {
+        //            console.PowerOn = false;
+        //            Thread.Sleep(100);
+        //        }
+        //        console.psform.SetPSReceivers(console.CurrentHPSDRModel);
+        //        console.NReceivers = nr;
 
-                if (power && new_rate != old_rate)
-                {
-                    pwr_cycled = true;
-                    console.PowerOn = true;
-                }
+        //        if (power && new_rate != old_rate)
+        //        {
+        //            pwr_cycled = true;
+        //            console.PowerOn = true;
+        //        }
 
-                if (power && !pwr_cycled)
-                {
-                    if (old_model != console.CurrentHPSDRModel)
-                    {
-                        console.PowerOn = false;
-                        Thread.Sleep(100);
-                        console.PowerOn = true;
-                    }
-                }
-            }
-        }
+        //        if (power && !pwr_cycled)
+        //        {
+        //            if (old_model != console.CurrentHPSDRModel)
+        //            {
+        //                console.PowerOn = false;
+        //                Thread.Sleep(100);
+        //                console.PowerOn = true;
+        //            }
+        //        }
+        //    }
+        //}
         // DG8MG
 
         private void radGenModelSoftRock40_CheckedChanged(object sender, System.EventArgs e)

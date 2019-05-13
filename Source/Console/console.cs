@@ -193,7 +193,7 @@ namespace PowerSDR
         CHARLY25LC,
         CHARLY25AB,
         CHARLY25PP,
-        HAMLAB
+        // HAMLAB
         // DG8MG
     }
 
@@ -23420,7 +23420,7 @@ namespace PowerSDR
                     case Model.CHARLY25LC:
                     case Model.CHARLY25AB:
                     case Model.CHARLY25PP:
-                    case Model.HAMLAB:
+                    //case Model.HAMLAB:
                         MinFreq = 0.000000;
                         MaxFreq = 61.0;
                         break;
@@ -38914,7 +38914,8 @@ namespace PowerSDR
         // Extension for Charly 25 and HAMlab hardware
         public bool C25ModelIsCharly25orHAMlab()
         {
-            if (CurrentModel == Model.CHARLY25 || CurrentModel == Model.CHARLY25LC || CurrentModel == Model.CHARLY25AB || CurrentModel == Model.CHARLY25PP || CurrentModel == Model.HAMLAB)
+            //if (CurrentModel == Model.CHARLY25 || CurrentModel == Model.CHARLY25LC || CurrentModel == Model.CHARLY25AB || CurrentModel == Model.CHARLY25PP || CurrentModel == Model.HAMLAB)
+            if (CurrentModel == Model.CHARLY25 || CurrentModel == Model.CHARLY25LC || CurrentModel == Model.CHARLY25AB || CurrentModel == Model.CHARLY25PP)
             {
                 return true;
             }

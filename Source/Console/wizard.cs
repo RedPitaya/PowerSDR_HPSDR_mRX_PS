@@ -142,7 +142,6 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        private RadioButtonTS radGenModelHAMlab;
         private RadioButtonTS radGenModelCharly25;
         // DG8MG
 
@@ -233,9 +232,9 @@ namespace PowerSDR
                 case Model.CHARLY25:
                     radGenModelCharly25.Checked = true;
                     break;
-                case Model.HAMLAB:
-                    radGenModelHAMlab.Checked = true;
-                    break;
+                //case Model.HAMLAB:
+                //    radGenModelHAMlab.Checked = true;
+                //    break;
                 // DG8MG
 
             }
@@ -274,7 +273,6 @@ namespace PowerSDR
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.grpModel = new System.Windows.Forms.GroupBoxTS();
             this.radGenModelCharly25 = new System.Windows.Forms.RadioButtonTS();
-            this.radGenModelHAMlab = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN7000D = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN8000D = new System.Windows.Forms.RadioButtonTS();
             this.radGenModelANAN10E = new System.Windows.Forms.RadioButtonTS();
@@ -363,7 +361,6 @@ namespace PowerSDR
             // grpModel
             // 
             this.grpModel.Controls.Add(this.radGenModelCharly25);
-            this.grpModel.Controls.Add(this.radGenModelHAMlab);
             this.grpModel.Controls.Add(this.radGenModelANAN7000D);
             this.grpModel.Controls.Add(this.radGenModelANAN8000D);
             this.grpModel.Controls.Add(this.radGenModelANAN10E);
@@ -388,27 +385,15 @@ namespace PowerSDR
             // 
             // radGenModelCharly25
             // 
-            this.radGenModelCharly25.AutoSize = true;
+            this.radGenModelCharly25.AutoEllipsis = true;
             this.radGenModelCharly25.Image = null;
             this.radGenModelCharly25.Location = new System.Drawing.Point(19, 182);
             this.radGenModelCharly25.Name = "radGenModelCharly25";
-            this.radGenModelCharly25.Size = new System.Drawing.Size(83, 17);
+            this.radGenModelCharly25.Size = new System.Drawing.Size(119, 30);
             this.radGenModelCharly25.TabIndex = 15;
-            this.radGenModelCharly25.Text = "CHARLY 25";
+            this.radGenModelCharly25.Text = "Charly 25 / HAMlab / STEMlab";
             this.radGenModelCharly25.UseVisualStyleBackColor = true;
             this.radGenModelCharly25.CheckedChanged += new System.EventHandler(this.radGenModelCharly25_CheckedChanged);
-            // 
-            // radGenModelHAMlab
-            // 
-            this.radGenModelHAMlab.AutoSize = true;
-            this.radGenModelHAMlab.Image = null;
-            this.radGenModelHAMlab.Location = new System.Drawing.Point(19, 199);
-            this.radGenModelHAMlab.Name = "radGenModelHAMlab";
-            this.radGenModelHAMlab.Size = new System.Drawing.Size(118, 17);
-            this.radGenModelHAMlab.TabIndex = 16;
-            this.radGenModelHAMlab.Text = "HAMlab / STEMlab";
-            this.radGenModelHAMlab.UseVisualStyleBackColor = true;
-            this.radGenModelHAMlab.CheckedChanged += new System.EventHandler(this.radGenModelHamlab_CheckedChanged);
             // 
             // radGenModelANAN7000D
             // 
@@ -1643,7 +1628,7 @@ namespace PowerSDR
                         // DG8MG
                         // Extension for Charly 25 and HAMlab hardware
                         case Model.CHARLY25:
-                        case Model.HAMLAB:
+                        //case Model.HAMLAB:
                             CurPage = Page.REGION;
                             btnNext.Focus();
                             break;
@@ -1789,7 +1774,8 @@ namespace PowerSDR
 
                 // Extension for Charly 25 and HAMlab hardware
                 case Page.REGION:
-                    if (model == Model.CHARLY25 || model == Model.HAMLAB)
+                    //if (model == Model.CHARLY25 || model == Model.HAMLAB)
+                    if (model == Model.CHARLY25)
                     {
                         CurPage = Page.MODEL;
                     }
@@ -1802,7 +1788,8 @@ namespace PowerSDR
 
                     // DG8MG
                     // Extension for Charly 25 and HAMlab hardware
-                    if (model == Model.CHARLY25 || model == Model.HAMLAB)
+                    //if (model == Model.CHARLY25 || model == Model.HAMLAB)
+                    if (model == Model.CHARLY25)
                     {
                         CurPage = Page.REGION;
                     }
@@ -1947,7 +1934,7 @@ namespace PowerSDR
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
                 case Model.CHARLY25:
-                case Model.HAMLAB:
+                //case Model.HAMLAB:
                     console.SetupForm.PenelopePresent = penelope_present;
                     console.SetupForm.PennyLanePresent = pennylane_present;
                     console.SetupForm.MercuryPresent = mercury_present;
@@ -2517,39 +2504,39 @@ namespace PowerSDR
             }
         }
 
-        private void radGenModelHamlab_CheckedChanged(object sender, System.EventArgs e)
-        {
-            if (radGenModelHAMlab.Checked)
-            {
-                model = Model.HAMLAB;
-                pictureBox1.Image = null;
-                pictureBox1.Visible = false;
-                //pictureBox1.Image = new Bitmap(GetResource("PowerSDR.images.hpsdr.jpg"));
-                chkAlex.Visible = false;
-                chkAlex.Checked = false;
-                chkExcalibur.Visible = false;
-                chkExcalibur.Checked = false;
-                chkMercury.Visible = false;
-                chkMercury.Checked = false;
-                chkPennyLane.Visible = false;
-                chkPennyLane.Checked = false;
-                chkPenny.Visible = false;
-                chkPenny.Checked = true;
-                radOzy.Visible = false;
-                radMetis.Visible = false;
-                //radMetis.Text = "Red Pitaya";
-            }
-            else
-            {
-                chkAlex.Visible = true;
-                chkExcalibur.Visible = true;
-                chkMercury.Visible = true;
-                chkPennyLane.Visible = true;
-                chkPenny.Visible = true;
-                radOzy.Visible = true;
-                radMetis.Visible = true;
-            }
-        }
+        //private void radGenModelHamlab_CheckedChanged(object sender, System.EventArgs e)
+        //{
+        //    if (radGenModelHAMlab.Checked)
+        //    {
+        //        model = Model.HAMLAB;
+        //        pictureBox1.Image = null;
+        //        pictureBox1.Visible = false;
+        //        //pictureBox1.Image = new Bitmap(GetResource("PowerSDR.images.hpsdr.jpg"));
+        //        chkAlex.Visible = false;
+        //        chkAlex.Checked = false;
+        //        chkExcalibur.Visible = false;
+        //        chkExcalibur.Checked = false;
+        //        chkMercury.Visible = false;
+        //        chkMercury.Checked = false;
+        //        chkPennyLane.Visible = false;
+        //        chkPennyLane.Checked = false;
+        //        chkPenny.Visible = false;
+        //        chkPenny.Checked = true;
+        //        radOzy.Visible = false;
+        //        radMetis.Visible = false;
+        //        //radMetis.Text = "Red Pitaya";
+        //    }
+        //    else
+        //    {
+        //        chkAlex.Visible = true;
+        //        chkExcalibur.Visible = true;
+        //        chkMercury.Visible = true;
+        //        chkPennyLane.Visible = true;
+        //        chkPenny.Visible = true;
+        //        radOzy.Visible = true;
+        //        radMetis.Visible = true;
+        //    }
+        //}
         // DG8MG
         
         private void chkMercury_CheckedChanged(object sender, System.EventArgs e)
