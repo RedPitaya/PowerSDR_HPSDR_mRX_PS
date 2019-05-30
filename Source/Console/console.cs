@@ -9095,6 +9095,11 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
+            if (MUT)
+            {
+                chkMUT_CheckedChanged(this, EventArgs.Empty);
+            }
+
             sdr_app_running = 0;
             // DG8MG
         }
@@ -17527,52 +17532,57 @@ namespace PowerSDR
 
             //~~~~~
 
-            double vfoa = VFOAFreq;								// save current VFOA
+            double vfoa = VFOAFreq;                         // save current VFOA
 
-            bool rit_on = chkRIT.Checked;						// save current RIT On
-            chkRIT.Checked = false;								// turn RIT off
-            int rit_val = (int)udRIT.Value;						// save current RIT value
+            bool rit_on = chkRIT.Checked;                   // save current RIT On
+            chkRIT.Checked = false;                         // turn RIT off
+            int rit_val = (int)udRIT.Value;                 // save current RIT value
+
+            // DG8MG
+            bool ctun = chkFWCATU.Checked;                  // save current CTUN state
+            chkFWCATU.Checked = false;                      // turn CTUN off
+            // DG8MG
 
             string display = comboDisplayMode.Text;
             comboDisplayMode.Text = "Panadapter";
             // comboDisplayMode.Text = "Off";
 
-            //  bool polyphase = SetupForm.Polyphase;				// save current polyphase setting
-            //  SetupForm.Polyphase = false;						// disable polyphase
+            //  bool polyphase = SetupForm.Polyphase;       // save current polyphase setting
+            //  SetupForm.Polyphase = false;                // disable polyphase
 
-            int dsp_buf_size = SetupForm.DSPPhoneRXBuffer;		// save current DSP buffer size
-            SetupForm.DSPPhoneRXBuffer = 16384;					// set DSP Buffer Size to 16384
+            int dsp_buf_size = SetupForm.DSPPhoneRXBuffer;  // save current DSP buffer size
+            SetupForm.DSPPhoneRXBuffer = 16384;             // set DSP Buffer Size to 16384
 
-            //  Filter filter = RX1Filter;						// save current filter
+            //  Filter filter = RX1Filter;                  // save current filter
 
-            DSPMode dsp_mode = rx1_dsp_mode;				// save current DSP demod mode
-            RX1DSPMode = DSPMode.AM;						// set mode to CWU
+            DSPMode dsp_mode = rx1_dsp_mode;                // save current DSP demod mode
+            RX1DSPMode = DSPMode.AM;                        // set mode to CWU
 
-            VFOAFreq = freq;									// set VFOA frequency
+            VFOAFreq = freq;                                // set VFOA frequency
 
-            //  Filter am_filter = RX1Filter;					// save current AM filter
-            //  RX1Filter = Filter.F2;						   // set filter to 500Hz
+            //  Filter am_filter = RX1Filter;               // save current AM filter
+            //  RX1Filter = Filter.F2;                      // set filter to 500Hz
 
             bool step_attn = SetupForm.HermesEnableAttenuator;
             SetupForm.HermesEnableAttenuator = false;
-            PreampMode preamp = RX1PreampMode;				// save current preamp mode
+            PreampMode preamp = RX1PreampMode;              // save current preamp mode
 
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if (C25ModelIsCharly25orHAMlab())
             {
-                RX1PreampMode = PreampMode.C25_OFF;			// set preamp to 0dB
+                RX1PreampMode = PreampMode.C25_OFF;         // set preamp to 0dB
             }
             else
             {
-                RX1PreampMode = PreampMode.HPSDR_ON;			// set to high
+                RX1PreampMode = PreampMode.HPSDR_ON;        // set to high
             }
             // DG8MG
 
-            MeterRXMode rx_meter = CurrentMeterRXMode;			// save current RX Meter mode
-            CurrentMeterRXMode = MeterRXMode.OFF;				// turn RX Meter off
+            MeterRXMode rx_meter = CurrentMeterRXMode;      // save current RX Meter mode
+            CurrentMeterRXMode = MeterRXMode.OFF;           // turn RX Meter off
 
-            //   bool display_avg = chkDisplayAVG.Checked;			// save current average state
+            //   bool display_avg = chkDisplayAVG.Checked;  // save current average state
             //   chkDisplayAVG.Checked = false;
 
             float old_multimeter_cal = rx1_meter_cal_offset;
@@ -17972,26 +17982,31 @@ namespace PowerSDR
             }
 
             comboDisplayMode.Text = display;
-            chkRIT.Checked = rit_on;							// restore RIT on
-            udRIT.Value = rit_val;								// restore RIT value
-            //SetupForm.RXOnly = rx_only;						// restore RX Only			
-            //  DisplayAVG = display_avg;							// restore AVG value
-            RX1PreampMode = preamp;					        	// restore preamp value
+            chkRIT.Checked = rit_on;                            // restore RIT on
+            udRIT.Value = rit_val;                              // restore RIT value
+
+            // DG8MG
+            chkFWCATU.Checked = ctun;                           // restore CTUN state
+            // DG8MG
+
+            //SetupForm.RXOnly = rx_only;                       // restore RX Only
+            //  DisplayAVG = display_avg;                       // restore AVG value
+            RX1PreampMode = preamp;                             // restore preamp value
             SetupForm.HermesEnableAttenuator = step_attn;
-            // RX1Filter = am_filter;							// restore AM filter
-            RX1DSPMode = dsp_mode;						    	// restore DSP mode
-            // RX1Filter = filter;								// restore filter
+            // RX1Filter = am_filter;                           // restore AM filter
+            RX1DSPMode = dsp_mode;                              // restore DSP mode
+            // RX1Filter = filter;                              // restore filter
             //  if (dsp_buf_size != 4096)
-            //  chkPower.Checked = false;						// go to standby
-            SetupForm.DSPPhoneRXBuffer = dsp_buf_size;		    // restore DSP Buffer Size
-            VFOAFreq = vfoa;									// restore vfo frequency
+            //  chkPower.Checked = false;                       // go to standby
+            SetupForm.DSPPhoneRXBuffer = dsp_buf_size;          // restore DSP Buffer Size
+            VFOAFreq = vfoa;                                    // restore vfo frequency
             // if (dsp_buf_size != 4096)
             //  {
             //  Thread.Sleep(2000);
             //  chkPower.Checked = true;
             //  }
-            CurrentMeterRXMode = rx_meter;						// restore RX Meter mode
-            // SetupForm.Polyphase = polyphase;					// restore polyphase
+            CurrentMeterRXMode = rx_meter;                      // restore RX Meter mode
+            // SetupForm.Polyphase = polyphase;                 // restore polyphase
 
             //			Debug.WriteLine("multimeter_cal_offset: "+multimeter_cal_offset);
             //			Debug.WriteLine("display_cal_offset: "+display_cal_offset);
@@ -18031,29 +18046,32 @@ namespace PowerSDR
 
             int iterations = 20;                            // number of samples to average
 
-            double vfob = VFOBFreq;								// save current VFOB
+            double vfob = VFOBFreq;                         // save current VFOB
 
-            bool rit_on = chkRIT.Checked;						// save current RIT On
-            chkRIT.Checked = false;								// turn RIT off
-            int rit_val = (int)udRIT.Value;						// save current RIT value
+            bool rit_on = chkRIT.Checked;                   // save current RIT On
+            chkRIT.Checked = false;                         // turn RIT off
+            int rit_val = (int)udRIT.Value;                 // save current RIT value
+
+            bool ctun = chkX2TR.Checked;                    // save current CTUN state
+            chkX2TR.Checked = false;                        // turn CTUN off
 
             string display = comboRX2DisplayMode.Text;
             comboRX2DisplayMode.Text = "Panadapter";
 
-            int dsp_buf_size = SetupForm.DSPPhoneRXBuffer;		// save current DSP buffer size
-            SetupForm.DSPPhoneRXBuffer = 16384;					// set DSP Buffer Size to 16384
+            int dsp_buf_size = SetupForm.DSPPhoneRXBuffer;  // save current DSP buffer size
+            SetupForm.DSPPhoneRXBuffer = 16384;             // set DSP Buffer Size to 16384
 
-            DSPMode dsp_mode = rx2_dsp_mode;				// save current DSP demod mode
-            RX2DSPMode = DSPMode.AM;						// set mode to AM
+            DSPMode dsp_mode = rx2_dsp_mode;                // save current DSP demod mode
+            RX2DSPMode = DSPMode.AM;                        // set mode to AM
 
-            VFOBFreq = freq;									// set VFOB frequency
+            VFOBFreq = freq;                                // set VFOB frequency
 
             PreampMode preamp = RX2PreampMode;              // save current preamp mode
 
-            RX2PreampMode = PreampMode.C25_OFF;			// set preamp to 0dB
+            RX2PreampMode = PreampMode.C25_OFF;             // set preamp to 0dB
 
-            MeterRXMode rx_meter = RX2MeterMode;			    // save current RX Meter mode
-            RX2MeterMode = MeterRXMode.OFF;				        // turn RX2 Meter off
+            MeterRXMode rx_meter = RX2MeterMode;            // save current RX Meter mode
+            RX2MeterMode = MeterRXMode.OFF;                 // turn RX2 Meter off
 
             int progress_divisor;
 
@@ -18234,14 +18252,15 @@ namespace PowerSDR
             comboRX2MeterMode.Enabled = true;
 
             comboRX2DisplayMode.Text = display;                 // restore RX2 display text
-            chkRIT.Checked = rit_on;							// restore RIT on
+            chkRIT.Checked = rit_on;                            // restore RIT on
             udRIT.Value = rit_val;                              // restore RIT value
+            chkX2TR.Checked = ctun;                             // restore CTUN state
 
-            RX2PreampMode = preamp;					        	// restore RX2 preamp value
-            RX2DSPMode = dsp_mode;						    	// restore RX2 DSP mode
-            SetupForm.DSPPhoneRXBuffer = dsp_buf_size;		    // restore DSP Buffer Size
-            VFOBFreq = vfob;									// restore VFOB frequency
-            RX2MeterMode = rx_meter;						    // restore RX2 Meter mode
+            RX2PreampMode = preamp;                             // restore RX2 preamp value
+            RX2DSPMode = dsp_mode;                              // restore RX2 DSP mode
+            SetupForm.DSPPhoneRXBuffer = dsp_buf_size;          // restore DSP Buffer Size
+            VFOBFreq = vfob;                                    // restore VFOB frequency
+            RX2MeterMode = rx_meter;                            // restore RX2 Meter mode
 
             calibration_running = false;
             return ret_val;
@@ -38875,10 +38894,6 @@ namespace PowerSDR
             }
             else
             {
-                Audio.MuteRX1 = false;
-                radio.GetDSPRX(0, 0).RXOutputGain = (double)ptbRX0Gain.Value / ptbRX0Gain.Maximum;
-                ptbAF_Scroll(this, EventArgs.Empty);
-
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
                 RX0Gain = rx0GainValue;
@@ -38888,6 +38903,10 @@ namespace PowerSDR
                 ptbRX1Gain.Enabled = true;
                 ptbRX1AF.Enabled = true;
                 // DG8MG
+
+                Audio.MuteRX1 = false;
+                radio.GetDSPRX(0, 0).RXOutputGain = (double)ptbRX0Gain.Value / ptbRX0Gain.Maximum;
+                ptbAF_Scroll(this, EventArgs.Empty);
 
                 chkMUT.BackColor = SystemColors.Control;
                 lblRX1MuteVFOA.Text = "";
