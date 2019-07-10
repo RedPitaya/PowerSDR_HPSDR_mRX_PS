@@ -19860,6 +19860,16 @@ namespace PowerSDR
             set
             {
                 click_tune_display = value;
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (SetupForm.C25ReceiverDiversity)
+                {
+                    // CTUN has no need to care about receiver diversity (RD)
+                    return;
+                }
+                // DG8MG
+
                 if (!stereo_diversity && value) chkDX.Enabled = false;
                 else chkDX.Enabled = true;
             }
@@ -50040,7 +50050,8 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab hardware
             if (!chkRX2.Checked && C25ModelIsCharly25orHAMlab())
             {
-                StereoDiversity = false;
+                // Stereo or Receiver Diversity must be turned off to avoid issues with the VAC channels
+                chkDX.Checked = false;
             }
             // DG8MG
 
