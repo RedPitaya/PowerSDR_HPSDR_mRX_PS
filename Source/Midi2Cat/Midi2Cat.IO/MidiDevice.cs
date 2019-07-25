@@ -40,12 +40,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
-// DG8MG
-// Extension for Charly 25 frontpanel hardware
-// Also added a reference to the System.Management assembly in project properties of the Midi2Cat project
-using System.Management;
-// DG8MG
-
 namespace Midi2Cat.IO
 {
     public delegate void MidiInputEventHandler(MidiDevice Device, int DeviceIdx, int ControlId, int Data, int Status, int Event, int Channel);
@@ -898,7 +892,8 @@ namespace Midi2Cat.IO
             if (DeviceName == "Arduino Micro" && ControlID == 120 && Data == 0 && Event == 11 && Channel == 15)
             {
                 Debug.WriteLine("### Special MIDI message for shuting down the Charly 25 frontend computer system was sent! ###");
-
+/*
+#if !DEBUG
                 ManagementBaseObject mboShutdown = null;
                 ManagementClass mcWin32 = new ManagementClass("Win32_OperatingSystem");
                 mcWin32.Get();
@@ -914,6 +909,8 @@ namespace Midi2Cat.IO
                 {
                     mboShutdown = manObj.InvokeMethod("Win32Shutdown", mboShutdownParams, null);
                 }
+#endif
+*/
             }
 
             return ControlID;

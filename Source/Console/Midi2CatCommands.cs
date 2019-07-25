@@ -5061,6 +5061,12 @@ namespace PowerSDR
 
             return CmdState.NoChange;
         }
+
+        public CmdState ShutdownC25System(int msg, MidiDevice device)
+        {
+            commands.ZZRP();
+            return CmdState.NoChange;
+        }
         // DG8MG
 
         public CmdState APF_OnOff(int msg, MidiDevice device)

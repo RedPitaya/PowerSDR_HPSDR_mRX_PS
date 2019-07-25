@@ -5142,7 +5142,18 @@ namespace PowerSDR
 			}
 			return output;
 		}
-		//Sets or reads the RX2 button status
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        // Shutdown the Charly 25 system
+        public string ZZRP()
+        {
+            console.C25ShutdownSystem();
+            return "";
+        }
+        // DG8MG
+
+        //Sets or reads the RX2 button status
         public string ZZRS(string s)
         {
                 if (s.Length == parser.nSet)

@@ -71,6 +71,10 @@ namespace PowerSDR
     using Tmds.MDns;
     using Devices;
     using Renci.SshNet;
+
+    // Extension for Charly 25 frontpanel hardware
+    // Also added a reference to the System.Management assembly in project properties of the Midi2Cat project
+    using System.Management;
     // DG8MG
 
     #region Enums
@@ -56349,6 +56353,48 @@ namespace PowerSDR
                 MessageBox.Show("The download of the new SDR application version was not successful,\nbut you can continue with the current version as before!", "Download failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+
+        public void C25ShutdownSystem()
+        {
+            PowerOn = false;
+
+            var connectionInfo = new ConnectionInfo(JanusAudio.Metis_IP_address, "root", new PasswordAuthenticationMethod("root", "root"));
+
+            using (var sshclient = new SshClient(connectionInfo))
+            {
+                sshclient.Connect();
+
+                if (sshclient.IsConnected)
+                {
+                    using (var cmd = sshclient.CreateCommand("halt"))
+                    {
+                        cmd.Execute();
+                        System.Console.WriteLine("SSH Command>" + cmd.CommandText);
+                        System.Console.WriteLine("SSH Command Return Value = {0}", cmd.ExitStatus);
+                        sshclient.Disconnect();
+                    }
+                }
+            }
+
+#if !DEBUG
+            // Shutdown the entire Windows system
+            ManagementBaseObject mboShutdown = null;
+            ManagementClass mcWin32 = new ManagementClass("Win32_OperatingSystem");
+            mcWin32.Get();
+
+            // You can't shutdown without security privileges
+            mcWin32.Scope.Options.EnablePrivileges = true;
+            ManagementBaseObject mboShutdownParams = mcWin32.GetMethodParameters("Win32Shutdown");
+
+            // Flag 1 means we want to shut down the system. Use "2" to reboot.
+            mboShutdownParams["Flags"] = "1";
+            mboShutdownParams["Reserved"] = "0";
+            foreach (ManagementObject manObj in mcWin32.GetInstances())
+            {
+                mboShutdown = manObj.InvokeMethod("Win32Shutdown", mboShutdownParams, null);
+            }
+#endif
         }
 
         // Parts taken from: https://www.codeproject.com/tips/358946/retrieving-ip-and-mac-addresses-for-a-lan

@@ -300,8 +300,8 @@ namespace Midi2Cat.Data
         MoveCurrentVFOUpByTuneStep = 523,
         [CatCommandAttribute("Charly 25 Frontpanel Menu On Off", ControlType.Button, true)]
         C25FrontpanelMenu_OnOff = 998,
-        [CatCommandAttribute("Reset Charly 25 Frontpanel", ControlType.Button)]
-        ResetC25Frontpanel = 999,
+        [CatCommandAttribute("Shutdown Charly 25 System", ControlType.Button, true)]
+        ShutdownC25System = 999,
         // DG8MG
 
         [CatCommandAttribute("Change Freq Vfo A", ControlType.Wheel)]
