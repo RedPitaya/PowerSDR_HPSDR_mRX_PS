@@ -22749,8 +22749,12 @@ namespace PowerSDR
 
         private void btnC25TXFreqSwpTestStart_Click(object sender, EventArgs e)
         {
-            int old_pwr = 0;
+            int band_index = 0;
+            int old_frsregion = 0;
             double old_vfoa_frequency = 0;
+
+            int[] power_by_band;
+            power_by_band = new int[(int)Band.LAST];
 
             btnC25TXFreqSwpTestPause.Enabled = false;
             btnC25TXFreqSwpTestCancel.Enabled = false;
@@ -22776,11 +22780,13 @@ namespace PowerSDR
             udC25TXFreqSwpTestDrivePower.Enabled = false;
 
             // Save the current settings
-            old_pwr = console.PWR;
+            old_frsregion = comboFRSRegion.SelectedIndex;
             old_vfoa_frequency = console.VFOAFreq;
 
-            // Set the new drive power for the test
-            console.PWR = (int)udC25TXFreqSwpTestDrivePower.Value;
+            for (band_index = 0; band_index < (int)Band.LAST; band_index++) power_by_band[band_index] = console.GetPower((Band)band_index);
+
+            // Bypass the shortwave lowpass filters
+            JanusAudio.C25SetSwLPFBypass(1);
 
             if (C25SWRView == null)
             {
@@ -22791,6 +22797,7 @@ namespace PowerSDR
             C25SWRView.Show();
             C25SWRView.BringToFront();
 
+            comboFRSRegion.SelectedIndex = comboFRSRegion.Items.Count - 1;
             console.TUN = true;
 
             // Wait for the transmitter to get stable
@@ -22803,11 +22810,14 @@ namespace PowerSDR
                     break;
                 }
 
+                // Set the new drive power for the test (again), because it might be changed by a band change
+                console.PWR = (int)udC25TXFreqSwpTestDrivePower.Value;
+
                 System.Console.WriteLine("Frequency: " + console.VFOAFreq + " MHz. Forward power: " + console.alex_fwd + ", reflected power: " + console.alex_rev);
-                
+
                 // Avoid total reflection in SWR calculation
                 if (console.alex_rev >= console.alex_fwd)
-                {                    
+                {
                     console.alex_rev = console.alex_fwd - 0.001f;
                 }
 
@@ -22836,19 +22846,15 @@ namespace PowerSDR
                 }
             }
 
-            /*
-            if (C25TXFreqSwpTest_is_canceled != true && console.MOX != false && console.TUN != false)
-            {
-                C25SWRView.Show();
-                C25SWRView.BringToFront();
-            }
-            */
-
             console.TUN = false;
             
             // Restore the old setting
-            console.PWR = old_pwr;
+            comboFRSRegion.SelectedIndex = old_frsregion;
             console.VFOAFreq = old_vfoa_frequency;
+
+            for (band_index = 0; band_index < (int)Band.LAST; band_index++) console.SetPower((Band)band_index, power_by_band[band_index]);
+
+            JanusAudio.C25SetSwLPFBypass(0);
 
             btnC25TXFreqSwpTestStart.Enabled = true;
             btnC25TXFreqSwpTestPause.Enabled = false;

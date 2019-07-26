@@ -225,6 +225,9 @@ namespace PowerSDR
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void C25SetRPEnvMod(int bit);
+
+        [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void C25SetSwLPFBypass(int bit);
         // DG8MG
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]

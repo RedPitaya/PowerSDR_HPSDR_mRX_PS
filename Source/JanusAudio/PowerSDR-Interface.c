@@ -1142,6 +1142,17 @@ KD5TFDVK6APHAUDIO_API void C25SetRPEnvMod(int bit) {
 		C25RPEnvMod = 0;
 	}
 }
+
+KD5TFDVK6APHAUDIO_API void C25SetSwLPFBypass(int bit) {
+	if (bit != 0)
+	{
+		AlexManEnable = 0x40;
+	}
+	else
+	{
+		AlexManEnable = 0;
+	}
+}
 // DG8MG
 
 KD5TFDVK6APHAUDIO_API void SetRX2Preamp(int bits) { 
