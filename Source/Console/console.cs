@@ -54299,15 +54299,6 @@ namespace PowerSDR
             if (!this.collapsedDisplay)
                 this.expandedSize = this.Size;
 
-            // DG8MG
-            // Extension for Charly 25 standalone transceiver
-            if (C25ModelIsCharly25orHAMlab())
-            {
-                FormBorderStyle = FormBorderStyle.None;
-                WindowState = FormWindowState.Maximized;
-            }
-            // DG8MG
-
             this.collapseToolStripMenuItem.Text = "Expand";
             this.collapsedDisplay = true;
             this.rX2ToolStripMenuItem.Visible = true;
@@ -54320,6 +54311,19 @@ namespace PowerSDR
             int minHeight = 210;
             // radRX1Show_CheckedChanged(this, EventArgs.Empty);
             // radRX2Show_CheckedChanged(this, EventArgs.Empty);
+
+            // DG8MG
+            // Extension for Charly 25 standalone transceiver
+            if (C25ModelIsCharly25orHAMlab())
+            {
+                FormBorderStyle = FormBorderStyle.None;
+
+                if (!SetupForm.chkC25UseCharly25ContestMode.Checked)
+                {
+                    WindowState = FormWindowState.Maximized;
+                }
+            }
+            // DG8MG
 
             if (this.showTopControls)
             {
@@ -54662,6 +54666,18 @@ namespace PowerSDR
 
             this.Size = new Size(SetupForm.CollapsedWidth,
                 SetupForm.CollapsedHeight);
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (SetupForm.chkC25UseCharly25ContestMode.Checked)
+            {
+                WindowState = FormWindowState.Normal;
+                ClientSize = new Size(Width, minHeight);
+            }
+            else
+            {
+            }
+            // DG8MG
         }
 
         private void RepositionControlsForCollapsedlDisplay()

@@ -2990,6 +2990,7 @@
             this.btnTestAudioBalStart = new System.Windows.Forms.ButtonTS();
             this.txtC25UpdatePaths = new System.Windows.Forms.TextBoxTS();
             this.grpC25MiscellaneousSettings = new System.Windows.Forms.GroupBoxTS();
+            this.chkC25UseCharly25ContestMode = new System.Windows.Forms.CheckBoxTS();
             this.chkC25UseBetaVersions = new System.Windows.Forms.CheckBoxTS();
             this.grpC25MeasurementSettings = new System.Windows.Forms.GroupBoxTS();
             this.udC25ReflectedPowerADCFactor = new System.Windows.Forms.NumericUpDownTS();
@@ -50397,13 +50398,26 @@
             // 
             // grpC25MiscellaneousSettings
             // 
+            this.grpC25MiscellaneousSettings.Controls.Add(this.chkC25UseCharly25ContestMode);
             this.grpC25MiscellaneousSettings.Controls.Add(this.chkC25UseBetaVersions);
             this.grpC25MiscellaneousSettings.Location = new System.Drawing.Point(6, 224);
             this.grpC25MiscellaneousSettings.Name = "grpC25MiscellaneousSettings";
-            this.grpC25MiscellaneousSettings.Size = new System.Drawing.Size(210, 47);
+            this.grpC25MiscellaneousSettings.Size = new System.Drawing.Size(210, 81);
             this.grpC25MiscellaneousSettings.TabIndex = 2;
             this.grpC25MiscellaneousSettings.TabStop = false;
             this.grpC25MiscellaneousSettings.Text = "Miscellaneous Settings";
+            // 
+            // chkC25UseCharly25ContestMode
+            // 
+            this.chkC25UseCharly25ContestMode.AutoSize = true;
+            this.chkC25UseCharly25ContestMode.Image = null;
+            this.chkC25UseCharly25ContestMode.Location = new System.Drawing.Point(6, 42);
+            this.chkC25UseCharly25ContestMode.Name = "chkC25UseCharly25ContestMode";
+            this.chkC25UseCharly25ContestMode.Size = new System.Drawing.Size(159, 17);
+            this.chkC25UseCharly25ContestMode.TabIndex = 2;
+            this.chkC25UseCharly25ContestMode.Text = "Use Charly 25 contest mode";
+            this.toolTip1.SetToolTip(this.chkC25UseCharly25ContestMode, "Use the Charly 25 contest mode in the Collapsed Mode");
+            this.chkC25UseCharly25ContestMode.UseVisualStyleBackColor = true;
             // 
             // chkC25UseBetaVersions
             // 
@@ -55025,5 +55039,6 @@
         private System.Windows.Forms.GroupBoxTS grpC25MiscellaneousSettings;
         public System.Windows.Forms.CheckBoxTS chkC25UseBetaVersions;
         public System.Windows.Forms.TextBoxTS txtC25UpdatePaths;
+        public System.Windows.Forms.CheckBoxTS chkC25UseCharly25ContestMode;
     }
 }
