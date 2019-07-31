@@ -9075,6 +9075,8 @@ namespace PowerSDR
                     tcSetup.TabPages.Add(tpC25Tests);
                     tcSetup.SelectedIndex = 0;
                 }
+
+                grpC25WattMeterTrim.BringToFront();
             }
             else  // Charly 25 is deselected
             {
@@ -21019,6 +21021,27 @@ namespace PowerSDR
                 ud200PA260W.Value = 260;
                 ud200PA280W.Value = 280;
                    break;
+
+                // DG8MG
+                // Extension for Charly 25 hardware
+                case HPSDRModel.CHARLY25:
+                    udC25PA1W.Value = 1;
+                    udC25PA2W.Value = 2;
+                    udC25PA3W.Value = 3;
+                    udC25PA4W.Value = 4;
+                    udC25PA5W.Value = 5;
+                    udC25PA6W.Value = 6;
+                    udC25PA7W.Value = 7;
+                    udC25PA8W.Value = 8;
+                    udC25PA10W.Value = 10;
+                    udC25PA12W.Value = 12;
+                    udC25PA14W.Value = 14;
+                    udC25PA16W.Value = 16;
+                    udC25PA18W.Value = 18;
+                    udC25PA20W.Value = 20;
+                    break;
+                // DG8MG
+
                 default:
                 ud100PA10W.Value = 10;
                 ud100PA20W.Value = 20;
@@ -23433,9 +23456,79 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 hardware
-        private void chkC25BypassSWRCheck_CheckedChanged(object sender, EventArgs e)
+        private void chkC25SWRProtection_CheckedChanged(object sender, EventArgs e)
         {
-            console.DisableSWRonTune = chkC25BypassSWRCheck.Checked;
+            console.SWRProtection = chkC25SWRProtection.Checked;
+        }
+
+        private void udC25PA1W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA1W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA2W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA2W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA3W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA3W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA4W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA4W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA5W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA5W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA6W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA6W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA7W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA7W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA8W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA8W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA10W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA10W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA12W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA12W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA14W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA14W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA16W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA16W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA18W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA18W.Value = (int)JanusAudio.getAlexFwdPower();
+        }
+
+        private void udC25PA20W_DoubleClick(object sender, EventArgs e)
+        {
+            if (console.PowerOn) udC25PA20W.Value = (int)JanusAudio.getAlexFwdPower();
         }
         // DG8MG
 

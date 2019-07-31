@@ -9104,6 +9104,8 @@ namespace PowerSDR
                 chkMUT_CheckedChanged(this, EventArgs.Empty);
             }
 
+            C25UpdatePAADCValues();
+
             sdr_app_running = 0;
             // DG8MG
         }
@@ -35215,22 +35217,86 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 hardware
-        public float C25ComputeFwdPower(float adc_value)
+        Dictionary<int, int> c25_configured_adc_values = new Dictionary<int, int>();
+        private void C25UpdatePAADCValues()
+        {
+            c25_configured_adc_values.Clear();
+            c25_configured_adc_values.Add(1, (int)SetupForm.udC25PA1W.Value);
+            c25_configured_adc_values.Add(2, (int)SetupForm.udC25PA2W.Value);
+            c25_configured_adc_values.Add(3, (int)SetupForm.udC25PA3W.Value);
+            c25_configured_adc_values.Add(4, (int)SetupForm.udC25PA4W.Value);
+            c25_configured_adc_values.Add(5, (int)SetupForm.udC25PA5W.Value);
+            c25_configured_adc_values.Add(6, (int)SetupForm.udC25PA6W.Value);
+            c25_configured_adc_values.Add(7, (int)SetupForm.udC25PA7W.Value);
+            c25_configured_adc_values.Add(8, (int)SetupForm.udC25PA8W.Value);
+            c25_configured_adc_values.Add(10, (int)SetupForm.udC25PA10W.Value);
+            c25_configured_adc_values.Add(12, (int)SetupForm.udC25PA12W.Value);
+            c25_configured_adc_values.Add(14, (int)SetupForm.udC25PA14W.Value);
+            c25_configured_adc_values.Add(16, (int)SetupForm.udC25PA16W.Value);
+            c25_configured_adc_values.Add(18, (int)SetupForm.udC25PA18W.Value);
+            c25_configured_adc_values.Add(20, (int)SetupForm.udC25PA20W.Value);
+        }
+
+        public float C25ComputeFwdPower(float measured_adc_value)
         {
             float result = 0;
+            float lower_configured_adc_value = 0;
+            float lower_power_value = 0;
+            float upper_configured_adc_value = 0;
+            float upper_power_value = 0;
 
-            result = adc_value - 1;  // Power must be zero when drive power is zero
-            result /= (float)SetupForm.udC25ForwardPowerADCFactor.Value;
+            average_fwdadc = measured_adc_value;
+
+            measured_adc_value--;  // Power must be zero when drive power is zero
+
+            foreach (var pair in c25_configured_adc_values)
+            {
+                if (measured_adc_value > pair.Value)
+                {
+                    lower_configured_adc_value = pair.Value;
+                    lower_power_value = pair.Key;
+                }
+                else
+                {
+                    upper_configured_adc_value = pair.Value;
+                    upper_power_value = pair.Key;
+                    break;
+                }
+            }
+
+            result = (upper_power_value - lower_power_value) / (upper_configured_adc_value - lower_configured_adc_value) * (measured_adc_value - lower_configured_adc_value) + lower_power_value;
 
             return result;
         }
 
-        public float C25ComputeRevPower(float adc_value)
+        public float C25ComputeRevPower(float measured_adc_value)
         {
             float result = 0;
+            float lower_configured_adc_value = 0;
+            float lower_power_value = 0;
+            float upper_configured_adc_value = 0;
+            float upper_power_value = 0;
 
-            result = adc_value - 1;  // Power must be zero when drive power is zero
-            result /= (float)SetupForm.udC25ReflectedPowerADCFactor.Value;
+            average_revadc = measured_adc_value;
+
+            measured_adc_value--;  // Power must be zero when drive power is zero
+
+            foreach (var pair in c25_configured_adc_values)
+            {
+                if (measured_adc_value > pair.Value)
+                {
+                    lower_configured_adc_value = pair.Value;
+                    lower_power_value = pair.Key;
+                }
+                else
+                {
+                    upper_configured_adc_value = pair.Value;
+                    upper_power_value = pair.Key;
+                    break;
+                }
+            }
+
+            result = (upper_power_value - lower_power_value) / (upper_configured_adc_value - lower_configured_adc_value) * (measured_adc_value - lower_configured_adc_value) + lower_power_value;
 
             return result;
         }
@@ -35240,7 +35306,7 @@ namespace PowerSDR
             float result = 0;
 
             result = JanusAudio.getAIN3();
-            result /= (float)SetupForm.udC25CurrentADCFactor.Value;  // Calculate total current in ampere from ADC value
+            result /= (float)SetupForm.udC25TotalCurrentADCFactor.Value;  // Calculate total current in ampere from ADC value
 
             return result;
         }
@@ -35250,7 +35316,7 @@ namespace PowerSDR
             float result = 0;
 
             result = JanusAudio.getAIN4();
-            result /= (float)SetupForm.udC25CurrentADCFactor.Value;  // Calculate PA current in ampere from ADC value
+            result /= (float)SetupForm.udC25PACurrentADCFactor.Value;  // Calculate PA current in ampere from ADC value
 
             return result;
         }
@@ -36183,64 +36249,82 @@ namespace PowerSDR
                 if (mox)
                 {
                     // DG8MG
-                    // Extension for Charly 25 hardwware
+                    // Extension for Charly 25 hardware
                     if (C25ModelIsCharly25orHAMlab())
                     {
-                        float temp_fwdadc = JanusAudio.getAlexFwdPower();
-                        float temp_revadc = JanusAudio.getRefPower();
-
-                        if (temp_fwdadc < 0)
+                        if (CurrentModel == Model.CHARLY25PP)
                         {
-                            alex_fwd = 0;
-                        }
-                        else
-                        {
-                            alex_fwd = C25ComputeFwdPower(temp_fwdadc);
-                        }
+                            float temp_fwdadc = 0;
+                            float temp_revadc = 0;
 
-                        calfwdpower = alex_fwd;
-
-                        if (temp_revadc < 0)
-                        {
-                            alex_rev = 0;
-                        }
-                        else
-                        {
-                            alex_rev = C25ComputeRevPower(temp_revadc);
-                        }
-
-                        rho = (float)Math.Sqrt(alex_rev / alex_fwd);
-
-                        if (alex_fwd < 0.1 || float.IsNaN(rho) || float.IsInfinity(rho))
-                        {
-                            swr = 1.0f;
-                        }
-                        else
-                        {
-                            swr = (1.0f + rho) / (1.0f - rho);
-                        }
-
-                        if (swr >= 3)
-                        {
-                            HighSWR = true;
-
-                            if (!is_tune || (!DisableSWRonTune && is_tune))
+                            if (SetupForm.chkC25SwapDirectionalCouplerPorts.Checked)
                             {
-                                // JanusAudio.SetSWRProtect((float)(2.0 / (swr + 1.0)));
-                                PWR = (int)(PWR * (2 / (swr + 1)));
-                                Thread.Sleep(100);
+                                temp_fwdadc = JanusAudio.getRefPower();
+                                temp_revadc = JanusAudio.getAlexFwdPower();
                             }
+                            else
+                            {
+                                temp_fwdadc = JanusAudio.getAlexFwdPower();
+                                temp_revadc = JanusAudio.getRefPower();
+                            }
+
+                            if (temp_fwdadc < 0)
+                            {
+                                alex_fwd = 0;
+                            }
+                            else
+                            {
+                                alex_fwd = C25ComputeFwdPower(temp_fwdadc);
+                            }
+
+                            calfwdpower = alex_fwd;
+
+                            if (temp_revadc < 0)
+                            {
+                                alex_rev = 0;
+                            }
+                            else
+                            {
+                                alex_rev = C25ComputeRevPower(temp_revadc);
+                            }
+
+                            rho = (float)Math.Sqrt(alex_rev / alex_fwd);
+
+                            if (alex_fwd < 0.1 || float.IsNaN(rho) || float.IsInfinity(rho))
+                            {
+                                swr = 1.0f;
+                            }
+                            else
+                            {
+                                swr = (1.0f + rho) / (1.0f - rho);
+                            }
+
+                            if (swr >= 3)
+                            {
+                                HighSWR = true;
+
+                                if (SWRProtection)
+                                {
+                                    PWR = (int)(PWR * (2 / (swr + 1)));
+                                    Thread.Sleep(100);
+                                }
+                            }
+                            else
+                            {
+                                JanusAudio.SetSWRProtect(1.0f);
+                                HighSWR = false;
+                            }
+
+                            if (float.IsNaN(swr) || float.IsInfinity(swr) || swr < 1.0f)
+                                alex_swr = 1.0f;
+                            else
+                                alex_swr = swr;
                         }
                         else
                         {
-                            JanusAudio.SetSWRProtect(1.0f);
-                            HighSWR = false;
+                            // No measurement head present on non Charly 25PP hardware
+                            return;
                         }
-
-                        if (float.IsNaN(swr) || float.IsInfinity(swr) || swr < 1.0f)
-                            alex_swr = 1.0f;
-                        else
-                            alex_swr = swr;
                     }
                     else
                     // DG8MG
