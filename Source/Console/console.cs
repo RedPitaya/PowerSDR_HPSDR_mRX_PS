@@ -38240,15 +38240,34 @@ namespace PowerSDR
 
                 // DG8MG
                 // Extension for Charly 25 and HAMlab hardware
-                if (sdr_app_running > 0 && janusAudioStatus == true)
+                if (C25ModelIsCharly25orHAMlab())
                 {
-                    // If a Charly 25PP TRX board is present, switch it back into non SDR mode
-                    if (JanusAudio.getPenelopeFWVersion() == 131)
-                    {
-                        JanusAudio.C25SetRPExternalOff(0);
-                        Thread.Sleep(100);
-                    }
+                    chkC25Diversity.Enabled = false;
 
+                    if (sdr_app_running > 0 && janusAudioStatus == true)
+                    {
+                        // If a Charly 25PP TRX board is present, switch it back into non SDR mode
+                        if (JanusAudio.getPenelopeFWVersion() == 131)
+                        {
+                            JanusAudio.C25SetRPExternalOff(0);
+                            Thread.Sleep(100);
+                        }
+
+                        JanusAudio.StopAudio();
+
+                        if (vac_enabled)
+                        {
+                            Audio.StopAudioVAC();
+                        }
+
+                        if (vac2_enabled)
+                        {
+                            Audio.StopAudioVAC2();
+                        }
+                    }
+                }
+                else
+                {
                     JanusAudio.StopAudio();
 
                     if (vac_enabled)
