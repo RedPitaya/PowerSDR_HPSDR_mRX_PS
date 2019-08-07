@@ -23457,7 +23457,7 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 hardware
-        private void chkC25SWRProtection_CheckedChanged(object sender, EventArgs e)
+        public void chkC25SWRProtection_CheckedChanged(object sender, EventArgs e)
         {
             console.SWRProtection = chkC25SWRProtection.Checked;
         }
