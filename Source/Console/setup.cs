@@ -3388,7 +3388,6 @@ namespace PowerSDR
                 {
                     chkC25useTCP.Checked = false;
                     chkC25useTCP.Enabled = false;
-                    // chkC25useTCP.Visible = false;
                 }
                 else
                 {
@@ -3401,7 +3400,12 @@ namespace PowerSDR
                     lblMetisCodeVersion.Text = sdr_app_version;
                 }
 
-                int mercuryFWVersion = JanusAudio.getMercuryFWVersion();
+                int mercuryFWVersion = 0;
+
+                {
+                    mercuryFWVersion = JanusAudio.getMercuryFWVersion();
+                }
+
                 int penelopeFWVersion = JanusAudio.getPenelopeFWVersion();
                 int ozyFWVersion = JanusAudio.getOzyFWVersion();
 
@@ -3482,16 +3486,21 @@ namespace PowerSDR
                     lblC25AudioCodecPresent.Visible = true;
                 }
 
-                // Check if a RX1 filterboard is present
-                if (mercuryFWVersion == 146)
+                // Check which filterboards are present
+                switch (mercuryFWVersion)
                 {
-                    lblC25RX1FbPresent.Visible = true;
-                }
+                    case 1:
+                        lblC25RX1FbPresent.Visible = true;
+                        break;
 
-                // Check if a RX2 filterboard is present
-                if (mercuryFWVersion == 147)
-                {
-                    lblC25RX2FbPresent.Visible = true;
+                    case 2:
+                        lblC25RX2FbPresent.Visible = true;
+                        break;
+
+                    case 3:
+                        lblC25RX1FbPresent.Visible = true;
+                        lblC25RX2FbPresent.Visible = true;
+                        break;
                 }
 
                 // Update the RX and TX meter options
