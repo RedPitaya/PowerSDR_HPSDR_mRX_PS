@@ -71,9 +71,9 @@ namespace PowerSDR
             return s;
         }
 
-        public static string C25GetCommitHash()
+        public static string C25GetReleaseDate()
         {
-            return Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1);
+            return Application.ProductVersion.Substring(0, 4) + Application.ProductVersion.Substring(5, 2) + Application.ProductVersion.Substring(8, 2);
         }
         // DG8MG
 

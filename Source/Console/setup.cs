@@ -3332,7 +3332,7 @@ namespace PowerSDR
             if (console.PowerOn)
             {
                 string[] sdr_app_directories = { "stemlab_sdr_transceiver_hpsdr", "hamlab_sdr_transceiver_hpsdr", "sdr_transceiver_hpsdr"};
-                
+
                 // Try to read the SDR application version from the Red Pitaya device
                 foreach (string sdr_app_directory in sdr_app_directories)
                 {
@@ -22996,7 +22996,8 @@ namespace PowerSDR
 
                             if (sshclient.IsConnected)
                             {
-                                using (var cmd = sshclient.CreateCommand("mount -o rw,remount /opt/redpitaya && unzip -o /tmp/" + sdrapp_name + " -d /opt/redpitaya/www/apps && mount -o ro,remount /opt/redpitaya"))
+                                // using (var cmd = sshclient.CreateCommand("mount -o rw,remount /opt/redpitaya && unzip -o /tmp/" + sdrapp_name + " -d /opt/redpitaya/www/apps && mount -o ro,remount /opt/redpitaya"))
+                                using (SshCommand cmd = sshclient.CreateCommand("mount -o rw,remount /opt/redpitaya && unzip -o /tmp/" + sdrapp_name + " -d /opt/redpitaya/www/apps"))
                                 {
                                     cmd.Execute();
                                     System.Console.WriteLine("SSH Command>" + cmd.CommandText);
