@@ -1553,7 +1553,7 @@ namespace PowerSDR
                 int recv;
                 byte[] data = new byte[100];
 
-                Thread.Sleep(100);  // wait 100 msec for time out
+                Thread.Sleep(1000);  // wait 1000 ms for a time out, timer was increased from 100 ms to 1000 ms due to issues in VPN nets.
 
                 if (socket.Available > 0)
                 {
@@ -1569,7 +1569,7 @@ namespace PowerSDR
                     byte boardType = data[10];
 
                     // check for HPSDR frame ID and type 2 (not currently streaming data, which also means 'not yet in use')
-                    // changed to find RedPitaya boards, even if alreay in use!  This prevents the need to power-cycle RedPitaya.
+                    // changed to find Red Pitaya boards, even if already in use! This prevents the need to power-cycle the Red Pitaya device.
                     // (G Byrkit, 8 Jan 2012)
                     if ((data[0] == 0xEF) && (data[1] == 0xFE) && ((data[2] & 0x02) != 0))
                     {
