@@ -39,7 +39,7 @@ namespace PowerSDR
             chrC25SWRView.ChartAreas[0].AxisX.Minimum = (double)setup.udC25TXFreqSwpTestStartFrequency.Value / 1e6;
             chrC25SWRView.ChartAreas[0].AxisX.Maximum = (double)setup.udC25TXFreqSwpTestStopFrequency.Value / 1e6;
             chrC25SWRView.ChartAreas[0].AxisY.Minimum = 1.0;
-            chrC25SWRView.ChartAreas[0].AxisY.Maximum = 10.0;
+            chrC25SWRView.ChartAreas[0].AxisY.Maximum = 5.0;
             chrC25SWRView.Series["serSWRData"].Points.Clear();
         }
 
