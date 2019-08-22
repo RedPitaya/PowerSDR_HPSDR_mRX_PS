@@ -321,14 +321,9 @@ namespace PowerSDR
             set
             {
                 radio_volume = value;
-
-                // DG8MG
-                // Extension for Charly 25 and HAMlab hardware
-                if (console.C25ModelIsCharly25orHAMlab() || console.CurrentModel == Model.HERMES ||
+                if (console.CurrentModel == Model.HERMES || 
                                             console.PennyLanePresent ||
                                            (console.PennyPresent && console.CWFWKeyer))
-                // DG8MG
-
                 {
                     JanusAudio.SetOutputPower((float)(value * dsp_adjust));
                 }
@@ -2316,7 +2311,6 @@ namespace PowerSDR
                                 rb_vac2OUT_r.WritePtr(rx1_in_l, frameCount);
                             }
                             Win32.LeaveCriticalSection(cs_vac2);
-
                         }
                     }
                     else
@@ -5426,6 +5420,7 @@ namespace PowerSDR
                     }
                 }
             }
+
 
             return 0;
         }

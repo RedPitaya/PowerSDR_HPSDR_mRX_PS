@@ -1935,12 +1935,12 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 case Model.CHARLY25:
                 //case Model.HAMLAB:
-                    console.SetupForm.PenelopePresent = penelope_present;
+                    // console.SetupForm.PenelopePresent = penelope_present;
                     console.SetupForm.PennyLanePresent = pennylane_present;
-                    console.SetupForm.MercuryPresent = mercury_present;
-                    console.SetupForm.AlexPresent = alex_present;
-                    console.SetupForm.ExcaliburPresent = excalibur_present;
-                    console.SetupForm.radOzyUSB.Checked = radOzy.Checked;
+                    // console.SetupForm.MercuryPresent = mercury_present;
+                    // console.SetupForm.AlexPresent = alex_present;
+                    // console.SetupForm.ExcaliburPresent = excalibur_present;
+                    // console.SetupForm.radOzyUSB.Checked = radOzy.Checked;
                     console.SetupForm.radMetis.Checked = radMetis.Checked;
                     console.SetupForm.forceAudioSampleRate1("192000");
                     break;
@@ -2485,9 +2485,9 @@ namespace PowerSDR
                 chkMercury.Visible = false;
                 chkMercury.Checked = false;
                 chkPennyLane.Visible = false;
-                chkPennyLane.Checked = false;
+                chkPennyLane.Checked = true;
                 chkPenny.Visible = false;
-                chkPenny.Checked = true;
+                chkPenny.Checked = false;
                 radOzy.Visible = false;
                 radMetis.Visible = false;
                 //radMetis.Text = "Red Pitaya";

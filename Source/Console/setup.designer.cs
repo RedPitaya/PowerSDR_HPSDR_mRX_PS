@@ -31748,10 +31748,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF13.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF13.Name = "udCHARLY25PAGainVHF13";
             this.udCHARLY25PAGainVHF13.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF13.TabIndex = 113;
@@ -31788,10 +31788,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF12.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF12.Name = "udCHARLY25PAGainVHF12";
             this.udCHARLY25PAGainVHF12.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF12.TabIndex = 111;
@@ -31828,10 +31828,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF11.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF11.Name = "udCHARLY25PAGainVHF11";
             this.udCHARLY25PAGainVHF11.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF11.TabIndex = 109;
@@ -31868,10 +31868,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF10.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF10.Name = "udCHARLY25PAGainVHF10";
             this.udCHARLY25PAGainVHF10.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF10.TabIndex = 107;
@@ -31908,10 +31908,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF9.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF9.Name = "udCHARLY25PAGainVHF9";
             this.udCHARLY25PAGainVHF9.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF9.TabIndex = 105;
@@ -31948,10 +31948,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF8.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF8.Name = "udCHARLY25PAGainVHF8";
             this.udCHARLY25PAGainVHF8.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF8.TabIndex = 103;
@@ -31988,10 +31988,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF7.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF7.Name = "udCHARLY25PAGainVHF7";
             this.udCHARLY25PAGainVHF7.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF7.TabIndex = 101;
@@ -32028,10 +32028,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF6.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF6.Name = "udCHARLY25PAGainVHF6";
             this.udCHARLY25PAGainVHF6.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF6.TabIndex = 99;
@@ -32068,10 +32068,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF5.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF5.Name = "udCHARLY25PAGainVHF5";
             this.udCHARLY25PAGainVHF5.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF5.TabIndex = 97;
@@ -32108,10 +32108,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF4.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF4.Name = "udCHARLY25PAGainVHF4";
             this.udCHARLY25PAGainVHF4.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF4.TabIndex = 95;
@@ -32148,10 +32148,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF3.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF3.Name = "udCHARLY25PAGainVHF3";
             this.udCHARLY25PAGainVHF3.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF3.TabIndex = 93;
@@ -32188,10 +32188,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF2.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF2.Name = "udCHARLY25PAGainVHF2";
             this.udCHARLY25PAGainVHF2.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF2.TabIndex = 91;
@@ -32228,10 +32228,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF1.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF1.Name = "udCHARLY25PAGainVHF1";
             this.udCHARLY25PAGainVHF1.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF1.TabIndex = 89;
@@ -32268,10 +32268,10 @@
             0,
             0});
             this.udCHARLY25PAGainVHF0.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGainVHF0.Name = "udCHARLY25PAGainVHF0";
             this.udCHARLY25PAGainVHF0.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGainVHF0.TabIndex = 87;
@@ -32297,10 +32297,10 @@
             0,
             0});
             this.udCHARLY25PAGain6.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain6.Name = "udCHARLY25PAGain6";
             this.udCHARLY25PAGain6.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain6.TabIndex = 86;
@@ -32359,10 +32359,10 @@
             0,
             0});
             this.udCHARLY25PAGain10.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain10.Name = "udCHARLY25PAGain10";
             this.udCHARLY25PAGain10.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain10.TabIndex = 18;
@@ -32399,10 +32399,10 @@
             0,
             0});
             this.udCHARLY25PAGain12.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain12.Name = "udCHARLY25PAGain12";
             this.udCHARLY25PAGain12.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain12.TabIndex = 16;
@@ -32439,10 +32439,10 @@
             0,
             0});
             this.udCHARLY25PAGain15.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain15.Name = "udCHARLY25PAGain15";
             this.udCHARLY25PAGain15.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain15.TabIndex = 14;
@@ -32479,10 +32479,10 @@
             0,
             0});
             this.udCHARLY25PAGain17.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain17.Name = "udCHARLY25PAGain17";
             this.udCHARLY25PAGain17.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain17.TabIndex = 12;
@@ -32519,10 +32519,10 @@
             0,
             0});
             this.udCHARLY25PAGain20.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain20.Name = "udCHARLY25PAGain20";
             this.udCHARLY25PAGain20.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain20.TabIndex = 10;
@@ -32559,10 +32559,10 @@
             0,
             0});
             this.udCHARLY25PAGain30.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain30.Name = "udCHARLY25PAGain30";
             this.udCHARLY25PAGain30.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain30.TabIndex = 8;
@@ -32599,10 +32599,10 @@
             0,
             0});
             this.udCHARLY25PAGain40.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain40.Name = "udCHARLY25PAGain40";
             this.udCHARLY25PAGain40.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain40.TabIndex = 6;
@@ -32639,10 +32639,10 @@
             0,
             0});
             this.udCHARLY25PAGain60.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain60.Name = "udCHARLY25PAGain60";
             this.udCHARLY25PAGain60.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain60.TabIndex = 4;
@@ -32679,10 +32679,10 @@
             0,
             0});
             this.udCHARLY25PAGain80.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain80.Name = "udCHARLY25PAGain80";
             this.udCHARLY25PAGain80.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain80.TabIndex = 2;
@@ -32719,10 +32719,10 @@
             0,
             0});
             this.udCHARLY25PAGain160.Minimum = new decimal(new int[] {
+            388,
             0,
             0,
-            0,
-            0});
+            65536});
             this.udCHARLY25PAGain160.Name = "udCHARLY25PAGain160";
             this.udCHARLY25PAGain160.Size = new System.Drawing.Size(48, 20);
             this.udCHARLY25PAGain160.TabIndex = 0;

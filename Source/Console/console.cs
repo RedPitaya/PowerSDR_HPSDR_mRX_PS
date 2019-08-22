@@ -36325,7 +36325,10 @@ namespace PowerSDR
                         }
                         else
                         {
-                            // No measurement head present on non Charly 25PP hardware
+                            // No measurement head present on non Charly 25PP hardware,
+                            // so make sure that the SWR protection circuit does not trigger accidentally
+                            JanusAudio.SetSWRProtect(1.0f);
+                            HighSWR = false;
                             return;
                         }
                     }
