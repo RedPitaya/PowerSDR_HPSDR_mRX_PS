@@ -116,8 +116,12 @@ namespace PowerSDR
         private int kylx = 12, kyty = 180;				// ulc of key area
         private int kyysz = 82, kyxsz = 665;			// extents
         private char[] kbufold = new char[NKEYS];		// sent keys
-        private char[] kbufnew = new char[NKEYS];		// unsent keys
+        private char[] kbufnew = new char[NKEYS];       // unsent keys
 
+        // DG8MG
+        // Extesion for Charly 25 and HAMlab hardware
+        bool cwIambicState;  // flag to save the iambic keyer state while transmitting via CWX
+        // DG8MG
 
         private System.Windows.Forms.LabelTS label4;
         private System.Windows.Forms.ButtonTS stopButton;
@@ -274,6 +278,19 @@ namespace PowerSDR
                 else pttLed.BackColor = System.Drawing.Color.Black;
 
                 setptt_memory = state;
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (state)
+                {
+                    cwIambicState = console.CWIambic;
+                    console.CWIambic = false;
+                }
+                else
+                {
+                    console.CWIambic = cwIambicState;
+                }
+                // DG8MG
             }
             //			if (newptt) Thread.Sleep(200);
         }
@@ -2134,7 +2151,6 @@ namespace PowerSDR
 
             loadmsg(tqq);
             push_fifo(0x4);			// end
-
         }
 
         private void loadchar(char cc)	// convert and load a single character
