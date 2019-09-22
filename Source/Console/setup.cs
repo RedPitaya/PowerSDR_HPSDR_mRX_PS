@@ -14367,20 +14367,20 @@ namespace PowerSDR
                 udCHARLY25PAGain10.Value = 45.0M;
                 udCHARLY25PAGain6.Value = 42.0M;
 
-                udCHARLY25PAGainVHF0.Value = 0.0M;
-                udCHARLY25PAGainVHF1.Value = 1.0M;
-                udCHARLY25PAGainVHF2.Value = 2.0M;
-                udCHARLY25PAGainVHF3.Value = 3.0M;
-                udCHARLY25PAGainVHF4.Value = 4.0M;
-                udCHARLY25PAGainVHF5.Value = 5.0M;
-                udCHARLY25PAGainVHF6.Value = 6.0M;
-                udCHARLY25PAGainVHF7.Value = 7.0M;
-                udCHARLY25PAGainVHF8.Value = 8.0M;
-                udCHARLY25PAGainVHF9.Value = 9.0M;
-                udCHARLY25PAGainVHF10.Value = 10.0M;
-                udCHARLY25PAGainVHF11.Value = 11.0M;
-                udCHARLY25PAGainVHF12.Value = 12.0M;
-                udCHARLY25PAGainVHF13.Value = 13.0M;
+                udCHARLY25PAGainVHF0.Value = 56.2M;
+                udCHARLY25PAGainVHF1.Value = 56.2M;
+                udCHARLY25PAGainVHF2.Value = 56.2M;
+                udCHARLY25PAGainVHF3.Value = 56.2M;
+                udCHARLY25PAGainVHF4.Value = 56.2M;
+                udCHARLY25PAGainVHF5.Value = 56.2M;
+                udCHARLY25PAGainVHF6.Value = 56.2M;
+                udCHARLY25PAGainVHF7.Value = 56.2M;
+                udCHARLY25PAGainVHF8.Value = 56.2M;
+                udCHARLY25PAGainVHF9.Value = 56.2M;
+                udCHARLY25PAGainVHF10.Value = 56.2M;
+                udCHARLY25PAGainVHF11.Value = 56.2M;
+                udCHARLY25PAGainVHF12.Value = 56.2M;
+                udCHARLY25PAGainVHF13.Value = 56.2M;
             }
 	        // DG8MG
 
