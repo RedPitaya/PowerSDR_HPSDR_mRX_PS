@@ -1494,12 +1494,6 @@ namespace PowerSDR
         private CheckBoxTS chkDSPKeyerSidetone;
         private Midi2Cat.Midi2CatSetupForm ConfigMidi2Cat;
         private Thread save_options_thread;
-
-        // DG8MG
-        // Extension for Charly 25 and HAMlab hardware
-        // public static C25SWRViewForm C25SWRView = null;
-        // DG8MG
-
         #endregion
 
         #region Constructor and Destructor
@@ -22814,92 +22808,106 @@ namespace PowerSDR
             udC25TXFreqSwpTestRate.Enabled = false;
             udC25TXFreqSwpTestDrivePower.Enabled = false;
 
-            // Save the current settings
-            old_frsregion = comboFRSRegion.SelectedIndex;
-            old_vfoa_frequency = console.VFOAFreq;
-
-            for (band_index = 0; band_index < (int)Band.LAST; band_index++) power_by_band[band_index] = console.GetPower((Band)band_index);
-
-            // Bypass the shortwave lowpass filters
-            JanusAudio.C25SetSwLPFBypass(1);
-
-            if (C25SWRView == null)
+            try
             {
-                C25SWRView = new C25SWRViewForm(this);
+                // Save the current settings
+                old_frsregion = comboFRSRegion.SelectedIndex;
+                old_vfoa_frequency = console.VFOAFreq;
+
+                for (band_index = 0; band_index < (int)Band.LAST; band_index++) power_by_band[band_index] = console.GetPower((Band)band_index);
+
+                // Bypass the shortwave lowpass filters
+                JanusAudio.C25SetSwLPFBypass(1);
+
+                if (C25SWRView == null)
+                {
+                    C25SWRView = new C25SWRViewForm(this);
+                }
+
+                C25SWRView.c25SWRViewChartSetup(this);
+                C25SWRView.Show();
+                C25SWRView.Enabled = false;
+                C25SWRView.BringToFront();
+
+                comboFRSRegion.SelectedIndex = comboFRSRegion.Items.Count - 1;
+                console.TUN = true;
+
+                // Wait for the transmitter to get stable
+                Thread.Sleep(1000);
+
+                for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq <= ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestRate.Value / 1e6))
+                {
+                    if (C25TXFreqSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
+                    {
+                        break;
+                    }
+
+                    // Set the new drive power for the test (again), because it might be changed by a band change
+                    console.PWR = (int)udC25TXFreqSwpTestDrivePower.Value;
+
+                    System.Console.WriteLine("Frequency: " + console.VFOAFreq + " MHz. Forward power: " + console.alex_fwd + ", reflected power: " + console.alex_rev);
+
+                    // Avoid total reflection in SWR calculation
+                    if (console.alex_rev >= console.alex_fwd)
+                    {
+                        console.alex_rev = console.alex_fwd - 0.001f;
+                    }
+
+                    // Calculate the current SWR value
+                    float rho = (float)Math.Sqrt(console.alex_rev / console.alex_fwd);
+                    float swr = 1.0f;
+
+                    if (float.IsNaN(rho) || float.IsInfinity(rho))
+                    {
+                        swr = 1.0f;
+                    }
+                    else
+                    {
+                        swr = (1.0f + rho) / (1.0f - rho);
+                    }
+
+                    System.Console.WriteLine("SWR: " + swr);
+
+                    C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq, swr);
+
+                    DateTime start = DateTime.Now;
+
+                    while ((C25TXFreqSwpTest_is_canceled == false) && (C25TXFreqSwpTest_is_paused == true || ((DateTime.Now - start).TotalMilliseconds < (int)udC25TXFreqSwpTestInterval.Value)))
+                    {
+                        Application.DoEvents();
+                    }
+                }
             }
-
-            C25SWRView.c25SWRViewChartSetup(this);
-            C25SWRView.Show();
-            C25SWRView.BringToFront();
-
-            comboFRSRegion.SelectedIndex = comboFRSRegion.Items.Count - 1;
-            console.TUN = true;
-
-            // Wait for the transmitter to get stable
-            Thread.Sleep(1000);
-
-            for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq <= ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestRate.Value / 1e6))
+            catch (Exception ex)
             {
-                if (C25TXFreqSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
-                {
-                    break;
-                }
-
-                // Set the new drive power for the test (again), because it might be changed by a band change
-                console.PWR = (int)udC25TXFreqSwpTestDrivePower.Value;
-
-                System.Console.WriteLine("Frequency: " + console.VFOAFreq + " MHz. Forward power: " + console.alex_fwd + ", reflected power: " + console.alex_rev);
-
-                // Avoid total reflection in SWR calculation
-                if (console.alex_rev >= console.alex_fwd)
-                {
-                    console.alex_rev = console.alex_fwd - 0.001f;
-                }
-
-                // Calculate the current SWR value
-                float rho = (float)Math.Sqrt(console.alex_rev / console.alex_fwd);
-                float swr = 1.0f;
-
-                if (float.IsNaN(rho) || float.IsInfinity(rho))
-                {
-                    swr = 1.0f;
-                }
-                else
-                {
-                    swr = (1.0f + rho) / (1.0f - rho);
-                }
-
-                System.Console.WriteLine("SWR: " + swr);
-
-                C25SWRView.c25SWRViewChartPrintData(console.VFOAFreq, swr);
-
-                DateTime start = DateTime.Now;
-
-                while ((C25TXFreqSwpTest_is_canceled == false) && (C25TXFreqSwpTest_is_paused == true || ((DateTime.Now - start).TotalMilliseconds < (int)udC25TXFreqSwpTestInterval.Value)))
-                {
-                    Application.DoEvents();
-                }
+                MessageBox.Show("The following exception occured during SWR measurement: " + ex.ToString(),
+                "Exception!",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
             }
+            finally
+            {
+                console.TUN = false;
 
-            console.TUN = false;
-            
-            // Restore the old setting
-            comboFRSRegion.SelectedIndex = old_frsregion;
-            console.VFOAFreq = old_vfoa_frequency;
+                // Restore the old setting
+                comboFRSRegion.SelectedIndex = old_frsregion;
+                console.VFOAFreq = old_vfoa_frequency;
 
-            for (band_index = 0; band_index < (int)Band.LAST; band_index++) console.SetPower((Band)band_index, power_by_band[band_index]);
+                for (band_index = 0; band_index < (int)Band.LAST; band_index++) console.SetPower((Band)band_index, power_by_band[band_index]);
 
-            JanusAudio.C25SetSwLPFBypass(0);
+                JanusAudio.C25SetSwLPFBypass(0);
 
-            btnC25TXFreqSwpTestStart.Enabled = true;
-            btnC25TXFreqSwpTestPause.Enabled = false;
-            btnC25TXFreqSwpTestPause.Text = "Pause";
-            btnC25TXFreqSwpTestCancel.Enabled = false;
-            udC25TXFreqSwpTestStartFrequency.Enabled = true;
-            udC25TXFreqSwpTestStopFrequency.Enabled = true;
-            udC25TXFreqSwpTestInterval.Enabled = true;
-            udC25TXFreqSwpTestRate.Enabled = true;
-            udC25TXFreqSwpTestDrivePower.Enabled = true;
+                C25SWRView.Enabled = true;
+                btnC25TXFreqSwpTestStart.Enabled = true;
+                btnC25TXFreqSwpTestPause.Enabled = false;
+                btnC25TXFreqSwpTestPause.Text = "Pause";
+                btnC25TXFreqSwpTestCancel.Enabled = false;
+                udC25TXFreqSwpTestStartFrequency.Enabled = true;
+                udC25TXFreqSwpTestStopFrequency.Enabled = true;
+                udC25TXFreqSwpTestInterval.Enabled = true;
+                udC25TXFreqSwpTestRate.Enabled = true;
+                udC25TXFreqSwpTestDrivePower.Enabled = true;
+            }
         }
 
         private void btnC25TXFreqSwpTestPause_Click(object sender, EventArgs e)
