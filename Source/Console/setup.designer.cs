@@ -3015,6 +3015,8 @@
             this.lblC25PACurrentADCFactor = new System.Windows.Forms.LabelTS();
             this.udC25PACurrentADCFactor = new System.Windows.Forms.NumericUpDownTS();
             this.grpC25TransmitterSettings = new System.Windows.Forms.GroupBoxTS();
+            this.lblC25TXFrequencyCorrectionFactor = new System.Windows.Forms.LabelTS();
+            this.udC25TXFrequencyCorrectionFactor = new System.Windows.Forms.NumericUpDownTS();
             this.chkC25SWRProtection = new System.Windows.Forms.CheckBoxTS();
             this.tpC25Tests = new System.Windows.Forms.TabPage();
             this.btnC25TXPASwitch = new System.Windows.Forms.ButtonTS();
@@ -4089,6 +4091,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.udC25TotalCurrentADCFactor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udC25PACurrentADCFactor)).BeginInit();
             this.grpC25TransmitterSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFrequencyCorrectionFactor)).BeginInit();
             this.tpC25Tests.SuspendLayout();
             this.grpC25TXFrequencySweepTest.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestInterval)).BeginInit();
@@ -51048,6 +51051,8 @@
             // 
             // grpC25TransmitterSettings
             // 
+            this.grpC25TransmitterSettings.Controls.Add(this.lblC25TXFrequencyCorrectionFactor);
+            this.grpC25TransmitterSettings.Controls.Add(this.udC25TXFrequencyCorrectionFactor);
             this.grpC25TransmitterSettings.Controls.Add(this.chkC25SwapDirectionalCouplerPorts);
             this.grpC25TransmitterSettings.Controls.Add(this.chkC25SWRProtection);
             this.grpC25TransmitterSettings.Location = new System.Drawing.Point(6, 118);
@@ -51057,6 +51062,43 @@
             this.grpC25TransmitterSettings.TabStop = false;
             this.grpC25TransmitterSettings.Text = "Transmitter Settings";
             // 
+            // lblC25TXFrequencyCorrectionFactor
+            // 
+            this.lblC25TXFrequencyCorrectionFactor.Image = null;
+            this.lblC25TXFrequencyCorrectionFactor.Location = new System.Drawing.Point(6, 67);
+            this.lblC25TXFrequencyCorrectionFactor.Name = "lblC25TXFrequencyCorrectionFactor";
+            this.lblC25TXFrequencyCorrectionFactor.Size = new System.Drawing.Size(108, 26);
+            this.lblC25TXFrequencyCorrectionFactor.TabIndex = 4;
+            this.lblC25TXFrequencyCorrectionFactor.Text = "TX Frequency Correction Factor:";
+            // 
+            // udC25TXFrequencyCorrectionFactor
+            // 
+            this.udC25TXFrequencyCorrectionFactor.DecimalPlaces = 8;
+            this.udC25TXFrequencyCorrectionFactor.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            524288});
+            this.udC25TXFrequencyCorrectionFactor.Location = new System.Drawing.Point(120, 73);
+            this.udC25TXFrequencyCorrectionFactor.Maximum = new decimal(new int[] {
+            65,
+            0,
+            0,
+            0});
+            this.udC25TXFrequencyCorrectionFactor.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.udC25TXFrequencyCorrectionFactor.Name = "udC25TXFrequencyCorrectionFactor";
+            this.udC25TXFrequencyCorrectionFactor.Size = new System.Drawing.Size(84, 20);
+            this.udC25TXFrequencyCorrectionFactor.TabIndex = 3;
+            this.udC25TXFrequencyCorrectionFactor.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.udC25TXFrequencyCorrectionFactor.ValueChanged += new System.EventHandler(this.udC25TXFrequencyCorrectionFactor_ValueChanged);
             // chkC25SWRProtection
             // 
             this.chkC25SWRProtection.AutoSize = true;
@@ -53926,6 +53968,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.udC25PACurrentADCFactor)).EndInit();
             this.grpC25TransmitterSettings.ResumeLayout(false);
             this.grpC25TransmitterSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFrequencyCorrectionFactor)).EndInit();
             this.tpC25Tests.ResumeLayout(false);
             this.grpC25TXFrequencySweepTest.ResumeLayout(false);
             this.grpC25TXFrequencySweepTest.PerformLayout();
@@ -55683,5 +55726,7 @@
         public System.Windows.Forms.NumericUpDownTS udC25PA4W;
         public System.Windows.Forms.NumericUpDownTS udC25PA3W;
         public System.Windows.Forms.CheckBoxTS chkC25SwapDirectionalCouplerPorts;
+        private System.Windows.Forms.LabelTS lblC25TXFrequencyCorrectionFactor;
+        public System.Windows.Forms.NumericUpDownTS udC25TXFrequencyCorrectionFactor;
     }
 }

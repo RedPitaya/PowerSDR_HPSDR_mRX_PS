@@ -23543,6 +23543,11 @@ namespace PowerSDR
         {
             if (console.PowerOn) udC25PA20W.Value = (int)JanusAudio.getAlexFwdPower();
         }
+
+        private void udC25TXFrequencyCorrectionFactor_ValueChanged(object sender, EventArgs e)
+        {
+            JanusAudio.C25TXFreqCorrectionFactor = (double)udC25TXFrequencyCorrectionFactor.Value;
+        }
         // DG8MG
 
         //private void chkCTUNScroll_CheckedChanged(object sender, EventArgs e)

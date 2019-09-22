@@ -979,6 +979,21 @@ namespace PowerSDR
             }
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        private static double c25_tx_freq_correction_factor = 1.0;
+        public static double C25TXFreqCorrectionFactor
+        {
+            get { return c25_tx_freq_correction_factor; }
+            set
+            {
+                c25_tx_freq_correction_factor = value;
+                int f_freq = (int)((lastVFOTXfreq * 1e6) * c25_tx_freq_correction_factor);
+                SetTXVFOfreq(f_freq);
+            }
+        }
+        // DG8MG
+
         public static void freqCorrectionChanged()
         {
             if (!Console.FreqCalibrationRunning)    // we can't be applying freq correction when cal is running 
@@ -1082,7 +1097,28 @@ namespace PowerSDR
         unsafe public static void SetVFOfreqTX(double f)
         {
             lastVFOTXfreq = f;
-            int f_freq = (int)((f * 1e6) * freq_correction_factor);
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            int f_freq;
+
+            Console c = Console.getConsole();
+
+            // Console must be available to check the selected model
+            if (c != null && c.C25ModelIsCharly25orHAMlab())
+            {
+                // Charly 25 and HAMlab hardware have their own TX frequency correction factor, independent of the RX frequency correction factor
+                {
+                    f_freq = (int)((f * 1e6) * c25_tx_freq_correction_factor);
+                }
+            }
+            // otherwise take the default path
+            else
+            {
+                f_freq = (int)((f * 1e6) * freq_correction_factor);
+            }
+            // DG8MG
+
             SetTXVFOfreq(f_freq);
             // c.SetupForm.txtTXVFO.Text = f_freq.ToString();
         }
