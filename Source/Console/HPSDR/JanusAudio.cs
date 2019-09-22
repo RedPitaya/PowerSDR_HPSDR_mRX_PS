@@ -508,9 +508,28 @@ namespace PowerSDR
                         // Try to discover the running SDR application on the Red Pitaya via any available network interface
                         foreach (IPAddress ipa in addrList)
                         {
-                            if (DiscoverMetisOnPort(ref mhd, ipa, null))
+                            IPAddress targetIP;
+
+                            if (IPAddress.TryParse(Metis_IP_address, out targetIP))
                             {
-                                foundMetis = true;
+                                // Check if the discovery needs to be done via TCP or UDP
+                                if (c.SetupForm.chkC25useTCP.Checked)
+                                {
+                                    System.Console.WriteLine(String.Format("Attempting to connect to host adapter {0}, metis IP {1} via TCP protocol", ipa, Metis_IP_address));
+                                    if (C25TCPDiscoverMetisOnPort(ref mhd, ipa, targetIP))
+                                    {
+                                        foundMetis = true;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    if (DiscoverMetisOnPort(ref mhd, ipa, targetIP))
+                                    {
+                                        foundMetis = true;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -543,13 +562,31 @@ namespace PowerSDR
             }
 
             int chosenDevice = 0;
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            chosenDevice = mhd.FindIndex(devices => devices.IPAddress.Equals(Metis_IP_address));
+            // System.Console.WriteLine(String.Format("chosenDevice: {0}, Metis_IP_address: {1}\n", chosenDevice, Metis_IP_address));
+
+            if (chosenDevice < 0)
+            {
+                if (cleanup)
+                    Win32.WSACleanup();
+                return -1;
+            }
+            // DG8MG
+
             MetisBoardID = mhd[chosenDevice].deviceType;
             MetisCodeVersion = mhd[chosenDevice].codeVersion;
             Metis_IP_address = mhd[chosenDevice].IPAddress;
             MetisMAC = mhd[chosenDevice].MACAddress;
             EthernetHostIPAddress = mhd[chosenDevice].hostPortIPAddress.ToString();
 
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
             rc = nativeInitMetis(Metis_IP_address, (c.C25ModelIsCharly25orHAMlab() && c.SetupForm.chkC25useTCP.Checked) ? 1 : 0);
+            // DG8MG
+
             return -rc;
         }
 
@@ -1503,11 +1540,10 @@ namespace PowerSDR
 
             try
             {
-                // connect to socket and Port
                 socket.Connect(iep);
 
                 IPEndPoint localEndPoint = (IPEndPoint)socket.LocalEndPoint;
-                System.Console.WriteLine("Looking for Red Pitaya boards using host adapter IP {0}, port {1}, via TCP", localEndPoint.Address, localEndPoint.Port);
+                System.Console.WriteLine("Looking for Red Pitaya boards using host adapter IP {0}, port {1}, via TCP", HostIP, localEndPoint.Port);
 
                 if (C25_TCP_RedPitaya_Discovery(ref mhdList, HostIP, targetIP))
                 {
