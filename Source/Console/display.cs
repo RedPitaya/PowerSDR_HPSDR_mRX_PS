@@ -30,6 +30,8 @@
 // Waterfall AGC Modifications Copyright (C) 2013 Phil Harman (VK6APH)
 // DirectX functions borrowed from GeneisisRadio Copyright (C)2010,2011,2012 YT7PWR Goran Radivojevic
 //
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2019 Markus Grundner / DG8MG
+//
 
 using System.Linq;
 
@@ -7035,8 +7037,14 @@ namespace PowerSDR
             if (mox && rx == 1 && !tx_on_vfob) local_mox = true;
             if (mox && rx == 2 && tx_on_vfob) local_mox = true;
             if (rx == 1 && tx_on_vfob && mox && !console.RX2Enabled) local_mox = true;
-            int Low = 0;// = rx_display_low;					// initialize variables
-            int High = 0;// = rx_display_high;
+
+            // DG8MG
+            // int Low = 0;// = rx_display_low;					// initialize variables
+            // int High = 0;// = rx_display_high;
+            long Low = 0;// = rx_display_low;					// initialize variables
+            long High = 0;// = rx_display_high;
+            // DG8MG
+
             int mid_w = W / 2;
             int[] step_list = { 10, 20, 25, 50 };
             int step_power = 1;
@@ -7046,7 +7054,11 @@ namespace PowerSDR
             int grid_max = 0;
             int grid_min = 0;
             int grid_step = 0; // spectrum_grid_step;
-            int f_diff = 0;
+
+            // DG8MG
+            // int f_diff = 0;
+            long f_diff = 0;
+            // DG8MG
 
             if ((CurrentDisplayMode == DisplayMode.PANAFALL && (/*console.NReceivers <= 2 && */ display_duplex)) ||
                // (CurrentDisplayMode == DisplayMode.PANAFALL && console.StitchedReceivers == 3) ||
@@ -7098,16 +7110,22 @@ namespace PowerSDR
             //-W2PA Correct for transmit scale shifts in split and CTUN modes
             double diff;
             diff = 1.0e6 * (console.CenterFrequency - console.VFOAFreq);  // Correction for CTUN: DispCenter - VFOA
-            int ctunDiff = Convert.ToInt32(diff);
+
+            // DG8MG
+            // int ctunDiff = Convert.ToInt32(diff);
+            long ctunDiff = Convert.ToInt64(diff);
 
             diff = 1.0e6 * (console.VFOBFreq - console.VFOAFreq);  // Correction for split: VFOB - VFOA
-            int splitDiff = Convert.ToInt32(diff);
+            // int splitDiff = Convert.ToInt32(diff);
+            long splitDiff = Convert.ToInt64(diff);
 
             if (SplitEnabled && RX2Enabled)
             {
                 diff = 1.0e6 * (console.VFOASubFreq - console.VFOAFreq);  // Correction for split with RX2 on: VFOASub - VFOA
-                splitDiff = Convert.ToInt32(diff);
+                // splitDiff = Convert.ToInt32(diff);
+                splitDiff = Convert.ToInt64(diff);
             }
+            // DG8MG
 
             //-W2PA Correct the display for various transmit mode combinations
             if (local_mox && rx == 1)
@@ -7237,7 +7255,11 @@ namespace PowerSDR
                 filter_high = 5000;
             }
 
-            int width = High - Low;
+            // DG8MG
+            // int width = High - Low;
+            int width = Convert.ToInt32(High - Low);
+            // DG8MG
+
             //d center_line_x = (int)(-(double)Low / width * W);
 
             // Calculate horizontal step size
@@ -7523,9 +7545,13 @@ namespace PowerSDR
             {
                 List<Notch> notches;
                 if (!bottom)
-                    notches = NotchList.NotchesInBW((double)vfoa_hz * 1e-6, Low, High);
+                    // DG8MG
+                    // notches = NotchList.NotchesInBW((double)vfoa_hz * 1e-6, Low, High);
+                    notches = NotchList.NotchesInBW((double)vfoa_hz * 1e-6, (int)Low, (int)High);
                 else
-                    notches = NotchList.NotchesInBW((double)vfob_hz * 1e-6, Low, High);
+                    // notches = NotchList.NotchesInBW((double)vfob_hz * 1e-6, Low, High);
+                    notches = NotchList.NotchesInBW((double)vfob_hz * 1e-6, (int)Low, (int)High);
+                    // DG8MG
 
                 //draw notch bars in this for loop
                 foreach (Notch n in notches)
@@ -7578,11 +7604,19 @@ namespace PowerSDR
                     {
                         int zoomed_notch_center_freq = (int)(notch_zoom_start_freq * 1e6 - rf_freq - rit);
 
-                        int original_bw = High - Low;
+                        // DG8MG
+                        // int original_bw = High - Low;
+                        int original_bw = Convert.ToInt32(High - Low);
+                        // DG8MG
+
                         int zoom_bw = original_bw / 10;
 
-                        int low = zoomed_notch_center_freq - zoom_bw / 2;
-                        int high = zoomed_notch_center_freq + zoom_bw / 2;
+                        // DG8MG
+                        // int low = zoomed_notch_center_freq - zoom_bw / 2;
+                        // int high = zoomed_notch_center_freq + zoom_bw / 2;
+                        long low = zoomed_notch_center_freq - zoom_bw / 2;
+                        long high = zoomed_notch_center_freq + zoom_bw / 2;
+                        // DG8MG
 
                         if (low < Low) // check left limit
                         {
@@ -7903,7 +7937,11 @@ namespace PowerSDR
                 int offsetL;
                 int offsetR;
 
-                int fgrid = i * freq_step_size + (Low / freq_step_size) * freq_step_size;
+                // DG8MG
+                // int fgrid = i * freq_step_size + (Low / freq_step_size) * freq_step_size;
+                long fgrid = i * freq_step_size + (Low / freq_step_size) * freq_step_size;
+                // DG8MG
+
                 double actual_fgrid = ((double)(vfo_round + fgrid)) / 1000000;
                 int vgrid = (int)((double)(fgrid - vfo_delta - Low) / width * W);
                 string freq_num = actual_fgrid.ToString();
@@ -8770,8 +8808,13 @@ namespace PowerSDR
                 if (current_display_mode_bottom == DisplayMode.PANAFALL) g.FillRectangle(display_background_brush, 0, 3 * H, W, H);
             }
 
-            int low = 0;					// initialize variables
-            int high = 0;
+            // DG8MG
+            // int low = 0;					// initialize variables
+            // int high = 0;
+            long low = 0;					// initialize variables
+            long high = 0;
+            // DG8MG
+
             int mid_w = W / 2;
             int[] step_list = { 10, 20, 25, 50 };
             int step_power = 1;
@@ -8781,7 +8824,12 @@ namespace PowerSDR
             bool local_mox = false;
             int grid_max = 0;
             int grid_min = 0;
-            int f_diff = 0;
+
+            // DG8MG
+            // int f_diff = 0;
+            long f_diff = 0;
+            // DG8MG
+
             bool displayduplex = false;
 
             if (rx == 1 && !tx_on_vfob && mox) local_mox = true;
@@ -8847,16 +8895,22 @@ namespace PowerSDR
             //-W2PA Correct for transmit scale shifts in split and CTUN modes
             double diff;
             diff = 1.0e6 * (console.CenterFrequency - console.VFOAFreq);  // Correction for CTUN: DispCenter - VFOA
-            int ctunDiff = Convert.ToInt32(diff);
+
+            // DG8MG
+            // int ctunDiff = Convert.ToInt32(diff);
+            long ctunDiff = Convert.ToInt64(diff);
 
             diff = 1.0e6 * (console.VFOBFreq - console.VFOAFreq);  // Correction for split: VFOB - VFOA
-            int splitDiff = Convert.ToInt32(diff);
+            // int splitDiff = Convert.ToInt32(diff);
+            long splitDiff = Convert.ToInt64(diff);
 
             if (SplitEnabled && RX2Enabled)
             {
                 diff = 1.0e6 * (console.VFOASubFreq - console.VFOAFreq);  // Correction for split with RX2 on: VFOASub - VFOA
-                splitDiff = Convert.ToInt32(diff);
+                // splitDiff = Convert.ToInt32(diff);
+                splitDiff = Convert.ToInt64(diff);
             }
+            // DG8MG
 
             //-W2PA Correct the display for various mode combinations
 
@@ -9098,7 +9152,11 @@ namespace PowerSDR
             }
 
             // Calculate horizontal step size
-            int width = high - low;
+            // DG8MG
+            // int widh = high - low;
+            long width = high - low;
+            // DG8MG
+
             while (width / freq_step_size > 10)
             {
                 freq_step_size = step_list[step_index] * (int)Math.Pow(10.0, step_power);
@@ -9106,7 +9164,11 @@ namespace PowerSDR
                 if (step_index == 0) step_power++;
             }
             double w_pixel_step = (double)W * freq_step_size / width;
-            int w_steps = width / freq_step_size;
+
+            // DG8MG
+            // int w_steps = width / freq_step_size;
+            long w_steps = width / freq_step_size;
+            // DG8MG
 
             // calculate vertical step size
             int h_steps = (spectrum_grid_max - spectrum_grid_min) / spectrum_grid_step;
@@ -9304,7 +9366,11 @@ namespace PowerSDR
                 int offsetL;
                 int offsetR;
 
-                int fgrid = i * freq_step_size + (low / freq_step_size) * freq_step_size;
+                // DG8MG
+                // int fgrid = i * freq_step_size + (low / freq_step_size) * freq_step_size;
+                long fgrid = i * freq_step_size + (low / freq_step_size) * freq_step_size;
+                // DG8MG
+
                 double actual_fgrid = ((double)(vfo_round + fgrid)) / 1000000;
                 int vgrid = (int)((double)(fgrid - vfo_delta - low) / (high - low) * W);
 
