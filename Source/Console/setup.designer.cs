@@ -3015,8 +3015,10 @@
             this.lblC25PACurrentADCFactor = new System.Windows.Forms.LabelTS();
             this.udC25PACurrentADCFactor = new System.Windows.Forms.NumericUpDownTS();
             this.grpC25TransmitterSettings = new System.Windows.Forms.GroupBoxTS();
+            this.chkC25ANT2ReceiveOnly = new System.Windows.Forms.CheckBoxTS();
             this.lblC25TXFrequencyCorrectionFactor = new System.Windows.Forms.LabelTS();
             this.udC25TXFrequencyCorrectionFactor = new System.Windows.Forms.NumericUpDownTS();
+            this.chkC25SwapDirectionalCouplerPorts = new System.Windows.Forms.CheckBoxTS();
             this.chkC25SWRProtection = new System.Windows.Forms.CheckBoxTS();
             this.tpC25Tests = new System.Windows.Forms.TabPage();
             this.btnC25TXPASwitch = new System.Windows.Forms.ButtonTS();
@@ -3111,7 +3113,6 @@
             this.panelTS4 = new System.Windows.Forms.PanelTS();
             this.radioButtonTS5 = new System.Windows.Forms.RadioButtonTS();
             this.radioButtonTS6 = new System.Windows.Forms.RadioButtonTS();
-            this.chkC25SwapDirectionalCouplerPorts = new System.Windows.Forms.CheckBoxTS();
             tpAlexAntCtrl = new System.Windows.Forms.TabPage();
             grpKBCW = new System.Windows.Forms.GroupBoxTS();
             tpAlexAntCtrl.SuspendLayout();
@@ -50931,9 +50932,9 @@
             // 
             this.grpC25MiscellaneousSettings.Controls.Add(this.chkC25UseCharly25ContestMode);
             this.grpC25MiscellaneousSettings.Controls.Add(this.chkC25UseBetaVersions);
-            this.grpC25MiscellaneousSettings.Location = new System.Drawing.Point(6, 224);
+            this.grpC25MiscellaneousSettings.Location = new System.Drawing.Point(6, 249);
             this.grpC25MiscellaneousSettings.Name = "grpC25MiscellaneousSettings";
-            this.grpC25MiscellaneousSettings.Size = new System.Drawing.Size(210, 81);
+            this.grpC25MiscellaneousSettings.Size = new System.Drawing.Size(220, 81);
             this.grpC25MiscellaneousSettings.TabIndex = 2;
             this.grpC25MiscellaneousSettings.TabStop = false;
             this.grpC25MiscellaneousSettings.Text = "Miscellaneous Settings";
@@ -50945,7 +50946,7 @@
             this.chkC25UseCharly25ContestMode.Location = new System.Drawing.Point(6, 42);
             this.chkC25UseCharly25ContestMode.Name = "chkC25UseCharly25ContestMode";
             this.chkC25UseCharly25ContestMode.Size = new System.Drawing.Size(159, 17);
-            this.chkC25UseCharly25ContestMode.TabIndex = 2;
+            this.chkC25UseCharly25ContestMode.TabIndex = 7;
             this.chkC25UseCharly25ContestMode.Text = "Use Charly 25 contest mode";
             this.toolTip1.SetToolTip(this.chkC25UseCharly25ContestMode, "Use the Charly 25 contest mode in the Collapsed Mode");
             this.chkC25UseCharly25ContestMode.UseVisualStyleBackColor = true;
@@ -50957,7 +50958,7 @@
             this.chkC25UseBetaVersions.Location = new System.Drawing.Point(6, 19);
             this.chkC25UseBetaVersions.Name = "chkC25UseBetaVersions";
             this.chkC25UseBetaVersions.Size = new System.Drawing.Size(184, 17);
-            this.chkC25UseBetaVersions.TabIndex = 1;
+            this.chkC25UseBetaVersions.TabIndex = 6;
             this.chkC25UseBetaVersions.Text = "Use beta versions of the software";
             this.chkC25UseBetaVersions.UseVisualStyleBackColor = true;
             // 
@@ -50969,7 +50970,7 @@
             this.grpC25MeasurementSettings.Controls.Add(this.udC25PACurrentADCFactor);
             this.grpC25MeasurementSettings.Location = new System.Drawing.Point(6, 6);
             this.grpC25MeasurementSettings.Name = "grpC25MeasurementSettings";
-            this.grpC25MeasurementSettings.Size = new System.Drawing.Size(210, 106);
+            this.grpC25MeasurementSettings.Size = new System.Drawing.Size(220, 73);
             this.grpC25MeasurementSettings.TabIndex = 1;
             this.grpC25MeasurementSettings.TabStop = false;
             this.grpC25MeasurementSettings.Text = "Measurement Settings";
@@ -50981,7 +50982,7 @@
             0,
             0,
             0});
-            this.udC25TotalCurrentADCFactor.Location = new System.Drawing.Point(154, 45);
+            this.udC25TotalCurrentADCFactor.Location = new System.Drawing.Point(166, 45);
             this.udC25TotalCurrentADCFactor.Maximum = new decimal(new int[] {
             999,
             0,
@@ -50994,7 +50995,7 @@
             0});
             this.udC25TotalCurrentADCFactor.Name = "udC25TotalCurrentADCFactor";
             this.udC25TotalCurrentADCFactor.Size = new System.Drawing.Size(48, 20);
-            this.udC25TotalCurrentADCFactor.TabIndex = 3;
+            this.udC25TotalCurrentADCFactor.TabIndex = 1;
             this.udC25TotalCurrentADCFactor.Value = new decimal(new int[] {
             900,
             0,
@@ -51028,7 +51029,7 @@
             0,
             0,
             0});
-            this.udC25PACurrentADCFactor.Location = new System.Drawing.Point(154, 19);
+            this.udC25PACurrentADCFactor.Location = new System.Drawing.Point(166, 19);
             this.udC25PACurrentADCFactor.Maximum = new decimal(new int[] {
             999,
             0,
@@ -51050,21 +51051,35 @@
             // 
             // grpC25TransmitterSettings
             // 
+            this.grpC25TransmitterSettings.Controls.Add(this.chkC25ANT2ReceiveOnly);
             this.grpC25TransmitterSettings.Controls.Add(this.lblC25TXFrequencyCorrectionFactor);
             this.grpC25TransmitterSettings.Controls.Add(this.udC25TXFrequencyCorrectionFactor);
             this.grpC25TransmitterSettings.Controls.Add(this.chkC25SwapDirectionalCouplerPorts);
             this.grpC25TransmitterSettings.Controls.Add(this.chkC25SWRProtection);
-            this.grpC25TransmitterSettings.Location = new System.Drawing.Point(6, 118);
+            this.grpC25TransmitterSettings.Location = new System.Drawing.Point(6, 85);
             this.grpC25TransmitterSettings.Name = "grpC25TransmitterSettings";
-            this.grpC25TransmitterSettings.Size = new System.Drawing.Size(210, 100);
+            this.grpC25TransmitterSettings.Size = new System.Drawing.Size(220, 149);
             this.grpC25TransmitterSettings.TabIndex = 0;
             this.grpC25TransmitterSettings.TabStop = false;
             this.grpC25TransmitterSettings.Text = "Transmitter Settings";
             // 
+            // chkC25ANT2ReceiveOnly
+            // 
+            this.chkC25ANT2ReceiveOnly.AutoSize = true;
+            this.chkC25ANT2ReceiveOnly.Image = null;
+            this.chkC25ANT2ReceiveOnly.Location = new System.Drawing.Point(6, 19);
+            this.chkC25ANT2ReceiveOnly.Name = "chkC25ANT2ReceiveOnly";
+            this.chkC25ANT2ReceiveOnly.Size = new System.Drawing.Size(138, 17);
+            this.chkC25ANT2ReceiveOnly.TabIndex = 2;
+            this.chkC25ANT2ReceiveOnly.Text = "ANT 2 port receive only";
+            this.toolTip1.SetToolTip(this.chkC25ANT2ReceiveOnly, "Prevent to send via ANT 2 port");
+            this.chkC25ANT2ReceiveOnly.UseVisualStyleBackColor = true;
+            this.chkC25ANT2ReceiveOnly.CheckedChanged += new System.EventHandler(this.chkC25ANT2ReceiveOnly_CheckedChanged);
+            // 
             // lblC25TXFrequencyCorrectionFactor
             // 
             this.lblC25TXFrequencyCorrectionFactor.Image = null;
-            this.lblC25TXFrequencyCorrectionFactor.Location = new System.Drawing.Point(6, 67);
+            this.lblC25TXFrequencyCorrectionFactor.Location = new System.Drawing.Point(3, 115);
             this.lblC25TXFrequencyCorrectionFactor.Name = "lblC25TXFrequencyCorrectionFactor";
             this.lblC25TXFrequencyCorrectionFactor.Size = new System.Drawing.Size(108, 26);
             this.lblC25TXFrequencyCorrectionFactor.TabIndex = 4;
@@ -51078,7 +51093,7 @@
             0,
             0,
             524288});
-            this.udC25TXFrequencyCorrectionFactor.Location = new System.Drawing.Point(120, 73);
+            this.udC25TXFrequencyCorrectionFactor.Location = new System.Drawing.Point(130, 121);
             this.udC25TXFrequencyCorrectionFactor.Maximum = new decimal(new int[] {
             65,
             0,
@@ -51091,21 +51106,35 @@
             0});
             this.udC25TXFrequencyCorrectionFactor.Name = "udC25TXFrequencyCorrectionFactor";
             this.udC25TXFrequencyCorrectionFactor.Size = new System.Drawing.Size(84, 20);
-            this.udC25TXFrequencyCorrectionFactor.TabIndex = 3;
+            this.udC25TXFrequencyCorrectionFactor.TabIndex = 5;
             this.udC25TXFrequencyCorrectionFactor.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.udC25TXFrequencyCorrectionFactor.ValueChanged += new System.EventHandler(this.udC25TXFrequencyCorrectionFactor_ValueChanged);
+            // 
+            // chkC25SwapDirectionalCouplerPorts
+            // 
+            this.chkC25SwapDirectionalCouplerPorts.AutoSize = true;
+            this.chkC25SwapDirectionalCouplerPorts.Image = null;
+            this.chkC25SwapDirectionalCouplerPorts.Location = new System.Drawing.Point(6, 88);
+            this.chkC25SwapDirectionalCouplerPorts.Name = "chkC25SwapDirectionalCouplerPorts";
+            this.chkC25SwapDirectionalCouplerPorts.Size = new System.Drawing.Size(171, 17);
+            this.chkC25SwapDirectionalCouplerPorts.TabIndex = 4;
+            this.chkC25SwapDirectionalCouplerPorts.Text = "Swap Directional Coupler ports";
+            this.toolTip1.SetToolTip(this.chkC25SwapDirectionalCouplerPorts, "Swap the Directional Coupler ports, forward power is shown as reverse power and v" +
+        "ise versa");
+            this.chkC25SwapDirectionalCouplerPorts.UseVisualStyleBackColor = true;
+            // 
             // chkC25SWRProtection
             // 
             this.chkC25SWRProtection.AutoSize = true;
             this.chkC25SWRProtection.Image = null;
-            this.chkC25SWRProtection.Location = new System.Drawing.Point(6, 19);
+            this.chkC25SWRProtection.Location = new System.Drawing.Point(6, 65);
             this.chkC25SWRProtection.Name = "chkC25SWRProtection";
             this.chkC25SWRProtection.Size = new System.Drawing.Size(139, 17);
-            this.chkC25SWRProtection.TabIndex = 1;
+            this.chkC25SWRProtection.TabIndex = 3;
             this.chkC25SWRProtection.Text = "Enable SWR Protection";
             this.toolTip1.SetToolTip(this.chkC25SWRProtection, "Enable SWR protection on transmit and tune");
             this.chkC25SWRProtection.UseVisualStyleBackColor = true;
@@ -52840,19 +52869,6 @@
             this.radioButtonTS6.TabStop = true;
             this.radioButtonTS6.Text = "Auto";
             this.radioButtonTS6.UseVisualStyleBackColor = true;
-            // 
-            // chkC25SwapDirectionalCouplerPorts
-            // 
-            this.chkC25SwapDirectionalCouplerPorts.AutoSize = true;
-            this.chkC25SwapDirectionalCouplerPorts.Image = null;
-            this.chkC25SwapDirectionalCouplerPorts.Location = new System.Drawing.Point(6, 42);
-            this.chkC25SwapDirectionalCouplerPorts.Name = "chkC25SwapDirectionalCouplerPorts";
-            this.chkC25SwapDirectionalCouplerPorts.Size = new System.Drawing.Size(171, 17);
-            this.chkC25SwapDirectionalCouplerPorts.TabIndex = 2;
-            this.chkC25SwapDirectionalCouplerPorts.Text = "Swap Directional Coupler ports";
-            this.toolTip1.SetToolTip(this.chkC25SwapDirectionalCouplerPorts, "Swap the Directional Coupler ports, forward power is shown as reverse power and v" +
-        "ise versa");
-            this.chkC25SwapDirectionalCouplerPorts.UseVisualStyleBackColor = true;
             // 
             // Setup
             // 
@@ -55715,5 +55731,7 @@
         public System.Windows.Forms.CheckBoxTS chkC25SwapDirectionalCouplerPorts;
         private System.Windows.Forms.LabelTS lblC25TXFrequencyCorrectionFactor;
         public System.Windows.Forms.NumericUpDownTS udC25TXFrequencyCorrectionFactor;
+        private System.Windows.Forms.ComboBoxTS comboC25TXFreqSwpTestBand;
+        public System.Windows.Forms.CheckBoxTS chkC25ANT2ReceiveOnly;
     }
 }

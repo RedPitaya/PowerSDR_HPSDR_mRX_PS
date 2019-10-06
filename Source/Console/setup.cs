@@ -9018,6 +9018,7 @@ namespace PowerSDR
                 console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());  // set the Charly 25 icon on the console form
                 Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[0]).GetHicon());  // set the Charly 25 icon on the setup form
 
+                console.btnTNFAdd.Visible = false;  // Charly 25 doesn't need this functionality
                 console.chkSR.Visible = false;  // Charly 25 doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25 visible
@@ -9089,6 +9090,7 @@ namespace PowerSDR
                 console.Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the console form
                 Icon = Icon.FromHandle(((Bitmap)console.ilC25ImageList.Images[2]).GetHicon());  // reset to the openHPSDR icon on the setup form
 
+                console.btnTNFAdd.Visible = true;  // reset to default setting
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
                 console.chkC25Diversity.Visible = false;  // reset to default setting
@@ -23616,6 +23618,11 @@ namespace PowerSDR
         private void udC25TXFrequencyCorrectionFactor_ValueChanged(object sender, EventArgs e)
         {
             JanusAudio.C25TXFreqCorrectionFactor = (double)udC25TXFrequencyCorrectionFactor.Value;
+        }
+
+        private void chkC25ANT2ReceiveOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            console.C25_ANT_CheckedChanged(this, e);
         }
         // DG8MG
 

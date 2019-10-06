@@ -1692,7 +1692,12 @@ namespace PowerSDR
         private TextBoxTS txtDisplayOrionMKIIPAAmps;
         private TextBoxTS txtDisplayOrionMKIIBlank;
         private CheckBoxTS chkSyncIT;
-        private CheckBoxTS btnTNFAdd;
+
+        // DG8MG
+        // Changed from private to public
+        public CheckBoxTS btnTNFAdd;
+        // DG8MG
+
         private ComboBoxTS comboAMTXProfile;
         private LabelTS labelTS1;
         private CheckBoxTS chkVFOBLock;
@@ -39792,6 +39797,12 @@ namespace PowerSDR
         private bool mox = false;
         private PreampMode temp_mode = PreampMode.HPSDR_OFF; // HPSDR preamp mode
         private PreampMode temp_mode2 = PreampMode.HPSDR_OFF; // HPSDR preamp mode
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        private bool c25ant_state = false;
+        // DG8MG
+
         private void chkMOX_CheckedChanged2(object sender, System.EventArgs e)
         {
 
@@ -40060,6 +40071,27 @@ namespace PowerSDR
                 else JanusAudio.SetTxAttenData(rx1_attenuator_data);
                 // DG8MG
 
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (C25ModelIsCharly25orHAMlab())
+                {
+                    if (SetupForm.chkC25ANT2ReceiveOnly.Checked && chkC25ANT.Checked)
+                    {
+                        c25ant_state = chkC25ANT.Checked;
+
+                        // Tag chkC25ANT to tell C25_ANT_CheckedChanged event where the call comes from
+                        chkC25ANT.Tag = "1";
+                        chkC25ANT.Checked = false;
+                        chkC25ANT.Tag = null;
+                    }
+
+                    if (PSA == true)
+                    {
+                        JanusAudio.C25SetRX2Predistortion(1);
+                    }
+                }
+                // DG8MG
+
                 AudioMOXChanged(tx);    // set MOX in audio.cs
                 HdwMOXChanged(tx, freq);// flip the hardware
                 psform.Mox = tx;
@@ -40100,6 +40132,23 @@ namespace PowerSDR
                 AudioMOXChanged(tx);    // set audio.cs to RX
                 HdwMOXChanged(tx, freq);// flip the hardware
                 // psform.Mox = tx;
+
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (C25ModelIsCharly25orHAMlab())
+                {
+                    if (SetupForm.chkC25ANT2ReceiveOnly.Checked)
+                    {
+                        chkC25ANT.Checked = c25ant_state;
+                        c25ant_state = false;
+                    }
+
+                    if (PSA == true)
+                    {
+                        JanusAudio.C25SetRX2Predistortion(0);
+                    }
+                }
+                // DG8MG
 
                 if (ANAN10EPresent || ANAN100BPresent) if (mox_delay > 0) Thread.Sleep(mox_delay);
 
@@ -56280,15 +56329,29 @@ namespace PowerSDR
 
         // DG8MG
         // Extension for Charly 25 and HAMlab hardware
-        private void C25_ANT_CheckedChanged(object sender, EventArgs e)
+        public void C25_ANT_CheckedChanged(object sender, EventArgs e)
         {
-            chkMOX.Checked = false;
-            chkTUN.Checked = false;
+            // Turn of MOX and TUN off if not called by C25ANT2ReceiveOnly setting
+            if (chkC25ANT.Tag == null)
+            {
+                chkMOX.Checked = false;
+                chkTUN.Checked = false;
+            }
 
             if (chkC25ANT.Checked)
             {
                 chkC25ANT.Text = "ANT2";
                 chkC25ANT.BackColor = button_selected_color;
+
+                if (SetupForm.chkC25ANT2ReceiveOnly.Checked)
+                {
+                    chkC25ANT.Font = new Font(chkC25ANT.Font, chkC25ANT.Font.Style | FontStyle.Italic);
+                }
+                else
+                {
+                    chkC25ANT.Font = new Font(chkC25ANT.Font, chkC25ANT.Font.Style & ~FontStyle.Italic);
+                }
+
                 JanusAudio.C25SetAntBits(1);
                 C25_RX1_antenna_by_band[(int)rx1_band] = 1;
             }
@@ -56296,6 +56359,7 @@ namespace PowerSDR
             {
                 chkC25ANT.Text = "ANT1";
                 chkC25ANT.BackColor = SystemColors.Control;
+                chkC25ANT.Font = new Font(chkC25ANT.Font, chkC25ANT.Font.Style & ~FontStyle.Italic);
                 JanusAudio.C25SetAntBits(0);
                 C25_RX1_antenna_by_band[(int)rx1_band] = 0;
             }
