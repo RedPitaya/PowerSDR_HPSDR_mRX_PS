@@ -53651,18 +53651,22 @@ namespace PowerSDR
                 return;
             }
 
-            comboPreamp.Items.Clear();
-
             // DG8MG
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if (C25ModelIsCharly25orHAMlab())
             {
-                comboPreamp.Items.AddRange(C25_attenuator_settings);
-                comboPreamp.Items.AddRange(C25_preamp_settings);
-                comboPreamp.SelectedIndex = 5;  // Initial index for 0dB
+                if (initializing)
+                {
+                    comboPreamp.Items.Clear();
+                    comboPreamp.Items.AddRange(C25_attenuator_settings);
+                    comboPreamp.Items.AddRange(C25_preamp_settings);
+                    comboPreamp.SelectedIndex = 5;  // Initial index for 0dB
+                }
             }
             else
             {
+                comboPreamp.Items.Clear();
+
                 //if (diversity2 && current_hpsdr_model != HPSDRModel.HPSDR)
                 //{
                 //    comboPreamp.Items.AddRange(anan100d_preamp_settings);
@@ -53728,18 +53732,22 @@ namespace PowerSDR
             // DG8MG: Test me: Extension for Charly 25 RX2 Preamp and Attenuator
             if (comboRX2Preamp != null)
             {
-                comboRX2Preamp.Items.Clear();
-
                 // DG8MG
                 // Extension for Charly 25 RX2 Attenuator and Preamp
                 if (C25ModelIsCharly25orHAMlab())
                 {
-                    comboRX2Preamp.Items.AddRange(C25_attenuator_settings);
-                    comboRX2Preamp.Items.AddRange(C25_preamp_settings);
-                    comboRX2Preamp.SelectedIndex = 5;  // Initial index for 0dB
+                    if (initializing)
+                    {
+                        comboRX2Preamp.Items.Clear();
+                        comboRX2Preamp.Items.AddRange(C25_attenuator_settings);
+                        comboRX2Preamp.Items.AddRange(C25_preamp_settings);
+                        comboRX2Preamp.SelectedIndex = 5;  // Initial index for 0dB
+                    }
                 }
                 else
                 {
+                    comboRX2Preamp.Items.Clear();
+
                     if (anan100dpresent || anan200dpresent || anan7000dpresent ||
                         anan8000dpresent || orionmkiipresent)
                         comboRX2Preamp.Items.AddRange(anan100d_preamp_settings);
