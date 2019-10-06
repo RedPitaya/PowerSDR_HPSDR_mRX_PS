@@ -3021,17 +3021,17 @@
             this.tpC25Tests = new System.Windows.Forms.TabPage();
             this.btnC25TXPASwitch = new System.Windows.Forms.ButtonTS();
             this.grpC25TXFrequencySweepTest = new System.Windows.Forms.GroupBoxTS();
-            this.udC25TXFreqSwpTestInterval = new System.Windows.Forms.NumericUpDownTS();
-            this.lblC25TXPwrSwpTestInterval = new System.Windows.Forms.LabelTS();
-            this.lblC25TXPwrSwpTestDrivePower = new System.Windows.Forms.LabelTS();
-            this.udC25TXFreqSwpTestRate = new System.Windows.Forms.NumericUpDownTS();
-            this.lblC25TXPwrSwpTestRate = new System.Windows.Forms.LabelTS();
+            this.comboC25TXFreqSwpTestBand = new System.Windows.Forms.ComboBoxTS();
+            this.lblC25TXFreqSwpTestBand = new System.Windows.Forms.LabelTS();
+            this.lblC25TXFreqSwpTestDrivePower = new System.Windows.Forms.LabelTS();
+            this.udC25TXFreqSwpTestStepFrequency = new System.Windows.Forms.NumericUpDownTS();
+            this.lblC25TXFreqSwpTestStep = new System.Windows.Forms.LabelTS();
             this.udC25TXFreqSwpTestDrivePower = new System.Windows.Forms.NumericUpDownTS();
             this.btnC25TXFreqSwpTestCancel = new System.Windows.Forms.ButtonTS();
             this.btnC25TXFreqSwpTestPause = new System.Windows.Forms.ButtonTS();
             this.btnC25TXFreqSwpTestStart = new System.Windows.Forms.ButtonTS();
-            this.lblC25TXPwrSwpTestStartFrequency = new System.Windows.Forms.LabelTS();
-            this.lblC25TXPwrSwpTestStopFrequency = new System.Windows.Forms.LabelTS();
+            this.lblC25TXFreqSwpTestStartFrequency = new System.Windows.Forms.LabelTS();
+            this.lblC25TXFreqSwpTestStopFrequency = new System.Windows.Forms.LabelTS();
             this.udC25TXFreqSwpTestStartFrequency = new System.Windows.Forms.NumericUpDownTS();
             this.udC25TXFreqSwpTestStopFrequency = new System.Windows.Forms.NumericUpDownTS();
             this.grpC25RXAttPreTest = new System.Windows.Forms.GroupBoxTS();
@@ -4094,8 +4094,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFrequencyCorrectionFactor)).BeginInit();
             this.tpC25Tests.SuspendLayout();
             this.grpC25TXFrequencySweepTest.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestInterval)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestRate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestStepFrequency)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestDrivePower)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestStartFrequency)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestStopFrequency)).BeginInit();
@@ -51141,17 +51140,17 @@
             // 
             // grpC25TXFrequencySweepTest
             // 
-            this.grpC25TXFrequencySweepTest.Controls.Add(this.udC25TXFreqSwpTestInterval);
-            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXPwrSwpTestInterval);
-            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXPwrSwpTestDrivePower);
-            this.grpC25TXFrequencySweepTest.Controls.Add(this.udC25TXFreqSwpTestRate);
-            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXPwrSwpTestRate);
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.comboC25TXFreqSwpTestBand);
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXFreqSwpTestBand);
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXFreqSwpTestDrivePower);
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.udC25TXFreqSwpTestStepFrequency);
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXFreqSwpTestStep);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.udC25TXFreqSwpTestDrivePower);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.btnC25TXFreqSwpTestCancel);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.btnC25TXFreqSwpTestPause);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.btnC25TXFreqSwpTestStart);
-            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXPwrSwpTestStartFrequency);
-            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXPwrSwpTestStopFrequency);
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXFreqSwpTestStartFrequency);
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXFreqSwpTestStopFrequency);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.udC25TXFreqSwpTestStartFrequency);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.udC25TXFreqSwpTestStopFrequency);
             this.grpC25TXFrequencySweepTest.Location = new System.Drawing.Point(6, 201);
@@ -51161,92 +51160,84 @@
             this.grpC25TXFrequencySweepTest.TabStop = false;
             this.grpC25TXFrequencySweepTest.Text = "TX Frequency Sweep Test";
             // 
-            // udC25TXFreqSwpTestInterval
+            // comboC25TXFreqSwpTestBand
             // 
-            this.udC25TXFreqSwpTestInterval.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.udC25TXFreqSwpTestInterval.Location = new System.Drawing.Point(171, 75);
-            this.udC25TXFreqSwpTestInterval.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.udC25TXFreqSwpTestInterval.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.udC25TXFreqSwpTestInterval.Name = "udC25TXFreqSwpTestInterval";
-            this.udC25TXFreqSwpTestInterval.Size = new System.Drawing.Size(75, 20);
-            this.udC25TXFreqSwpTestInterval.TabIndex = 5;
-            this.udC25TXFreqSwpTestInterval.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.udC25TXFreqSwpTestInterval.ThousandsSeparator = true;
-            this.udC25TXFreqSwpTestInterval.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
+            this.comboC25TXFreqSwpTestBand.FormattingEnabled = true;
+            this.comboC25TXFreqSwpTestBand.Items.AddRange(new object[] {
+            "160 Meter",
+            "80 Meter",
+            "60 Meter",
+            "40 Meter",
+            "30 Meter",
+            "20 Meter",
+            "17 Meter",
+            "15 Meter",
+            "12 Meter",
+            "10 Meter",
+            "6 Meter"});
+            this.comboC25TXFreqSwpTestBand.Location = new System.Drawing.Point(171, 22);
+            this.comboC25TXFreqSwpTestBand.Name = "comboC25TXFreqSwpTestBand";
+            this.comboC25TXFreqSwpTestBand.Size = new System.Drawing.Size(75, 21);
+            this.comboC25TXFreqSwpTestBand.TabIndex = 95;
+            this.comboC25TXFreqSwpTestBand.SelectedIndexChanged += new System.EventHandler(this.comboC25TXFreqSwpTestBand_SelectedIndexChanged);
             // 
-            // lblC25TXPwrSwpTestInterval
+            // lblC25TXFreqSwpTestBand
             // 
-            this.lblC25TXPwrSwpTestInterval.Image = null;
-            this.lblC25TXPwrSwpTestInterval.Location = new System.Drawing.Point(95, 77);
-            this.lblC25TXPwrSwpTestInterval.Name = "lblC25TXPwrSwpTestInterval";
-            this.lblC25TXPwrSwpTestInterval.Size = new System.Drawing.Size(75, 16);
-            this.lblC25TXPwrSwpTestInterval.TabIndex = 93;
-            this.lblC25TXPwrSwpTestInterval.Text = "Interval (ms):";
+            this.lblC25TXFreqSwpTestBand.Image = null;
+            this.lblC25TXFreqSwpTestBand.Location = new System.Drawing.Point(95, 25);
+            this.lblC25TXFreqSwpTestBand.Name = "lblC25TXFreqSwpTestBand";
+            this.lblC25TXFreqSwpTestBand.Size = new System.Drawing.Size(60, 16);
+            this.lblC25TXFreqSwpTestBand.TabIndex = 93;
+            this.lblC25TXFreqSwpTestBand.Text = "Band:";
             // 
-            // lblC25TXPwrSwpTestDrivePower
+            // lblC25TXFreqSwpTestDrivePower
             // 
-            this.lblC25TXPwrSwpTestDrivePower.AutoSize = true;
-            this.lblC25TXPwrSwpTestDrivePower.Image = null;
-            this.lblC25TXPwrSwpTestDrivePower.Location = new System.Drawing.Point(95, 129);
-            this.lblC25TXPwrSwpTestDrivePower.Name = "lblC25TXPwrSwpTestDrivePower";
-            this.lblC25TXPwrSwpTestDrivePower.Size = new System.Drawing.Size(68, 13);
-            this.lblC25TXPwrSwpTestDrivePower.TabIndex = 92;
-            this.lblC25TXPwrSwpTestDrivePower.Text = "Drive Power:";
+            this.lblC25TXFreqSwpTestDrivePower.AutoSize = true;
+            this.lblC25TXFreqSwpTestDrivePower.Image = null;
+            this.lblC25TXFreqSwpTestDrivePower.Location = new System.Drawing.Point(95, 51);
+            this.lblC25TXFreqSwpTestDrivePower.Name = "lblC25TXFreqSwpTestDrivePower";
+            this.lblC25TXFreqSwpTestDrivePower.Size = new System.Drawing.Size(68, 13);
+            this.lblC25TXFreqSwpTestDrivePower.TabIndex = 92;
+            this.lblC25TXFreqSwpTestDrivePower.Text = "Drive Power:";
             // 
-            // udC25TXFreqSwpTestRate
+            // udC25TXFreqSwpTestStepFrequency
             // 
-            this.udC25TXFreqSwpTestRate.Increment = new decimal(new int[] {
+            this.udC25TXFreqSwpTestStepFrequency.Increment = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestRate.Location = new System.Drawing.Point(171, 101);
-            this.udC25TXFreqSwpTestRate.Maximum = new decimal(new int[] {
+            this.udC25TXFreqSwpTestStepFrequency.Location = new System.Drawing.Point(171, 127);
+            this.udC25TXFreqSwpTestStepFrequency.Maximum = new decimal(new int[] {
             10000000,
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestRate.Minimum = new decimal(new int[] {
+            this.udC25TXFreqSwpTestStepFrequency.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestRate.Name = "udC25TXFreqSwpTestRate";
-            this.udC25TXFreqSwpTestRate.Size = new System.Drawing.Size(75, 20);
-            this.udC25TXFreqSwpTestRate.TabIndex = 6;
-            this.udC25TXFreqSwpTestRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.udC25TXFreqSwpTestRate.ThousandsSeparator = true;
-            this.udC25TXFreqSwpTestRate.Value = new decimal(new int[] {
+            this.udC25TXFreqSwpTestStepFrequency.Name = "udC25TXFreqSwpTestStepFrequency";
+            this.udC25TXFreqSwpTestStepFrequency.Size = new System.Drawing.Size(75, 20);
+            this.udC25TXFreqSwpTestStepFrequency.TabIndex = 6;
+            this.udC25TXFreqSwpTestStepFrequency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.udC25TXFreqSwpTestStepFrequency.ThousandsSeparator = true;
+            this.udC25TXFreqSwpTestStepFrequency.Value = new decimal(new int[] {
             1000000,
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestRate.ValueChanged += new System.EventHandler(this.udC25TXFreqSwpTestRate_ValueChanged);
+            this.udC25TXFreqSwpTestStepFrequency.ValueChanged += new System.EventHandler(this.udC25TXFreqSwpTestRate_ValueChanged);
             // 
-            // lblC25TXPwrSwpTestRate
+            // lblC25TXFreqSwpTestStep
             // 
-            this.lblC25TXPwrSwpTestRate.Image = null;
-            this.lblC25TXPwrSwpTestRate.Location = new System.Drawing.Point(95, 103);
-            this.lblC25TXPwrSwpTestRate.Name = "lblC25TXPwrSwpTestRate";
-            this.lblC25TXPwrSwpTestRate.Size = new System.Drawing.Size(75, 16);
-            this.lblC25TXPwrSwpTestRate.TabIndex = 90;
-            this.lblC25TXPwrSwpTestRate.Text = "Rate (Hz/ms):";
+            this.lblC25TXFreqSwpTestStep.Image = null;
+            this.lblC25TXFreqSwpTestStep.Location = new System.Drawing.Point(95, 129);
+            this.lblC25TXFreqSwpTestStep.Name = "lblC25TXFreqSwpTestStep";
+            this.lblC25TXFreqSwpTestStep.Size = new System.Drawing.Size(75, 16);
+            this.lblC25TXFreqSwpTestStep.TabIndex = 90;
+            this.lblC25TXFreqSwpTestStep.Text = "Step (Hz):";
             // 
             // udC25TXFreqSwpTestDrivePower
             // 
@@ -51255,7 +51246,7 @@
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestDrivePower.Location = new System.Drawing.Point(171, 127);
+            this.udC25TXFreqSwpTestDrivePower.Location = new System.Drawing.Point(171, 49);
             this.udC25TXFreqSwpTestDrivePower.Maximum = new decimal(new int[] {
             100,
             0,
@@ -51309,23 +51300,23 @@
             this.btnC25TXFreqSwpTestStart.UseVisualStyleBackColor = true;
             this.btnC25TXFreqSwpTestStart.Click += new System.EventHandler(this.btnC25TXFreqSwpTestStart_Click);
             // 
-            // lblC25TXPwrSwpTestStartFrequency
+            // lblC25TXFreqSwpTestStartFrequency
             // 
-            this.lblC25TXPwrSwpTestStartFrequency.Image = null;
-            this.lblC25TXPwrSwpTestStartFrequency.Location = new System.Drawing.Point(95, 25);
-            this.lblC25TXPwrSwpTestStartFrequency.Name = "lblC25TXPwrSwpTestStartFrequency";
-            this.lblC25TXPwrSwpTestStartFrequency.Size = new System.Drawing.Size(60, 16);
-            this.lblC25TXPwrSwpTestStartFrequency.TabIndex = 86;
-            this.lblC25TXPwrSwpTestStartFrequency.Text = "Start (Hz):";
+            this.lblC25TXFreqSwpTestStartFrequency.Image = null;
+            this.lblC25TXFreqSwpTestStartFrequency.Location = new System.Drawing.Point(95, 77);
+            this.lblC25TXFreqSwpTestStartFrequency.Name = "lblC25TXFreqSwpTestStartFrequency";
+            this.lblC25TXFreqSwpTestStartFrequency.Size = new System.Drawing.Size(60, 16);
+            this.lblC25TXFreqSwpTestStartFrequency.TabIndex = 86;
+            this.lblC25TXFreqSwpTestStartFrequency.Text = "Start (Hz):";
             // 
-            // lblC25TXPwrSwpTestStopFrequency
+            // lblC25TXFreqSwpTestStopFrequency
             // 
-            this.lblC25TXPwrSwpTestStopFrequency.Image = null;
-            this.lblC25TXPwrSwpTestStopFrequency.Location = new System.Drawing.Point(95, 51);
-            this.lblC25TXPwrSwpTestStopFrequency.Name = "lblC25TXPwrSwpTestStopFrequency";
-            this.lblC25TXPwrSwpTestStopFrequency.Size = new System.Drawing.Size(60, 16);
-            this.lblC25TXPwrSwpTestStopFrequency.TabIndex = 88;
-            this.lblC25TXPwrSwpTestStopFrequency.Text = "Stop (Hz):";
+            this.lblC25TXFreqSwpTestStopFrequency.Image = null;
+            this.lblC25TXFreqSwpTestStopFrequency.Location = new System.Drawing.Point(95, 103);
+            this.lblC25TXFreqSwpTestStopFrequency.Name = "lblC25TXFreqSwpTestStopFrequency";
+            this.lblC25TXFreqSwpTestStopFrequency.Size = new System.Drawing.Size(60, 16);
+            this.lblC25TXFreqSwpTestStopFrequency.TabIndex = 88;
+            this.lblC25TXFreqSwpTestStopFrequency.Text = "Stop (Hz):";
             // 
             // udC25TXFreqSwpTestStartFrequency
             // 
@@ -51334,9 +51325,9 @@
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestStartFrequency.Location = new System.Drawing.Point(171, 23);
+            this.udC25TXFreqSwpTestStartFrequency.Location = new System.Drawing.Point(171, 75);
             this.udC25TXFreqSwpTestStartFrequency.Maximum = new decimal(new int[] {
-            61440000,
+            55000000,
             0,
             0,
             0});
@@ -51355,7 +51346,6 @@
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestStartFrequency.ValueChanged += new System.EventHandler(this.udC25TXFreqSwpTestStartFrequency_ValueChanged);
             // 
             // udC25TXFreqSwpTestStopFrequency
             // 
@@ -51364,7 +51354,7 @@
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestStopFrequency.Location = new System.Drawing.Point(171, 49);
+            this.udC25TXFreqSwpTestStopFrequency.Location = new System.Drawing.Point(171, 101);
             this.udC25TXFreqSwpTestStopFrequency.Maximum = new decimal(new int[] {
             55000000,
             0,
@@ -51385,7 +51375,6 @@
             0,
             0,
             0});
-            this.udC25TXFreqSwpTestStopFrequency.ValueChanged += new System.EventHandler(this.udC25TXFreqSwpTestStopFrequency_ValueChanged);
             // 
             // grpC25RXAttPreTest
             // 
@@ -53972,8 +53961,7 @@
             this.tpC25Tests.ResumeLayout(false);
             this.grpC25TXFrequencySweepTest.ResumeLayout(false);
             this.grpC25TXFrequencySweepTest.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestInterval)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestRate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestStepFrequency)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestDrivePower)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestStartFrequency)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udC25TXFreqSwpTestStopFrequency)).EndInit();
@@ -55668,19 +55656,18 @@
         private System.Windows.Forms.LabelTS lblC25AudioCodecPresent;
         public System.Windows.Forms.LabelTS lblC25TRXPresent;
         private System.Windows.Forms.GroupBoxTS grpC25TXFrequencySweepTest;
-        private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestDrivePower;
+        private System.Windows.Forms.LabelTS lblC25TXFreqSwpTestDrivePower;
         private System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestDrivePower;
-        private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestRate;
+        private System.Windows.Forms.LabelTS lblC25TXFreqSwpTestStep;
         private System.Windows.Forms.ButtonTS btnC25TXFreqSwpTestCancel;
         private System.Windows.Forms.ButtonTS btnC25TXFreqSwpTestPause;
-        public System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestRate;
+        public System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestStepFrequency;
         private System.Windows.Forms.ButtonTS btnC25TXFreqSwpTestStart;
-        private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestStartFrequency;
-        private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestStopFrequency;
+        private System.Windows.Forms.LabelTS lblC25TXFreqSwpTestStartFrequency;
+        private System.Windows.Forms.LabelTS lblC25TXFreqSwpTestStopFrequency;
         public System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestStartFrequency;
         public System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestStopFrequency;
-        private System.Windows.Forms.NumericUpDownTS udC25TXFreqSwpTestInterval;
-        private System.Windows.Forms.LabelTS lblC25TXPwrSwpTestInterval;
+        private System.Windows.Forms.LabelTS lblC25TXFreqSwpTestBand;
         private System.Windows.Forms.ButtonTS btnC25RXAttPreTestCancel;
         private System.Windows.Forms.ButtonTS btnC25TXPASwitch;
         public System.Windows.Forms.CheckBoxTS chkC25useTCP;

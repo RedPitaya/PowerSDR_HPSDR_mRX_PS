@@ -22802,10 +22802,10 @@ namespace PowerSDR
             btnC25TXFreqSwpTestStart.Enabled = false;
             btnC25TXFreqSwpTestPause.Enabled = true;
             btnC25TXFreqSwpTestCancel.Enabled = true;
+            comboC25TXFreqSwpTestBand.Enabled = false;
             udC25TXFreqSwpTestStartFrequency.Enabled = false;
             udC25TXFreqSwpTestStopFrequency.Enabled = false;
-            udC25TXFreqSwpTestInterval.Enabled = false;
-            udC25TXFreqSwpTestRate.Enabled = false;
+            udC25TXFreqSwpTestStepFrequency.Enabled = false;
             udC25TXFreqSwpTestDrivePower.Enabled = false;
 
             try
@@ -22818,6 +22818,13 @@ namespace PowerSDR
 
                 // Bypass the shortwave lowpass filters
                 JanusAudio.C25SetSwLPFBypass(1);
+
+                if (udC25TXFreqSwpTestStopFrequency.Value < udC25TXFreqSwpTestStartFrequency.Value)
+                {
+                    decimal temp = udC25TXFreqSwpTestStartFrequency.Value;
+                    udC25TXFreqSwpTestStartFrequency.Value = udC25TXFreqSwpTestStopFrequency.Value;
+                    udC25TXFreqSwpTestStopFrequency.Value = temp;
+                }
 
                 if (C25SWRView == null)
                 {
@@ -22835,7 +22842,7 @@ namespace PowerSDR
                 // Wait for the transmitter to get stable
                 Thread.Sleep(1000);
 
-                for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq <= ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestRate.Value / 1e6))
+                for (console.VFOAFreq = ((double)udC25TXFreqSwpTestStartFrequency.Value / 1e6); console.VFOAFreq <= ((double)udC25TXFreqSwpTestStopFrequency.Value / 1e6); console.VFOAFreq += ((double)udC25TXFreqSwpTestStepFrequency.Value / 1e6))
                 {
                     if (C25TXFreqSwpTest_is_canceled == true || console.MOX == false || console.TUN == false)
                     {
@@ -22872,7 +22879,7 @@ namespace PowerSDR
 
                     DateTime start = DateTime.Now;
 
-                    while ((C25TXFreqSwpTest_is_canceled == false) && (C25TXFreqSwpTest_is_paused == true || ((DateTime.Now - start).TotalMilliseconds < (int)udC25TXFreqSwpTestInterval.Value)))
+                    while ((C25TXFreqSwpTest_is_canceled == false) && (C25TXFreqSwpTest_is_paused == true || ((DateTime.Now - start).TotalMilliseconds < 100)))
                     {
                         Application.DoEvents();
                     }
@@ -22902,10 +22909,10 @@ namespace PowerSDR
                 btnC25TXFreqSwpTestPause.Enabled = false;
                 btnC25TXFreqSwpTestPause.Text = "Pause";
                 btnC25TXFreqSwpTestCancel.Enabled = false;
+                comboC25TXFreqSwpTestBand.Enabled = true;
                 udC25TXFreqSwpTestStartFrequency.Enabled = true;
                 udC25TXFreqSwpTestStopFrequency.Enabled = true;
-                udC25TXFreqSwpTestInterval.Enabled = true;
-                udC25TXFreqSwpTestRate.Enabled = true;
+                udC25TXFreqSwpTestStepFrequency.Enabled = true;
                 udC25TXFreqSwpTestDrivePower.Enabled = true;
             }
         }
@@ -22929,27 +22936,81 @@ namespace PowerSDR
             C25TXFreqSwpTest_is_canceled = true;
         }
 
-        private void udC25TXFreqSwpTestStartFrequency_ValueChanged(object sender, EventArgs e)
+        private void comboC25TXFreqSwpTestBand_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (udC25TXFreqSwpTestStartFrequency.Value > udC25TXFreqSwpTestStopFrequency.Value)
+            if (!initializing)
             {
-                udC25TXFreqSwpTestStartFrequency.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestRate.Value;
-            }
-        }
+                udC25TXFreqSwpTestStepFrequency.Value = 10000;
 
-        private void udC25TXFreqSwpTestStopFrequency_ValueChanged(object sender, EventArgs e)
-        {
-            if (udC25TXFreqSwpTestStopFrequency.Value < udC25TXFreqSwpTestStartFrequency.Value)
-            {
-                udC25TXFreqSwpTestStopFrequency.Value = udC25TXFreqSwpTestStartFrequency.Value + udC25TXFreqSwpTestRate.Value;
+                switch (comboC25TXFreqSwpTestBand.SelectedIndex)
+                {
+                    case 0:
+                        udC25TXFreqSwpTestStartFrequency.Value = 1810000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 2000000;
+                        break;
+
+                    case 1:
+                        udC25TXFreqSwpTestStartFrequency.Value = 3500000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 3800000;
+                        break;
+
+                    case 2:
+                        udC25TXFreqSwpTestStartFrequency.Value = 5351500;
+                        udC25TXFreqSwpTestStopFrequency.Value = 5366500;
+                        udC25TXFreqSwpTestStepFrequency.Value = 1000;
+                        break;
+
+                    case 3:
+                        udC25TXFreqSwpTestStartFrequency.Value = 7000000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 7200000;
+                        break;
+
+                    case 4:
+                        udC25TXFreqSwpTestStartFrequency.Value = 10100000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 10150000;
+                        udC25TXFreqSwpTestStepFrequency.Value = 1000;
+                        break;
+
+                    case 5:
+                        udC25TXFreqSwpTestStartFrequency.Value = 14000000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 14350000;
+                        break;
+
+                    case 6:
+                        udC25TXFreqSwpTestStartFrequency.Value = 18068000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 18168000;
+                        udC25TXFreqSwpTestStepFrequency.Value = 5000;
+                        break;
+
+                    case 7:
+                        udC25TXFreqSwpTestStartFrequency.Value = 21000000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 21450000;
+                        break;
+
+                    case 8:
+                        udC25TXFreqSwpTestStartFrequency.Value = 24890000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 24990000;
+                        udC25TXFreqSwpTestStepFrequency.Value = 5000;
+                        break;
+
+                    case 9:
+                        udC25TXFreqSwpTestStartFrequency.Value = 28000000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 29700000;
+                        break;
+
+                    case 10:
+                        udC25TXFreqSwpTestStartFrequency.Value = 50030000;
+                        udC25TXFreqSwpTestStopFrequency.Value = 51000000;
+                        break;
+                }
             }
         }
 
         private void udC25TXFreqSwpTestRate_ValueChanged(object sender, EventArgs e)
         {
-            if (udC25TXFreqSwpTestRate.Value > udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value)
+            if (udC25TXFreqSwpTestStepFrequency.Value > Math.Abs(udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value))
             {
-                udC25TXFreqSwpTestRate.Value = udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value;
+                udC25TXFreqSwpTestStepFrequency.Value = Math.Abs(udC25TXFreqSwpTestStopFrequency.Value - udC25TXFreqSwpTestStartFrequency.Value);
             }
         }
 
