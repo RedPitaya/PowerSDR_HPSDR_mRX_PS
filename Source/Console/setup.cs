@@ -9061,6 +9061,12 @@ namespace PowerSDR
                 chkC25useTCP.Visible = true;
                 console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
                 console.psform.AutoAttenuate_Visible = false;  // Charly 25 doesn't have this functionality
+                // Remove tab without functionality
+                if (tcGeneral.TabPages.Contains(tpGeneralNavigation))
+                {
+                    tcGeneral.TabPages.Remove(tpGeneralNavigation);
+                    tcGeneral.SelectedIndex = 0;
+                }
 
                 if (lblC25AudioCodecPresent.Visible)
                 {
@@ -9112,6 +9118,13 @@ namespace PowerSDR
                 {
                     tcSetup.TabPages.Remove(tpC25Tests);
                     tcSetup.SelectedIndex = 0;
+                }
+
+                // Recover tab without functionality
+                if (!tcGeneral.TabPages.Contains(tpGeneralNavigation))
+                {
+                    tcGeneral.TabPages.Add(tpGeneralNavigation);
+                    tcGeneral.SelectedIndex = 0;
                 }
             }
 
