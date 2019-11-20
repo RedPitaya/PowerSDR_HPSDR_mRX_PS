@@ -6737,7 +6737,8 @@
             this.chkC25useTCP.Size = new System.Drawing.Size(70, 16);
             this.chkC25useTCP.TabIndex = 16;
             this.chkC25useTCP.Text = "Use TCP";
-            this.toolTip1.SetToolTip(this.chkC25useTCP, "Use TCP as transmission protocol between PowerSDR and the Red Pitaya device");
+            this.toolTip1.SetToolTip(this.chkC25useTCP, "Use TCP as transmission protocol between PowerSDR and the Red Pitaya device. Powe" +
+        "rcycle PowerSDR to activate it.");
             // 
             // panelTS7
             // 
