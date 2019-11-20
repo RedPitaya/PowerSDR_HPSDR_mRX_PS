@@ -1577,7 +1577,7 @@ void IOThreadMainLoop(void) {
 					// DG8MG
 					// Extension for Charly 25 hardware
 					case 34: // Charly 25 Extension board
-						FPGAWriteBufp[writebufpos] = (C25RX2Att | (C25RX2Pre << 2) | (C25VHFUHF << 5)) & 0xef;  // C1: Bit 0-1 - RX2 12dB attenuator and RX2 24db attenuator, Bit 2-3 - RX2 18dB preamp 1 and 2, Bit 4 - unused, Bit 5 - VHF/UHF switch RX2, Bit 6 - VHF/UHF switch RX1, Bit 7 - VHF/UHF switch TX
+						FPGAWriteBufp[writebufpos] = (C25RX2Att | (C25RX2Pre << 2) | (C25RX2Predistortion << 5) | (C25VHFUHF << 6)) & 0xef;  // C1: Bit 0-1 - RX2 12dB attenuator and RX2 24db attenuator, Bit 2-3 - RX2 18dB preamp 1 and 2, Bit 4 - unused, Bit 5 - RX2 Predistorsion switch, Bit 6 - VHF/UHF switch RX1, Bit 7 - VHF/UHF switch TX
 						break;
 					// DG8MG
 					}
@@ -1671,7 +1671,7 @@ void IOThreadMainLoop(void) {
 					// DG8MG
 					// Extension for Charly 25 hardware
 					case 34: // Charly 25 Extension board
-						FPGAWriteBufp[writebufpos] = (C25StepAtt | (C25RPExternalOff << 5) | (C25RPEnvMod << 6)) & 0xef;  // C2: Bit 0-4 - Step attenuator 0-31dB, Bit 5 - RP external off (SDR mode on), Bit 6 - RP TX channel 2 envelope modulation, Bit 7 - unused
+						FPGAWriteBufp[writebufpos] = (C25StepAtt | (C25RPExternalOff << 5) | (C25RPEnvMod << 6)) & 0x7f;  // C2: Bit 0-4 - Step attenuator 0-31dB, Bit 5 - RP external off (SDR mode on), Bit 6 - RP TX channel 2 envelope modulation, Bit 7 - unused
 						break;
 					// DG8MG
 					}

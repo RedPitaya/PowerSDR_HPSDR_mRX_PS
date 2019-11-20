@@ -269,6 +269,15 @@ namespace PowerSDR
         NONE,			// For Elecraft or similar XVTR
     }
 
+    // DG8MG
+    // Extension for Charly 25 and HAMlab hardware
+    public enum C25TransverterMode
+    {
+        OFF = 0,
+        ON,
+    }
+    // DG8MG
+
     public enum SoundCard
     {
         FIRST = -1,
@@ -1162,6 +1171,7 @@ namespace PowerSDR
         public bool C25FrontpanelPresent = false;
         public bool C25FrontpanelTristateButtons = true;
         System.Timers.Timer C25FrontpanelMenuTimer = new System.Timers.Timer();
+        public C25TransverterMode C25CurrentTransverterMode = C25TransverterMode.OFF;
         // DG8MG
 
         #endregion
@@ -41859,7 +41869,7 @@ namespace PowerSDR
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
             // Interprete entered frequency values above the maximum frequency as kHz instead of MHz, so they can be entered without a separator
-            if (freq > max_freq)
+            if (C25ModelIsCharly25orHAMlab() && !initializing && freq > max_freq && C25CurrentTransverterMode == C25TransverterMode.OFF)
             {
                 freq = freq / 1000;
             }
@@ -55613,10 +55623,20 @@ namespace PowerSDR
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
 
             // DG8MG
-            // Extension for Charly 25 frontpanel hardware
-            if (C25ModelIsCharly25orHAMlab() && C25FrontpanelPresent)
+            // Extension for Charly 25 hardware
+            if (C25ModelIsCharly25orHAMlab())
             {
-                C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
+                if (C25FrontpanelPresent)
+                {
+                    C25FrontpanelLEDUpdateHandler(radioBtnTS.Name, (radioBtnTS.Checked) ? 1 : 0);
+                }
+
+                if (radioBtnTS.Checked)
+                {
+                    // Switch TRX board from VHF/UHF to HF mode
+                    JanusAudio.C25SetVHFUHF(0);
+                    C25CurrentTransverterMode = C25TransverterMode.OFF;
+                }
             }
             // DG8MG
 
@@ -56264,6 +56284,20 @@ namespace PowerSDR
             if (sender == null) return;
             if (sender.GetType() != typeof(RadioButtonTS)) return;
             RadioButtonTS radioBtnTS = (RadioButtonTS)sender;
+
+            // DG8MG
+            // Extension for Charly 25 hardware
+            if (C25ModelIsCharly25orHAMlab())
+            {
+                if (radioBtnTS.Checked)
+                {
+                    // Switch TRX board from HF to VHF/UHF mode
+                    JanusAudio.C25SetVHFUHF(3);
+                    C25CurrentTransverterMode = C25TransverterMode.ON;
+                }
+            }
+            // DG8MG
+
             if (!radioBtnTS.Checked) return;
 
             // radBandVHF_Click(sender, EventArgs.Empty);
