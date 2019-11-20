@@ -22804,6 +22804,7 @@ namespace PowerSDR
             btnC25TXFreqSwpTestStart.Enabled = false;
             btnC25TXFreqSwpTestPause.Enabled = true;
             btnC25TXFreqSwpTestCancel.Enabled = true;
+            btnC25TXFreqSwpTestCSVExport.Enabled = false;
             comboC25TXFreqSwpTestBand.Enabled = false;
             udC25TXFreqSwpTestStartFrequency.Enabled = false;
             udC25TXFreqSwpTestStopFrequency.Enabled = false;
@@ -22916,6 +22917,15 @@ namespace PowerSDR
                 udC25TXFreqSwpTestStopFrequency.Enabled = true;
                 udC25TXFreqSwpTestStepFrequency.Enabled = true;
                 udC25TXFreqSwpTestDrivePower.Enabled = true;
+
+                if (C25TXFreqSwpTest_is_canceled)
+                {
+                    C25SWRView.Close();
+                }
+                else
+                {
+                    btnC25TXFreqSwpTestCSVExport.Enabled = true;
+                }
             }
         }
 
@@ -22936,6 +22946,38 @@ namespace PowerSDR
         private void btnC25TXFreqSwpTestCancel_Click(object sender, EventArgs e)
         {
             C25TXFreqSwpTest_is_canceled = true;
+        }
+
+        private void btnC25TXFreqSwpTestCSVExport_Click(object sender, EventArgs e)
+        {
+            if (C25SWRView == null)
+            {
+                return;
+            }
+            else
+            {
+                int pointCount = C25SWRView.chrC25SWRView.Series["serSWRData"].Points.Count;
+                string csvContent = "";
+                string csvLine = "";
+
+                csvContent = "\"Frequency\",\"SWR\"\r\n";
+
+                for (int p = 0; p < pointCount; p++)
+                {
+                    csvLine = "\"" + C25SWRView.chrC25SWRView.Series["serSWRData"].Points[p].XValue + "\",\"" + C25SWRView.chrC25SWRView.Series["serSWRData"].Points[p].YValues[0] + "\"";
+                    csvContent += csvLine + "\r\n";
+                }
+
+                SaveFileDialog csvExportSaveFileDialog = new SaveFileDialog();
+                csvExportSaveFileDialog.ShowDialog();
+
+                if (csvExportSaveFileDialog.FileName != "")
+                {
+                    StreamWriter csvExportFile = new StreamWriter(csvExportSaveFileDialog.FileName);
+                    csvExportFile.WriteLine(csvContent);
+                    csvExportFile.Close();
+                }
+            }
         }
 
         private void comboC25TXFreqSwpTestBand_SelectedIndexChanged(object sender, EventArgs e)

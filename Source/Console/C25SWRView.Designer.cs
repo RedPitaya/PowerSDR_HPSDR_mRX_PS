@@ -76,6 +76,6 @@
 
         #endregion
 
-        private System.Windows.Forms.DataVisualization.Charting.Chart chrC25SWRView;
+        public System.Windows.Forms.DataVisualization.Charting.Chart chrC25SWRView;
     }
 }

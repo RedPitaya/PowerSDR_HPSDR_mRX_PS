@@ -50,6 +50,7 @@ namespace PowerSDR
 
         private void C25SWRViewForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Console.getConsole().SetupForm.btnC25TXFreqSwpTestCSVExport.Enabled = false;
             Setup.C25SWRView = null;
         }
     }

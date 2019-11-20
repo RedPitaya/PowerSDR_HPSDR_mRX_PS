@@ -3023,6 +3023,7 @@
             this.tpC25Tests = new System.Windows.Forms.TabPage();
             this.btnC25TXPASwitch = new System.Windows.Forms.ButtonTS();
             this.grpC25TXFrequencySweepTest = new System.Windows.Forms.GroupBoxTS();
+            this.btnC25TXFreqSwpTestCSVExport = new System.Windows.Forms.ButtonTS();
             this.comboC25TXFreqSwpTestBand = new System.Windows.Forms.ComboBoxTS();
             this.lblC25TXFreqSwpTestBand = new System.Windows.Forms.LabelTS();
             this.lblC25TXFreqSwpTestDrivePower = new System.Windows.Forms.LabelTS();
@@ -51169,6 +51170,7 @@
             // 
             // grpC25TXFrequencySweepTest
             // 
+            this.grpC25TXFrequencySweepTest.Controls.Add(this.btnC25TXFreqSwpTestCSVExport);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.comboC25TXFreqSwpTestBand);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXFreqSwpTestBand);
             this.grpC25TXFrequencySweepTest.Controls.Add(this.lblC25TXFreqSwpTestDrivePower);
@@ -51188,6 +51190,19 @@
             this.grpC25TXFrequencySweepTest.TabIndex = 5;
             this.grpC25TXFrequencySweepTest.TabStop = false;
             this.grpC25TXFrequencySweepTest.Text = "TX Frequency Sweep Test";
+            // 
+            // btnC25TXFreqSwpTestCSVExport
+            // 
+            this.btnC25TXFreqSwpTestCSVExport.Enabled = false;
+            this.btnC25TXFreqSwpTestCSVExport.Image = null;
+            this.btnC25TXFreqSwpTestCSVExport.Location = new System.Drawing.Point(7, 124);
+            this.btnC25TXFreqSwpTestCSVExport.Name = "btnC25TXFreqSwpTestCSVExport";
+            this.btnC25TXFreqSwpTestCSVExport.Size = new System.Drawing.Size(75, 23);
+            this.btnC25TXFreqSwpTestCSVExport.TabIndex = 96;
+            this.btnC25TXFreqSwpTestCSVExport.Text = "CSV Export";
+            this.toolTip1.SetToolTip(this.btnC25TXFreqSwpTestCSVExport, "Export measured SWR data in CSV format");
+            this.btnC25TXFreqSwpTestCSVExport.UseVisualStyleBackColor = true;
+            this.btnC25TXFreqSwpTestCSVExport.Click += new System.EventHandler(this.btnC25TXFreqSwpTestCSVExport_Click);
             // 
             // comboC25TXFreqSwpTestBand
             // 
@@ -51298,8 +51313,9 @@
             // 
             // btnC25TXFreqSwpTestCancel
             // 
+            this.btnC25TXFreqSwpTestCancel.Enabled = false;
             this.btnC25TXFreqSwpTestCancel.Image = null;
-            this.btnC25TXFreqSwpTestCancel.Location = new System.Drawing.Point(7, 124);
+            this.btnC25TXFreqSwpTestCancel.Location = new System.Drawing.Point(7, 78);
             this.btnC25TXFreqSwpTestCancel.Name = "btnC25TXFreqSwpTestCancel";
             this.btnC25TXFreqSwpTestCancel.Size = new System.Drawing.Size(75, 23);
             this.btnC25TXFreqSwpTestCancel.TabIndex = 2;
@@ -51309,8 +51325,9 @@
             // 
             // btnC25TXFreqSwpTestPause
             // 
+            this.btnC25TXFreqSwpTestPause.Enabled = false;
             this.btnC25TXFreqSwpTestPause.Image = null;
-            this.btnC25TXFreqSwpTestPause.Location = new System.Drawing.Point(7, 72);
+            this.btnC25TXFreqSwpTestPause.Location = new System.Drawing.Point(7, 49);
             this.btnC25TXFreqSwpTestPause.Name = "btnC25TXFreqSwpTestPause";
             this.btnC25TXFreqSwpTestPause.Size = new System.Drawing.Size(75, 23);
             this.btnC25TXFreqSwpTestPause.TabIndex = 1;
@@ -55733,5 +55750,6 @@
         public System.Windows.Forms.NumericUpDownTS udC25TXFrequencyCorrectionFactor;
         private System.Windows.Forms.ComboBoxTS comboC25TXFreqSwpTestBand;
         public System.Windows.Forms.CheckBoxTS chkC25ANT2ReceiveOnly;
+        public System.Windows.Forms.ButtonTS btnC25TXFreqSwpTestCSVExport;
     }
 }
