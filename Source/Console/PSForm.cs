@@ -26,20 +26,6 @@ namespace PowerSDR
             InitializeComponent();
             Common.RestoreForm(this, "PureSignal", false);
             console = c;
-
-            // DG8MG
-            // Extension for Charly 25 and HAMlab hardware
-            if (console.HPSDRModelIsCharly25orHAMlab())
-            {
-                this.chkPSAutoAttenuate.Checked = false;
-                this.chkPSAutoAttenuate.Visible = false;
-            }
-            else
-            {
-                this.chkPSAutoAttenuate.Checked = true;
-                this.chkPSAutoAttenuate.Visible = true;
-            }
-            // DG8MG
         }
 
         #endregion
@@ -135,6 +121,11 @@ namespace PowerSDR
             set
             {
                 console.psform.chkPSAutoAttenuate.Visible = value;
+
+                if (!value)
+                {
+                    autoattenuate = false;
+                }
             }
         }
         // DG8MG
@@ -526,34 +517,79 @@ namespace PowerSDR
             switch (aastate)
             {
                 case 0: // monitor
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
                     if (autoattenuate && newcal 
-                        && (puresignal.Info[4] > 181 || (puresignal.Info[4] <= 128 && console.SetupForm.ATTOnTX > 0)))
+                        && (puresignal.Info[4] > 181 || (puresignal.Info[4] <= 128 && (console.SetupForm.ATTOnTX > 0 || console.CurrentModel == Model.CHARLY25PP))))
                     {
-                        aastate = 1;
-                        double ddB;
-                        if (puresignal.Info[4] <= 256)
+                        if (console.CurrentModel == Model.CHARLY25PP)
                         {
-                            ddB = 20.0 * Math.Log10((double)puresignal.Info[4] / 152.293);
-                            if (Double.IsNaN(ddB)) ddB = 31.1;
-                            if (ddB < -100.0) ddB = -100.0;
-                            if (ddB > +100.0) ddB = +100.0;
+                            aastate = 1;
+
+                            if (puresignal.Info[4] > 181)
+                            {
+                                deltadB = 31;
+                            }
+                            else
+                            {
+                                double ddB = 20.0 * Math.Log10((double)puresignal.Info[4] / 152.293);
+                                // System.Console.WriteLine(String.Format("--- PS ddB: {0} ---", ddB));
+                                if (Double.IsNaN(ddB) || Double.IsInfinity(ddB)) ddB = -31;
+                                deltadB = Convert.ToInt32(ddB);
+                            }
+
+                            // System.Console.WriteLine(String.Format("*** PS deltadB: {0} ***", deltadB));
+
+                            if (autoON) save_autoON = 1;
+                            else save_autoON = 0;
+                            if (singlecalON) save_singlecalON = 1;
+                            else save_singlecalON = 0;
+                            puresignal.SetPSControl(txachannel, 1, 0, 0, 0);
                         }
+                        // DG8MG
+
                         else
-                            ddB = 31.1;
-                        deltadB = Convert.ToInt32(ddB);
-                        if (autoON) save_autoON = 1;
-                        else        save_autoON = 0;
-                        if (singlecalON) save_singlecalON = 1;
-                        else             save_singlecalON = 0;
-                        puresignal.SetPSControl(txachannel, 1, 0, 0, 0);
+                        {
+
+                            aastate = 1;
+                            double ddB;
+                            if (puresignal.Info[4] <= 256)
+                            {
+                                ddB = 20.0 * Math.Log10((double)puresignal.Info[4] / 152.293);
+                                if (Double.IsNaN(ddB)) ddB = 31.1;
+                                if (ddB < -100.0) ddB = -100.0;
+                                if (ddB > +100.0) ddB = +100.0;
+                            }
+                            else
+                                ddB = 31.1;
+                            deltadB = Convert.ToInt32(ddB);
+                            if (autoON) save_autoON = 1;
+                            else save_autoON = 0;
+                            if (singlecalON) save_singlecalON = 1;
+                            else save_singlecalON = 0;
+                            puresignal.SetPSControl(txachannel, 1, 0, 0, 0);
+                        }
                     }
                     break;
                 case 1: // set new value
                     aastate = 2;
-                    if ((console.SetupForm.ATTOnTX + deltadB) > 0)
-                        console.SetupForm.ATTOnTX += deltadB;
+
+                    // DG8MG
+                    // Extension for Charly 25 hardware
+                    if (console.CurrentModel == Model.CHARLY25PP)
+                    {
+                        {
+                            C25StepAttValue += deltadB;
+                        }
+                    }
                     else
-                        console.SetupForm.ATTOnTX = 0;
+                    {
+                        if ((console.SetupForm.ATTOnTX + deltadB) > 0)
+                            console.SetupForm.ATTOnTX += deltadB;
+                        else
+                            console.SetupForm.ATTOnTX = 0;
+                    }
                     break;
                 case 2: // restore operation
                     aastate = 0;
@@ -664,6 +700,33 @@ namespace PowerSDR
             }
             else
             {
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (console.C25ModelIsCharly25orHAMlab())
+                {
+                    chkPSPin.Checked = false;
+                    chkPSPin.Visible = false;
+
+                    chkPSMap.Checked = false;
+                    chkPSMap.Visible = false;
+
+                    chkPSStbl.Checked = false;
+                    chkPSStbl.Visible = false;
+
+                    if (console.CurrentModel != Model.CHARLY25PP)
+                    {
+                        // chkPSAutoAttenuate.Checked = false;
+                        chkPSAutoAttenuate.Visible = false;
+                    }
+                }
+                else
+                {
+                    chkPSPin.Visible = true;
+                    chkPSMap.Visible = true;
+                    chkPSStbl.Visible = true;
+                }
+                // DG8MG
+
                 advancedON = true;
                 console.psform.ClientSize = new System.Drawing.Size(560, 300);
             }
@@ -935,6 +998,23 @@ namespace PowerSDR
                     break;
             }
         }
+
+        // DG8MG
+        // Extension for Charly 25 hardware
+        private int c25StepAttValue = 31;
+        public int C25StepAttValue
+        {
+            get { return c25StepAttValue; }
+            set
+            {
+                c25StepAttValue = value;
+                if (!console.initializing)
+                {
+                    JanusAudio.C25SetStepAttenuator(c25StepAttValue);
+                }
+            }
+        }
+        // DG8MG
     }
         #endregion
 

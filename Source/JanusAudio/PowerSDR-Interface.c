@@ -1106,12 +1106,29 @@ KD5TFDVK6APHAUDIO_API void C25SetStepAttenuator(int bits) {
 	}
 	else
 	{
-		C25StepAtt = 0;
+		if (bits > 31)
+		{
+			C25StepAtt = 31;
+		}
+		else
+		{
+			C25StepAtt = 0;
+		}
 	}
 }
 
+KD5TFDVK6APHAUDIO_API void C25SetRX2Predistortion(int bit) {
+	if (bit == 1)
+	{
+		C25RX2Predistortion = 1;
+	}
+	else
+	{
+		C25RX2Predistortion = 0;
+	}
+}
 KD5TFDVK6APHAUDIO_API void C25SetVHFUHF(int bits) {
-	if (bits >= 0 && bits <= 7)
+	if (bits >= 0 && bits <= 3)
 	{
 		C25VHFUHF = bits;
 	}

@@ -3425,6 +3425,8 @@ namespace PowerSDR
                         console.chkC25ANT.Enabled = false;
 
                         console.RX2PreampPresent = false;
+
+                        console.C25LockPureSignalAutoCalibrate();
                         break;
 
                     case 130:
@@ -3445,6 +3447,8 @@ namespace PowerSDR
                         console.chkC25ANT.Enabled = true;
 
                         console.RX2PreampPresent = false;
+
+                        console.C25LockPureSignalAutoCalibrate();
                         break;
 
                     case 131:
@@ -3465,6 +3469,8 @@ namespace PowerSDR
                         console.chkC25ANT.Enabled = true;
 
                         console.RX2PreampPresent = true;
+
+                        console.C25UnlockPureSignalAutoCalibrate();
 
                         // Switch the Charly 25PP TRX board into SDR mode
                         JanusAudio.C25SetRPExternalOff(1);
@@ -9059,8 +9065,7 @@ namespace PowerSDR
                 radMetis.Checked = true;
                 chkC25useTCP.Enabled = true;
                 chkC25useTCP.Visible = true;
-                console.psform.AutoAttenuate = false;  // Charly 25 doesn't have this functionality
-                console.psform.AutoAttenuate_Visible = false;  // Charly 25 doesn't have this functionality
+
                 // Remove tab without functionality
                 if (tcGeneral.TabPages.Contains(tpGeneralNavigation))
                 {

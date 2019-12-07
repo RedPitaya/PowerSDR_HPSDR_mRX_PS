@@ -56303,6 +56303,23 @@ namespace PowerSDR
             // radBandVHF_Click(sender, EventArgs.Empty);
         }
 
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        public void C25LockPureSignalAutoCalibrate()
+        {
+            // chkFWCATUBypass.Checked = false;
+            // chkFWCATUBypass.Enabled = false;
+            psform.AutoAttenuate_Visible = false;
+        }
+
+        public void C25UnlockPureSignalAutoCalibrate()
+        {
+            // chkFWCATUBypass.Checked = false;
+            // chkFWCATUBypass.Enabled = true;
+            psform.AutoAttenuate_Visible = true;
+        }
+        // DG8MG
+
         public void ForcePureSignalAutoCalDisable()
         {
             chkFWCATUBypass.Checked = false;

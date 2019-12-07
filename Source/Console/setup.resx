@@ -123,9 +123,6 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>596, 17</value>
   </metadata>
-  <metadata name="grpKBCW.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>Begin with all spinners set equal to their labelled value.
 For each spinner, from minimum to maximum, adjust the output power
@@ -136,6 +133,9 @@ recorded values into the respective spinners.  DO NOT USE
 POWER EXCEEDING THE RATING OF YOUR RADIO!
 </value>
   </data>
+  <metadata name="grpKBCW.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
   <data name="txtC25UpdatePaths.Text" xml:space="preserve">
     <value>https://github.com/Charly25-SDR/binary-downloads/raw/master/powersdr_current_release.txt
 -

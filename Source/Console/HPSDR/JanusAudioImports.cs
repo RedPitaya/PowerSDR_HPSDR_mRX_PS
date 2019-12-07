@@ -218,6 +218,9 @@ namespace PowerSDR
         public static extern void C25SetStepAttenuator(int bits);
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void C25SetRX2Predistortion(int bit);
+
+        [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void C25SetVHFUHF(int bits);
 
         [DllImport("JanusAudio.dll", CallingConvention = CallingConvention.Cdecl)]
