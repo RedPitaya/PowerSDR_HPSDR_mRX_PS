@@ -3001,6 +3001,10 @@ namespace PowerSDR
             console.EQForm.setTXEQProfile(this, e);
 
             chkWheelReverse_CheckedChanged(this, e);
+
+            // Charly 25 Settings
+            chkC25SWRProtection_CheckedChanged(this, e);
+            chkC25ProtectRX2DuringTX_CheckedChanged(this, e);
         }
 
         public string[] GetTXProfileStrings()
@@ -23683,6 +23687,11 @@ namespace PowerSDR
         private void chkC25ANT2ReceiveOnly_CheckedChanged(object sender, EventArgs e)
         {
             console.C25_ANT_CheckedChanged(this, e);
+        }
+
+        private void chkC25ProtectRX2DuringTX_CheckedChanged(object sender, EventArgs e)
+        {
+            console.BPF2Gnd = chkC25ProtectRX2DuringTX.Checked;
         }
         // DG8MG
 

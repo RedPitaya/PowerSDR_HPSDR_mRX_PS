@@ -1977,13 +1977,20 @@ void IOThreadMainLoop(void) {
 
 					// DG8MG
 					// Changed for Charly 25 Extension board support
-						out_control_idx = is_orion_mkii ? 32 : 34;
+						// out_control_idx = is_orion_mkii ? 32 : 34;
 						// out_control_idx = is_orion_mkii ? 32 : 0;
+						out_control_idx = 32;
 					// DG8MG
 
 						break;
 					case 32: // BPF2
-						out_control_idx = 0;
+
+					// DG8MG
+					// Changed for Charly 25 Extension board support
+						out_control_idx = is_orion_mkii ? 0 : 34;
+						// out_control_idx = is_orion_mkii ? 32 : 0;
+						// out_control_idx = 0;
+					// DG8MG
 						break;
 
 					// DG8MG

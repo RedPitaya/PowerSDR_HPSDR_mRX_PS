@@ -9120,7 +9120,8 @@ namespace PowerSDR
             }
 
             // Make sure that the Charly 25 specific SWR protection setting is recovered correctly
-            SetupForm.chkC25SWRProtection_CheckedChanged(this, EventArgs.Empty);
+            // Function call has been moved into ForceAllEvents()
+            // SetupForm.chkC25SWRProtection_CheckedChanged(this, EventArgs.Empty);
 
             C25UpdatePAADCValues();
 
