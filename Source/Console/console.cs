@@ -38036,6 +38036,8 @@ namespace PowerSDR
                 {
                     if (C25ModelIsCharly25orHAMlab())
                     {
+                        // Wait 100ms to make sure that the Charly 25 hardware is detected correctly
+                        Thread.Sleep(100);
                         SetupForm.UpdateC25HardwareOptions();
 
                         // Thread to check if a new SDR application version for the Red Pitaya device is available
@@ -38269,6 +38271,7 @@ namespace PowerSDR
                         if (JanusAudio.getPenelopeFWVersion() == 131)
                         {
                             JanusAudio.C25SetRPExternalOff(0);
+                            System.Console.WriteLine("### Switched Charly 25PP TRX board into measurement mode ###");
                             Thread.Sleep(100);
                         }
 

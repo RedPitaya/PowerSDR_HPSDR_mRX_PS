@@ -3478,6 +3478,7 @@ namespace PowerSDR
 
                         // Switch the Charly 25PP TRX board into SDR mode
                         JanusAudio.C25SetRPExternalOff(1);
+                        System.Console.WriteLine("### Switched Charly 25PP TRX board into SDR mode ###");
 
                         // Switch the step attenuator on the Charly 25PP TRX board to 31 dB to optimize the measurement head termination
                         JanusAudio.C25SetStepAttenuator(31);
