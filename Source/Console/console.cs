@@ -54511,19 +54511,6 @@ namespace PowerSDR
             // radRX1Show_CheckedChanged(this, EventArgs.Empty);
             // radRX2Show_CheckedChanged(this, EventArgs.Empty);
 
-            // DG8MG
-            // Extension for Charly 25 standalone transceiver
-            if (C25ModelIsCharly25orHAMlab())
-            {
-                FormBorderStyle = FormBorderStyle.None;
-
-                if (!SetupForm.chkC25UseCharly25ContestMode.Checked)
-                {
-                    WindowState = FormWindowState.Maximized;
-                }
-            }
-            // DG8MG
-
             if (this.showTopControls)
             {
                 minWidth = Math.Max(minWidth, console_basis_size.Width);
