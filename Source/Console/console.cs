@@ -12369,6 +12369,11 @@ namespace PowerSDR
 
         private void SetBand(string mode, string filter, double freq, bool CTUN, int ZoomFactor, double CenterFreq)
         {
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            bool save_multirx_state = chkEnableMultiRX.Checked;
+            // DG8MG
+
             // Set mode, filter, and frequency according to passed parameters
             RX1DSPMode = (DSPMode)Enum.Parse(typeof(DSPMode), mode, true);
 
@@ -12396,7 +12401,16 @@ namespace PowerSDR
 
             // DG8MG
             // Extension for Charly 25 and HAMlab hardware
-            chkC25ANT.Checked = C25_RX1_antenna_by_band[(int)rx1_band] == 1 ? true : false;
+            if (C25ModelIsCharly25orHAMlab())
+            {
+                if (save_multirx_state)
+                {
+                    chkEnableMultiRX.Checked = false;
+                    chkEnableMultiRX.Checked = true;
+                }
+
+                chkC25ANT.Checked = C25_RX1_antenna_by_band[(int)rx1_band] == 1 ? true : false;
+            }
             // DG8MG
         }
 
@@ -49419,6 +49433,21 @@ namespace PowerSDR
             radio.GetDSPRX(0, 1).Active = chkEnableMultiRX.Checked;
             if (chkEnableMultiRX.Checked)
             {
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (C25ModelIsCharly25orHAMlab())
+                {
+                    if (rx2_enabled)
+                    {
+                        VFOASubFreq = VFOAFreq;
+                    }
+                    else
+                    {
+                        VFOBFreq = VFOAFreq;
+                    }
+                }
+                // DG8MG
+
                 if (!mox) wdsp.SetChannelState(wdsp.id(0, 1), 1, 0);
                 //tbPanMainRX_Scroll(this, EventArgs.Empty);
                 //tbRX0Gain_Scroll(this, EventArgs.Empty);
