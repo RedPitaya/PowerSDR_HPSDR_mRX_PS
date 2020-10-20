@@ -32,9 +32,7 @@
 //            November 2005 - February 2006
 //
 //=================================================================
-//
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2019 Markus Grundner / DG8MG
-//
+
 #define SAVERESTORE
 //#define CWX_DEBUG (Note: Please do not put all Debug.Writeline()under this. Leave them commented off.)
 
@@ -118,12 +116,8 @@ namespace PowerSDR
         private int kylx = 12, kyty = 180;				// ulc of key area
         private int kyysz = 82, kyxsz = 665;			// extents
         private char[] kbufold = new char[NKEYS];		// sent keys
-        private char[] kbufnew = new char[NKEYS];       // unsent keys
+        private char[] kbufnew = new char[NKEYS];		// unsent keys
 
-        // DG8MG
-        // Extesion for Charly 25 and HAMlab hardware
-        bool cwIambicState;  // flag to save the iambic keyer state while transmitting via CWX
-        // DG8MG
 
         private System.Windows.Forms.LabelTS label4;
         private System.Windows.Forms.ButtonTS stopButton;
@@ -269,14 +263,6 @@ namespace PowerSDR
         {
             if (setptt_memory != state)
             {
-                // DG8MG
-                // Extension for Charly 25 and HAMlab hardware
-                if (console.C25ModelIsCharly25orHAMlab() && !state && infifo < 1 && infifo2 < 1)
-                {
-                    console.CWIambic = cwIambicState;
-                }
-                // DG8MG
-
                 if (!console.CWFWKeyer)
                 {
                    // CWPTTItem item = new CWPTTItem(state, CWSensorItem.GetCurrentTime());
@@ -733,6 +719,9 @@ namespace PowerSDR
             ttdel = (int)udDrop.Value;
             pttdelay = (int)udPtt.Value;
             //udDrop.Minimum = pttdelay + pttdelay/2;
+
+
+
             //			RestoreSettings();
 
 #if(CWX_DEBUG)
@@ -1557,18 +1546,6 @@ namespace PowerSDR
                 return;
             }
 
-            // DG8MG
-            // Extension for Charly 25 and HAMlab hardware
-            if (console.C25ModelIsCharly25orHAMlab() && !ptt)
-            {
-                {
-                    cwIambicState = console.CWIambic;
-                    console.CWIambic = false;
-                    Thread.Sleep(200);
-                }
-            }
-            // DG8MG
-
             quit = true;
             kquit = true;
             while (quit) Thread.Sleep(10);
@@ -2005,14 +1982,6 @@ namespace PowerSDR
                 if (data == EL_UNDERFLOW) return;	// underflow
                 if (data == EL_END)		// end command
                 {
-                    // DG8MG
-                    // Extension for Charly 25 and HAMlab hardware
-                    if (console.C25ModelIsCharly25orHAMlab())
-                    {
-                        console.CWIambic = cwIambicState;
-                    }
-                    // DG8MG
-
                     quitshut();
                     return;
                 }
@@ -2164,20 +2133,8 @@ namespace PowerSDR
             }
 
             loadmsg(tqq);
-
-            // DG8MG
-            // Extension for Charly 25 and HAMlab hardware
-            if (console.C25ModelIsCharly25orHAMlab() && !ptt)
-            {
-                {
-                    cwIambicState = console.CWIambic;
-                    console.CWIambic = false;
-                    Thread.Sleep(200);
-                }
-            }
-            // DG8MG
-
             push_fifo(0x4);			// end
+
         }
 
         private void loadchar(char cc)	// convert and load a single character
@@ -2310,18 +2267,6 @@ namespace PowerSDR
                 show_keys();
             }
             else if (key == 8) backspace();
-
-            // DG8MG
-            // Extension for Charly 25 and HAMlab hardware
-            if (console.C25ModelIsCharly25orHAMlab() && !ptt)
-            {
-                {
-                    cwIambicState = console.CWIambic;
-                    console.CWIambic = false;
-                    Thread.Sleep(200);
-                }
-            }
-            // DG8MG
         }
 
         private void insert_key(char key)
@@ -2392,18 +2337,6 @@ namespace PowerSDR
                 insert_key(cc);
             }
             show_keys();
-
-            // DG8MG
-            // Extension for Charly 25 and HAMlab hardware
-            if (console.C25ModelIsCharly25orHAMlab() && !ptt)
-            {
-                {
-                    cwIambicState = console.CWIambic;
-                    console.CWIambic = false;
-                    Thread.Sleep(200);
-                }
-            }
-            // DG8MG
         }
 
         #endregion
