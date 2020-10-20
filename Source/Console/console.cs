@@ -42628,14 +42628,32 @@ namespace PowerSDR
                         if (chkTUN.Checked) freq += (double)cw_pitch * 1e-6;
                         break;
                     case DSPMode.CWL:
-                        freq += (double)cw_pitch * 0.0000010;
+
+                        // DG8MG
+                        // Extension for Charly 25 and HAMlab hardware
+                        if (!C25ModelIsCharly25orHAMlab() || TUN)
+                        {
+                            freq += (double)cw_pitch * 0.0000010;
+                        }
+                        // DG8MG
+
                         break;
                     case DSPMode.CWU:
-                        freq -= (double)cw_pitch * 0.0000010;
+
+                        // DG8MG
+                        // Extension for Charly 25 and HAMlab hardware
+                        if (!C25ModelIsCharly25orHAMlab() || TUN)
+                        {
+                            freq -= (double)cw_pitch * 0.0000010;
+                        }
+                        // DG8MG
+
                         break;
                 }
 
-                //Debug.WriteLine("freq: "+freq.ToString("f6"));
+                // Debug.WriteLine("freq: "+freq.ToString("f6"));
+                // Debug.WriteLine("cw_pitch: "+(cw_pitch * 0.0000010).ToString("f6"));
+
                 if (!rx1_sub_drag)
                 {
                     tx_dds_freq_mhz = freq;
