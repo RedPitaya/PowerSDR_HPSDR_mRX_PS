@@ -39645,7 +39645,11 @@ namespace PowerSDR
                 // Extension for Charly 25 and HAMlab hardware
                 if (C25ModelIsCharly25orHAMlab())
                 {
-                    JanusAudio.SetXmitBit(1);
+                    // Don't set the Xmit bit here when in CW mode except TUN state to avoid a race condition when returning to RX state
+                    if ((RX1DSPMode != DSPMode.CWL && RX1DSPMode != DSPMode.CWU) || chkTUN.Checked)
+                    {
+                        JanusAudio.SetXmitBit(1);
+                    }
                 }
                 else
                 {
@@ -39665,14 +39669,6 @@ namespace PowerSDR
             }
             else // rx
             {
-                // DG8MG
-                // Extension for Charly 25 and HAMlab hardware
-                if (C25ModelIsCharly25orHAMlab() && (RX1DSPMode == DSPMode.CWL || RX1DSPMode == DSPMode.CWU))
-                {
-                    Thread.Sleep((int)udCWBreakInDelay.Value + key_up_delay);
-                }
-                // DG8MG
-
                 JanusAudio.SetXmitBit(0);
 
                 // Hdw.TransmitRelay = false;
