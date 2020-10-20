@@ -40111,6 +40111,9 @@ namespace PowerSDR
                         chkC25ANT.Tag = "1";
                         chkC25ANT.Checked = false;
                         chkC25ANT.Tag = null;
+
+                        // Wait a while to ensure that the antenna relay is switched back to antenna 1 before proceeding
+                        Thread.Sleep(15);
                     }
 
                     if (PSA == true)
