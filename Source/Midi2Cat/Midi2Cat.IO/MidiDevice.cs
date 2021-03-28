@@ -715,14 +715,14 @@ namespace Midi2Cat.IO
                         {
                             int fpButtonNumber = -1;
 
-                            if (int.TryParse(msg.Substring(2), out fpButtonNumber) && fpButtonNumber >= 0 && fpButtonNumber < 31)
+                            if (int.TryParse(msg.Substring(2), out fpButtonNumber) && fpButtonNumber >= 0 && fpButtonNumber < 32)
                             {
                                 Rc.Valid = true;
                                 return Rc;
                             }
                             else
                             {
-                                Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "button number must be between 00 and 30.");
+                                Rc.ErrMsg = string.Format("Msg: {0} {1}", inMsg, "button number must be between 00 and 31.");
                                 return Rc;
                             }
                         }

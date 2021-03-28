@@ -19,6 +19,9 @@
 //=================================================================
 // This class is used to implement a PTT using RTS or DTS 
 //=================================================================
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2021 Markus Grundner / DG8MG
+//
 
 #define DBG_PRINT
 
@@ -99,7 +102,15 @@ namespace PowerSDR
 		{
 			commPort.setDTR(v); 
 		}
-		
+
+		// DG8MG
+		// Extension for Charly 25 and HAMlab hardware
+		public void setRTS(bool v)
+		{
+			commPort.setRTS(v);
+		}
+		// DG8MG
+
 		public void Destroy() 
 		{ 
 			lock ( this )  // we only get in here once 

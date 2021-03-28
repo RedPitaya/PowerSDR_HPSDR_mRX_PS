@@ -5197,6 +5197,7 @@ namespace PowerSDR
             this.chkC25Diversity.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.chkC25Diversity.Name = "chkC25Diversity";
             this.toolTip1.SetToolTip(this.chkC25Diversity, resources.GetString("chkC25Diversity.ToolTip"));
+            this.chkC25Diversity.EnabledChanged += new System.EventHandler(this.chkC25Diversity_EnabledChanged);
             this.chkC25Diversity.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chkC25Diversity_MouseClick);
             // 
             // ilC25ImageList
@@ -13791,7 +13792,6 @@ namespace PowerSDR
             }
             // UpdateWaterfallLevelValues();
             // UpdateDisplayGridLevelValues();
-
         }
 
         private void SetRX2Band(Band b)
@@ -18112,6 +18112,9 @@ namespace PowerSDR
             MeterRXMode rx_meter = RX2MeterMode;            // save current RX Meter mode
             RX2MeterMode = MeterRXMode.OFF;                 // turn RX2 Meter off
 
+            float old_multimeter_cal = rx2_meter_cal_offset;
+            float old_display_cal = rx2_display_cal_offset;
+
             int progress_divisor;
 
             // Check if Charly 25 Attenuators and Preamps are present
@@ -18169,16 +18172,20 @@ namespace PowerSDR
                 ret_val = false;
                 goto end;
             }
+
             //clean variables for next use
             maxsumsq = 0.0;
             Array.Clear(sum, 0, fft_size);
 
-            rx2_meter_cal_offset = 0.0f;
-            rx2_display_cal_offset = 0.0f;
+            // rx2_meter_cal_offset = 0.0f;
+            // rx2_display_cal_offset = 0.0f;
+
             float num = 0.0f, num2 = 0.0f, avg2 = 0.0f;
             float avg = 0.0f;
+
             // get the value of the signal strength meter
             Thread.Sleep(1000);
+
             for (int i = 0; i < 50; i++)
             {
                 num += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
@@ -18187,6 +18194,7 @@ namespace PowerSDR
                     goto end;
                 else progress.SetPercent((float)((float)++counter / progress_divisor));
             }
+
             avg = num / 50.0f;
 
             Band band = BandByFreq(freq, -1, false, current_region);
@@ -18200,7 +18208,9 @@ namespace PowerSDR
                 {
                     // Set preamp to current rx2_preamp_mode
                     RX2PreampMode = (PreampMode)rx2_preamp_mode;
+
                     Thread.Sleep(100);
+
                     // get the value of the signal strength meter
                     num2 = 0.0f;
                     Thread.Sleep(1000);
@@ -18230,9 +18240,11 @@ namespace PowerSDR
                 // Set preamp to 0dB
                 RX2PreampMode = PreampMode.C25_OFF;
                 Thread.Sleep(100);
+
                 // get the value of the signal strength meter
                 num2 = 0.0f;
                 Thread.Sleep(1000);
+
                 for (int i = 0; i < 50; i++)
                 {
                     num2 += wdsp.CalculateRXMeter(2, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
@@ -18241,6 +18253,7 @@ namespace PowerSDR
                         goto end;
                     else progress.SetPercent((float)((float)++counter / progress_divisor));
                 }
+
                 avg2 = num2 / 50.0f;
                 float off_offset = avg2 - avg;
 
@@ -18252,9 +18265,6 @@ namespace PowerSDR
 
             Thread.Sleep(5000);
 
-            // DG8MG
-            // Spectrum value seems like it is never used!
-            /*
             cal_range = 2500.0;                         // look +/- this much from current freq to find the calibration signal
             offset = (int)(cal_range / bin_width);
 
@@ -18266,6 +18276,7 @@ namespace PowerSDR
                     sum[j] += buf[j, 0] * buf[j, 0] + buf[j, 1] * buf[j, 1];    // compute magnitude^2 and add to sum
                 Thread.Sleep(20);                                               // wait a little for noise to change
             }
+
             for (int i = fft_size / 2 - offset; i <= fft_size / 2 + offset; i++)// find the max value in any bin
             {
                 if (sum[i] > maxsumsq)
@@ -18274,11 +18285,16 @@ namespace PowerSDR
 
             avg2 = 10.0f * (float)Math.Log10(maxsumsq / iterations / Math.Pow(fft_size, 2));
 
-            // calculate the difference between the current value and the correct spectrum value
-            diff = level - (avg2 + rx2_display_cal_offset + rx2_preamp_offset[(int)rx2_preamp_mode]);
+            // calculate the difference between the current value and the correct multimeter value
+            // float diff = level - (avg + rx2_meter_cal_offset + rx2_preamp_offset[(int)rx2_preamp_mode]);
+            float diff = level - (avg + RX2PreampOffset);
+            rx2_meter_cal_offset = diff;
 
-            RX2DisplayCalOffset += diff;
-            */
+            // calculate the difference between the current value and the correct spectrum value
+            // diff = level - (avg2 + rx2_display_cal_offset + rx2_preamp_offset[(int)rx2_preamp_mode]);
+            diff = level - (avg2 + RX2PreampOffset);
+
+            RX2DisplayCalOffset = diff;
 
             ret_val = true;
 
@@ -18289,6 +18305,12 @@ namespace PowerSDR
             comboRX2Preamp.Enabled = true;
             comboRX2DisplayMode.Enabled = true;
             comboRX2MeterMode.Enabled = true;
+
+            if (ret_val == false)
+            {
+                rx2_meter_cal_offset = old_multimeter_cal;
+                rx2_display_cal_offset = old_display_cal;
+            }
 
             comboRX2DisplayMode.Text = display;                 // restore RX2 display text
             chkRIT.Checked = rit_on;                            // restore RIT on
@@ -39650,6 +39672,19 @@ namespace PowerSDR
                     {
                         JanusAudio.SetXmitBit(1);
                     }
+
+                    if (serialPTT != null)
+                    {
+                        if (serialPTT.DTRIsPTT)
+                        {
+                            serialPTT.setDTR(true);
+                        }
+
+                        if (serialPTT.RTSIsPTT)
+                        {
+                            serialPTT.setRTS(true);
+                        }
+                    }
                 }
                 else
                 {
@@ -39660,11 +39695,10 @@ namespace PowerSDR
                          current_ptt_mode != PTTMode.CAT)
                         JanusAudio.SetXmitBit(0);
                     else JanusAudio.SetXmitBit(1);
+
+                    if (serialPTT != null) serialPTT.setDTR(true);
                 }
                 // DG8MG
-
-                if (serialPTT != null) serialPTT.setDTR(true);
-
 
             }
             else // rx
@@ -39678,8 +39712,29 @@ namespace PowerSDR
                      ptt_out_delay > 0)
                     Thread.Sleep(ptt_out_delay);
 
-                if (serialPTT != null) serialPTT.setDTR(false);
+                // DG8MG
+                // Extension for Charly 25 and HAMlab hardware
+                if (C25ModelIsCharly25orHAMlab())
+                {
+                    if (serialPTT != null)
+                    {
+                        if (serialPTT.DTRIsPTT)
+                        {
+                            serialPTT.setDTR(false);
+                        }
 
+                        if (serialPTT.RTSIsPTT)
+                        {
+                            serialPTT.setRTS(false);
+                        }
+                    }
+                }
+                else
+                {
+                    if (serialPTT != null) serialPTT.setDTR(false);
+                }
+                // DG8MG
+                
                 if (!rx1_step_att_present)
                     RX1PreampMode = rx1_preamp_mode;
 
@@ -49889,6 +49944,15 @@ namespace PowerSDR
             if (collapsedDisplay)
                 RepositionControlsForCollapsedlDisplay();
 
+            // DG8MG
+            // Extension for Charly 25 frontpanel hardware
+            if (C25FrontpanelMenuVisible)
+            {
+                // Update the frontpanel menu without restarting the timer
+                C25ShowFrontpanelMenu(100);
+            }
+            // DG8MG
+
         }
 
         public int HDelta
@@ -53764,7 +53828,7 @@ namespace PowerSDR
             // Extension for Charly 25 and HAMlab Attenuator and Preamp
             if (C25ModelIsCharly25orHAMlab())
             {
-                if (initializing)
+                if (comboPreamp.Items.Count != 11)
                 {
                     comboPreamp.Items.Clear();
                     comboPreamp.Items.AddRange(C25_attenuator_settings);
@@ -53774,8 +53838,6 @@ namespace PowerSDR
             }
             else
             {
-                comboPreamp.Items.Clear();
-
                 //if (diversity2 && current_hpsdr_model != HPSDRModel.HPSDR)
                 //{
                 //    comboPreamp.Items.AddRange(anan100d_preamp_settings);
@@ -53788,6 +53850,8 @@ namespace PowerSDR
                 //        comboPreamp.Items.AddRange(alex_preamp_settings);
                 //    }
                 //}
+
+                comboPreamp.Items.Clear();
 
                 switch (current_hpsdr_model)
                 {
@@ -53845,7 +53909,7 @@ namespace PowerSDR
                 // Extension for Charly 25 RX2 Attenuator and Preamp
                 if (C25ModelIsCharly25orHAMlab())
                 {
-                    if (initializing)
+                    if (comboRX2Preamp.Items.Count != 11)
                     {
                         comboRX2Preamp.Items.Clear();
                         comboRX2Preamp.Items.AddRange(C25_attenuator_settings);
@@ -56871,6 +56935,31 @@ namespace PowerSDR
             }
         }
 
+        private void chkC25Diversity_EnabledChanged(object sender, EventArgs e)
+        {
+            if (diversityForm != null && !diversityForm.IsDisposed)
+            {
+                if (chkC25Diversity.Enabled)
+                {
+                    diversityForm.chkAutoDiversity.Enabled = true;
+                    diversityForm.chkAutoDiversity.Visible = true;
+                }
+                else
+                {
+                    diversityForm.chkAutoDiversity.Enabled = false;
+
+                    if (C25ModelIsCharly25orHAMlab())
+                    {
+                        diversityForm.chkAutoDiversity.Visible = true;
+                    }
+                    else
+                    {
+                        diversityForm.chkAutoDiversity.Visible = false;
+                    }
+                }
+            }
+        }
+
         private void chkC25Diversity_MouseClick(object sender, MouseEventArgs e)
         {
             if (chkC25Diversity.Checked)
@@ -57247,8 +57336,8 @@ namespace PowerSDR
             int console_width = getConsole().Width;
             int button_left_offset = 0;
             int button_top_offset = 0;
-            int button_height = (console_height - button_top_offset - 40) / 6;
-            int button_width = (console_width - button_left_offset - 16) / 9;
+            int button_height = (console_height - button_top_offset - 40) / 5;
+            int button_width = (console_width - button_left_offset - 16) / 8;
             int index = 0;
 
             List<string> button_states_strings = new List<string>();
@@ -57272,85 +57361,70 @@ namespace PowerSDR
             lblC25FPKnob2.Width = button_width;
             lblC25FPKnob2.Height = button_height;
 
-            lblC25FPKnob3.Left = button_left_offset;
-            lblC25FPKnob3.Top = button_top_offset + button_height * 3;
-            lblC25FPKnob3.Width = button_width;
-            lblC25FPKnob3.Height = button_height;
-
             lblC25FPButton0.Left = button_left_offset;
             lblC25FPButton0.Top = button_top_offset + button_height * 4;
             lblC25FPButton0.Width = button_width;
             lblC25FPButton0.Height = button_height;
 
-            lblC25FPButton1.Left = button_left_offset;
-            lblC25FPButton1.Top = button_top_offset + button_height * 5;
+            lblC25FPButton1.Left = button_left_offset + button_width * 1;
+            lblC25FPButton1.Top = button_top_offset + button_height * 4;
             lblC25FPButton1.Width = button_width;
             lblC25FPButton1.Height = button_height;
 
-            lblC25FPButton2.Left = button_left_offset + button_width;
-            lblC25FPButton2.Top = button_top_offset + button_height * 5;
+            lblC25FPButton2.Left = button_left_offset + button_width * 2;
+            lblC25FPButton2.Top = button_top_offset + button_height * 4;
             lblC25FPButton2.Width = button_width;
             lblC25FPButton2.Height = button_height;
 
-            lblC25FPButton3.Left = button_left_offset + button_width * 2;
-            lblC25FPButton3.Top = button_top_offset + button_height * 5;
+            lblC25FPButton3.Left = button_left_offset + button_width * 3;
+            lblC25FPButton3.Top = button_top_offset + button_height * 4;
             lblC25FPButton3.Width = button_width;
             lblC25FPButton3.Height = button_height;
 
-            lblC25FPButton4.Left = button_left_offset + button_width * 3;
-            lblC25FPButton4.Top = button_top_offset + button_height * 5;
+            lblC25FPButton4.Left = button_left_offset + button_width * 4;
+            lblC25FPButton4.Top = button_top_offset + button_height * 4;
             lblC25FPButton4.Width = button_width;
             lblC25FPButton4.Height = button_height;
 
-            lblC25FPButton5.Left = button_left_offset + button_width * 4;
-            lblC25FPButton5.Top = button_top_offset + button_height * 5;
+            lblC25FPButton5.Left = button_left_offset + button_width * 5;
+            lblC25FPButton5.Top = button_top_offset + button_height * 4;
             lblC25FPButton5.Width = button_width;
             lblC25FPButton5.Height = button_height;
 
-            lblC25FPButton6.Left = button_left_offset + button_width * 5;
-            lblC25FPButton6.Top = button_top_offset + button_height * 5;
+            lblC25FPButton6.Left = button_left_offset + button_width * 6;
+            lblC25FPButton6.Top = button_top_offset + button_height * 4;
             lblC25FPButton6.Width = button_width;
             lblC25FPButton6.Height = button_height;
 
-            lblC25FPButton7.Left = button_left_offset + button_width * 6;
-            lblC25FPButton7.Top = button_top_offset + button_height * 5;
+            lblC25FPButton7.Left = button_left_offset + button_width * 7;
+            lblC25FPButton7.Top = button_top_offset + button_height * 4;
             lblC25FPButton7.Width = button_width;
             lblC25FPButton7.Height = button_height;
 
-            lblC25FPButton8.Left = button_left_offset + button_width * 7;
-            lblC25FPButton8.Top = button_top_offset + button_height * 5;
+            lblC25FPButton8.Left = button_width * 7;
+            lblC25FPButton8.Top = button_top_offset;
             lblC25FPButton8.Width = button_width;
             lblC25FPButton8.Height = button_height;
 
-            lblC25FPButton9.Left = button_width * 8;
-            lblC25FPButton9.Top = button_top_offset;
+            lblC25FPButton9.Left = button_width * 7;
+            lblC25FPButton9.Top = button_top_offset + button_height;
             lblC25FPButton9.Width = button_width;
             lblC25FPButton9.Height = button_height;
 
-            lblC25FPButton10.Left = button_width * 8;
-            lblC25FPButton10.Top = button_top_offset + button_height;
+            lblC25FPButton10.Left = button_width * 7;
+            lblC25FPButton10.Top = button_top_offset + button_height * 2;
             lblC25FPButton10.Width = button_width;
             lblC25FPButton10.Height = button_height;
 
-            lblC25FPButton11.Left = button_width * 8;
-            lblC25FPButton11.Top = button_top_offset + button_height * 2;
+            lblC25FPButton11.Left = button_width * 7;
+            lblC25FPButton11.Top = button_top_offset + button_height * 3;
             lblC25FPButton11.Width = button_width;
             lblC25FPButton11.Height = button_height;
 
-            lblC25FPButton12.Left = button_width * 8;
-            lblC25FPButton12.Top = button_top_offset + button_height * 3;
-            lblC25FPButton12.Width = button_width;
-            lblC25FPButton12.Height = button_height;
-
-            lblC25FPButton13.Left = button_width * 8;
-            lblC25FPButton13.Top = button_top_offset + button_height * 4;
-            lblC25FPButton13.Width = button_width;
-            lblC25FPButton13.Height = button_height;
-
-            lblC25FPButton14.Left = button_width * 8;
-            lblC25FPButton14.Top = button_top_offset + button_height * 5;
-            lblC25FPButton14.Width = button_width;
-            lblC25FPButton14.Height = button_height;
+            //lblC25FPButton12.Left = button_width * 7;
+            //lblC25FPButton12.Top = button_top_offset + button_height * 4;
+            //lblC25FPButton12.Width = button_width;
+            //lblC25FPButton12.Height = button_height;
 
             // Get the necessary information of the knobs and buttons based on the currently assigned functions
             frontpanelMappings = Midi2Cat.C25GetFrontpanelMappings();
@@ -57360,20 +57434,16 @@ namespace PowerSDR
                 // Label the knobs with coresponding texts
                 switch (mapping.MidiControlId)
                 {
-                    case 112:
-                        lblC25FPKnob0.Text = "K1\n" + mapping.MidiControlName;
+                    case 100:
+                        lblC25FPKnob0.Text = "R1\n" + mapping.MidiControlName;
                         break;
 
-                    case 113:
-                        lblC25FPKnob1.Text = "K2\n" + mapping.MidiControlName;
+                    case 101:
+                        lblC25FPKnob1.Text = "R2\n" + mapping.MidiControlName;
                         break;
 
-                    case 114:
-                        lblC25FPKnob2.Text = "K3\n" + mapping.MidiControlName;
-                        break;
-
-                    case 115:
-                        lblC25FPKnob3.Text = "K4\n" + mapping.MidiControlName;
+                    case 102:
+                        lblC25FPKnob2.Text = "R3\n" + mapping.MidiControlName;
                         break;
                 }
             }
@@ -57394,7 +57464,7 @@ namespace PowerSDR
             }
 
             // Get the color values based on the current status of the buttons
-            for (index = 0; index < 15; index++)
+            for (index = 0; index < 13; index++)
             {
                 int button_status = 0;
                 int.TryParse(button_states_strings[index].Substring(3) + button_states_strings[index + 16].Substring(3), out button_status);
@@ -57426,32 +57496,27 @@ namespace PowerSDR
             lblC25FPButton9.BackColor = button_states_colors[9];
             lblC25FPButton10.BackColor = button_states_colors[10];
             lblC25FPButton11.BackColor = button_states_colors[11];
-            lblC25FPButton12.BackColor = button_states_colors[12];
-            lblC25FPButton13.BackColor = button_states_colors[13];
-            lblC25FPButton14.BackColor = button_states_colors[14];
+            //lblC25FPButton12.BackColor = button_states_colors[12];
 
             // Label all buttons with coresponding texts
-            lblC25FPButton0.Text = "B1\n" + button_labels[0] + "\n\n" + "B16\n" + button_labels[16];
-            lblC25FPButton1.Text = "B2\n" + button_labels[1] + "\n\n" + "B17\n" + button_labels[17];
-            lblC25FPButton2.Text = "B3\n" + button_labels[2] + "\n\n" + "B18\n" + button_labels[18];
-            lblC25FPButton3.Text = "B4\n" + button_labels[3] + "\n\n" + "B19\n" + button_labels[19];
-            lblC25FPButton4.Text = "B5\n" + button_labels[4] + "\n\n" + "B20\n" + button_labels[20];
-            lblC25FPButton5.Text = "B6\n" + button_labels[5] + "\n\n" + "B21\n" + button_labels[21];
-            lblC25FPButton6.Text = "B7\n" + button_labels[6] + "\n\n" + "B22\n" + button_labels[22];
-            lblC25FPButton7.Text = "B8\n" + button_labels[7] + "\n\n" + "B23\n" + button_labels[23];
-            lblC25FPButton8.Text = "B9\n" + button_labels[8] + "\n\n" + "B24\n" + button_labels[24];
-            lblC25FPButton9.Text = "B10\n" + button_labels[9] + "\n\n" + "B25\n" + button_labels[25];
-            lblC25FPButton10.Text = "B11\n" + button_labels[10] + "\n\n" + "B26\n" + button_labels[26];
-            lblC25FPButton11.Text = "B12\n" + button_labels[11] + "\n\n" + "B27\n" + button_labels[27];
-            lblC25FPButton12.Text = "B13\n" + button_labels[12] + "\n\n" + "B28\n" + button_labels[28];
-            lblC25FPButton13.Text = "B14\n" + button_labels[13] + "\n\n" + "B29\n" + button_labels[29];
-            lblC25FPButton14.Text = "B15\n" + button_labels[14] + "\n\n" + "B30\n" + button_labels[30];
+            lblC25FPButton0.Text = "F1\n" + button_labels[0] + "\n\n" + "F17\n" + button_labels[16];
+            lblC25FPButton1.Text = "F2\n" + button_labels[1] + "\n\n" + "F18\n" + button_labels[17];
+            lblC25FPButton2.Text = "F3\n" + button_labels[2] + "\n\n" + "F19\n" + button_labels[18];
+            lblC25FPButton3.Text = "F4\n" + button_labels[3] + "\n\n" + "F20\n" + button_labels[19];
+            lblC25FPButton4.Text = "F5\n" + button_labels[4] + "\n\n" + "F21\n" + button_labels[20];
+            lblC25FPButton5.Text = "F6\n" + button_labels[5] + "\n\n" + "F22\n" + button_labels[21];
+            lblC25FPButton6.Text = "F7\n" + button_labels[6] + "\n\n" + "F23\n" + button_labels[22];
+            lblC25FPButton7.Text = "F8\n" + button_labels[7] + "\n\n" + "F24\n" + button_labels[23];
+            lblC25FPButton8.Text = "F9\n" + button_labels[8] + "\n\n" + "F25\n" + button_labels[24];
+            lblC25FPButton9.Text = "F10\n" + button_labels[9] + "\n\n" + "F26\n" + button_labels[25];
+            lblC25FPButton10.Text = "F11\n" + button_labels[10] + "\n\n" + "F27\n" + button_labels[26];
+            lblC25FPButton11.Text = "F12\n" + button_labels[11] + "\n\n" + "F28\n" + button_labels[27];
+            //lblC25FPButton12.Text = "F13\n" + button_labels[12] + "\n\n" + "F29\n" + button_labels[28];
 
             // Show the knobs and buttons
             lblC25FPKnob0.Visible = true;
             lblC25FPKnob1.Visible = true;
             lblC25FPKnob2.Visible = true;
-            lblC25FPKnob3.Visible = true;
             lblC25FPButton0.Visible = true;
             lblC25FPButton1.Visible = true;
             lblC25FPButton2.Visible = true;
@@ -57464,15 +57529,12 @@ namespace PowerSDR
             lblC25FPButton9.Visible = true;
             lblC25FPButton10.Visible = true;
             lblC25FPButton11.Visible = true;
-            lblC25FPButton12.Visible = true;
-            lblC25FPButton13.Visible = true;
-            lblC25FPButton14.Visible = true;
+            //lblC25FPButton12.Visible = true;
 
             // Bring the knobs and buttons to the front
             lblC25FPKnob0.BringToFront();
             lblC25FPKnob1.BringToFront();
             lblC25FPKnob2.BringToFront();
-            lblC25FPKnob3.BringToFront();
             lblC25FPButton0.BringToFront();
             lblC25FPButton1.BringToFront();
             lblC25FPButton2.BringToFront();
@@ -57485,13 +57547,11 @@ namespace PowerSDR
             lblC25FPButton9.BringToFront();
             lblC25FPButton10.BringToFront();
             lblC25FPButton11.BringToFront();
-            lblC25FPButton12.BringToFront();
-            lblC25FPButton13.BringToFront();
-            lblC25FPButton14.BringToFront();
+            //lblC25FPButton12.BringToFront();
 
             C25FrontpanelMenuVisible = true;
 
-            // Handle special duration of 100 as infinitive duration, don't start timer
+            // Handle special duration of 100 as infinitive duration and also used in case of console resizing, don't start or update the timer
             if (duration < 100)
             {
                 // Set the duration in ms
@@ -57514,7 +57574,6 @@ namespace PowerSDR
             lblC25FPKnob0.Visible = false;
             lblC25FPKnob1.Visible = false;
             lblC25FPKnob2.Visible = false;
-            lblC25FPKnob3.Visible = false;
             lblC25FPButton0.Visible = false;
             lblC25FPButton1.Visible = false;
             lblC25FPButton2.Visible = false;
@@ -57527,9 +57586,9 @@ namespace PowerSDR
             lblC25FPButton9.Visible = false;
             lblC25FPButton10.Visible = false;
             lblC25FPButton11.Visible = false;
-            lblC25FPButton12.Visible = false;
-            lblC25FPButton13.Visible = false;
-            lblC25FPButton14.Visible = false;
+            //lblC25FPButton12.Visible = false;
+
+            Midi2Cat.C25SendUpdateToMidi(CatCmd.C25FrontpanelMenu_OnOff, 0);
         }
 
         public void C25UpdateFrontpanelMenu()
@@ -57563,7 +57622,7 @@ namespace PowerSDR
             }
 
             // Get the color values based on the current status of the buttons
-            for (index = 0; index < 15; index++)
+            for (index = 0; index < 13; index++)
             {
                 int button_status = 0;
                 int.TryParse(button_states_strings[index].Substring(3) + button_states_strings[index + 16].Substring(3), out button_status);
@@ -57595,15 +57654,12 @@ namespace PowerSDR
             lblC25FPButton9.BackColor = button_states_colors[9];
             lblC25FPButton10.BackColor = button_states_colors[10];
             lblC25FPButton11.BackColor = button_states_colors[11];
-            lblC25FPButton12.BackColor = button_states_colors[12];
-            lblC25FPButton13.BackColor = button_states_colors[13];
-            lblC25FPButton14.BackColor = button_states_colors[14];
+            //lblC25FPButton12.BackColor = button_states_colors[12];
 
             // Bring the knobs and buttons to the front
             lblC25FPKnob0.BringToFront();
             lblC25FPKnob1.BringToFront();
             lblC25FPKnob2.BringToFront();
-            lblC25FPKnob3.BringToFront();
             lblC25FPButton0.BringToFront();
             lblC25FPButton1.BringToFront();
             lblC25FPButton2.BringToFront();
@@ -57616,9 +57672,7 @@ namespace PowerSDR
             lblC25FPButton9.BringToFront();
             lblC25FPButton10.BringToFront();
             lblC25FPButton11.BringToFront();
-            lblC25FPButton12.BringToFront();
-            lblC25FPButton13.BringToFront();
-            lblC25FPButton14.BringToFront();
+            //lblC25FPButton12.BringToFront();
 
             // Check if the frontpanel menu timer is running
             if (C25FrontpanelMenuTimer.Enabled)

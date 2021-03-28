@@ -1307,14 +1307,46 @@ namespace PowerSDR
                         //if (direction == 127)
                         if (direction < 64 && direction >= 25) //-W2PA Make Behringer wheel work for tuning
                         {
-                            if (vfo == "a") commands.ZZFA((SnapTune(freq, step, -1 * stepMult, RoundToStepSize).ToString("D11")));
-                            else commands.ZZFB((SnapTune(freq, step, -1 * stepMult, RoundToStepSize).ToString("D11")));
+                            // DG8MG
+                            // Extension for Charly 25 and HAMlab hardware
+                            // if (vfo == "a") commands.ZZFA((SnapTune(freq, step, -1 * stepMult, RoundToStepSize).ToString("D11")));
+                            // else commands.ZZFB((SnapTune(freq, step, -1 * stepMult, RoundToStepSize).ToString("D11")));
+
+                            if (vfo == "a")
+                            {
+                                commands.ZZFA((SnapTune(freq, step, -1 * stepMult, RoundToStepSize).ToString("D11")));
+                            }
+                            else if (vfo == "b")
+                            {
+                                commands.ZZFB((SnapTune(freq, step, -1 * stepMult, RoundToStepSize).ToString("D11")));
+                            }
+                            else if (vfo == "c")
+                            {
+                                commands.ZZTV((SnapTune(freq, step, -1 * stepMult, RoundToStepSize).ToString("D11")));
+                            }
+                            // DG8MG
                         }
                         //if (direction == 1)
                         if (direction > 64 && direction <= 105) //-W2PA Make Behringer wheel work for tuning
                         {
-                            if (vfo == "a") commands.ZZFA((SnapTune(freq, step, 1 * stepMult, RoundToStepSize).ToString("D11")));
-                            else commands.ZZFB((SnapTune(freq, step, 1 * stepMult, RoundToStepSize).ToString("D11")));
+                            // DG8MG
+                            // Extension for Charly 25 and HAMlab hardware
+                            // if (vfo == "a") commands.ZZFA((SnapTune(freq, step, 1 * stepMult, RoundToStepSize).ToString("D11")));
+                            // else commands.ZZFB((SnapTune(freq, step, 1 * stepMult, RoundToStepSize).ToString("D11")));
+
+                            if (vfo == "a")
+                            {
+                                commands.ZZFA((SnapTune(freq, step, 1 * stepMult, RoundToStepSize).ToString("D11")));
+                            }
+                            else if (vfo == "b")
+                            {
+                                commands.ZZFB((SnapTune(freq, step, 1 * stepMult, RoundToStepSize).ToString("D11")));
+                            }
+                            else if (vfo == "c")
+                            {
+                                commands.ZZTV((SnapTune(freq, step, 1 * stepMult, RoundToStepSize).ToString("D11")));
+                            }
+                            // DG8MG
                         }
                         break;
                     }
@@ -1431,29 +1463,85 @@ namespace PowerSDR
 
             parser.nGet = 0;
             parser.nSet = 11;
-            long freq = Convert.ToInt64(commands.ZZFA(""));
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            // long freq = Convert.ToInt64(commands.ZZFA(""));
+            // parser.nAns = 11;
+            // int mode = Convert.ToInt16(commands.ZZMD(""));
+            // commands.isMidi = true;
+            // System.Diagnostics.Debug.WriteLine("Msg=" + msg);
+
+            // string devName = device.GetDeviceName();
+
+            //if (devName == "CMD PL-1")
+            //{
+            //    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD PL-1");
+            //}
+            //else if (devName == "CMD Micro")
+            //{
+            //    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD Micro");
+            //}
+            //else if (devName.Contains("CMD"))
+            //{
+            //    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD");
+            //}
+            //else
+            //{
+            //    ProcessStdMIDIWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a");  // Original handler
+            //}
+
+            long freq;
             parser.nAns = 11;
             int mode = Convert.ToInt16(commands.ZZMD(""));
             commands.isMidi = true;
             //System.Diagnostics.Debug.WriteLine("Msg=" + msg);
 
             string devName = device.GetDeviceName();
-            if (devName == "CMD PL-1")  
+
+            if (commands.ZZRS("") == "1" && (commands.ZZSP("") == "1" || commands.ZZMU("") == "1"))
             {
-                ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD PL-1");
-            }
-            else if (devName == "CMD Micro")
-            {
-                ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD Micro");
-            }
-            else if (devName.Contains("CMD"))
-            {
-                ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD");
+                freq = Convert.ToInt64(commands.ZZTV(""));
+
+                if (devName == "CMD PL-1")
+                {
+                    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "c", "CMD PL-1");
+                }
+                else if (devName == "CMD Micro")
+                {
+                    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "c", "CMD Micro");
+                }
+                else if (devName.Contains("CMD"))
+                {
+                    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "c", "CMD");
+                }
+                else
+                {
+                    ProcessStdMIDIWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "c");  // Original handler
+                }
             }
             else
             {
-                ProcessStdMIDIWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a");  // Original handler
+                freq = Convert.ToInt64(commands.ZZFA(""));
+
+                if (devName == "CMD PL-1")
+                {
+                    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD PL-1");
+                }
+                else if (devName == "CMD Micro")
+                {
+                    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD Micro");
+                }
+                else if (devName.Contains("CMD"))
+                {
+                    ProcessBehringerMainWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a", "CMD");
+                }
+                else
+                {
+                    ProcessStdMIDIWheelAsVFO(direction, step, RoundToStepSize, freq, mode, "a");  // Original handler
+                }
             }
+            // DG8MG
 
             commands.isMidi = false;
         }

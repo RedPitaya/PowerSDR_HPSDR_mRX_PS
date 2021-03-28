@@ -9033,9 +9033,9 @@ namespace PowerSDR
                 console.chkSR.Visible = false;  // Charly 25 doesn't need this functionality
                 console.chkC25ANT.Checked = false;  // Switch to first antenna on Charly 25
                 console.chkC25ANT.Visible = true;  // Make antenna switch button for Charly 25 visible
-                console.chkC25Diversity.Enabled = true;  // Charly 25 has an additional button for the Auto-Diversity functionality
+                console.chkC25Diversity.Enabled = false;  // Charly 25 has an additional button for the Auto-Diversity functionality
                 console.chkC25Diversity.Visible = true;  // Charly 25 has an additional button for the Auto-Diversity functionality
-                console.chkDX.ThreeState = true; // Charly 25 has a thrid state here for listening to different receivers on left and right audio channel
+                console.chkDX.ThreeState = true;  // Charly 25 has a thrid state here for listening to different receivers on left and right audio channel
                 groupBoxHPSDRHW.Visible = false;  // Charly 25 doesn't have this hardware options
                 grpC25HardwareOptions.Visible = true;  // Charly 25 has its own hardware options
                 chkPennyPresent.Checked = false;  // Charly 25 must behave like a Hermes
@@ -9109,6 +9109,7 @@ namespace PowerSDR
                 console.btnTNFAdd.Visible = true;  // reset to default setting
                 console.chkSR.Visible = true;  // reset to default setting
                 console.chkC25ANT.Visible = false;  // reset to default setting
+                console.chkC25Diversity.Enabled = false;  // reset to default setting
                 console.chkC25Diversity.Visible = false;  // reset to default setting
                 console.chkDX.ThreeState = false; // reset to default setting
                 chkVACAllowBypass.Checked = true;  // reset to default setting
@@ -23425,7 +23426,10 @@ namespace PowerSDR
 
         private void chkVAC1_Force_CheckedChanged(object sender, EventArgs e)
         {
-            if (Audio.VACEnabled)
+            // DG8MG
+            // Added initializing check to avoid crashes
+            if (Audio.VACEnabled && !initializing)
+            // DG8MG
             {
                 unsafe
                 {
@@ -23438,7 +23442,10 @@ namespace PowerSDR
 
         private void chkVAC1_Force2_CheckedChanged(object sender, EventArgs e)
         {
-            if (Audio.VACEnabled)
+            // DG8MG
+            // Added initializing check to avoid crashes
+            if (Audio.VACEnabled && !initializing)
+            // DG8MG
             {
                 unsafe
                 {
@@ -23495,7 +23502,10 @@ namespace PowerSDR
 
         private void chkVAC2_Force_CheckedChanged(object sender, EventArgs e)
         {
-            if (Audio.VAC2Enabled)
+            // DG8MG
+            // Added initializing check to avoid crashes
+            if (Audio.VAC2Enabled && !initializing)
+            // DG8MG
             {
                 unsafe
                 {
@@ -23508,7 +23518,10 @@ namespace PowerSDR
 
         private void chkVAC2_Force2_CheckedChanged(object sender, EventArgs e)
         {
-            if (Audio.VAC2Enabled)
+            // DG8MG
+            // Added initializing check to avoid crashes
+            if (Audio.VAC2Enabled && !initializing)
+            // DG8MG
             {
                 unsafe
                 {

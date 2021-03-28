@@ -153,6 +153,28 @@ namespace PowerSDR
             wdsp.SetEXTDIVNr(0, 2);
            // console.Diversity2 = true;
             chkEnableDiversity_CheckedChanged(this, e);
+
+            // DG8MG
+            // Extension for Charly 25 and HAMlab hardware
+            if (console.C25ModelIsCharly25orHAMlab())
+            {
+                chkAutoDiversity.Visible = true;
+
+                if (console.PowerOn)
+                {
+                    chkAutoDiversity.Enabled = true;
+                }
+                else
+                {
+                    chkAutoDiversity.Enabled = false;
+                }
+            }
+            else
+            {
+                chkAutoDiversity.Enabled = false;
+                chkAutoDiversity.Visible = false;
+            }
+            // DG8MG
         }
 
         /// <summary>
@@ -323,6 +345,7 @@ namespace PowerSDR
             // 
             this.chkAutoDiversity.Appearance = System.Windows.Forms.Appearance.Button;
             this.chkAutoDiversity.BackColor = System.Drawing.SystemColors.Control;
+            this.chkAutoDiversity.Enabled = false;
             this.chkAutoDiversity.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkAutoDiversity.Image = null;
             this.chkAutoDiversity.Location = new System.Drawing.Point(381, 79);
@@ -332,6 +355,7 @@ namespace PowerSDR
             this.chkAutoDiversity.Text = "Auto";
             this.chkAutoDiversity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.chkAutoDiversity.UseVisualStyleBackColor = false;
+            this.chkAutoDiversity.Visible = false;
             this.chkAutoDiversity.CheckedChanged += new System.EventHandler(this.chkAutoDiversity_CheckedChanged);
             // 
             // chkEnableDiversity
@@ -1813,6 +1837,8 @@ namespace PowerSDR
                 decimal current_gain = 0;
                 double best_phase_angle = 0;
                 double current_phase_angle = 0;
+                float abs_noise_signal_strength_rx1;
+                float abs_noise_signal_strength_rx2;
                 float current_signal_strength = 0;
                 float minimum_received_signal_strength = 0;
 
@@ -1952,6 +1978,8 @@ namespace PowerSDR
                 }
                 else
                 */
+
+                if (Keyboard.IsKeyDown(Keys.ShiftKey))
                 {
                     for (current_phase_angle = 0; current_phase_angle < 180; current_phase_angle += 1)
                     {
@@ -1965,7 +1993,7 @@ namespace PowerSDR
                         {
                             minimum_received_signal_strength = current_signal_strength;
                             best_phase_angle = current_phase_angle;
-                            
+
                         }
 
                         Update();
@@ -1983,7 +2011,7 @@ namespace PowerSDR
                         {
                             minimum_received_signal_strength = current_signal_strength;
                             best_phase_angle = current_phase_angle;
-                            
+
                         }
 
                         Update();
@@ -2005,7 +2033,7 @@ namespace PowerSDR
                         {
                             minimum_received_signal_strength = current_signal_strength;
                             best_gain = current_gain;
-                            
+
                         }
 
                         Update();
@@ -2021,6 +2049,106 @@ namespace PowerSDR
                     {
                         DiversityGain = best_gain;
                     }
+                }
+                else
+                {
+                    DiversityPhase = 0;
+                    console.RX2PreampMode = PreampMode.C25_OFF;
+
+                    while (((float)best_gain < 0.2 || (float)best_gain > 0.8) && console.RX2PreampMode != PreampMode.C25_MINUS36 && console.RX2PreampMode != PreampMode.C25_PLUS36)
+                    {
+                        radRxSource1.Checked = true;
+                        Update();
+
+                        Thread.Sleep(100);
+
+                        abs_noise_signal_strength_rx1 = Math.Abs((float)Math.Pow(10.0, wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH) / 10.0));
+
+                        radRxSource2.Checked = true;
+                        Update();
+
+                        Thread.Sleep(100);
+
+                        abs_noise_signal_strength_rx2 = Math.Abs((float)Math.Pow(10.0, wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH) / 10.0));
+
+                        if (abs_noise_signal_strength_rx1 < abs_noise_signal_strength_rx2)
+                        {
+                            radioButtonMerc1.Checked = true;
+                            best_gain = (decimal)(abs_noise_signal_strength_rx1 / abs_noise_signal_strength_rx2);
+
+                            if ((float)best_gain < 0.2)
+                            {
+                                console.RX2PreampMode--;
+                            }
+                            else if ((float)best_gain > 0.8)
+                            {
+                                console.RX2PreampMode++;
+                            }
+                        }
+                        else
+                        {
+                            radioButtonMerc2.Checked = true;
+                            best_gain = (decimal)(abs_noise_signal_strength_rx2 / abs_noise_signal_strength_rx1);
+
+                            if ((float)best_gain < 0.2)
+                            {
+                                console.RX2PreampMode++;
+                            }
+                            else if ((float)best_gain > 0.8)
+                            {
+                                console.RX2PreampMode--;
+                            }
+                        }
+                    }                   
+
+                    if (radioButtonMerc1.Checked)
+                    {  
+                        DiversityR2Gain = best_gain;
+                    }
+                    else
+                    {
+                        DiversityGain = best_gain;
+                    }
+
+                    radRxSourceRx1Rx2.Checked = true;
+
+                    Thread.Sleep(500);
+
+                    for (current_phase_angle = 0; current_phase_angle < 180; current_phase_angle += 1)
+                    {
+                        DiversityPhase = (decimal)current_phase_angle;
+
+                        Thread.Sleep(50);
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        Update();
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_phase_angle = current_phase_angle;
+                        }
+                    }
+
+                    for (current_phase_angle = -180; current_phase_angle < 0; current_phase_angle += 1)
+                    {
+                        DiversityPhase = (decimal)current_phase_angle;
+
+                        Thread.Sleep(50);
+
+                        current_signal_strength = wdsp.CalculateRXMeter(0, 0, wdsp.MeterType.AVG_SIGNAL_STRENGTH);
+
+                        Update();
+
+                        if (current_signal_strength < minimum_received_signal_strength)
+                        {
+                            minimum_received_signal_strength = current_signal_strength;
+                            best_phase_angle = current_phase_angle;
+                        }
+                    }
+
+                    DiversityPhase = (decimal)best_phase_angle;
                 }
 
                 System.Console.WriteLine(String.Format("Minimum signal strength: {0} / Phase angle: {1} / Gain: {2}", minimum_received_signal_strength, best_phase_angle, best_gain));

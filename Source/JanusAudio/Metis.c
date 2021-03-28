@@ -626,7 +626,7 @@ int C25MetisTCPReadDirect(char *bufp, int buflen)
 	int fromlen;
 	int rb = 0;
 	int rc = 0;
-	unsigned int seqnum;
+	unsigned int seqnum = 0;
 	unsigned char *seqbytep = (unsigned char *)&seqnum;
 	char metis2pcep6seq[] = "\xef\xfe\x01\x06";
 	char *packetp;

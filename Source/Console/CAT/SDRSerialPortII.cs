@@ -19,6 +19,9 @@
 //================================================================= 
 // Serial port support for PowerSDR support of CAT and serial port control  
 //=================================================================
+//
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2021 Markus Grundner / DG8MG
+//
 
 #define DBG_PRINT
 
@@ -80,8 +83,13 @@ namespace PowerSDR
         {
             commPort = new SerialPort();
             commPort.Encoding = System.Text.Encoding.ASCII;
-            commPort.RtsEnable = true; // hack for soft rock ptt 
-            commPort.DtrEnable = true; // set dtr off 
+            
+            // DG8MG
+            // Removed RTS and DTR settings due to issues with Charly 25 and HAMlab setups and SoftRock hardware isn't supported anymore
+            // commPort.RtsEnable = true; // hack for soft rock ptt
+            // commPort.DtrEnable = true; // set dtr off
+            // DG8MG
+
             //commPort.ErrorReceived += new SerialErrorReceivedEventHandler(this.SerialErrorReceived);
             commPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialReceivedData);
             commPort.PinChanged += new SerialPinChangedEventHandler(this.SerialPinChanged);
@@ -175,6 +183,15 @@ namespace PowerSDR
             if (!isOpen) return;
             commPort.DtrEnable = v;
         }
+
+        // DG8MG
+        // Extension for Charly 25 and HAMlab hardware
+        public void setRTS(bool v)
+        {
+            if (!isOpen) return;
+            commPort.RtsEnable = v;
+        }
+        // DG8MG
 
         void SerialErrorReceived(object source, SerialErrorReceivedEventArgs e)
         {
@@ -359,8 +376,13 @@ namespace PowerSDR
         {
             commPort = new SerialPort();
             commPort.Encoding = System.Text.Encoding.ASCII;
-            commPort.RtsEnable = true; // hack for soft rock ptt 
-            commPort.DtrEnable = true; // set dtr off 
+
+            // DG8MG
+            // Removed RTS and DTR settings due to issues with Charly 25 and HAMlab setups and SoftRock hardware isn't supported anymore
+            // commPort.RtsEnable = true; // hack for soft rock ptt
+            // commPort.DtrEnable = true; // set dtr off
+            // DG8MG
+
             //commPort.ErrorReceived += new SerialErrorReceivedEventHandler(this.SerialErrorReceived);
             commPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialReceivedData);
             // commPort.DataReceived += new SerialDataReceivedEventHandler(datareceived);
@@ -639,8 +661,13 @@ namespace PowerSDR
         {
             commPort = new SerialPort();
             commPort.Encoding = System.Text.Encoding.ASCII;
-            commPort.RtsEnable = true; // hack for soft rock ptt 
-            commPort.DtrEnable = true; // set dtr off 
+
+            // DG8MG
+            // Removed RTS and DTR settings due to issues with Charly 25 and HAMlab setups and SoftRock hardware isn't supported anymore
+            // commPort.RtsEnable = true; // hack for soft rock ptt
+            // commPort.DtrEnable = true; // set dtr off
+            // DG8MG
+
             //commPort.ErrorReceived += new SerialErrorReceivedEventHandler(this.SerialErrorReceived);
             commPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialReceivedData);
             // commPort.DataReceived += new SerialDataReceivedEventHandler(datareceived);
@@ -919,8 +946,13 @@ namespace PowerSDR
         {
             commPort = new SerialPort();
             commPort.Encoding = System.Text.Encoding.ASCII;
-            commPort.RtsEnable = true; // hack for soft rock ptt 
-            commPort.DtrEnable = true; // set dtr off 
+
+            // DG8MG
+            // Removed RTS and DTR settings due to issues with Charly 25 and HAMlab setups and SoftRock hardware isn't supported anymore
+            // commPort.RtsEnable = true; // hack for soft rock ptt
+            // commPort.DtrEnable = true; // set dtr off
+            // DG8MG
+
             //commPort.ErrorReceived += new SerialErrorReceivedEventHandler(this.SerialErrorReceived);
             commPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialReceivedData);
             // commPort.DataReceived += new SerialDataReceivedEventHandler(datareceived);

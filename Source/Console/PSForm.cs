@@ -579,9 +579,7 @@ namespace PowerSDR
                     // Extension for Charly 25 hardware
                     if (console.CurrentModel == Model.CHARLY25PP)
                     {
-                        {
-                            C25StepAttValue += deltadB;
-                        }
+                        C25StepAttValue += deltadB;
                     }
                     else
                     {
