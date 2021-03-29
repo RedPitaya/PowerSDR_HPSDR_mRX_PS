@@ -30,7 +30,7 @@
 // Waterfall AGC Modifications Copyright (C) 2013 Phil Harman (VK6APH)
 // DirectX functions borrowed from GeneisisRadio Copyright (C)2010,2011,2012 YT7PWR Goran Radivojevic
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2019 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2021 Markus Grundner / DG8MG
 //
 
 using System.Linq;

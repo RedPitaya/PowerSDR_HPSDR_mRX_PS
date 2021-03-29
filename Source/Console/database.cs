@@ -27,7 +27,7 @@
 //=================================================================
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2019 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2021 Markus Grundner / DG8MG
 //
 // Modifications to the database import function to allow using files created with earlier versions.
 // by Chris Codella, W2PA, May 2017.  Indicated by //-W2PA comment lines. 

@@ -27,7 +27,7 @@
 //=================================================================
 
 //
-// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2019 Markus Grundner / DG8MG
+// Charly 25, HAMlab and STEMlab SDR Modifications Copyright (C) 2016 - 2021 Markus Grundner / DG8MG
 //
 
 using System;
@@ -35,6 +35,7 @@ using System.Diagnostics;
 using System.Reflection;
 
 // DG8MG
+using System.IO;
 using System.Windows.Forms;
 // DG8MG
 
@@ -61,12 +62,17 @@ namespace PowerSDR
 
         public static string GetString()
         {
+            FileVersionInfo vi = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+            FileInfo fileInfo = new FileInfo(vi.FileName);
+            System.DateTime createTime = fileInfo.LastWriteTime;
+
             string s = "PowerSDR™ OpenHPSDR";
             s += " " + BUILD_NAME;
             s += " " + BUILD_EDITION + BUILD;
             s += Application.ProductVersion.Substring(0, 10);
             s += " - Commit: " + Application.ProductVersion.Substring(Application.ProductVersion.LastIndexOf("_") + 1);
             s += TRACE;
+            s += " - Create Time: " + createTime;
 
             return s;
         }
