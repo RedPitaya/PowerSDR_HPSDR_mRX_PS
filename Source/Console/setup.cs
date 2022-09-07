@@ -3456,17 +3456,34 @@ namespace PowerSDR
                         break;
 
                     case 131:
+                    case 135:
                         lblC25TRXPresent.Visible = true;
 
-                        if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                        if (penelopeFWVersion == 131)
                         {
-                            console.CurrentModel = Model.CHARLY25PP;
-                            lblC25TRXPresent.Text = "Charly 25PP";
+                            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                            {
+                                console.CurrentModel = Model.CHARLY25PP;
+                                lblC25TRXPresent.Text = "Charly 25PP";
+                            }
+                            else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                            {
+                                console.CurrentModel = Model.CHARLY25PP;
+                                lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6 PP";
+                            }
                         }
-                        else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                        else
                         {
-                            console.CurrentModel = Model.CHARLY25PP;
-                            lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6 PP";
+                            if (console.CurrentHPSDRModel == HPSDRModel.CHARLY25)
+                            {
+                                console.CurrentModel = Model.CHARLY25PP;
+                                lblC25TRXPresent.Text = "Charly 25PP R2";
+                            }
+                            else if (console.CurrentHPSDRModel == HPSDRModel.HAMLAB)
+                            {
+                                console.CurrentModel = Model.CHARLY25PP;
+                                lblC25TRXPresent.Text = "HAMlab/STEMlab SDR 160-6 PP R2";
+                            }
                         }
 
                         // Enable the antenna 1/2 button if a Charly 25PP TRX board is present
